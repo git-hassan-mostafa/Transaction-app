@@ -10,19 +10,24 @@ if (args.length !== 1) {
 }
 
 const fullPath = args[0];
-const componentName = path.basename(fullPath) + "Page";
-const targetDir = path.join(process.cwd(), fullPath);
+var prefixToAdd = "Page";
+if (fullPath.toLowerCase().includes("components/")) {
+  prefixToAdd = "Component";
+}
+const componentName = path.basename(fullPath) + prefixToAdd;
+const targetDir = path.join(process.cwd(), fullPath + prefixToAdd);
 
 const files = [
   {
     name: `${componentName}.tsx`,
-    content: `import use${componentName}Service from "./${componentName}.service"; 
+    content: `import { View } from "react-native";
+import use${componentName}Service from "./${componentName}.service"; 
 import styles from "./${componentName}.style";
 
 export default function ${componentName}() {
   const ${componentName}Service = use${componentName}Service();
   return (
-    <></>
+    <View></View>
   );
 }`,
   },
