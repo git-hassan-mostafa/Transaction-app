@@ -24,6 +24,17 @@ const styles = StyleSheet.create({
     fontFamily: "NotoKufiArabic_800ExtraBold",
     color: "white",
   },
+  icon: { textAlign: "center", fontSize: 50 },
+  button: {
+    padding: 10,
+    borderRadius: 10,
+  },
+  buttonText: {
+    textAlign: "center",
+    fontFamily: "NotoKufiArabic_800ExtraBold",
+    fontSize: 14,
+    color: "white",
+  },
 });
 
 export default styles;

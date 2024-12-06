@@ -3,6 +3,7 @@ const styles = StyleSheet.create({
   flatListView: {
     flex: 1,
     padding: 20,
+    paddingBottom: 100,
   },
 });
 

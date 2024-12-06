@@ -1,29 +1,43 @@
+import CardType from "@/components/CardComponent/CardComponent.types";
+import Constants from "@/Global/Constants/Constants";
 import { Href, router } from "expo-router";
 import { Dimensions } from "react-native";
-const pages = [
+const pages: CardType[] = [
   {
-    title: "العملاء",
-    route: "users",
-    image: require("../../assets/navigation-icons/clients.webp"),
-    color: "#081230",
+    title: "الزبائن",
+    route: "customers",
+    color: Constants.colors.blue,
+    icon: "people-group",
   },
   {
     title: "البضاعة",
-    route: "products",
-    image: require("../../assets/navigation-icons/products.webp"),
-    color: "#01611f",
+    route: "items",
+    color: Constants.colors.orange,
+    icon: "basket-shopping",
   },
   {
-    title: "الديون",
-    route: "products",
-    image: require("../../assets/navigation-icons/debts.webp"),
-    color: "#c2281d",
+    title: "الديون الخارجية",
+    route: "outerDebts",
+    color: Constants.colors.oil,
+    icon: "credit-card",
+  },
+  {
+    title: "الديون الداخلية",
+    route: "innerDebts",
+    color: Constants.colors.red,
+    icon: "wallet",
   },
   {
     title: "النتائج",
-    route: "products",
-    image: require("../../assets/navigation-icons/results.webp"),
-    color: "#065661",
+    route: "results",
+    color: Constants.colors.green,
+    icon: "money-check-dollar",
+  },
+  {
+    title: "الأشخاص",
+    route: "people",
+    color: Constants.colors.lighBlue,
+    icon: "people-carry-box",
   },
 ];
 
@@ -31,9 +45,5 @@ export default function useHomeService() {
   const screenWidth = Dimensions.get("window").width;
   const numColumns = Math.floor(screenWidth / 150);
 
-  function onNavigationButtonClick(path: string) {
-    router.navigate(("/" + path) as Href);
-  }
-
-  return { numColumns, pages, onNavigationButtonClick };
+  return { numColumns, pages };
 }

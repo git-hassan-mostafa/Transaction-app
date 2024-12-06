@@ -1,20 +1,20 @@
 import { SQLiteDatabase, useSQLiteContext } from "expo-sqlite";
 import createTablesQuery from "../sql/create-tables";
 
-export default class AbstractManager {
+export default abstract class AbstractManager {
   protected db: SQLiteDatabase;
   constructor() {
     this.db = useSQLiteContext();
-    this.createSqlTables()
-      .then(() => {
-        console.info("tables creation");
-      })
-      .catch((error) => {
-        console.error("an error occurred ", error);
-      });
+    this.createSqlTables().then(() => {
+      console.info("tables created");
+    });
   }
 
   private async createSqlTables() {
-    await this.db.execAsync(createTablesQuery);
+    try {
+      await this.db.execAsync(createTablesQuery);
+    } catch (error) {
+      console.error("an error occurred ", error);
+    }
   }
 }

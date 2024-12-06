@@ -1,0 +1,1 @@
+// Define types for OuterDebtsPage here

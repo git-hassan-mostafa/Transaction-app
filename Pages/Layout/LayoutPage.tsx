@@ -10,8 +10,18 @@ export default function LayoutPage() {
   const { fontsLoaded } = useContextProvider();
   if (fontsLoaded) {
     return (
-      <Stack>
-        <Stack.Screen name="index" />
+      <Stack screenOptions={{ contentStyle: { backgroundColor: "white" } }}>
+        {LayoutPageService.screens.map((screen) => (
+          <Stack.Screen
+            key={screen.name}
+            name={screen.name}
+            options={{
+              title: screen.title,
+              headerTitleStyle: { fontFamily: "NotoKufiArabic_800ExtraBold" },
+              headerTitleAlign: screen.name === "index" ? "center" : "left",
+            }}
+          />
+        ))}
       </Stack>
     );
   }
