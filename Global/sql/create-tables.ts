@@ -1,4 +1,13 @@
-const createTablesQuery = `
+const createTablesQuery =
+  `
+  -- drop table People;
+  -- drop table Providers;
+  -- drop table Items;
+  -- drop table Customers;
+  -- drop table InnerDebts;
+  -- drop table OuterDebts;
+  ` +
+  `
 -- Ensure foreign key support is enabled
 PRAGMA foreign_keys = ON;
 -- Table: People

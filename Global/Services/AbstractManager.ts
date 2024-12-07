@@ -14,7 +14,7 @@ export default abstract class AbstractManager {
     try {
       await this.db.execAsync(createTablesQuery);
     } catch (error) {
-      console.error("an error occurred ", error);
+      console.error("an error occurred while create table", error);
     }
   }
 }

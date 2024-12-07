@@ -1,3 +1,4 @@
+import Constants from "@/Global/Constants/Constants";
 import { StyleSheet } from "react-native";
 
 const styles = StyleSheet.create({
@@ -21,7 +22,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 24,
     textAlign: "center",
-    fontFamily: "NotoKufiArabic_800ExtraBold",
+    fontFamily: Constants.fontFamily.font800ExtraBold,
     color: "white",
   },
   icon: { textAlign: "center", fontSize: 50 },
@@ -31,7 +32,7 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     textAlign: "center",
-    fontFamily: "NotoKufiArabic_800ExtraBold",
+    fontFamily: Constants.fontFamily.font800ExtraBold,
     fontSize: 14,
     color: "white",
   },

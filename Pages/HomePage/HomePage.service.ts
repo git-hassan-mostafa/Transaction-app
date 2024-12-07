@@ -1,4 +1,4 @@
-import CardType from "@/components/CardComponent/CardComponent.types";
+import CardType from "@/Components/CardComponent/CardComponent.types";
 import Constants from "@/Global/Constants/Constants";
 import { Href, router } from "expo-router";
 import { Dimensions } from "react-native";
