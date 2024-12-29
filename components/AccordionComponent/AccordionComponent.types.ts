@@ -2,7 +2,7 @@ import { ReactNode } from "react";
 import { ViewStyle } from "react-native";
 
 export default interface CustomAccordionProps {
-  header: ReactNode;
+  headerText: string;
   children: ReactNode;
   style?: ViewStyle;
   iconSize?: number;

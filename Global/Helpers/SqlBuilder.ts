@@ -6,6 +6,7 @@ export default class SqlBuilder<T> {
   private type!: "select" | "update";
   private getQuery: string = "select * from {0} {1} {2}";
   private updateQuery: string = "update {0} set {1} {2}";
+  private deleteQuery: string = "delete from {0} {1}";
 
   constructor(db: SQLiteDatabase, tableName: string) {
     this.db = db;
@@ -35,10 +36,26 @@ export default class SqlBuilder<T> {
                    }
                    return value;
                  })
-                 .join(" , ")})`;
-      await this.db.execAsync(query);
+                 .join(" , ")}) RETURNING id`;
+      const result = await this.db.runAsync(query);
+      return result;
     } catch (error) {
-      console.error("an error occurred", error);
+      console.log("an error occurred", error);
+      return null;
+    }
+  }
+
+  async delete(id: number) {
+    try {
+      this.deleteQuery = this.deleteQuery.replace("{0}", this.tableName);
+      if (id === -1) this.deleteQuery = this.deleteQuery.replace("{1}", "");
+      var whereQuery = `where id = ${id}`;
+      this.deleteQuery = this.deleteQuery.replace("{1}", whereQuery);
+      const result = await this.db.runAsync(this.deleteQuery);
+      return result;
+    } catch (error) {
+      console.log("an error occurred ", error);
+      return null;
     }
   }
 
@@ -46,9 +63,12 @@ export default class SqlBuilder<T> {
     if (!value) return this;
     this.type = "update";
     const query = `${Object.entries(value)
-      .map(([key, value]) => {
+      .map(([key, value]: [any, any]) => {
         if (typeof value === "string") {
           return `${key} = '${value}'`;
+        }
+        if (value === null || value?.length === 0) {
+          return `${key} = NULL`;
         }
         return `${key} = ${value}`;
       })
@@ -85,6 +105,16 @@ export default class SqlBuilder<T> {
     return this;
   }
 
+  async firstAsync() {
+    if (this.type == "select") {
+      this.getQuery = this.getQuery.replace("{1}", "");
+      this.getQuery = this.getQuery.replace("{2}", "");
+      this.getQuery = this.getQuery.replace("{0}", this.tableName);
+      const result = await this.db.getFirstAsync<T>(this.getQuery);
+      return result;
+    }
+  }
+
   async executeAsync() {
     if (this.type == "select") {
       this.getQuery = this.getQuery.replace("{1}", "");
@@ -96,9 +126,9 @@ export default class SqlBuilder<T> {
     if (this.type == "update") {
       this.updateQuery = this.updateQuery.replace("{2}", "");
       this.updateQuery = this.updateQuery.replace("{0}", this.tableName);
-      const result = await this.db.execAsync(this.updateQuery);
-      return [];
+      const result = await this.db.runAsync(this.updateQuery);
+      return result;
     }
-    return [];
+    return null;
   }
 }

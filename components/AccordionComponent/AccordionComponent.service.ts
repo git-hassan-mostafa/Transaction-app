@@ -7,17 +7,6 @@ export default function useAccordionComponentService() {
 
   const toggleAccordion = () => {
     setIsOpen(!isOpen);
-
-    Animated.timing(heightAnim, {
-      toValue: isOpen ? 0 : 1,
-      duration: 300,
-      useNativeDriver: false,
-    }).start();
   };
-
-  const heightInterpolate = heightAnim.interpolate({
-    inputRange: [0, 1],
-    outputRange: [0, 1000],
-  });
-  return { isOpen, toggleAccordion, heightInterpolate };
+  return { isOpen, toggleAccordion };
 }

@@ -12,6 +12,19 @@ const styles = StyleSheet.create({
     alignItems: "center",
     padding: 15,
   },
+  headerTextContainer: {
+    flexDirection: "row-reverse",
+    alignItems: "center",
+  },
+  headerListIcon: {
+    fontSize: 30,
+    color: Constants.colors.lightGray,
+  },
+  headerText: {
+    fontSize: 20,
+    fontFamily: Constants.fontFamily.font800ExtraBold,
+    color: Constants.colors.lightGray,
+  },
   contentContainer: {
     overflow: "hidden",
   },

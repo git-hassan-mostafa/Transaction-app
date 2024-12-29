@@ -1,5 +1,5 @@
 export default interface Person {
-  id: number;
-  name: string;
-  phoneNumber: string;
+  id?: number;
+  name?: string;
+  phoneNumber?: string;
 }

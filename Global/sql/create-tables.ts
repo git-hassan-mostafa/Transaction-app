@@ -1,13 +1,34 @@
-const createTablesQuery =
-  `
+const OtherQueries = "";
+//  +
+//  `
+// INSERT INTO InnerDebts (
+//     totalPrice,
+//     pricePaid,
+//     paymentsList,
+//     itemsList,
+//     date,
+//     personId,
+//     customerId
+// ) VALUES (
+//     20.0,               -- totalPrice
+//     10.0,               -- pricePaid
+//     '[]',               -- paymentsList as an empty JSON array
+//     '[]',               -- itemsList as an empty JSON array
+//     CURRENT_TIMESTAMP,  -- date, defaults to the current timestamp
+//     1,                  -- personId
+//     1                   -- customerId
+// );
+// `
+// ;
+const dropTables = `
   -- drop table People;
   -- drop table Providers;
   -- drop table Items;
   -- drop table Customers;
   -- drop table InnerDebts;
   -- drop table OuterDebts;
-  ` +
-  `
+  `;
+const createTables = `
 -- Ensure foreign key support is enabled
 PRAGMA foreign_keys = ON;
 -- Table: People
@@ -50,13 +71,13 @@ CREATE TABLE IF NOT EXISTS Customers (
 -- Table: InnerDebts
 CREATE TABLE IF NOT EXISTS InnerDebts (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    customerId INTEGER NOT NULL,
-    items_list TEXT DEFAULT NULL,
-    total_price REAL NOT NULL,
-    payments_list TEXT DEFAULT NULL,
-    price_paid REAL DEFAULT 0,
+    totalPrice REAL NOT NULL,
+    pricePaid REAL DEFAULT 0,
+    paymentsList TEXT DEFAULT NULL,
+    itemsList TEXT DEFAULT NULL,
     date TEXT DEFAULT CURRENT_TIMESTAMP,
     personId INTEGER NOT NULL,
+    customerId INTEGER NOT NULL,
     FOREIGN KEY (customerId) REFERENCES Customers (id) ON DELETE CASCADE,
     FOREIGN KEY (personId) REFERENCES People (id) ON DELETE CASCADE
 );
@@ -64,15 +85,16 @@ CREATE TABLE IF NOT EXISTS InnerDebts (
 -- Table: OuterDebts
 CREATE TABLE IF NOT EXISTS OuterDebts (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    providerId INTEGER NOT NULL,
-    price REAL NOT NULL,
-    date TEXT DEFAULT CURRENT_TIMESTAMP,
-    itemsList TEXT DEFAULT NULL,
+    totalPrice REAL NOT NULL,
+    pricePaid REAL DEFAULT 0,
     paymentsList TEXT DEFAULT NULL,
+    itemsList TEXT DEFAULT NULL,
+    date TEXT DEFAULT CURRENT_TIMESTAMP,
     personId INTEGER NOT NULL,
+    providerId INTEGER NOT NULL,
     FOREIGN KEY (providerId) REFERENCES Providers (id) ON DELETE CASCADE,
     FOREIGN KEY (personId) REFERENCES People (id) ON DELETE CASCADE
 );
 `;
-
+const createTablesQuery = OtherQueries + dropTables + createTables;
 export default createTablesQuery;

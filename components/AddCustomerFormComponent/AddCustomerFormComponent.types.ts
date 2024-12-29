@@ -10,8 +10,7 @@ export default interface ICustomer {
   borrowList: InnerDebt[] | null;
 }
 
-export interface ICustomerProps {
-  id: number;
-  deleteFromCustomerList: (id: number) => void;
-  updateFromCustomersList: (customer: Customer) => void;
+export interface IAddCustomerProps {
+  addToCustomersList: (value: Customer) => void;
+  toggleModal: () => void;
 }

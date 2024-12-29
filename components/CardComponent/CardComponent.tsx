@@ -10,6 +10,7 @@ import useCardComponentService from "./CardComponent.service";
 import styles from "./CardComponent.style";
 import CardType from "./CardComponent.types";
 import Icon from "react-native-vector-icons/FontAwesome6";
+import { ThemedText } from "../HelperComponents/ThemedText";
 
 export default function CardComponent(props: CardType) {
   const cardcomponentService = useCardComponentService();
@@ -20,9 +21,9 @@ export default function CardComponent(props: CardType) {
     >
       <Icon name={props.icon} color={props.color} style={styles.icon} />
       <View>
-        <Text style={[styles.title, { color: props.color }]}>
+        <ThemedText style={[styles.title, { color: props.color }]}>
           {props.title}
-        </Text>
+        </ThemedText>
       </View>
     </TouchableOpacity>
   );

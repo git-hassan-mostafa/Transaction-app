@@ -4,5 +4,4 @@ export default interface Customer {
   borrowedPrice?: number;
   payedPrice?: number;
   phoneNumber?: string;
-  borrowList?: { item: string; price: number }[] | null;
 }

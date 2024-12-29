@@ -1,24 +1,74 @@
-import { View, Text } from "react-native";
+import {
+  View,
+  Text,
+  FlatList,
+  TouchableOpacity,
+  Dimensions,
+  Modal,
+} from "react-native";
 import useCustomersPageService from "./CustomersPage.service";
 import styles from "./CustomersPage.style";
-import CustomAccordionComponent from "@/Components/AccordionComponent/AccordionComponent";
+import AccordionComponent from "@/Components/AccordionComponent/AccordionComponent";
 import { CustomerFormComponent } from "@/Components/CustomerFormComponent/CustomerFormComponent";
 import Constants from "@/Global/Constants/Constants";
+import Customer from "@/Global/Models/Customer";
+import { FAB } from "react-native-paper";
+import React from "react";
+import Icon from "react-native-vector-icons/AntDesign";
+import AddCustomerFormComponent from "@/Components/AddCustomerFormComponent/AddCustomerFormComponent";
+import CustomModal from "@/Components/CustomModalComponent/CustomModalComponent";
 
 export default function CustomersPage() {
-  const CustomersPageService = useCustomersPageService();
+  const {
+    customers,
+    modalVisible,
+    toggleModal,
+    addToCustomersList,
+    deleteFromCustomerList,
+    updateFromCustomersList,
+  } = useCustomersPageService();
   return (
-    <CustomAccordionComponent
-      style={{ margin: 10 }}
-      headerColor={Constants.colors.blue}
-      iconColor={Constants.colors.lightGray}
-      header={
-        <View>
-          <Text style={styles.CustomerHeaderText}> حسن مصطفى </Text>
+    <React.Fragment>
+      <FlatList
+        style={styles.flatList}
+        data={customers}
+        numColumns={1}
+        keyExtractor={(item) => item.id?.toString() as string}
+        renderItem={({ item }: { item: Customer }) => (
+          <AccordionComponent
+            key={item.id}
+            headerColor={Constants.colors.blue}
+            iconColor={Constants.colors.lightGray}
+            headerText={item.name as string}
+          >
+            <CustomerFormComponent
+              id={item.id as number}
+              deleteFromCustomerList={deleteFromCustomerList}
+              updateFromCustomersList={updateFromCustomersList}
+            />
+          </AccordionComponent>
+        )}
+        ItemSeparatorComponent={() => <View style={{ height: 10 }} />}
+        contentContainerStyle={{ paddingBottom: 40 }}
+      />
+      <CustomModal
+        title="اضافة زبون"
+        isVisible={modalVisible}
+        onClose={toggleModal}
+      >
+        <View style={{ backgroundColor: Constants.colors.lightGray }}>
+          <AddCustomerFormComponent
+            addToCustomersList={addToCustomersList}
+            toggleModal={toggleModal}
+          />
         </View>
-      }
-    >
-      <CustomerFormComponent />
-    </CustomAccordionComponent>
+      </CustomModal>
+      <FAB
+        onPress={toggleModal}
+        color={Constants.colors.lightGray}
+        style={styles.fab}
+        icon="plus"
+      />
+    </React.Fragment>
   );
 }

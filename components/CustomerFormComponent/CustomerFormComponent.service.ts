@@ -1,22 +1,36 @@
 import { useEffect, useState } from "react";
-import ICustomer from "./CustomerFormComponent.types";
+import ICustomer, { ICustomerProps } from "./CustomerFormComponent.types";
+import useContextProvider from "@/Global/ContextApi/ContextApi";
+import Customer from "@/Global/Models/Customer";
+import InnerDebt from "@/Global/Models/InnerDebt";
+import { Alert } from "react-native";
 
-export default function useCustomerFormComponentService() {
+export default function useCustomerFormComponentService({
+  id,
+  deleteFromCustomerList,
+  updateFromCustomersList,
+}: ICustomerProps) {
   const [customer, setCustomer] = useState<ICustomer>({} as ICustomer);
 
+  const { customerManager } = useContextProvider();
+
   useEffect(() => {
-    setCustomer((prev) => {
-      return {
-        ...prev,
-        name: "حسن مصطفى",
-        phoneNumber: "81446801",
-        borrowList: [
-          { item: "جافيل", price: 15 },
-          { item: "بيكون", price: 20 },
-        ],
-      };
+    getCustomer().then(() => {
+      customerManager.getCustomerDebts(id).then((data) => {
+        setCustomer((prev) => {
+          return { ...prev, borrowList: data as InnerDebt[] };
+        });
+      });
     });
   }, []);
+
+  async function getCustomer() {
+    const customerDB = await customerManager.getCustomer(id);
+    if (!customerDB) return;
+    const customer = mapCustomer(customerDB);
+    setCustomer(customer);
+    return customer;
+  }
 
   function setCustomerName(value: string) {
     setCustomer((prev) => {
@@ -30,5 +44,53 @@ export default function useCustomerFormComponentService() {
     });
   }
 
-  return { customer, setCustomerName, setCustomerPhoneNumber };
+  async function updateCustomerName() {
+    customer.id = id;
+    const updatedCustomer: Customer = mapCustomer(customer);
+    const result = await customerManager.updateCustomer(updatedCustomer);
+    if ((result?.changes || 0) > 0) updateFromCustomersList(updatedCustomer);
+  }
+
+  async function updateCustomerPhoneNumber() {
+    customer.id = id;
+    const updatedCustomer: Customer = mapCustomer(customer);
+    await customerManager.updateCustomer(updatedCustomer);
+  }
+
+  async function handleDeleteCustomer() {
+    Alert.alert("ازالة زبون", "هل أنت متأكد أنك تريد ازالة هذا الزبون؟", [
+      {
+        text: "الغاء",
+        style: "cancel",
+      },
+      { text: "تأكيد", onPress: deleteCustomer },
+    ]);
+  }
+
+  async function deleteCustomer() {
+    const result = await customerManager.deleteCustomer(id);
+    if ((result?.changes || 0) > 0) deleteFromCustomerList(id);
+    else Alert.prompt("حصل خطأ ما", "حصل خطأ ما , الرجاء المحاولة مجددا.");
+  }
+
+  function mapCustomer(customer: Customer): ICustomer {
+    const borrowList: InnerDebt[] = [];
+    return {
+      id: customer.id as number,
+      name: customer.name as string,
+      borrowedPrice: customer.borrowedPrice as number,
+      payedPrice: customer.payedPrice as number,
+      phoneNumber: customer.phoneNumber as string,
+      borrowList,
+    };
+  }
+
+  return {
+    customer,
+    setCustomerName,
+    setCustomerPhoneNumber,
+    updateCustomerName,
+    updateCustomerPhoneNumber,
+    handleDeleteCustomer,
+  };
 }

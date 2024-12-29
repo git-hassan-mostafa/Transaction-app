@@ -9,9 +9,11 @@ const Constants = {
     lighBlue: "#21b8b0",
     gray: "#ccc",
     lightGray: "#f2f2f2",
+    yellow: "#f0f716",
   },
   fontFamily: {
     font400Regular: "NotoKufiArabic_400Regular",
+    font600SemiBold: "NotoKufiArabic_600SemiBold",
     font800ExtraBold: "NotoKufiArabic_800ExtraBold",
   },
 };

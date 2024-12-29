@@ -1,11 +1,13 @@
 import {
   NotoKufiArabic_400Regular,
   NotoKufiArabic_800ExtraBold,
+  NotoKufiArabic_600SemiBold,
   useFonts,
 } from "@expo-google-fonts/noto-kufi-arabic";
-import React, { createContext, useContext } from "react";
-import ContextProps from "./ContextApi.type";
+import React, { createContext, useContext, useState } from "react";
+import ContextProps, { SnackBarOptions } from "./ContextApi.type";
 import CustomerManager from "../Services/customers.service";
+import { PeopleManager } from "../Services/people.service";
 
 const Context = createContext<ContextProps>({} as ContextProps);
 
@@ -16,11 +18,39 @@ export const ContextProvider = ({
 }) => {
   const [fontsLoaded] = useFonts({
     NotoKufiArabic_400Regular,
+    NotoKufiArabic_600SemiBold,
     NotoKufiArabic_800ExtraBold,
   });
-  const customerManager = new CustomerManager();
+  const [snackBarOptions, setSnackBarOptions] = useState<SnackBarOptions>({
+    visible: false,
+    text: "",
+    type: "info",
+  });
+
+  const { customerManager, peopleManager } = getDeps();
+
+  function toggleSnackBar(value: SnackBarOptions) {
+    setSnackBarOptions(value);
+    setTimeout(() => {
+      setSnackBarOptions({ visible: false });
+    }, 3000);
+  }
+
+  function onDismissSnackBar() {
+    toggleSnackBar({ visible: false });
+  }
+
   return (
-    <Context.Provider value={{ fontsLoaded, customerManager }}>
+    <Context.Provider
+      value={{
+        fontsLoaded,
+        customerManager,
+        peopleManager,
+        snackBarOptions,
+        toggleSnackBar,
+        onDismissSnackBar,
+      }}
+    >
       {children}
     </Context.Provider>
   );
@@ -28,4 +58,11 @@ export const ContextProvider = ({
 
 export default function useContextProvider() {
   return useContext(Context);
+}
+
+function getDeps() {
+  return {
+    customerManager: new CustomerManager(),
+    peopleManager: new PeopleManager(),
+  };
 }
