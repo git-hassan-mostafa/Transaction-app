@@ -45,6 +45,8 @@ export default function usePeopleFormComponentService({
 
   async function updatePerson() {
     person.id = id;
+    person.name = person.name?.trim();
+    person.phoneNumber = person.phoneNumber?.trim();
     const result = await peopleManager.updatePerson(person);
     if ((result?.changes || 0) > 0) updateFromPeopleList(person);
   }

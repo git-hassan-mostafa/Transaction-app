@@ -1,4 +1,4 @@
-import ICustomer from "@/Components/CustomerFormComponent/CustomerFormComponent.types";
+import ICustomer from "@/Components/Customer Components/CustomerFormComponent/CustomerFormComponent.types";
 import useContextProvider from "@/Global/ContextApi/ContextApi";
 import Customer from "@/Global/Models/Customer";
 import { useEffect, useState } from "react";

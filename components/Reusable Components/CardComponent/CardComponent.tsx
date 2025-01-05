@@ -10,7 +10,7 @@ import useCardComponentService from "./CardComponent.service";
 import styles from "./CardComponent.style";
 import CardType from "./CardComponent.types";
 import Icon from "react-native-vector-icons/FontAwesome6";
-import { ThemedText } from "../HelperComponents/ThemedText";
+import { ThemedText } from "../../HelperComponents/ThemedText";
 
 export default function CardComponent(props: CardType) {
   const cardcomponentService = useCardComponentService();

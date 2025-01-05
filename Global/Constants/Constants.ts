@@ -10,6 +10,7 @@ const Constants = {
     gray: "#ccc",
     lightGray: "#f2f2f2",
     yellow: "#f0f716",
+    black: "black",
   },
   fontFamily: {
     font400Regular: "NotoKufiArabic_400Regular",

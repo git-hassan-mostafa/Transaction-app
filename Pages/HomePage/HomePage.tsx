@@ -1,8 +1,8 @@
 import { FlatList, View } from "react-native";
 import styles from "./HomePage.style";
 import useHomeService from "./HomePage.service";
-import CardComponent from "@/Components/CardComponent/CardComponent";
-import FlatListHeaderComponent from "@/Components/FlatListHeaderComponent/FlatListHeaderComponent";
+import CardComponent from "@/Components/Reusable Components/CardComponent/CardComponent";
+import FlatListHeaderComponent from "@/Components/Reusable Components/FlatListHeaderComponent/FlatListHeaderComponent";
 
 export default function HomePage() {
   const homeService = useHomeService();

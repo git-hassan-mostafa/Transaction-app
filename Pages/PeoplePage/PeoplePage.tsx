@@ -3,12 +3,12 @@ import usePeoplePageService from "./PeoplePage.service";
 import styles from "./PeoplePage.style";
 import React from "react";
 import Person from "@/Global/Models/Person";
-import AccordionComponent from "@/Components/AccordionComponent/AccordionComponent";
+import AccordionComponent from "@/Components/Reusable Components/AccordionComponent/AccordionComponent";
 import Constants from "@/Global/Constants/Constants";
-import CustomModal from "@/Components/CustomModalComponent/CustomModalComponent";
 import { FAB } from "react-native-paper";
-import AddPeopleFormComponent from "@/Components/AddPeopleFormComponent/AddPeopleFormComponent";
-import PeopleFormComponent from "@/Components/PeopleFormComponent/PeopleFormComponent";
+import PeopleFormComponent from "@/Components/People Components/PeopleFormComponent/PeopleFormComponent";
+import CustomModal from "@/Components/Reusable Components/CustomModalComponent/CustomModalComponent";
+import AddPeopleFormComponent from "@/Components/People Components/AddPeopleFormComponent/AddPeopleFormComponent";
 
 export default function PeoplePage() {
   const {

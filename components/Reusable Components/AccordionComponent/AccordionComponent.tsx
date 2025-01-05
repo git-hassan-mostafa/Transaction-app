@@ -6,7 +6,7 @@ import { Ionicons } from "@expo/vector-icons";
 import CustomAccordionProps from "./AccordionComponent.types";
 import Constants from "@/Global/Constants/Constants";
 import Icon from "react-native-vector-icons/Entypo";
-import { ThemedText } from "../HelperComponents/ThemedText";
+import { ThemedText } from "../../HelperComponents/ThemedText";
 
 export default function AccordionComponent({
   headerText,

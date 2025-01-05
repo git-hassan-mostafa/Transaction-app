@@ -41,8 +41,8 @@ export default function useAddPeopleFormComponentService({
       return;
     }
     const newPerson: Person = {
-      name: person?.name,
-      phoneNumber: person.phoneNumber,
+      name: person?.name.trim(),
+      phoneNumber: person.phoneNumber.trim(),
     };
     const result = await peopleManager.addPerson(newPerson);
     if (!result || !result.lastInsertRowId)

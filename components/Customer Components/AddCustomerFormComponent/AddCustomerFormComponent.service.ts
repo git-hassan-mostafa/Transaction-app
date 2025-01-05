@@ -43,8 +43,8 @@ export default function useAddCustomerFormComponentService({
       return;
     }
     const newCustomer: Customer = {
-      name: customer?.name,
-      phoneNumber: customer.phoneNumber,
+      name: customer?.name.trim(),
+      phoneNumber: customer.phoneNumber.trim(),
       borrowedPrice: 0,
       payedPrice: 0,
     };

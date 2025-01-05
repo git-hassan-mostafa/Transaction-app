@@ -8,7 +8,7 @@ import { TouchableOpacity } from "react-native";
 import { Button } from "react-native-paper";
 import Customer from "@/Global/Models/Customer";
 import { IAddCustomerProps } from "./AddCustomerFormComponent.types";
-import { ThemedText } from "../HelperComponents/ThemedText";
+import { ThemedText } from "../../HelperComponents/ThemedText";
 
 export default function AddCustomerFormComponent({
   toggleModal,

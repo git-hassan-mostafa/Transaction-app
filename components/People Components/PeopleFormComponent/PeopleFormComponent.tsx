@@ -9,7 +9,7 @@ import usePeopleFormComponentService from "./PeopleFormComponent.service";
 import styles from "./PeopleFormComponent.style";
 import { IPeopleProps } from "./PeopleFormComponent.types";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
-import { ThemedText } from "../HelperComponents/ThemedText";
+import { ThemedText } from "../../HelperComponents/ThemedText";
 
 export default function PeopleFormComponent({
   id,

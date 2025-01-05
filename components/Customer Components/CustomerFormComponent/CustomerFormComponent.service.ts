@@ -45,16 +45,22 @@ export default function useCustomerFormComponentService({
   }
 
   async function updateCustomerName() {
-    customer.id = id;
+    validateCustomerFields(customer);
     const updatedCustomer: Customer = mapCustomer(customer);
     const result = await customerManager.updateCustomer(updatedCustomer);
     if ((result?.changes || 0) > 0) updateFromCustomersList(updatedCustomer);
   }
 
   async function updateCustomerPhoneNumber() {
-    customer.id = id;
+    validateCustomerFields(customer);
     const updatedCustomer: Customer = mapCustomer(customer);
     await customerManager.updateCustomer(updatedCustomer);
+  }
+
+  function validateCustomerFields(customer: ICustomer) {
+    customer.id = id;
+    customer.name = customer.name.trim();
+    customer.phoneNumber = customer.phoneNumber.trim();
   }
 
   async function handleDeleteCustomer() {

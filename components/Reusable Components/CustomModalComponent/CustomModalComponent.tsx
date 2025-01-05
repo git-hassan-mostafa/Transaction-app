@@ -10,7 +10,7 @@ import {
 import Icon from "react-native-vector-icons/Ionicons";
 import CustomModalProps from "./CustomModalComponent.types";
 import styles from "./CustomModalComponent.style";
-import { ThemedText } from "../HelperComponents/ThemedText";
+import { ThemedText } from "@/Components/HelperComponents/ThemedText";
 
 const CustomModal: React.FC<CustomModalProps> = ({
   isVisible,

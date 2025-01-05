@@ -7,10 +7,10 @@ import {
 } from "react-native";
 import useAddPeopleFormComponentService from "./AddPeopleFormComponent.service";
 import styles from "./AddPeopleFormComponent.style";
-import { ThemedText } from "../HelperComponents/ThemedText";
 import Constants from "@/Global/Constants/Constants";
 import { Button } from "react-native-paper";
 import IAddPeopleProps from "./AddPeopleFormComponent.types";
+import { ThemedText } from "@/Components/HelperComponents/ThemedText";
 
 export default function AddPeopleFormComponent({
   addToPeopleList,

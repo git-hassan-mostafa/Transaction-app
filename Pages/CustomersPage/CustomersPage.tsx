@@ -8,15 +8,15 @@ import {
 } from "react-native";
 import useCustomersPageService from "./CustomersPage.service";
 import styles from "./CustomersPage.style";
-import AccordionComponent from "@/Components/AccordionComponent/AccordionComponent";
-import { CustomerFormComponent } from "@/Components/CustomerFormComponent/CustomerFormComponent";
+import AccordionComponent from "@/Components/Reusable Components/AccordionComponent/AccordionComponent";
+import { CustomerFormComponent } from "@/Components/Customer Components/CustomerFormComponent/CustomerFormComponent";
 import Constants from "@/Global/Constants/Constants";
 import Customer from "@/Global/Models/Customer";
 import { FAB } from "react-native-paper";
 import React from "react";
 import Icon from "react-native-vector-icons/AntDesign";
-import AddCustomerFormComponent from "@/Components/AddCustomerFormComponent/AddCustomerFormComponent";
-import CustomModal from "@/Components/CustomModalComponent/CustomModalComponent";
+import AddCustomerFormComponent from "@/Components/Customer Components/AddCustomerFormComponent/AddCustomerFormComponent";
+import CustomModal from "@/Components/Reusable Components/CustomModalComponent/CustomModalComponent";
 
 export default function CustomersPage() {
   const {

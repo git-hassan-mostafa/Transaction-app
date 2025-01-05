@@ -11,7 +11,7 @@ import {
 } from "react-native";
 import useCustomerFormComponentService from "./CustomerFormComponent.service";
 import { ICustomerProps } from "./CustomerFormComponent.types";
-import { ThemedText } from "../HelperComponents/ThemedText";
+import { ThemedText } from "../../HelperComponents/ThemedText";
 export function CustomerFormComponent({
   deleteFromCustomerList,
   id,
