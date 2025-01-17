@@ -27,15 +27,16 @@ export default function useLayoutPageService() {
       title: "الديون الداخلية",
       color: Constants.colors.red,
     },
-    {
-      name: "results",
-      title: "النتائج",
-      color: Constants.colors.green,
-    },
+    { name: "providers", title: "التجار", color: Constants.colors.brown },
     {
       name: "people",
       title: "الأشخاص",
       color: Constants.colors.lighBlue,
+    },
+    {
+      name: "results",
+      title: "النتائج",
+      color: Constants.colors.green,
     },
   ];
 

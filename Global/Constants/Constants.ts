@@ -10,6 +10,7 @@ const Constants = {
     gray: "#ccc",
     lightGray: "#f2f2f2",
     yellow: "#f0f716",
+    brown: "#914e0a",
     black: "black",
   },
   fontFamily: {

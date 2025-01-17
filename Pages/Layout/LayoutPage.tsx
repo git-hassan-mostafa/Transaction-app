@@ -7,13 +7,13 @@ import CustomSnackBarComponent from "@/Components/Reusable Components/CustomSnac
 import { ScreenStackHeaderBackButtonImage } from "react-native-screens";
 
 export default function LayoutPage() {
-  const LayoutPageService = useLayoutPageService();
+  const { screens } = useLayoutPageService();
   const { fontsLoaded } = useContextProvider();
   if (fontsLoaded) {
     return (
       <React.Fragment>
         <Stack screenOptions={{ contentStyle: { backgroundColor: "white" } }}>
-          {LayoutPageService.screens.map((screen) => (
+          {screens.map((screen) => (
             <Stack.Screen
               key={screen.name}
               name={screen.name}

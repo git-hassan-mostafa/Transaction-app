@@ -27,7 +27,7 @@ export default function useCustomerFormComponentService({
   async function getCustomer() {
     const customerDB = await customerManager.getCustomer(id);
     if (!customerDB) return;
-    const customer = mapCustomer(customerDB);
+    const customer = mapICustomer(customerDB);
     setCustomer(customer);
     return customer;
   }
@@ -79,15 +79,24 @@ export default function useCustomerFormComponentService({
     else Alert.prompt("حصل خطأ ما", "حصل خطأ ما , الرجاء المحاولة مجددا.");
   }
 
-  function mapCustomer(customer: Customer): ICustomer {
-    const borrowList: InnerDebt[] = [];
+  function mapCustomer(customer: ICustomer): Customer {
     return {
       id: customer.id as number,
       name: customer.name as string,
       borrowedPrice: customer.borrowedPrice as number,
       payedPrice: customer.payedPrice as number,
       phoneNumber: customer.phoneNumber as string,
-      borrowList,
+    };
+  }
+
+  function mapICustomer(customer: Customer): ICustomer {
+    return {
+      id: customer.id as number,
+      name: customer.name as string,
+      borrowedPrice: customer.borrowedPrice as number,
+      payedPrice: customer.payedPrice as number,
+      phoneNumber: customer.phoneNumber as string,
+      borrowList: [],
     };
   }
 

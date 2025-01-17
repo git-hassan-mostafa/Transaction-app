@@ -3,11 +3,20 @@ import createTablesQuery from "../sql/create-tables";
 
 export default abstract class AbstractManager {
   protected db: SQLiteDatabase;
+  protected static isFirstTimeCreated: boolean = true;
+
   constructor() {
     this.db = useSQLiteContext();
-    this.createSqlTables().then(() => {
-      console.info("tables created");
-    });
+    this.initialize();
+  }
+
+  private initialize() {
+    if (AbstractManager.isFirstTimeCreated) {
+      this.createSqlTables().then(() => {
+        console.info("tables created");
+      });
+      AbstractManager.isFirstTimeCreated = false;
+    }
   }
 
   private async createSqlTables() {

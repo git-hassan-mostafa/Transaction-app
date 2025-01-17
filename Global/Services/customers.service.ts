@@ -5,13 +5,14 @@ import InnerDebt from "../Models/InnerDebt";
 import { SQLiteRunResult } from "expo-sqlite";
 
 export default class CustomerManager extends AbstractManager {
+  table = "customers";
   constructor() {
     super();
   }
 
   async getAllCustomers() {
     try {
-      const sqlBuilder = new SqlBuilder<Customer>(this.db, "customers");
+      const sqlBuilder = new SqlBuilder<Customer>(this.db, this.table);
       const customers = await sqlBuilder.select().executeAsync();
       return customers as Customer[];
     } catch (error) {
@@ -21,7 +22,7 @@ export default class CustomerManager extends AbstractManager {
 
   async getCustomer(id: number) {
     try {
-      const sqlBuilder = new SqlBuilder<Customer>(this.db, "customers");
+      const sqlBuilder = new SqlBuilder<Customer>(this.db, this.table);
       const customer = await sqlBuilder.select().where({ id }).firstAsync();
       return customer;
     } catch (error) {
@@ -31,7 +32,7 @@ export default class CustomerManager extends AbstractManager {
 
   async addCustomer(customer: Customer) {
     try {
-      const sqlBuilder = new SqlBuilder<Customer>(this.db, "customers");
+      const sqlBuilder = new SqlBuilder<Customer>(this.db, this.table);
       const result = await sqlBuilder.insert(customer);
       return result;
     } catch (error) {
@@ -41,7 +42,7 @@ export default class CustomerManager extends AbstractManager {
 
   async updateCustomer(customer: Customer) {
     try {
-      const sqlBuilder = new SqlBuilder<Customer>(this.db, "customers");
+      const sqlBuilder = new SqlBuilder<Customer>(this.db, this.table);
       const result = await sqlBuilder
         .update(customer)
         .where({ id: customer.id })
@@ -54,7 +55,7 @@ export default class CustomerManager extends AbstractManager {
 
   async deleteCustomer(id: number) {
     try {
-      const sqlBuilder = new SqlBuilder<Customer>(this.db, "customers");
+      const sqlBuilder = new SqlBuilder<Customer>(this.db, this.table);
       const result = await sqlBuilder.delete(id);
       return result;
     } catch (error) {
@@ -64,7 +65,8 @@ export default class CustomerManager extends AbstractManager {
 
   async getCustomerDebts(id: number) {
     try {
-      const sqlBuilder = new SqlBuilder<InnerDebt>(this.db, "InnerDebts");
+      const InnerDebtsTable = "InnerDebts";
+      const sqlBuilder = new SqlBuilder<InnerDebt>(this.db, InnerDebtsTable);
       const result = await sqlBuilder
         .select()
         .where({ customerId: id })

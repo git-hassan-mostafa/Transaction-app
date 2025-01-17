@@ -44,8 +44,7 @@ CREATE TABLE IF NOT EXISTS Providers (
     name TEXT NOT NULL,
     borrowedPrice REAL NOT NULL,
     payedPrice REAL NOT NULL,
-    phoneNumber TEXT UNIQUE,
-    itemsList TEXT DEFAULT NULL
+    phoneNumber TEXT UNIQUE
 );
 
 -- Table: Items
@@ -64,8 +63,7 @@ CREATE TABLE IF NOT EXISTS Customers (
     name TEXT NOT NULL,
     borrowedPrice REAL NOT NULL,
     payedPrice REAL NOT NULL,
-    phoneNumber TEXT UNIQUE,
-    borrowList TEXT DEFAULT NULL
+    phoneNumber TEXT UNIQUE
 );
 
 -- Table: InnerDebts

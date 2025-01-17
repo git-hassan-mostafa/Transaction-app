@@ -28,16 +28,22 @@ const pages: CardType[] = [
     icon: "wallet",
   },
   {
-    title: "النتائج",
-    route: "results",
-    color: Constants.colors.green,
-    icon: "money-check-dollar",
+    route: "providers",
+    title: "التجار",
+    color: Constants.colors.brown,
+    icon: "truck-arrow-right",
   },
   {
     title: "الأشخاص",
     route: "people",
     color: Constants.colors.lighBlue,
     icon: "people-carry-box",
+  },
+  {
+    title: "النتائج",
+    route: "results",
+    color: Constants.colors.green,
+    icon: "money-check-dollar",
   },
 ];
 
