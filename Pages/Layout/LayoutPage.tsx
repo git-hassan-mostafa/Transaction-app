@@ -4,36 +4,36 @@ import useLayoutPageService from "./LayoutPage.service";
 import Constants from "@/Global/Constants/Constants";
 import React from "react";
 import CustomSnackBarComponent from "@/Components/Reusable Components/CustomSnackBarComponent/CustomSnackBarComponent";
-import { ScreenStackHeaderBackButtonImage } from "react-native-screens";
+import pages from "@/Global/Constants/Pages";
 
 export default function LayoutPage() {
-  const { screens } = useLayoutPageService();
+  const layoutService = useLayoutPageService();
   const { fontsLoaded } = useContextProvider();
   if (fontsLoaded) {
     return (
       <React.Fragment>
         <Stack screenOptions={{ contentStyle: { backgroundColor: "white" } }}>
-          {screens.map((screen) => (
+          {pages.map((p) => (
             <Stack.Screen
-              key={screen.name}
-              name={screen.name}
+              key={p.route}
+              name={p.route}
               options={{
-                title: screen.title,
+                title: p.title,
                 headerTitleStyle: {
                   fontFamily: Constants.fontFamily.font800ExtraBold,
                   color:
-                    screen.name == "index"
+                    p.route == "index"
                       ? Constants.colors.black
                       : Constants.colors.white,
                 },
                 headerStyle: {
-                  backgroundColor: screen.color,
+                  backgroundColor: p.color,
                 },
-                statusBarBackgroundColor: screen.color,
+                statusBarBackgroundColor: p.color,
                 statusBarStyle: "dark",
-                headerTitleAlign: screen.name === "index" ? "center" : "left",
+                headerTitleAlign: p.route === "index" ? "center" : "left",
                 headerTintColor:
-                  screen.name == "index"
+                  p.route == "index"
                     ? Constants.colors.black
                     : Constants.colors.white,
               }}
