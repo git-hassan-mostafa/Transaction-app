@@ -1,12 +1,5 @@
 import React from "react";
-import {
-  Modal,
-  View,
-  Text,
-  StyleSheet,
-  TouchableOpacity,
-  Dimensions,
-} from "react-native";
+import { Modal, View, TouchableOpacity } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
 import CustomModalProps from "./CustomModalComponent.types";
 import styles from "./CustomModalComponent.style";

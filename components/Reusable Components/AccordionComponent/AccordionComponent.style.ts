@@ -15,10 +15,20 @@ const styles = StyleSheet.create({
   headerTextContainer: {
     flexDirection: "row-reverse",
     alignItems: "center",
+    gap: 10,
   },
   headerListIcon: {
     fontSize: 30,
     color: Constants.colors.lightGray,
+  },
+  icons: {
+    alignItems: "center",
+    flexDirection: "row",
+    gap: 20,
+  },
+  deleteItem: {
+    fontSize: 30,
+    color: Constants.colors.white,
   },
   headerText: {
     fontSize: 20,

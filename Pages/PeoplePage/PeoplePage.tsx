@@ -18,7 +18,18 @@ export default function PeoplePage() {
     addToPeopleList,
     deleteFromPeopleList,
     updateFromPeopleList,
+    handleDeletePerson,
   } = usePeoplePageService();
+
+  people?.sort((a, b) => {
+    if (a.name && b.name) {
+      return a.name
+        .toString()
+        .localeCompare(b.name.toString(), undefined, { sensitivity: "base" });
+    }
+    return 0;
+  });
+
   return (
     <React.Fragment>
       <FlatList
@@ -32,12 +43,13 @@ export default function PeoplePage() {
             headerColor={Constants.colors.lighBlue}
             iconColor={Constants.colors.lightGray}
             headerText={item.name as string}
+            handleDelete={handleDeletePerson}
+            id={item.id as number}
           >
             <View></View>
             <PeopleFormComponent
               updateFromPeopleList={updateFromPeopleList}
               id={item.id as number}
-              deleteFromPeopleList={deleteFromPeopleList}
             />
           </AccordionComponent>
         )}

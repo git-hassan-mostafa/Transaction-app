@@ -2,11 +2,9 @@ import { useEffect, useState } from "react";
 import { IPeopleProps } from "./PeopleFormComponent.types";
 import Person from "@/Global/Models/Person";
 import useContextProvider from "@/Global/ContextApi/ContextApi";
-import { Alert } from "react-native";
 
 export default function usePeopleFormComponentService({
   id,
-  deleteFromPeopleList,
   updateFromPeopleList,
 }: IPeopleProps) {
   const [person, setPerson] = useState<Person>({} as Person);
@@ -51,24 +49,7 @@ export default function usePeopleFormComponentService({
     if ((result?.changes || 0) > 0) updateFromPeopleList(person);
   }
 
-  function handleDeletePerson() {
-    Alert.alert("ازالة شخص", "هل أنت متأكد أنك تريد ازالة هذا الشخص", [
-      {
-        text: "الغاء",
-        style: "cancel",
-      },
-      { text: "تأكيد", onPress: deletePerson },
-    ]);
-  }
-
-  async function deletePerson() {
-    const result = await peopleManager.deletePerson(id);
-    if ((result?.changes || 0) > 0) deleteFromPeopleList(id);
-    else Alert.prompt("حصل خطأ ما", "حصل خطأ ما , الرجاء المحاولة مجددا.");
-  }
-
   return {
-    handleDeletePerson,
     person,
     setPersonName,
     updatePersonName,

@@ -18,7 +18,18 @@ export default function ProvidersPage() {
     addToProvidersList,
     deleteFromProvidersList,
     updateFromProvidersList,
+    handleDeleteProvider,
   } = useProvidersPageService();
+
+  providers.sort((a, b) => {
+    if (a.name && b.name) {
+      return a.name
+        .toString()
+        .localeCompare(b.name.toString(), undefined, { sensitivity: "base" });
+    }
+    return 0;
+  });
+
   return (
     <React.Fragment>
       <FlatList
@@ -32,6 +43,8 @@ export default function ProvidersPage() {
             headerColor={Constants.colors.brown}
             iconColor={Constants.colors.lightGray}
             headerText={item.name as string}
+            id={item.id as number}
+            handleDelete={handleDeleteProvider}
           >
             <ProviderFormComponent
               id={item.id as number}

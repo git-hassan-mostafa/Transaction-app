@@ -1,13 +1,7 @@
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import styles from "./ProviderFormComponent.style";
 import React from "react";
-import {
-  View,
-  TextInput,
-  StyleProp,
-  TextStyle,
-  TouchableOpacity,
-} from "react-native";
+import { View, TextInput, StyleProp, TextStyle } from "react-native";
 import useProviderFormComponentService from "./ProviderFormComponent.service";
 import { ThemedText } from "../../HelperComponents/ThemedText";
 import { IProviderProps } from "./ProviderFormComponent.types";
@@ -22,7 +16,6 @@ export function ProviderFormComponent({
     setProviderPhoneNumber,
     updateProviderName,
     updateProviderPhonember,
-    handleDeleteProvider,
   } = useProviderFormComponentService({
     id,
     deleteFromProviderList,
@@ -31,14 +24,8 @@ export function ProviderFormComponent({
 
   return (
     <View style={styles.container}>
-      <View style={styles.iconHeader}>
-        <TouchableOpacity onPress={handleDeleteProvider}>
-          <Icon style={styles.deleteProvider} name="delete-forever" />
-        </TouchableOpacity>
-      </View>
       <View style={styles.pricesRow}>
         <View style={[styles.pricesContainer, styles.borrowedConainer]}>
-          <Icon style={styles.priceIcon} name="cash-remove" />
           <ThemedText style={styles.price}>
             ${provider.borrowedPrice}
           </ThemedText>

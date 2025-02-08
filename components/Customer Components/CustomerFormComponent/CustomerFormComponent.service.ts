@@ -3,11 +3,9 @@ import ICustomer, { ICustomerProps } from "./CustomerFormComponent.types";
 import useContextProvider from "@/Global/ContextApi/ContextApi";
 import Customer from "@/Global/Models/Customer";
 import InnerDebt from "@/Global/Models/InnerDebt";
-import { Alert } from "react-native";
 
 export default function useCustomerFormComponentService({
   id,
-  deleteFromCustomerList,
   updateFromCustomersList,
 }: ICustomerProps) {
   const [customer, setCustomer] = useState<ICustomer>({} as ICustomer);
@@ -63,22 +61,6 @@ export default function useCustomerFormComponentService({
     customer.phoneNumber = customer.phoneNumber.trim();
   }
 
-  async function handleDeleteCustomer() {
-    Alert.alert("ازالة زبون", "هل أنت متأكد أنك تريد ازالة هذا الزبون؟", [
-      {
-        text: "الغاء",
-        style: "cancel",
-      },
-      { text: "تأكيد", onPress: deleteCustomer },
-    ]);
-  }
-
-  async function deleteCustomer() {
-    const result = await customerManager.deleteCustomer(id);
-    if ((result?.changes || 0) > 0) deleteFromCustomerList(id);
-    else Alert.prompt("حصل خطأ ما", "حصل خطأ ما , الرجاء المحاولة مجددا.");
-  }
-
   function mapCustomer(customer: ICustomer): Customer {
     return {
       id: customer.id as number,
@@ -106,6 +88,5 @@ export default function useCustomerFormComponentService({
     setCustomerPhoneNumber,
     updateCustomerName,
     updateCustomerPhoneNumber,
-    handleDeleteCustomer,
   };
 }

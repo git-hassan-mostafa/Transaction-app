@@ -1,6 +1,7 @@
 import useContextProvider from "@/Global/ContextApi/ContextApi";
 import Person from "@/Global/Models/Person";
 import { useEffect, useState } from "react";
+import { Alert } from "react-native";
 
 export default function usePeoplePageService() {
   const [people, setPeople] = useState<Person[]>([]);
@@ -37,6 +38,21 @@ export default function usePeoplePageService() {
     setPeople((prev) => prev.filter((c) => c.id !== id));
   }
 
+  function handleDeletePerson(id: number) {
+    Alert.alert("ازالة شخص", "هل أنت متأكد أنك تريد ازالة هذا الشخص", [
+      {
+        text: "الغاء",
+        style: "cancel",
+      },
+      { text: "تأكيد", onPress: () => deletePerson(id) },
+    ]);
+  }
+
+  async function deletePerson(id: number) {
+    const result = await peopleManager.deletePerson(id);
+    if ((result?.changes || 0) > 0) deleteFromPeopleList(id);
+    else Alert.prompt("حصل خطأ ما", "حصل خطأ ما , الرجاء المحاولة مجددا.");
+  }
   return {
     people,
     toggleModal,
@@ -44,5 +60,6 @@ export default function usePeoplePageService() {
     addToPeopleList,
     deleteFromPeopleList,
     updateFromPeopleList,
+    handleDeletePerson,
   };
 }

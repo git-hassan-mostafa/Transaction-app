@@ -1,11 +1,4 @@
-import {
-  View,
-  Text,
-  FlatList,
-  TouchableOpacity,
-  Dimensions,
-  Modal,
-} from "react-native";
+import { View, FlatList } from "react-native";
 import useCustomersPageService from "./CustomersPage.service";
 import styles from "./CustomersPage.style";
 import AccordionComponent from "@/Components/Reusable Components/AccordionComponent/AccordionComponent";
@@ -14,7 +7,6 @@ import Constants from "@/Global/Constants/Constants";
 import Customer from "@/Global/Models/Customer";
 import { FAB } from "react-native-paper";
 import React from "react";
-import Icon from "react-native-vector-icons/AntDesign";
 import AddCustomerFormComponent from "@/Components/Customer Components/AddCustomerFormComponent/AddCustomerFormComponent";
 import CustomModal from "@/Components/Reusable Components/CustomModalComponent/CustomModalComponent";
 
@@ -26,7 +18,17 @@ export default function CustomersPage() {
     addToCustomersList,
     deleteFromCustomerList,
     updateFromCustomersList,
+    handleDeleteCustomer,
   } = useCustomersPageService();
+
+  customers?.sort((a, b) => {
+    if (a.name && b.name) {
+      return a.name
+        .toString()
+        .localeCompare(b.name.toString(), undefined, { sensitivity: "base" });
+    }
+    return 0;
+  });
   return (
     <React.Fragment>
       <FlatList
@@ -40,10 +42,11 @@ export default function CustomersPage() {
             headerColor={Constants.colors.blue}
             iconColor={Constants.colors.lightGray}
             headerText={item.name as string}
+            id={item.id as number}
+            handleDelete={handleDeleteCustomer}
           >
             <CustomerFormComponent
               id={item.id as number}
-              deleteFromCustomerList={deleteFromCustomerList}
               updateFromCustomersList={updateFromCustomersList}
             />
           </AccordionComponent>

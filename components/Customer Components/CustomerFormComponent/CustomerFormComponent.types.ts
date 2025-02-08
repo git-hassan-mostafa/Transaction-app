@@ -12,6 +12,5 @@ export default interface ICustomer {
 
 export interface ICustomerProps {
   id: number;
-  deleteFromCustomerList: (id: number) => void;
   updateFromCustomersList: (customer: Customer) => void;
 }

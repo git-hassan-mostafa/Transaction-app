@@ -1,13 +1,11 @@
 import { useEffect, useState } from "react";
 import IProvider, { IProviderProps } from "./ProviderFormComponent.types";
 import useContextProvider from "@/Global/ContextApi/ContextApi";
-import { Alert } from "react-native";
 import { OuterDebt } from "@/Global/Models/OuterDebt";
 import Provider from "@/Global/Models/Provider";
 
 export default function useProviderFormComponentService({
   id,
-  deleteFromProviderList,
   updateFromProvidersList,
 }: IProviderProps) {
   const [provider, setProvider] = useState<IProvider>({} as IProvider);
@@ -63,22 +61,6 @@ export default function useProviderFormComponentService({
     provider.phoneNumber = provider.phoneNumber.trim();
   }
 
-  async function handleDeleteProvider() {
-    Alert.alert("ازالة زبون", "هل أنت متأكد أنك تريد ازالة هذا التاجر؟", [
-      {
-        text: "الغاء",
-        style: "cancel",
-      },
-      { text: "تأكيد", onPress: deleteProvider },
-    ]);
-  }
-
-  async function deleteProvider() {
-    const result = await providerManager.deleteProvider(id);
-    if ((result?.changes || 0) > 0) deleteFromProviderList(id);
-    else Alert.prompt("حصل خطأ ما", "حصل خطأ ما , الرجاء المحاولة مجددا.");
-  }
-
   function mapProvider(provider: IProvider): Provider {
     return {
       id: provider.id as number,
@@ -106,6 +88,5 @@ export default function useProviderFormComponentService({
     setProviderPhoneNumber,
     updateProviderName,
     updateProviderPhonember,
-    handleDeleteProvider,
   };
 }

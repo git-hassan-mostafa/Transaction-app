@@ -9,6 +9,7 @@ import ContextProps, { SnackBarOptions } from "./ContextApi.type";
 import CustomerManager from "../Services/customers.service";
 import { PeopleManager } from "../Services/people.service";
 import ProviderManager from "../Services/provider.service";
+import ItemManager from "../Services/items.service";
 
 const Context = createContext<ContextProps>({} as ContextProps);
 
@@ -28,7 +29,8 @@ export const ContextProvider = ({
     type: "info",
   });
 
-  const { customerManager, peopleManager, providerManager } = getDeps();
+  const { customerManager, peopleManager, providerManager, itemManager } =
+    getDeps();
 
   function toggleSnackBar(value: SnackBarOptions) {
     setSnackBarOptions(value);
@@ -48,6 +50,7 @@ export const ContextProvider = ({
         customerManager,
         peopleManager,
         providerManager,
+        itemManager,
         snackBarOptions,
         toggleSnackBar,
         onDismissSnackBar,
@@ -67,5 +70,6 @@ function getDeps() {
     customerManager: new CustomerManager(),
     peopleManager: new PeopleManager(),
     providerManager: new ProviderManager(),
+    itemManager: new ItemManager(),
   };
 }

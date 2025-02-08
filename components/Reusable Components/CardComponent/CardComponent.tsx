@@ -1,11 +1,4 @@
-import {
-  Image,
-  View,
-  Text,
-  Button,
-  Pressable,
-  TouchableOpacity,
-} from "react-native";
+import { View, TouchableOpacity } from "react-native";
 import useCardComponentService from "./CardComponent.service";
 import styles from "./CardComponent.style";
 import CardType from "./CardComponent.types";

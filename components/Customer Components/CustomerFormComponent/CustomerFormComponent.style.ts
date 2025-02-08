@@ -29,8 +29,6 @@ const styles = StyleSheet.create({
     color: Constants.colors.lighBlue,
   },
   row: {
-    flexDirection: "row-reverse",
-    alignItems: "center",
     marginBottom: 15,
   },
   label: {

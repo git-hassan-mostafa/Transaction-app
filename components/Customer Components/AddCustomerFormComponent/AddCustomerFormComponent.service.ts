@@ -2,8 +2,6 @@ import useContextProvider from "@/Global/ContextApi/ContextApi";
 import { useState } from "react";
 import ICustomer, { IAddCustomerProps } from "./AddCustomerFormComponent.types";
 import Customer from "@/Global/Models/Customer";
-import { ToastAndroid } from "react-native";
-import { Snackbar } from "react-native-paper";
 
 export default function useAddCustomerFormComponentService({
   toggleModal,

@@ -1,12 +1,10 @@
-import Icon from "react-native-vector-icons/MaterialCommunityIcons";
-import React, { useState } from "react";
-import { View, Text, TextInput, StyleProp, TextStyle } from "react-native";
+import React from "react";
+import { View, TextInput, StyleProp, TextStyle } from "react-native";
 import useAddCustomerFormComponentService from "./AddCustomerFormComponent.service";
 import styles from "./AddCustomerFormComponent.style";
 import Constants from "@/Global/Constants/Constants";
 import { TouchableOpacity } from "react-native";
 import { Button } from "react-native-paper";
-import Customer from "@/Global/Models/Customer";
 import { IAddCustomerProps } from "./AddCustomerFormComponent.types";
 import { ThemedText } from "../../HelperComponents/ThemedText";
 

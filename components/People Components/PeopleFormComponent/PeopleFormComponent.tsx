@@ -1,23 +1,14 @@
-import {
-  StyleProp,
-  TextInput,
-  TextStyle,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { StyleProp, TextInput, TextStyle, View } from "react-native";
 import usePeopleFormComponentService from "./PeopleFormComponent.service";
 import styles from "./PeopleFormComponent.style";
 import { IPeopleProps } from "./PeopleFormComponent.types";
-import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import { ThemedText } from "../../HelperComponents/ThemedText";
 
 export default function PeopleFormComponent({
   id,
-  deleteFromPeopleList,
   updateFromPeopleList,
 }: IPeopleProps) {
   const {
-    handleDeletePerson,
     person,
     setPersonName,
     updatePersonName,
@@ -25,16 +16,10 @@ export default function PeopleFormComponent({
     updatePersonPhoneNumber,
   } = usePeopleFormComponentService({
     id,
-    deleteFromPeopleList,
     updateFromPeopleList,
   });
   return (
     <View style={styles.container}>
-      <View style={styles.iconHeader}>
-        <TouchableOpacity onPress={handleDeletePerson}>
-          <Icon style={styles.deleteCustomer} name="delete-forever" />
-        </TouchableOpacity>
-      </View>
       <View style={styles.row}>
         <ThemedText style={styles.label}>الاسم</ThemedText>
         <TextInput

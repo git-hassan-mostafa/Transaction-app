@@ -2,6 +2,7 @@ import ICustomer from "@/Components/Customer Components/CustomerFormComponent/Cu
 import useContextProvider from "@/Global/ContextApi/ContextApi";
 import Customer from "@/Global/Models/Customer";
 import { useEffect, useState } from "react";
+import { Alert } from "react-native";
 
 export default function useCustomersPageService() {
   const [customers, setCustomers] = useState<Customer[]>([]);
@@ -33,6 +34,22 @@ export default function useCustomersPageService() {
     setCustomers(customers as Customer[]);
   }
 
+  async function handleDeleteCustomer(id: number) {
+    Alert.alert("ازالة زبون", "هل أنت متأكد أنك تريد ازالة هذا الزبون؟", [
+      {
+        text: "الغاء",
+        style: "cancel",
+      },
+      { text: "تأكيد", onPress: () => deleteCustomer(id) },
+    ]);
+  }
+
+  async function deleteCustomer(id: number) {
+    const result = await customerManager.deleteCustomer(id);
+    if ((result?.changes || 0) > 0) deleteFromCustomerList(id);
+    else Alert.prompt("حصل خطأ ما", "حصل خطأ ما , الرجاء المحاولة مجددا.");
+  }
+
   function toggleModal() {
     setModalVisible((prev) => !prev);
   }
@@ -44,5 +61,6 @@ export default function useCustomersPageService() {
     addToCustomersList,
     deleteFromCustomerList,
     updateFromCustomersList,
+    handleDeleteCustomer,
   };
 }

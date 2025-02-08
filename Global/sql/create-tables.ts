@@ -53,7 +53,7 @@ CREATE TABLE IF NOT EXISTS Items (
     name TEXT NOT NULL,
     quantity INTEGER NOT NULL,
     price REAL NOT NULL,
-    providerId INTEGER NOT NULL,
+    providerId INTEGER DEFAULT NULL,
     FOREIGN KEY (providerId) REFERENCES Providers (id) ON DELETE CASCADE
 );
 

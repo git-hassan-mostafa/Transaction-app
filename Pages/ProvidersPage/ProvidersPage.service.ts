@@ -1,6 +1,7 @@
 import useContextProvider from "@/Global/ContextApi/ContextApi";
 import Provider from "@/Global/Models/Provider";
 import { useEffect, useState } from "react";
+import { Alert } from "react-native";
 
 export default function useProvidersPageService() {
   const [providers, setProviders] = useState<Provider[]>([]);
@@ -32,6 +33,22 @@ export default function useProvidersPageService() {
     setProviders(providers as Provider[]);
   }
 
+  async function handleDeleteProvider(id: number) {
+    Alert.alert("ازالة زبون", "هل أنت متأكد أنك تريد ازالة هذا التاجر؟", [
+      {
+        text: "الغاء",
+        style: "cancel",
+      },
+      { text: "تأكيد", onPress: () => deleteProvider(id) },
+    ]);
+  }
+
+  async function deleteProvider(id: number) {
+    const result = await providerManager.deleteProvider(id);
+    if ((result?.changes || 0) > 0) deleteFromProvidersList(id);
+    else Alert.prompt("حصل خطأ ما", "حصل خطأ ما , الرجاء المحاولة مجددا.");
+  }
+
   function toggleModal() {
     setModalVisible((prev) => !prev);
   }
@@ -43,5 +60,6 @@ export default function useProvidersPageService() {
     addToProvidersList,
     deleteFromProvidersList,
     updateFromProvidersList,
+    handleDeleteProvider,
   };
 }

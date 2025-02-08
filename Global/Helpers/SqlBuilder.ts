@@ -34,6 +34,9 @@ export default class SqlBuilder<T> {
                    if (typeof value === "object" || Array.isArray(value)) {
                      return `'${JSON.stringify(value)}'`;
                    }
+                   if (value === null || value === undefined) {
+                     return "NULL";
+                   }
                    return value;
                  })
                  .join(" , ")}) RETURNING id`;
@@ -67,12 +70,24 @@ export default class SqlBuilder<T> {
         if (typeof value === "string") {
           return `${key} = '${value}'`;
         }
-        if (value === null || value?.length === 0) {
+        if (value == null || value == undefined || value?.length === 0) {
           return `${key} = NULL`;
         }
         return `${key} = ${value}`;
       })
       .join(" , ")}`;
+    this.updateQuery = this.updateQuery.replace("{1}", query);
+    return this;
+  }
+
+  updateField(key: string, value: any) {
+    var query = "";
+    this.type = "update";
+    if (typeof value === "string") {
+      query = `${key} = '${value}'`;
+    } else if (value == null || value == undefined || value?.length === 0) {
+      query = `${key} = NULL`;
+    } else query = `${key} = ${value}`;
     this.updateQuery = this.updateQuery.replace("{1}", query);
     return this;
   }
