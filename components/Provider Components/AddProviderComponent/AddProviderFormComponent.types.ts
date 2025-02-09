@@ -8,6 +8,7 @@ export default interface IProvider {
   payedPrice: number;
   phoneNumber: string;
   itemsList: OuterDebt[] | null;
+  notes: string;
 }
 
 export interface IAddProviderProps {

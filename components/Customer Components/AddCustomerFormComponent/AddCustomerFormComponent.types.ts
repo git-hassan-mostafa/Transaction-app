@@ -8,6 +8,7 @@ export default interface ICustomer {
   payedPrice: number;
   phoneNumber: string;
   borrowList: InnerDebt[] | null;
+  notes: string;
 }
 
 export interface IAddCustomerProps {

@@ -7,4 +7,5 @@ export default interface InnerDebt {
   paymentsList?: { amount: number; date: string }[] | null;
   personId?: number;
   customerId?: number;
+  notes?: string;
 }

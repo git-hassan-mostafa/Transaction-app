@@ -6,7 +6,6 @@ import useProviderFormComponentService from "./ProviderFormComponent.service";
 import { ThemedText } from "../../HelperComponents/ThemedText";
 import { IProviderProps } from "./ProviderFormComponent.types";
 export function ProviderFormComponent({
-  deleteFromProviderList,
   id,
   updateFromProvidersList,
 }: IProviderProps) {
@@ -16,9 +15,10 @@ export function ProviderFormComponent({
     setProviderPhoneNumber,
     updateProviderName,
     updateProviderPhonember,
+    setProviderNotes,
+    updateProviderNotes,
   } = useProviderFormComponentService({
     id,
-    deleteFromProviderList,
     updateFromProvidersList,
   });
 
@@ -64,6 +64,17 @@ export function ProviderFormComponent({
           textContentType="telephoneNumber"
           onChangeText={setProviderPhoneNumber}
           onEndEditing={updateProviderPhonember}
+        />
+      </View>
+      <View style={styles.row}>
+        <ThemedText style={styles.label}>الملاحظات</ThemedText>
+        <TextInput
+          style={[styles.textInput, styles.textArea] as StyleProp<TextStyle>}
+          placeholder="أدخل الملاحظات"
+          placeholderTextColor="#999"
+          value={provider.notes}
+          onChangeText={setProviderNotes}
+          onEndEditing={updateProviderNotes}
         />
       </View>
       {(provider?.itemsList?.length as number) > 0 && (

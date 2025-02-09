@@ -12,11 +12,16 @@ export default function AddProviderFormComponent({
   toggleModal,
   addToProvidersList,
 }: IAddProviderProps) {
-  const { provider, setProviderName, setProviderPhoneNumber, addProvider } =
-    useAddProviderFormComponentService({
-      toggleModal,
-      addToProvidersList,
-    });
+  const {
+    provider,
+    setProviderName,
+    setProviderPhoneNumber,
+    setProviderNotes,
+    addProvider,
+  } = useAddProviderFormComponentService({
+    toggleModal,
+    addToProvidersList,
+  });
 
   return (
     <View style={styles.container}>
@@ -43,6 +48,18 @@ export default function AddProviderFormComponent({
           onChangeText={setProviderPhoneNumber}
         />
       </View>
+
+      <View style={styles.row}>
+        <ThemedText style={styles.label}>الملاحظات</ThemedText>
+        <TextInput
+          style={[styles.textInput, styles.textArea] as StyleProp<TextStyle>}
+          placeholder=" أدخل الملاحظات"
+          placeholderTextColor="#999"
+          value={provider.notes}
+          onChangeText={setProviderNotes}
+        />
+      </View>
+
       <TouchableOpacity>
         <Button
           buttonColor={Constants.colors.brown}

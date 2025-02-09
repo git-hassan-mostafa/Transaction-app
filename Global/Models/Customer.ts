@@ -4,4 +4,5 @@ export default interface Customer {
   borrowedPrice?: number;
   payedPrice?: number;
   phoneNumber?: string;
+  notes?: string;
 }

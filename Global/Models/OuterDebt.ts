@@ -7,4 +7,5 @@ export interface OuterDebt {
   paymentsList?: { amount: number; date: string }[] | null;
   personId?: number;
   providerId?: number;
+  notes?: string;
 }

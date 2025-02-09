@@ -4,4 +4,5 @@ export default interface Item {
   quantity?: number;
   price?: number;
   providerId?: number;
+  notes?: string;
 }

@@ -44,7 +44,8 @@ CREATE TABLE IF NOT EXISTS Providers (
     name TEXT NOT NULL,
     borrowedPrice REAL NOT NULL,
     payedPrice REAL NOT NULL,
-    phoneNumber TEXT UNIQUE
+    phoneNumber TEXT UNIQUE,
+    notes TEXT DEFAULT NULL
 );
 
 -- Table: Items
@@ -53,6 +54,7 @@ CREATE TABLE IF NOT EXISTS Items (
     name TEXT NOT NULL,
     quantity INTEGER NOT NULL,
     price REAL NOT NULL,
+    notes TEXT DEFAULT NULL,
     providerId INTEGER DEFAULT NULL,
     FOREIGN KEY (providerId) REFERENCES Providers (id) ON DELETE CASCADE
 );
@@ -63,7 +65,8 @@ CREATE TABLE IF NOT EXISTS Customers (
     name TEXT NOT NULL,
     borrowedPrice REAL NOT NULL,
     payedPrice REAL NOT NULL,
-    phoneNumber TEXT UNIQUE
+    phoneNumber TEXT UNIQUE,
+    notes TEXT DEFAULT NULL
 );
 
 -- Table: InnerDebts
@@ -74,6 +77,7 @@ CREATE TABLE IF NOT EXISTS InnerDebts (
     paymentsList TEXT DEFAULT NULL,
     itemsList TEXT DEFAULT NULL,
     date TEXT DEFAULT CURRENT_TIMESTAMP,
+    notes TEXT DEFAULT NULL,
     personId INTEGER NOT NULL,
     customerId INTEGER NOT NULL,
     FOREIGN KEY (customerId) REFERENCES Customers (id) ON DELETE CASCADE,
@@ -88,6 +92,7 @@ CREATE TABLE IF NOT EXISTS OuterDebts (
     paymentsList TEXT DEFAULT NULL,
     itemsList TEXT DEFAULT NULL,
     date TEXT DEFAULT CURRENT_TIMESTAMP,
+    notes TEXT DEFAULT NULL,
     personId INTEGER NOT NULL,
     providerId INTEGER NOT NULL,
     FOREIGN KEY (providerId) REFERENCES Providers (id) ON DELETE CASCADE,

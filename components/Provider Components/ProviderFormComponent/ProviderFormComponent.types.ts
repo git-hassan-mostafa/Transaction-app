@@ -7,11 +7,11 @@ export default interface IProvider {
   borrowedPrice: number;
   payedPrice: number;
   phoneNumber: string;
-  itemsList: OuterDebt[] | null;
+  itemsList: OuterDebt[];
+  notes: string;
 }
 
 export interface IProviderProps {
   id: number;
-  deleteFromProviderList: (id: number) => void;
   updateFromProvidersList: (provider: Provider) => void;
 }

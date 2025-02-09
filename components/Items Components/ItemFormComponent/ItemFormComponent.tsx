@@ -13,10 +13,12 @@ export function ItemFormComponent({ id, updateFromItemsList }: IItemProps) {
     setItemPrice,
     setItemQuantity,
     setProvider,
+    setItemNotes,
     updateItemName,
     updateItemPrice,
     updateItemQuantity,
     updateItemProvider,
+    updateItemNotes,
     providers,
   } = useItemFormComponentService({
     id,
@@ -70,6 +72,17 @@ export function ItemFormComponent({ id, updateFromItemsList }: IItemProps) {
             updateItemProvider(value as number);
           }}
           data={providers}
+        />
+      </View>
+      <View style={styles.row}>
+        <ThemedText style={styles.label}>الملاحظات</ThemedText>
+        <TextInput
+          style={[styles.textInput, styles.textArea] as StyleProp<TextStyle>}
+          placeholder="أدخل الملاحظات"
+          placeholderTextColor="#999"
+          value={item.name}
+          onChangeText={setItemNotes}
+          onEndEditing={updateItemNotes}
         />
       </View>
     </View>

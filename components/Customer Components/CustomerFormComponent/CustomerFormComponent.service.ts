@@ -42,23 +42,36 @@ export default function useCustomerFormComponentService({
     });
   }
 
+  function setCustomerNotes(value: string) {
+    setCustomer((prev) => {
+      return { ...prev, notes: value };
+    });
+  }
+
   async function updateCustomerName() {
-    validateCustomerFields(customer);
-    const updatedCustomer: Customer = mapCustomer(customer);
-    const result = await customerManager.updateCustomer(updatedCustomer);
-    if ((result?.changes || 0) > 0) updateFromCustomersList(updatedCustomer);
+    await updateCustomer();
   }
 
   async function updateCustomerPhoneNumber() {
+    await updateCustomer();
+  }
+
+  async function updateCustomerNotes() {
+    await updateCustomer();
+  }
+
+  async function updateCustomer() {
     validateCustomerFields(customer);
     const updatedCustomer: Customer = mapCustomer(customer);
     await customerManager.updateCustomer(updatedCustomer);
+    updateFromCustomersList(updatedCustomer);
   }
 
   function validateCustomerFields(customer: ICustomer) {
     customer.id = id;
     customer.name = customer.name.trim();
     customer.phoneNumber = customer.phoneNumber.trim();
+    customer.notes = customer.notes?.trim();
   }
 
   function mapCustomer(customer: ICustomer): Customer {
@@ -68,6 +81,7 @@ export default function useCustomerFormComponentService({
       borrowedPrice: customer.borrowedPrice as number,
       payedPrice: customer.payedPrice as number,
       phoneNumber: customer.phoneNumber as string,
+      notes: customer.notes as string,
     };
   }
 
@@ -79,6 +93,7 @@ export default function useCustomerFormComponentService({
       payedPrice: customer.payedPrice as number,
       phoneNumber: customer.phoneNumber as string,
       borrowList: [],
+      notes: customer.notes as string,
     };
   }
 
@@ -86,7 +101,9 @@ export default function useCustomerFormComponentService({
     customer,
     setCustomerName,
     setCustomerPhoneNumber,
+    setCustomerNotes,
     updateCustomerName,
     updateCustomerPhoneNumber,
+    updateCustomerNotes,
   };
 }

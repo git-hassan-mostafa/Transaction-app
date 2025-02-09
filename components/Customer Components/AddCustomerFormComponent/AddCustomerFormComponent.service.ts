@@ -23,6 +23,12 @@ export default function useAddCustomerFormComponentService({
     });
   }
 
+  function setCustomerNotes(value: string) {
+    setCustomer((prev) => {
+      return { ...prev, notes: value };
+    });
+  }
+
   async function addCustomer() {
     if (!customer.name) {
       toggleSnackBar({
@@ -45,6 +51,7 @@ export default function useAddCustomerFormComponentService({
       phoneNumber: customer.phoneNumber.trim(),
       borrowedPrice: 0,
       payedPrice: 0,
+      notes: customer.notes,
     };
     const result = await customerManager.addCustomer(newCustomer);
     if (!result || !result.lastInsertRowId)
@@ -58,5 +65,11 @@ export default function useAddCustomerFormComponentService({
     toggleModal();
   }
 
-  return { customer, setCustomerName, setCustomerPhoneNumber, addCustomer };
+  return {
+    customer,
+    setCustomerName,
+    setCustomerPhoneNumber,
+    addCustomer,
+    setCustomerNotes,
+  };
 }

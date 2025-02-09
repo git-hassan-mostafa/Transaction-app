@@ -12,11 +12,16 @@ export default function AddCustomerFormComponent({
   toggleModal,
   addToCustomersList,
 }: IAddCustomerProps) {
-  const { customer, setCustomerName, setCustomerPhoneNumber, addCustomer } =
-    useAddCustomerFormComponentService({
-      toggleModal,
-      addToCustomersList,
-    });
+  const {
+    customer,
+    setCustomerName,
+    setCustomerPhoneNumber,
+    addCustomer,
+    setCustomerNotes,
+  } = useAddCustomerFormComponentService({
+    toggleModal,
+    addToCustomersList,
+  });
 
   return (
     <View style={styles.container}>
@@ -41,6 +46,17 @@ export default function AddCustomerFormComponent({
           keyboardType="phone-pad"
           textContentType="telephoneNumber"
           onChangeText={setCustomerPhoneNumber}
+        />
+      </View>
+      <View style={styles.row}>
+        <ThemedText style={styles.label}>الملاحظات</ThemedText>
+        <TextInput
+          style={[styles.input, styles.textArea] as StyleProp<TextStyle>}
+          placeholder="أدخل الملاحظات"
+          placeholderTextColor="#999"
+          value={customer.notes}
+          onChangeText={setCustomerNotes}
+          multiline
         />
       </View>
       <TouchableOpacity>

@@ -20,6 +20,7 @@ export default function AddItemFormComponent({
     setItemQuantity,
     setItemPrice,
     setProvider,
+    setcustomerNotes,
     addItem,
   } = useAddItemFormComponentService({
     toggleModal,
@@ -67,6 +68,16 @@ export default function AddItemFormComponent({
           value={item.providerId}
           setValue={(value) => setProvider(value as number)}
           data={providers}
+        />
+      </View>
+      <View style={styles.row}>
+        <ThemedText style={styles.label}>الملاحظات</ThemedText>
+        <TextInput
+          style={[styles.textInput, styles.textArea] as StyleProp<TextStyle>}
+          placeholder=" أدخل الملاحظات"
+          placeholderTextColor="#999"
+          value={item.notes}
+          onChangeText={setcustomerNotes}
         />
       </View>
       <TouchableOpacity>

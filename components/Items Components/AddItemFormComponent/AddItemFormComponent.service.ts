@@ -50,6 +50,12 @@ export default function useAddItemFormComponentService({
     });
   }
 
+  function setcustomerNotes(value: string) {
+    setItem((prev) => {
+      return { ...prev, notes: value };
+    });
+  }
+
   async function addItem() {
     if (!item.name) {
       toggleSnackBar({
@@ -72,6 +78,7 @@ export default function useAddItemFormComponentService({
       quantity: item.quantity,
       price: item.price,
       providerId: item.providerId,
+      notes: item.notes,
     };
     const result = await itemManager.addItem(newItem);
     if (!result || !result.lastInsertRowId)
@@ -92,6 +99,7 @@ export default function useAddItemFormComponentService({
     setItemQuantity,
     setItemPrice,
     setProvider,
+    setcustomerNotes,
     addItem,
   };
 }

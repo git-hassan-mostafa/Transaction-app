@@ -28,6 +28,10 @@ const styles = StyleSheet.create({
     ...baseInputStyle,
     writingDirection: "rtl",
   },
+  textArea: {
+    height: 100,
+    textAlignVertical: "top",
+  },
   saveButton: {
     backgroundColor: Constants.colors.brown,
     borderRadius: 10,

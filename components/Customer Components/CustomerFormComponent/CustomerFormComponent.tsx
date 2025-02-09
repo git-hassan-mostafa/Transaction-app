@@ -13,8 +13,10 @@ export function CustomerFormComponent({
     customer,
     setCustomerName,
     setCustomerPhoneNumber,
+    setCustomerNotes,
     updateCustomerName,
     updateCustomerPhoneNumber,
+    updateCustomerNotes,
   } = useCustomerFormComponentService({
     id,
     updateFromCustomersList,
@@ -63,6 +65,19 @@ export function CustomerFormComponent({
           textContentType="telephoneNumber"
           onChangeText={setCustomerPhoneNumber}
           onEndEditing={updateCustomerPhoneNumber}
+        />
+      </View>
+      <View style={styles.row}>
+        <ThemedText style={styles.label}>الملاحظات</ThemedText>
+        <TextInput
+          style={[styles.textInput, styles.textArea] as StyleProp<TextStyle>}
+          placeholder="أدخل الملاحظات"
+          placeholderTextColor="#999"
+          value={customer.notes}
+          onChangeText={setCustomerNotes}
+          onEndEditing={updateCustomerNotes}
+          onBlur={updateCustomerNotes}
+          multiline
         />
       </View>
       {(customer?.borrowList?.length as number) > 0 && (

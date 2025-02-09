@@ -4,4 +4,5 @@ export default interface Provider {
   borrowedPrice?: number;
   payedPrice?: number;
   phoneNumber?: string;
+  notes?: string;
 }

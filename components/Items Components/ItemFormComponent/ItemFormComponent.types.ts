@@ -6,6 +6,7 @@ export default interface IItem {
   quantity: number;
   price: number;
   providerId: number;
+  notes: string;
 }
 
 export interface IItemProps {

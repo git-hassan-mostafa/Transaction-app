@@ -76,6 +76,10 @@ const styles = StyleSheet.create({
     ...baseInputStyle,
     writingDirection: "rtl",
   },
+  textArea: {
+    height: 100,
+    textAlignVertical: "top",
+  },
   borrowedListContainer: {},
   borrowedListTitle: {
     fontSize: 20,

@@ -60,6 +60,12 @@ export default function useItemFormComponentService({
     });
   }
 
+  function setItemNotes(value: string) {
+    setItem((prev) => {
+      return { ...prev, notes: value };
+    });
+  }
+
   async function updateItemName() {
     updateItem();
   }
@@ -69,6 +75,10 @@ export default function useItemFormComponentService({
   }
 
   async function updateItemPrice() {
+    updateItem();
+  }
+
+  async function updateItemNotes() {
     updateItem();
   }
 
@@ -94,6 +104,7 @@ export default function useItemFormComponentService({
       quantity: item.quantity,
       price: item.price,
       providerId: item.providerId,
+      notes: item.notes,
     };
   }
 
@@ -104,6 +115,7 @@ export default function useItemFormComponentService({
       quantity: item.quantity as number,
       price: item.price as number,
       providerId: item.providerId as number,
+      notes: item.notes as string,
     };
   }
 
@@ -114,9 +126,11 @@ export default function useItemFormComponentService({
     setItemPrice,
     setItemQuantity,
     setProvider,
+    setItemNotes,
     updateItemName,
     updateItemPrice,
     updateItemQuantity,
     updateItemProvider,
+    updateItemNotes,
   };
 }

@@ -42,6 +42,12 @@ export default function useProviderFormComponentService({
     });
   }
 
+  function setProviderNotes(value: string) {
+    setProvider((prev) => {
+      return { ...prev, notes: value };
+    });
+  }
+
   async function updateProviderName() {
     validateProviderFields(provider);
     const updateProvider: Provider = mapProvider(provider);
@@ -50,6 +56,12 @@ export default function useProviderFormComponentService({
   }
 
   async function updateProviderPhonember() {
+    validateProviderFields(provider);
+    const updatedProvider: Provider = mapProvider(provider);
+    await providerManager.updateProvider(updatedProvider);
+  }
+
+  async function updateProviderNotes() {
     validateProviderFields(provider);
     const updatedProvider: Provider = mapProvider(provider);
     await providerManager.updateProvider(updatedProvider);
@@ -68,6 +80,7 @@ export default function useProviderFormComponentService({
       borrowedPrice: provider.borrowedPrice as number,
       payedPrice: provider.payedPrice as number,
       phoneNumber: provider.phoneNumber as string,
+      notes: provider.notes as string,
     };
   }
 
@@ -79,6 +92,7 @@ export default function useProviderFormComponentService({
       payedPrice: provider.payedPrice as number,
       phoneNumber: provider.phoneNumber as string,
       itemsList: [],
+      notes: provider.notes as string,
     };
   }
 
@@ -86,7 +100,9 @@ export default function useProviderFormComponentService({
     provider,
     setProviderName,
     setProviderPhoneNumber,
+    setProviderNotes,
     updateProviderName,
     updateProviderPhonember,
+    updateProviderNotes,
   };
 }

@@ -24,6 +24,12 @@ export default function useAddProviderFormComponentService({
     });
   }
 
+  function setProviderNotes(value: string) {
+    setProvider((prev) => {
+      return { ...prev, notes: value };
+    });
+  }
+
   async function addProvider() {
     try {
       if (!provider.name) {
@@ -47,6 +53,7 @@ export default function useAddProviderFormComponentService({
         phoneNumber: provider.phoneNumber.trim(),
         borrowedPrice: 0,
         payedPrice: 0,
+        notes: provider.notes,
       };
       const result = await providerManager.addProvider(newProvider);
       if (!result || !result.lastInsertRowId)
@@ -67,6 +74,7 @@ export default function useAddProviderFormComponentService({
     provider,
     setProviderName,
     setProviderPhoneNumber,
+    setProviderNotes,
     addProvider,
   };
 }
