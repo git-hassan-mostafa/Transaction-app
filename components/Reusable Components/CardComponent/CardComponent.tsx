@@ -1,11 +1,11 @@
 import { View, TouchableOpacity } from "react-native";
 import useCardComponentService from "./CardComponent.service";
 import styles from "./CardComponent.style";
-import CardType from "./CardComponent.types";
 import Icon from "react-native-vector-icons/FontAwesome6";
 import { ThemedText } from "../../HelperComponents/ThemedText";
+import ICardType from "@/Global/Types/ICardType";
 
-export default function CardComponent(props: CardType) {
+export default function CardComponent(props: ICardType) {
   const cardcomponentService = useCardComponentService();
   return (
     <TouchableOpacity

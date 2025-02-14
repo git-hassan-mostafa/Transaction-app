@@ -1,4 +1,4 @@
-export default interface DropDownItem {
+export default interface IDropDownItem {
   label: string | number;
   value?: string | number;
 }

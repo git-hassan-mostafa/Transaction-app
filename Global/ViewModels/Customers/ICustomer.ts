@@ -1,4 +1,3 @@
-import Customer from "@/Global/Models/Customer";
 import InnerDebt from "@/Global/Models/InnerDebt";
 
 export default interface ICustomer {
@@ -9,9 +8,4 @@ export default interface ICustomer {
   phoneNumber: string;
   borrowList: InnerDebt[] | null;
   notes: string;
-}
-
-export interface ICustomerProps {
-  id: number;
-  updateFromCustomersList: (customer: Customer) => void;
 }

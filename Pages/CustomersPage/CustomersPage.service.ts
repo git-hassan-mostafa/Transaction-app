@@ -1,14 +1,15 @@
-import ICustomer from "@/Components/Customer Components/CustomerFormComponent/CustomerFormComponent.types";
-import useContextProvider from "@/Global/ContextApi/ContextApi";
 import Customer from "@/Global/Models/Customer";
+import CustomerManager from "@/Global/Services/customers.service";
 import { useEffect, useState } from "react";
 import { Alert } from "react-native";
 
 export default function useCustomersPageService() {
+  //services
+  const customerManager = new CustomerManager();
+
+  //states
   const [customers, setCustomers] = useState<Customer[]>([]);
   const [modalVisible, setModalVisible] = useState(false);
-
-  const { customerManager } = useContextProvider();
 
   useEffect(() => {
     getAllCustomers();

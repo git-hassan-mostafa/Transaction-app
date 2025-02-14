@@ -1,1 +1,0 @@
-// Define types for PeoplePage here

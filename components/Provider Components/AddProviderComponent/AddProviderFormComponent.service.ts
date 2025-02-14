@@ -1,16 +1,24 @@
 import useContextProvider from "@/Global/ContextApi/ContextApi";
 import { useState } from "react";
-import { IAddProviderProps } from "./AddProviderFormComponent.types";
-import IProvider from "./AddProviderFormComponent.types";
 import Provider from "@/Global/Models/Provider";
+import IAddProviderProps from "@/Global/ViewModels/Providers/IAddProviderProps";
+import IProvider from "@/Global/ViewModels/Providers/IProvider";
+import ProviderManager from "@/Global/Services/provider.service";
+import MapService from "@/Global/Helpers/MapService";
 
 export default function useAddProviderFormComponentService({
   toggleModal,
   addToProvidersList,
 }: IAddProviderProps) {
+  //services
+  const providerManager = new ProviderManager();
+  const mapService = new MapService();
+
+  //states
   const [provider, setProvider] = useState<IProvider>({} as IProvider);
 
-  const { providerManager, toggleSnackBar } = useContextProvider();
+  //context
+  const { toggleSnackBar } = useContextProvider();
 
   function setProviderName(value: string) {
     setProvider((prev) => {
@@ -63,7 +71,8 @@ export default function useAddProviderFormComponentService({
           type: "error",
         });
       newProvider.id = result?.lastInsertRowId;
-      addToProvidersList(newProvider);
+      const mappedProvider = mapService.mapIProvider(newProvider);
+      addToProvidersList(mappedProvider);
       toggleModal();
     } catch (error) {
       console.log(error);

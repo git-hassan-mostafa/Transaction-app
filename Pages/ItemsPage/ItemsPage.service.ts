@@ -1,13 +1,15 @@
-import useContextProvider from "@/Global/ContextApi/ContextApi";
 import Item from "@/Global/Models/Item";
+import ItemManager from "@/Global/Services/items.service";
 import { useEffect, useState } from "react";
 import { Alert } from "react-native";
 
 export default function useItemsPageService() {
+  //services
+  const itemManager = new ItemManager();
+
+  //states
   const [items, setItems] = useState<Item[]>([]);
   const [modalVisible, setModalVisible] = useState(false);
-
-  const { itemManager } = useContextProvider();
 
   useEffect(() => {
     getAllItems();

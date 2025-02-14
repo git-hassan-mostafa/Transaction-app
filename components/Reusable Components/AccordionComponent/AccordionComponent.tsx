@@ -3,10 +3,10 @@ import styles from "./AccordionComponent.style";
 import React from "react";
 import { View, TouchableOpacity } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-import CustomAccordionProps from "./AccordionComponent.types";
 import Constants from "@/Global/Constants/Constants";
 import { ThemedText } from "../../HelperComponents/ThemedText";
 import MaterialIcon from "react-native-vector-icons/MaterialCommunityIcons";
+import ICustomAccordionProps from "@/Global/Types/IAccordionProps";
 
 export default function AccordionComponent({
   id,
@@ -17,7 +17,7 @@ export default function AccordionComponent({
   iconColor = "#000",
   headerColor = Constants.colors.gray,
   handleDelete,
-}: CustomAccordionProps) {
+}: ICustomAccordionProps) {
   const { toggleAccordion, isOpen } = useAccordionComponentService();
 
   return (

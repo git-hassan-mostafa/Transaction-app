@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { View } from "react-native";
 import { Dropdown } from "react-native-element-dropdown";
-import CustomDropDownType from "./CustomDropDownComponent.types";
 import styles from "./CustomDropDownComponent.style";
+import IDropDownType from "@/Global/Types/IDropDownType";
 
 export default function CustomDropDown({
   value,
   setValue,
   data,
-}: CustomDropDownType) {
+}: IDropDownType) {
   useEffect(() => {
     data.sort((a, b) =>
       a.label

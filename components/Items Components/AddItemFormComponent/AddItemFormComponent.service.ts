@@ -1,16 +1,28 @@
 import useContextProvider from "@/Global/ContextApi/ContextApi";
 import { useEffect, useState } from "react";
-import IItem, { IAddItemProps } from "./AddItemFormComponent.types";
 import Item from "@/Global/Models/Item";
-import DropDownItem from "@/Global/Models/Types/DropDownItem";
+import IDropDownItem from "@/Global/Types/IDropDownItem";
+import ProviderManager from "@/Global/Services/provider.service";
+import ItemManager from "@/Global/Services/items.service";
+import IAddItemProps from "@/Global/ViewModels/Items/IAddItemProps";
+import IItem from "@/Global/ViewModels/Items/IItem";
+import MapService from "@/Global/Helpers/MapService";
 
 export default function useAddItemFormComponentService({
   toggleModal,
   addToItemsList,
 }: IAddItemProps) {
+  // services
+  const providerManager = new ProviderManager();
+  const itemManager = new ItemManager();
+  const mapService = new MapService();
+
+  //states
   const [item, setItem] = useState<IItem>({} as IItem);
-  const [providers, setProviders] = useState<DropDownItem[]>([]);
-  const { itemManager, toggleSnackBar, providerManager } = useContextProvider();
+  const [providers, setProviders] = useState<IDropDownItem[]>([]);
+
+  //context
+  const { toggleSnackBar } = useContextProvider();
 
   useEffect(() => {
     getAllProviders();
@@ -22,7 +34,7 @@ export default function useAddItemFormComponentService({
       { label: "", value: undefined },
       ...(providers?.map((p) => {
         return { label: p.name, value: p.id };
-      }) as DropDownItem[]),
+      }) as IDropDownItem[]),
     ]);
   }
 
@@ -88,7 +100,8 @@ export default function useAddItemFormComponentService({
         type: "error",
       });
     newItem.id = result?.lastInsertRowId;
-    addToItemsList(newItem);
+    const mappedItem = mapService.mapIItem(newItem);
+    addToItemsList(mappedItem);
     toggleModal();
   }
 

@@ -1,12 +1,12 @@
 import React from "react";
 import { View, TextInput, StyleProp, TextStyle } from "react-native";
 import { ThemedText } from "../../HelperComponents/ThemedText";
-import { IItemProps } from "./ItemFormComponent.types";
 import useItemFormComponentService from "./ItemFormComponent.service";
 import styles from "./ItemFormComponent.style";
 import CustomDropDown from "@/Components/Reusable Components/CustomDropDownComponent/CustomDropDownComponent";
+import IItemFormProps from "@/Global/ViewModels/Items/IItemFormProps";
 
-export function ItemFormComponent({ id, updateFromItemsList }: IItemProps) {
+export function ItemFormComponent({ id, updateFromItemsList }: IItemFormProps) {
   const {
     item,
     setItemName,

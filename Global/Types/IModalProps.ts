@@ -1,4 +1,4 @@
-export default interface CustomModalProps {
+export default interface IModalProps {
   isVisible: boolean;
   onClose: () => void;
   title?: string;

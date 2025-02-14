@@ -3,12 +3,12 @@ import styles from "./CustomerFormComponent.style";
 import React from "react";
 import { View, TextInput, StyleProp, TextStyle } from "react-native";
 import useCustomerFormComponentService from "./CustomerFormComponent.service";
-import { ICustomerProps } from "./CustomerFormComponent.types";
 import { ThemedText } from "../../HelperComponents/ThemedText";
+import ICustomerFormProps from "@/Global/ViewModels/Customers/ICustomerFormProps";
 export function CustomerFormComponent({
   id,
   updateFromCustomersList,
-}: ICustomerProps) {
+}: ICustomerFormProps) {
   const {
     customer,
     setCustomerName,

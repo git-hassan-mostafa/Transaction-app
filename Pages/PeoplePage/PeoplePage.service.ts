@@ -1,13 +1,16 @@
 import useContextProvider from "@/Global/ContextApi/ContextApi";
 import Person from "@/Global/Models/Person";
+import { PeopleManager } from "@/Global/Services/people.service";
 import { useEffect, useState } from "react";
 import { Alert } from "react-native";
 
 export default function usePeoplePageService() {
+  //services
+  const peopleManager = new PeopleManager();
+
+  //states
   const [people, setPeople] = useState<Person[]>([]);
   const [modalVisible, setModalVisible] = useState(false);
-
-  const { peopleManager } = useContextProvider();
 
   useEffect(() => {
     getAllPeople();

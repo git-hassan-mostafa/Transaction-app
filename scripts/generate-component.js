@@ -45,10 +45,6 @@ export default styles;`,
     name: `${componentName}.service.ts`,
     content: `export default function use${componentName}Service() {}`,
   },
-  {
-    name: `${componentName}.types.ts`,
-    content: `// Define types for ${componentName} here`,
-  },
 ];
 
 try {

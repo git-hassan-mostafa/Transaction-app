@@ -1,13 +1,16 @@
 import useContextProvider from "@/Global/ContextApi/ContextApi";
 import Provider from "@/Global/Models/Provider";
+import ProviderManager from "@/Global/Services/provider.service";
 import { useEffect, useState } from "react";
 import { Alert } from "react-native";
 
 export default function useProvidersPageService() {
+  //services
+  const providerManager = new ProviderManager();
+
+  //states
   const [providers, setProviders] = useState<Provider[]>([]);
   const [modalVisible, setModalVisible] = useState(false);
-
-  const { providerManager } = useContextProvider();
 
   useEffect(() => {
     getAllProviders();

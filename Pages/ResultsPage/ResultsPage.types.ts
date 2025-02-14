@@ -1,1 +1,0 @@
-// Define types for ResultsPage here

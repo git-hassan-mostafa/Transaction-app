@@ -1,7 +1,7 @@
 import { ReactNode } from "react";
 import { ViewStyle } from "react-native";
 
-export default interface CustomAccordionProps {
+export default interface ICustomAccordionProps {
   id: number;
   headerText: string;
   children: ReactNode;

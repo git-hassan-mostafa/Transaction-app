@@ -1,15 +1,22 @@
 import Person from "@/Global/Models/Person";
 import { useState } from "react";
-import IAddPeopleProps from "./AddPeopleFormComponent.types";
 import useContextProvider from "@/Global/ContextApi/ContextApi";
+import IAddPeopleProps from "@/Global/ViewModels/People/IAddPersonProps";
+import { PeopleManager } from "@/Global/Services/people.service";
+import MapService from "@/Global/Helpers/MapService";
 
 export default function useAddPeopleFormComponentService({
   addToPeopleList,
   toggleModal,
 }: IAddPeopleProps) {
+  //services
+  const peopleManager = new PeopleManager();
+  const mapService = new MapService();
+
+  //states
   const [person, setPerson] = useState<Person>({} as Person);
 
-  const { peopleManager, toggleSnackBar } = useContextProvider();
+  const { toggleSnackBar } = useContextProvider();
 
   function setPersonName(value: string) {
     setPerson((prev) => {
@@ -52,7 +59,8 @@ export default function useAddPeopleFormComponentService({
         type: "error",
       });
     newPerson.id = result?.lastInsertRowId;
-    addToPeopleList(newPerson);
+    const mappedPerson = mapService.mapIPerson(newPerson);
+    addToPeopleList(mappedPerson);
     toggleModal();
   }
 

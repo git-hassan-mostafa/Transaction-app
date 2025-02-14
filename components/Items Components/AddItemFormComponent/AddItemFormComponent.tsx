@@ -5,9 +5,9 @@ import { TouchableOpacity } from "react-native";
 import { Button } from "react-native-paper";
 import { ThemedText } from "../../HelperComponents/ThemedText";
 import styles from "./AddItemFormComponent.style";
-import { IAddItemProps } from "./AddItemFormComponent.types";
 import useAddItemFormComponentService from "./AddItemFormComponent.service";
 import CustomDropDown from "@/Components/Reusable Components/CustomDropDownComponent/CustomDropDownComponent";
+import IAddItemProps from "@/Global/ViewModels/Items/IAddItemProps";
 
 export default function AddItemFormComponent({
   toggleModal,

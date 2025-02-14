@@ -1,15 +1,24 @@
 import useContextProvider from "@/Global/ContextApi/ContextApi";
 import { useState } from "react";
-import ICustomer, { IAddCustomerProps } from "./AddCustomerFormComponent.types";
 import Customer from "@/Global/Models/Customer";
+import IAddCustomerProps from "@/Global/ViewModels/Customers/IAddCustomerProps";
+import ICustomer from "@/Global/ViewModels/Customers/ICustomer";
+import CustomerManager from "@/Global/Services/customers.service";
+import MapService from "@/Global/Helpers/MapService";
 
 export default function useAddCustomerFormComponentService({
   toggleModal,
   addToCustomersList,
 }: IAddCustomerProps) {
+  // services
+  const customerManager = new CustomerManager();
+  const mapService = new MapService();
+
+  // states
   const [customer, setCustomer] = useState<ICustomer>({} as ICustomer);
 
-  const { customerManager, toggleSnackBar } = useContextProvider();
+  // context
+  const { toggleSnackBar } = useContextProvider();
 
   function setCustomerName(value: string) {
     setCustomer((prev) => {
@@ -61,7 +70,8 @@ export default function useAddCustomerFormComponentService({
         type: "error",
       });
     newCustomer.id = result?.lastInsertRowId;
-    addToCustomersList(newCustomer);
+    var mappedCustomer = mapService.mapICustomer(newCustomer);
+    addToCustomersList(mappedCustomer);
     toggleModal();
   }
 

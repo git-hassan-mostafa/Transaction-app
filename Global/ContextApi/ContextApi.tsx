@@ -29,9 +29,6 @@ export const ContextProvider = ({
     type: "info",
   });
 
-  const { customerManager, peopleManager, providerManager, itemManager } =
-    getDeps();
-
   function toggleSnackBar(value: SnackBarOptions) {
     setSnackBarOptions(value);
     setTimeout(() => {
@@ -47,10 +44,6 @@ export const ContextProvider = ({
     <Context.Provider
       value={{
         fontsLoaded,
-        customerManager,
-        peopleManager,
-        providerManager,
-        itemManager,
         snackBarOptions,
         toggleSnackBar,
         onDismissSnackBar,
@@ -63,13 +56,4 @@ export const ContextProvider = ({
 
 export default function useContextProvider() {
   return useContext(Context);
-}
-
-function getDeps() {
-  return {
-    customerManager: new CustomerManager(),
-    peopleManager: new PeopleManager(),
-    providerManager: new ProviderManager(),
-    itemManager: new ItemManager(),
-  };
 }

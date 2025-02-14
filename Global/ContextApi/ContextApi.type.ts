@@ -5,10 +5,6 @@ import ProviderManager from "../Services/provider.service";
 
 export default interface ContextProps {
   fontsLoaded: boolean;
-  customerManager: CustomerManager;
-  peopleManager: PeopleManager;
-  providerManager: ProviderManager;
-  itemManager: ItemManager;
   snackBarOptions: SnackBarOptions;
   toggleSnackBar: (value: SnackBarOptions) => void;
   onDismissSnackBar: () => void;

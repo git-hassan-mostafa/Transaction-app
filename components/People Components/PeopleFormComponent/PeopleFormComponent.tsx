@@ -1,13 +1,13 @@
 import { StyleProp, TextInput, TextStyle, View } from "react-native";
 import usePeopleFormComponentService from "./PeopleFormComponent.service";
 import styles from "./PeopleFormComponent.style";
-import { IPeopleProps } from "./PeopleFormComponent.types";
 import { ThemedText } from "../../HelperComponents/ThemedText";
+import IPeopleFormProps from "@/Global/ViewModels/People/IPersonFormProps";
 
 export default function PeopleFormComponent({
   id,
   updateFromPeopleList,
-}: IPeopleProps) {
+}: IPeopleFormProps) {
   const {
     person,
     setPersonName,

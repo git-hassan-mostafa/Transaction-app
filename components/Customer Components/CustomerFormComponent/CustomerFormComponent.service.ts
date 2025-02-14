@@ -1,16 +1,21 @@
 import { useEffect, useState } from "react";
-import ICustomer, { ICustomerProps } from "./CustomerFormComponent.types";
-import useContextProvider from "@/Global/ContextApi/ContextApi";
 import Customer from "@/Global/Models/Customer";
 import InnerDebt from "@/Global/Models/InnerDebt";
+import CustomerManager from "@/Global/Services/customers.service";
+import ICustomerFormProps from "@/Global/ViewModels/Customers/ICustomerFormProps";
+import ICustomer from "@/Global/ViewModels/Customers/ICustomer";
+import MapService from "@/Global/Helpers/MapService";
 
 export default function useCustomerFormComponentService({
   id,
   updateFromCustomersList,
-}: ICustomerProps) {
-  const [customer, setCustomer] = useState<ICustomer>({} as ICustomer);
+}: ICustomerFormProps) {
+  //services
+  const customerManager = new CustomerManager();
+  const mapService = new MapService();
 
-  const { customerManager } = useContextProvider();
+  // states
+  const [customer, setCustomer] = useState<ICustomer>({} as ICustomer);
 
   useEffect(() => {
     getCustomer().then(() => {
@@ -25,7 +30,7 @@ export default function useCustomerFormComponentService({
   async function getCustomer() {
     const customerDB = await customerManager.getCustomer(id);
     if (!customerDB) return;
-    const customer = mapICustomer(customerDB);
+    const customer = mapService.mapICustomer(customerDB);
     setCustomer(customer);
     return customer;
   }
@@ -62,9 +67,9 @@ export default function useCustomerFormComponentService({
 
   async function updateCustomer() {
     validateCustomerFields(customer);
-    const updatedCustomer: Customer = mapCustomer(customer);
+    const updatedCustomer: Customer = mapService.mapCustomer(customer);
     await customerManager.updateCustomer(updatedCustomer);
-    updateFromCustomersList(updatedCustomer);
+    updateFromCustomersList(customer);
   }
 
   function validateCustomerFields(customer: ICustomer) {
@@ -72,29 +77,6 @@ export default function useCustomerFormComponentService({
     customer.name = customer.name.trim();
     customer.phoneNumber = customer.phoneNumber.trim();
     customer.notes = customer.notes?.trim();
-  }
-
-  function mapCustomer(customer: ICustomer): Customer {
-    return {
-      id: customer.id as number,
-      name: customer.name as string,
-      borrowedPrice: customer.borrowedPrice as number,
-      payedPrice: customer.payedPrice as number,
-      phoneNumber: customer.phoneNumber as string,
-      notes: customer.notes as string,
-    };
-  }
-
-  function mapICustomer(customer: Customer): ICustomer {
-    return {
-      id: customer.id as number,
-      name: customer.name as string,
-      borrowedPrice: customer.borrowedPrice as number,
-      payedPrice: customer.payedPrice as number,
-      phoneNumber: customer.phoneNumber as string,
-      borrowList: [],
-      notes: customer.notes as string,
-    };
   }
 
   return {

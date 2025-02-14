@@ -1,5 +1,3 @@
-import Item from "@/Global/Models/Item";
-
 export default interface IItem {
   id: number;
   name: string;
@@ -7,9 +5,4 @@ export default interface IItem {
   price: number;
   providerId: number;
   notes: string;
-}
-
-export interface IItemProps {
-  id: number;
-  updateFromItemsList: (item: Item) => void;
 }

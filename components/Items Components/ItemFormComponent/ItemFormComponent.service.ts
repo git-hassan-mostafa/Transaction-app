@@ -1,16 +1,24 @@
 import { useEffect, useState } from "react";
-import useContextProvider from "@/Global/ContextApi/ContextApi";
-import IItem, { IItemProps } from "./ItemFormComponent.types";
 import Item from "@/Global/Models/Item";
-import DropDownItem from "@/Global/Models/Types/DropDownItem";
+import IDropDownItem from "@/Global/Types/IDropDownItem";
+import ProviderManager from "@/Global/Services/provider.service";
+import ItemManager from "@/Global/Services/items.service";
+import MapService from "@/Global/Helpers/MapService";
+import IItem from "@/Global/ViewModels/Items/IItem";
+import IItemFormProps from "@/Global/ViewModels/Items/IItemFormProps";
 
 export default function useItemFormComponentService({
   id,
   updateFromItemsList,
-}: IItemProps) {
+}: IItemFormProps) {
+  //services
+  const providerManager = new ProviderManager();
+  const itemManager = new ItemManager();
+  const mapService = new MapService();
+
+  //states
   const [item, setItem] = useState<IItem>({} as IItem);
-  const [providers, setProviders] = useState<DropDownItem[]>([]);
-  const { itemManager, providerManager } = useContextProvider();
+  const [providers, setProviders] = useState<IDropDownItem[]>([]);
 
   useEffect(() => {
     getItem();
@@ -23,7 +31,7 @@ export default function useItemFormComponentService({
       { label: "", value: undefined },
       ...(providers?.map((p) => {
         return { label: p.name, value: p.id };
-      }) as DropDownItem[]),
+      }) as IDropDownItem[]),
     ];
     setProviders(sortedProviders);
   }
@@ -31,7 +39,7 @@ export default function useItemFormComponentService({
   async function getItem() {
     const itemDB = await itemManager.getItem(id);
     if (!itemDB) return;
-    const item = mapIItem(itemDB);
+    const item = mapService.mapIItem(itemDB);
     setItem(item);
     return item;
   }
@@ -88,35 +96,13 @@ export default function useItemFormComponentService({
 
   async function updateItem() {
     validateItemFields(item);
-    const updatedItem: Item = mapItem(item);
+    const updatedItem: Item = mapService.mapItem(item);
     const result = await itemManager.updateItem(updatedItem);
-    if ((result?.changes || 0) > 0) updateFromItemsList(updatedItem);
+    if ((result?.changes || 0) > 0) updateFromItemsList(item);
   }
 
   function validateItemFields(item: IItem) {
     item.id = id;
-  }
-
-  function mapItem(item: IItem): Item {
-    return {
-      id: item.id,
-      name: item.name,
-      quantity: item.quantity,
-      price: item.price,
-      providerId: item.providerId,
-      notes: item.notes,
-    };
-  }
-
-  function mapIItem(item: Item): IItem {
-    return {
-      id: item.id as number,
-      name: item.name as string,
-      quantity: item.quantity as number,
-      price: item.price as number,
-      providerId: item.providerId as number,
-      notes: item.notes as string,
-    };
   }
 
   return {

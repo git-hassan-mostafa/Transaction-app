@@ -4,11 +4,11 @@ import React from "react";
 import { View, TextInput, StyleProp, TextStyle } from "react-native";
 import useProviderFormComponentService from "./ProviderFormComponent.service";
 import { ThemedText } from "../../HelperComponents/ThemedText";
-import { IProviderProps } from "./ProviderFormComponent.types";
+import { IProviderFormProps } from "@/Global/ViewModels/Providers/IProviderFormProps";
 export function ProviderFormComponent({
   id,
   updateFromProvidersList,
-}: IProviderProps) {
+}: IProviderFormProps) {
   const {
     provider,
     setProviderName,

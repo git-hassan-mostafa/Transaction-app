@@ -1,16 +1,20 @@
 import { useEffect, useState } from "react";
-import IProvider, { IProviderProps } from "./ProviderFormComponent.types";
-import useContextProvider from "@/Global/ContextApi/ContextApi";
 import { OuterDebt } from "@/Global/Models/OuterDebt";
-import Provider from "@/Global/Models/Provider";
+import { IProviderFormProps } from "@/Global/ViewModels/Providers/IProviderFormProps";
+import IProvider from "@/Global/ViewModels/Providers/IProvider";
+import ProviderManager from "@/Global/Services/provider.service";
+import MapService from "@/Global/Helpers/MapService";
 
 export default function useProviderFormComponentService({
   id,
   updateFromProvidersList,
-}: IProviderProps) {
-  const [provider, setProvider] = useState<IProvider>({} as IProvider);
+}: IProviderFormProps) {
+  //services
+  const providerManager = new ProviderManager();
+  const mapService = new MapService();
 
-  const { providerManager } = useContextProvider();
+  //states
+  const [provider, setProvider] = useState<IProvider>({} as IProvider);
 
   useEffect(() => {
     getProvider().then(() => {
@@ -25,7 +29,7 @@ export default function useProviderFormComponentService({
   async function getProvider() {
     const providerDB = await providerManager.getProvider(id);
     if (!providerDB) return;
-    const provider = mapIProvider(providerDB);
+    const provider = mapService.mapIProvider(providerDB);
     setProvider(provider);
     return provider;
   }
@@ -49,51 +53,28 @@ export default function useProviderFormComponentService({
   }
 
   async function updateProviderName() {
-    validateProviderFields(provider);
-    const updateProvider: Provider = mapProvider(provider);
-    const result = await providerManager.updateProvider(updateProvider);
-    if ((result?.changes || 0) > 0) updateFromProvidersList(updateProvider);
+    updateProvider();
   }
 
   async function updateProviderPhonember() {
-    validateProviderFields(provider);
-    const updatedProvider: Provider = mapProvider(provider);
-    await providerManager.updateProvider(updatedProvider);
+    updateProvider();
   }
 
   async function updateProviderNotes() {
+    updateProvider();
+  }
+
+  async function updateProvider() {
     validateProviderFields(provider);
-    const updatedProvider: Provider = mapProvider(provider);
-    await providerManager.updateProvider(updatedProvider);
+    const updateProvider = mapService.mapProvider(provider);
+    const result = await providerManager.updateProvider(updateProvider);
+    if ((result?.changes || 0) > 0) updateFromProvidersList(provider);
   }
 
   function validateProviderFields(provider: IProvider) {
     provider.id = id;
     provider.name = provider.name.trim();
     provider.phoneNumber = provider.phoneNumber.trim();
-  }
-
-  function mapProvider(provider: IProvider): Provider {
-    return {
-      id: provider.id as number,
-      name: provider.name as string,
-      borrowedPrice: provider.borrowedPrice as number,
-      payedPrice: provider.payedPrice as number,
-      phoneNumber: provider.phoneNumber as string,
-      notes: provider.notes as string,
-    };
-  }
-
-  function mapIProvider(provider: Provider): IProvider {
-    return {
-      id: provider.id as number,
-      name: provider.name as string,
-      borrowedPrice: provider.borrowedPrice as number,
-      payedPrice: provider.payedPrice as number,
-      phoneNumber: provider.phoneNumber as string,
-      itemsList: [],
-      notes: provider.notes as string,
-    };
   }
 
   return {

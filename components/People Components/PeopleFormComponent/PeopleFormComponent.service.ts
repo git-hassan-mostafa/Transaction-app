@@ -1,24 +1,32 @@
 import { useEffect, useState } from "react";
-import { IPeopleProps } from "./PeopleFormComponent.types";
 import Person from "@/Global/Models/Person";
 import useContextProvider from "@/Global/ContextApi/ContextApi";
+import IPeopleFormProps from "@/Global/ViewModels/People/IPersonFormProps";
+import { PeopleManager } from "@/Global/Services/people.service";
+import MapService from "@/Global/Helpers/MapService";
+import IPerson from "@/Global/ViewModels/People/IPerson";
 
 export default function usePeopleFormComponentService({
   id,
   updateFromPeopleList,
-}: IPeopleProps) {
-  const [person, setPerson] = useState<Person>({} as Person);
-  const { peopleManager } = useContextProvider();
+}: IPeopleFormProps) {
+  //services
+  const peopleManager = new PeopleManager();
+  const mapService = new MapService();
+
+  //states
+  const [person, setPerson] = useState<IPerson>({} as IPerson);
 
   useEffect(() => {
     getPerson();
   }, []);
 
   async function getPerson() {
-    const person = await peopleManager.getPerson(id);
-    if (!person) return;
+    const personDB = await peopleManager.getPerson(id);
+    if (!personDB) return;
+    const person = mapService.mapIPerson(personDB);
     setPerson(person);
-    return person;
+    return personDB;
   }
 
   function setPersonName(value: string) {
@@ -46,6 +54,7 @@ export default function usePeopleFormComponentService({
     person.name = person.name?.trim();
     person.phoneNumber = person.phoneNumber?.trim();
     const result = await peopleManager.updatePerson(person);
+    const mappedPerson = mapService.mapIPerson(person);
     if ((result?.changes || 0) > 0) updateFromPeopleList(person);
   }
 
