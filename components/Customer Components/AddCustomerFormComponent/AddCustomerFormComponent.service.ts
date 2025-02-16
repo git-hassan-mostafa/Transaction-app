@@ -4,7 +4,6 @@ import Customer from "@/Global/Models/Customer";
 import IAddCustomerProps from "@/Global/ViewModels/Customers/IAddCustomerProps";
 import ICustomer from "@/Global/ViewModels/Customers/ICustomer";
 import CustomerManager from "@/Global/Services/customers.service";
-import MapService from "@/Global/Helpers/MapService";
 
 export default function useAddCustomerFormComponentService({
   toggleModal,
@@ -12,8 +11,6 @@ export default function useAddCustomerFormComponentService({
 }: IAddCustomerProps) {
   // services
   const customerManager = new CustomerManager();
-  const mapService = new MapService();
-
   // states
   const [customer, setCustomer] = useState<ICustomer>({} as ICustomer);
 
@@ -56,11 +53,11 @@ export default function useAddCustomerFormComponentService({
       return;
     }
     const newCustomer: Customer = {
-      name: customer?.name.trim(),
-      phoneNumber: customer.phoneNumber.trim(),
-      borrowedPrice: 0,
-      payedPrice: 0,
-      notes: customer.notes,
+      Name: customer?.name.trim(),
+      PhoneNumber: customer.phoneNumber.trim(),
+      BorrowedPrice: 0,
+      PayedPrice: 0,
+      Notes: customer.notes,
     };
     const result = await customerManager.addCustomer(newCustomer);
     if (!result || !result.lastInsertRowId)
@@ -69,9 +66,8 @@ export default function useAddCustomerFormComponentService({
         text: "حصل خطأ ما , الرجاء اعادة المحاولة ",
         type: "error",
       });
-    newCustomer.id = result?.lastInsertRowId;
-    var mappedCustomer = mapService.mapICustomer(newCustomer);
-    addToCustomersList(mappedCustomer);
+    customer.id = result?.lastInsertRowId;
+    addToCustomersList(customer);
     toggleModal();
   }
 

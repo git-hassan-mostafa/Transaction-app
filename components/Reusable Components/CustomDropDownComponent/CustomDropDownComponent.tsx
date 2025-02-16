@@ -9,13 +9,11 @@ export default function CustomDropDown({
   setValue,
   data,
 }: IDropDownType) {
-  useEffect(() => {
-    data.sort((a, b) =>
-      a.label
-        .toLocaleString()
-        .localeCompare(b.label.toString(), undefined, { sensitivity: "base" })
-    );
-  }, []);
+  data.sort((a, b) =>
+    a.label
+      .toLocaleString()
+      .localeCompare(b.label.toString(), undefined, { sensitivity: "base" })
+  );
 
   return (
     <View>
@@ -31,6 +29,7 @@ export default function CustomDropDown({
         labelField="label"
         valueField="value"
         searchPlaceholder="بحث..."
+        placeholder="اختر من القائمة"
         value={value}
         onChange={(item) => {
           setValue(item.value);

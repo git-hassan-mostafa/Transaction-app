@@ -1,22 +1,25 @@
 import useContextProvider from "@/Global/ContextApi/ContextApi";
+import MapService from "@/Global/Helpers/MapService";
 import Provider from "@/Global/Models/Provider";
 import ProviderManager from "@/Global/Services/provider.service";
+import IProvider from "@/Global/ViewModels/Providers/IProvider";
 import { useEffect, useState } from "react";
 import { Alert } from "react-native";
 
 export default function useProvidersPageService() {
   //services
   const providerManager = new ProviderManager();
+  const mapService = new MapService();
 
   //states
-  const [providers, setProviders] = useState<Provider[]>([]);
+  const [providers, setProviders] = useState<IProvider[]>([]);
   const [modalVisible, setModalVisible] = useState(false);
 
   useEffect(() => {
     getAllProviders();
   }, []);
 
-  function addToProvidersList(value: Provider) {
+  function addToProvidersList(value: IProvider) {
     setProviders((prev) => [...prev, value]);
   }
 
@@ -24,7 +27,7 @@ export default function useProvidersPageService() {
     setProviders((prev) => prev.filter((c) => c.id !== id));
   }
 
-  function updateFromProvidersList(value: Provider) {
+  function updateFromProvidersList(value: IProvider) {
     setProviders((prev) =>
       prev.map((provider) =>
         provider.id === value.id ? { ...provider, ...value } : provider
@@ -32,8 +35,11 @@ export default function useProvidersPageService() {
     );
   }
   async function getAllProviders() {
-    const providers = await providerManager.getAllProviders();
-    setProviders(providers as Provider[]);
+    const providersDB = await providerManager.getAllProviders();
+    const providers = providersDB?.map((provider) =>
+      mapService.mapToIPerson(provider)
+    );
+    setProviders(providers as IProvider[]);
   }
 
   async function handleDeleteProvider(id: number) {

@@ -1,11 +1,11 @@
 export interface OuterDebt {
-  id?: number;
-  totalPrice?: number;
-  pricePaid?: number;
-  date?: string;
-  itemsList?: { item: string; quantity: number; price: number }[] | null;
-  paymentsList?: { amount: number; date: string }[] | null;
-  personId?: number;
-  providerId?: number;
-  notes?: string;
+  Id?: number;
+  TotalPrice?: number;
+  PricePaid?: number;
+  Date?: string;
+  ItemsList?: { item: string; quantity: number; price: number }[] | null;
+  PaymentsList?: { amount: number; date: string }[] | null;
+  PersonId?: number;
+  ProviderId?: number;
+  Notes?: string;
 }

@@ -9,6 +9,7 @@ import { ItemFormComponent } from "@/Components/Items Components/ItemFormCompone
 import CustomModal from "@/Components/Reusable Components/CustomModalComponent/CustomModalComponent";
 import AddItemFormComponent from "@/Components/Items Components/AddItemFormComponent/AddItemFormComponent";
 import { FAB } from "react-native-paper";
+import IItem from "@/Global/ViewModels/Items/IItem";
 
 export default function ItemsPage() {
   const {
@@ -22,9 +23,9 @@ export default function ItemsPage() {
 
   items?.sort((a, b) => {
     if (a.name && b.name) {
-      return a.name
-        .toString()
-        .localeCompare(b.name.toString(), undefined, { sensitivity: "base" });
+      return a.name.toString().localeCompare(b.name.toString(), undefined, {
+        sensitivity: "base",
+      });
     }
     return 0;
   });
@@ -35,7 +36,7 @@ export default function ItemsPage() {
         data={items}
         numColumns={1}
         keyExtractor={(item) => item.id?.toString() as string}
-        renderItem={({ item }: { item: Item }) => (
+        renderItem={({ item }: { item: IItem }) => (
           <AccordionComponent
             key={item.id}
             id={item.id as number}

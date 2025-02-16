@@ -1,8 +1,8 @@
 export default interface Item {
-  id?: number;
-  name?: string;
-  quantity?: number;
-  price?: number;
-  providerId?: number;
-  notes?: string;
+  Id?: number;
+  Name?: string;
+  Quantity?: number;
+  Price?: number;
+  ProviderId?: number;
+  Notes?: string;
 }

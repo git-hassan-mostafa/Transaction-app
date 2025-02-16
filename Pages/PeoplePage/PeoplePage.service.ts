@@ -1,15 +1,15 @@
-import useContextProvider from "@/Global/ContextApi/ContextApi";
-import Person from "@/Global/Models/Person";
+import MapService from "@/Global/Helpers/MapService";
 import { PeopleManager } from "@/Global/Services/people.service";
+import IPerson from "@/Global/ViewModels/People/IPerson";
 import { useEffect, useState } from "react";
 import { Alert } from "react-native";
 
 export default function usePeoplePageService() {
   //services
   const peopleManager = new PeopleManager();
-
+  const mapService = new MapService();
   //states
-  const [people, setPeople] = useState<Person[]>([]);
+  const [people, setPeople] = useState<IPerson[]>([]);
   const [modalVisible, setModalVisible] = useState(false);
 
   useEffect(() => {
@@ -21,15 +21,18 @@ export default function usePeoplePageService() {
   }
 
   async function getAllPeople() {
-    const customers = await peopleManager.getAllPeople();
-    setPeople(customers as Person[]);
+    const peopleDB = await peopleManager.getAllPeople();
+    const people = peopleDB?.map(
+      (c) => mapService.mapToICustomer(c) as IPerson
+    );
+    setPeople(people as IPerson[]);
   }
 
-  function addToPeopleList(value: Person) {
+  function addToPeopleList(value: IPerson) {
     setPeople((prev) => [...prev, value]);
   }
 
-  function updateFromPeopleList(value: Person) {
+  function updateFromPeopleList(value: IPerson) {
     setPeople((prev) =>
       prev.map((person) =>
         person.id === value.id ? { ...person, ...value } : person

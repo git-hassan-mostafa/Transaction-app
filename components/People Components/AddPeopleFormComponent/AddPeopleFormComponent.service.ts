@@ -4,6 +4,7 @@ import useContextProvider from "@/Global/ContextApi/ContextApi";
 import IAddPeopleProps from "@/Global/ViewModels/People/IAddPersonProps";
 import { PeopleManager } from "@/Global/Services/people.service";
 import MapService from "@/Global/Helpers/MapService";
+import IPerson from "@/Global/ViewModels/People/IPerson";
 
 export default function useAddPeopleFormComponentService({
   addToPeopleList,
@@ -14,7 +15,7 @@ export default function useAddPeopleFormComponentService({
   const mapService = new MapService();
 
   //states
-  const [person, setPerson] = useState<Person>({} as Person);
+  const [person, setPerson] = useState<IPerson>({} as IPerson);
 
   const { toggleSnackBar } = useContextProvider();
 
@@ -48,8 +49,8 @@ export default function useAddPeopleFormComponentService({
       return;
     }
     const newPerson: Person = {
-      name: person?.name.trim(),
-      phoneNumber: person.phoneNumber.trim(),
+      Name: person?.name.trim(),
+      PhoneNumber: person.phoneNumber.trim(),
     };
     const result = await peopleManager.addPerson(newPerson);
     if (!result || !result.lastInsertRowId)
@@ -58,9 +59,8 @@ export default function useAddPeopleFormComponentService({
         text: "حصل خطأ ما , الرجاء اعادة المحاولة ",
         type: "error",
       });
-    newPerson.id = result?.lastInsertRowId;
-    const mappedPerson = mapService.mapIPerson(newPerson);
-    addToPeopleList(mappedPerson);
+    person.id = result?.lastInsertRowId;
+    addToPeopleList(person);
     toggleModal();
   }
 

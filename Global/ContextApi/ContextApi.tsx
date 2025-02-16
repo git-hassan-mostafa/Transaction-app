@@ -6,10 +6,6 @@ import {
 } from "@expo-google-fonts/noto-kufi-arabic";
 import React, { createContext, useContext, useState } from "react";
 import ContextProps, { SnackBarOptions } from "./ContextApi.type";
-import CustomerManager from "../Services/customers.service";
-import { PeopleManager } from "../Services/people.service";
-import ProviderManager from "../Services/provider.service";
-import ItemManager from "../Services/items.service";
 
 const Context = createContext<ContextProps>({} as ContextProps);
 

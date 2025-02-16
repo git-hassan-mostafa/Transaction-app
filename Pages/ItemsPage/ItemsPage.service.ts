@@ -1,21 +1,24 @@
+import MapService from "@/Global/Helpers/MapService";
 import Item from "@/Global/Models/Item";
 import ItemManager from "@/Global/Services/items.service";
+import IItem from "@/Global/ViewModels/Items/IItem";
 import { useEffect, useState } from "react";
 import { Alert } from "react-native";
 
 export default function useItemsPageService() {
   //services
   const itemManager = new ItemManager();
+  const mapService = new MapService();
 
   //states
-  const [items, setItems] = useState<Item[]>([]);
+  const [items, setItems] = useState<IItem[]>([]);
   const [modalVisible, setModalVisible] = useState(false);
 
   useEffect(() => {
     getAllItems();
   }, []);
 
-  function addToItemsList(value: Item) {
+  function addToItemsList(value: IItem) {
     setItems((prev) => [...prev, value]);
   }
 
@@ -23,14 +26,15 @@ export default function useItemsPageService() {
     setItems((prev) => prev.filter((c) => c.id !== id));
   }
 
-  function updateFromItemsList(value: Item) {
+  function updateFromItemsList(value: IItem) {
     setItems((prev) =>
       prev.map((item) => (item.id === value.id ? { ...item, ...value } : item))
     );
   }
   async function getAllItems() {
-    const items = await itemManager.getAllItems();
-    setItems(items as Item[]);
+    const itemsDB = await itemManager.getAllItems();
+    const items = itemsDB?.map((item) => mapService.mapToIItem(item));
+    setItems(items as IItem[]);
   }
 
   async function handleDeleteItem(id: number) {

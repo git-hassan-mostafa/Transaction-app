@@ -30,7 +30,7 @@ export default function useItemFormComponentService({
     const sortedProviders = [
       { label: "", value: undefined },
       ...(providers?.map((p) => {
-        return { label: p.name, value: p.id };
+        return { label: p.Name, value: p.Id };
       }) as IDropDownItem[]),
     ];
     setProviders(sortedProviders);
@@ -39,7 +39,7 @@ export default function useItemFormComponentService({
   async function getItem() {
     const itemDB = await itemManager.getItem(id);
     if (!itemDB) return;
-    const item = mapService.mapIItem(itemDB);
+    const item = mapService.mapToIItem(itemDB);
     setItem(item);
     return item;
   }
@@ -96,7 +96,7 @@ export default function useItemFormComponentService({
 
   async function updateItem() {
     validateItemFields(item);
-    const updatedItem: Item = mapService.mapItem(item);
+    const updatedItem: Item = mapService.mapToItem(item);
     const result = await itemManager.updateItem(updatedItem);
     if ((result?.changes || 0) > 0) updateFromItemsList(item);
   }

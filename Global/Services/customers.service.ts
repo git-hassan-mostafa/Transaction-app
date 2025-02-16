@@ -23,7 +23,7 @@ export default class CustomerManager extends AbstractManager {
   async getCustomer(id: number) {
     try {
       const sqlBuilder = new SqlBuilder<Customer>(this.db, this.table);
-      const customer = await sqlBuilder.select().where({ id }).firstAsync();
+      const customer = await sqlBuilder.select().where({ Id: id }).firstAsync();
       return customer;
     } catch (error) {
       console.log("error ", error);
@@ -45,7 +45,7 @@ export default class CustomerManager extends AbstractManager {
       const sqlBuilder = new SqlBuilder<Customer>(this.db, this.table);
       const result = await sqlBuilder
         .update(customer)
-        .where({ id: customer.id })
+        .where({ Id: customer.Id })
         .executeAsync();
       return result as SQLiteRunResult;
     } catch (error) {
@@ -69,7 +69,7 @@ export default class CustomerManager extends AbstractManager {
       const sqlBuilder = new SqlBuilder<InnerDebt>(this.db, InnerDebtsTable);
       const result = await sqlBuilder
         .select()
-        .where({ customerId: id })
+        .where({ CustomerId: id })
         .executeAsync();
       return result as InnerDebt[];
     } catch (error) {

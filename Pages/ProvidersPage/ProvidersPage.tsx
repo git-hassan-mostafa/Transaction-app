@@ -2,13 +2,13 @@ import { FlatList, View } from "react-native";
 import useProvidersPageService from "./ProvidersPage.service";
 import styles from "./ProvidersPage.style";
 import React from "react";
-import Provider from "@/Global/Models/Provider";
 import AccordionComponent from "@/Components/Reusable Components/AccordionComponent/AccordionComponent";
 import Constants from "@/Global/Constants/Constants";
 import AddProviderFormComponent from "@/Components/Provider Components/AddProviderComponent/AddProviderFormComponent";
 import CustomModal from "@/Components/Reusable Components/CustomModalComponent/CustomModalComponent";
 import { FAB } from "react-native-paper";
 import { ProviderFormComponent } from "@/Components/Provider Components/ProviderFormComponent/ProviderFormComponent";
+import IProvider from "@/Global/ViewModels/Providers/IProvider";
 
 export default function ProvidersPage() {
   const {
@@ -23,9 +23,9 @@ export default function ProvidersPage() {
 
   providers.sort((a, b) => {
     if (a.name && b.name) {
-      return a.name
-        .toString()
-        .localeCompare(b.name.toString(), undefined, { sensitivity: "base" });
+      return a.name.toString().localeCompare(b.name.toString(), undefined, {
+        sensitivity: "base",
+      });
     }
     return 0;
   });
@@ -37,7 +37,7 @@ export default function ProvidersPage() {
         data={providers}
         numColumns={1}
         keyExtractor={(item) => item.id?.toString() as string}
-        renderItem={({ item }: { item: Provider }) => (
+        renderItem={({ item }: { item: IProvider }) => (
           <AccordionComponent
             key={item.id}
             headerColor={Constants.colors.brown}
@@ -48,7 +48,7 @@ export default function ProvidersPage() {
           >
             <ProviderFormComponent
               id={item.id as number}
-              deleteFromProviderList={deleteFromProvidersList}
+              deleteFromProvidersList={deleteFromProvidersList}
               updateFromProvidersList={updateFromProvidersList}
             />
           </AccordionComponent>

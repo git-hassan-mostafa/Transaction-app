@@ -8,6 +8,7 @@ import { IProviderFormProps } from "@/Global/ViewModels/Providers/IProviderFormP
 export function ProviderFormComponent({
   id,
   updateFromProvidersList,
+  deleteFromProvidersList,
 }: IProviderFormProps) {
   const {
     provider,
@@ -20,6 +21,7 @@ export function ProviderFormComponent({
   } = useProviderFormComponentService({
     id,
     updateFromProvidersList,
+    deleteFromProvidersList,
   });
 
   return (
@@ -84,17 +86,17 @@ export function ProviderFormComponent({
           </View>
           <View style={styles.itemsList}>
             {provider.itemsList?.map((item) => (
-              <View key={item.id} style={styles.borrowedListItem}>
+              <View key={item.Id} style={styles.borrowedListItem}>
                 <ThemedText style={styles.borrowedListText}>
-                  {item.totalPrice}
+                  {item.TotalPrice}
                 </ThemedText>
                 <ThemedText> --- </ThemedText>
                 <ThemedText style={styles.borrowedListText}>
-                  {item.pricePaid}
+                  {item.PricePaid}
                 </ThemedText>
                 <ThemedText> --- </ThemedText>
                 <ThemedText style={styles.borrowedListText}>
-                  {item.date}
+                  {item.Date}
                 </ThemedText>
               </View>
             ))}

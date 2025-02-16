@@ -1,21 +1,23 @@
-import Customer from "@/Global/Models/Customer";
+import MapService from "@/Global/Helpers/MapService";
 import CustomerManager from "@/Global/Services/customers.service";
+import ICustomer from "@/Global/ViewModels/Customers/ICustomer";
 import { useEffect, useState } from "react";
 import { Alert } from "react-native";
 
 export default function useCustomersPageService() {
   //services
   const customerManager = new CustomerManager();
+  const mapService = new MapService();
 
   //states
-  const [customers, setCustomers] = useState<Customer[]>([]);
+  const [customers, setCustomers] = useState<ICustomer[]>([]);
   const [modalVisible, setModalVisible] = useState(false);
 
   useEffect(() => {
     getAllCustomers();
   }, []);
 
-  function addToCustomersList(value: Customer) {
+  function addToCustomersList(value: ICustomer) {
     setCustomers((prev) => [...prev, value]);
   }
 
@@ -23,7 +25,7 @@ export default function useCustomersPageService() {
     setCustomers((prev) => prev.filter((c) => c.id !== id));
   }
 
-  function updateFromCustomersList(value: Customer) {
+  function updateFromCustomersList(value: ICustomer) {
     setCustomers((prev) =>
       prev.map((customer) =>
         customer.id === value.id ? { ...customer, ...value } : customer
@@ -32,7 +34,8 @@ export default function useCustomersPageService() {
   }
   async function getAllCustomers() {
     const customers = await customerManager.getAllCustomers();
-    setCustomers(customers as Customer[]);
+    const mappedCustomers = customers?.map((c) => mapService.mapToICustomer(c));
+    setCustomers(mappedCustomers as ICustomer[]);
   }
 
   async function handleDeleteCustomer(id: number) {

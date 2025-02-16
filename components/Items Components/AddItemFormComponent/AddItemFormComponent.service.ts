@@ -6,7 +6,6 @@ import ProviderManager from "@/Global/Services/provider.service";
 import ItemManager from "@/Global/Services/items.service";
 import IAddItemProps from "@/Global/ViewModels/Items/IAddItemProps";
 import IItem from "@/Global/ViewModels/Items/IItem";
-import MapService from "@/Global/Helpers/MapService";
 
 export default function useAddItemFormComponentService({
   toggleModal,
@@ -15,7 +14,6 @@ export default function useAddItemFormComponentService({
   // services
   const providerManager = new ProviderManager();
   const itemManager = new ItemManager();
-  const mapService = new MapService();
 
   //states
   const [item, setItem] = useState<IItem>({} as IItem);
@@ -33,7 +31,7 @@ export default function useAddItemFormComponentService({
     setProviders([
       { label: "", value: undefined },
       ...(providers?.map((p) => {
-        return { label: p.name, value: p.id };
+        return { label: p.Name, value: p.Id };
       }) as IDropDownItem[]),
     ]);
   }
@@ -86,11 +84,11 @@ export default function useAddItemFormComponentService({
       return;
     }
     const newItem: Item = {
-      name: item?.name.trim(),
-      quantity: item.quantity,
-      price: item.price,
-      providerId: item.providerId,
-      notes: item.notes,
+      Name: item?.name.trim(),
+      Quantity: item.quantity,
+      Price: item.price,
+      ProviderId: item.providerId,
+      Notes: item.notes,
     };
     const result = await itemManager.addItem(newItem);
     if (!result || !result.lastInsertRowId)
@@ -99,9 +97,8 @@ export default function useAddItemFormComponentService({
         text: "حصل خطأ ما , الرجاء اعادة المحاولة ",
         type: "error",
       });
-    newItem.id = result?.lastInsertRowId;
-    const mappedItem = mapService.mapIItem(newItem);
-    addToItemsList(mappedItem);
+    item.id = result?.lastInsertRowId;
+    addToItemsList(item);
     toggleModal();
   }
 

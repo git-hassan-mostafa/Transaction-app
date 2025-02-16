@@ -57,11 +57,11 @@ export default function useAddProviderFormComponentService({
         return;
       }
       const newProvider: Provider = {
-        name: provider?.name.trim(),
-        phoneNumber: provider.phoneNumber.trim(),
-        borrowedPrice: 0,
-        payedPrice: 0,
-        notes: provider.notes,
+        Name: provider?.name.trim(),
+        PhoneNumber: provider.phoneNumber.trim(),
+        BorrowedPrice: 0,
+        PayedPrice: 0,
+        Notes: provider.notes,
       };
       const result = await providerManager.addProvider(newProvider);
       if (!result || !result.lastInsertRowId)
@@ -70,9 +70,8 @@ export default function useAddProviderFormComponentService({
           text: "حصل خطأ ما , الرجاء اعادة المحاولة ",
           type: "error",
         });
-      newProvider.id = result?.lastInsertRowId;
-      const mappedProvider = mapService.mapIProvider(newProvider);
-      addToProvidersList(mappedProvider);
+      provider.id = result?.lastInsertRowId;
+      addToProvidersList(provider);
       toggleModal();
     } catch (error) {
       console.log(error);

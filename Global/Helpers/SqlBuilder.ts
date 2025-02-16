@@ -4,9 +4,10 @@ export default class SqlBuilder<T> {
   private tableName: string;
   private db: SQLiteDatabase;
   private type!: "select" | "update";
-  private getQuery: string = "select * from {0} {1} {2}";
+  private getQuery: string = "select * from {0} {1} {2} {3}";
   private updateQuery: string = "update {0} set {1} {2}";
   private deleteQuery: string = "delete from {0} {1}";
+  private joinQuery: string = "";
 
   constructor(db: SQLiteDatabase, tableName: string) {
     this.db = db;
@@ -120,10 +121,16 @@ export default class SqlBuilder<T> {
     return this;
   }
 
+  join(table: string, keys: string[]) {
+    this.joinQuery = `join ${table} on ${table}.${keys[0]} = ${this.tableName}.${keys[1]}`;
+    return this;
+  }
+
   async firstAsync() {
     if (this.type == "select") {
       this.getQuery = this.getQuery.replace("{1}", "");
       this.getQuery = this.getQuery.replace("{2}", "");
+      this.getQuery = this.getQuery.replace("{3}", this.joinQuery);
       this.getQuery = this.getQuery.replace("{0}", this.tableName);
       const result = await this.db.getFirstAsync<T>(this.getQuery);
       return result;
@@ -134,6 +141,7 @@ export default class SqlBuilder<T> {
     if (this.type == "select") {
       this.getQuery = this.getQuery.replace("{1}", "");
       this.getQuery = this.getQuery.replace("{2}", "");
+      this.getQuery = this.getQuery.replace("{3}", this.joinQuery);
       this.getQuery = this.getQuery.replace("{0}", this.tableName);
       const result = await this.db.getAllAsync<T>(this.getQuery);
       return result;

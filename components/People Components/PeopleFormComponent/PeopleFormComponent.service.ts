@@ -24,7 +24,7 @@ export default function usePeopleFormComponentService({
   async function getPerson() {
     const personDB = await peopleManager.getPerson(id);
     if (!personDB) return;
-    const person = mapService.mapIPerson(personDB);
+    const person = mapService.mapToIPerson(personDB);
     setPerson(person);
     return personDB;
   }
@@ -53,8 +53,8 @@ export default function usePeopleFormComponentService({
     person.id = id;
     person.name = person.name?.trim();
     person.phoneNumber = person.phoneNumber?.trim();
-    const result = await peopleManager.updatePerson(person);
-    const mappedPerson = mapService.mapIPerson(person);
+    const personDB = mapService.mapToPerson(person);
+    const result = await peopleManager.updatePerson(personDB);
     if ((result?.changes || 0) > 0) updateFromPeopleList(person);
   }
 

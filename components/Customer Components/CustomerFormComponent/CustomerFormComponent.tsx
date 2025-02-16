@@ -89,17 +89,17 @@ export function CustomerFormComponent({
           </View>
           <View style={styles.borrowedList}>
             {customer.borrowList?.map((item) => (
-              <View key={item.id} style={styles.borrowedListItem}>
+              <View key={item.Id} style={styles.borrowedListItem}>
                 <ThemedText style={styles.borrowedListText}>
-                  {item.totalPrice}
+                  {item.TotalPrice}
                 </ThemedText>
                 <ThemedText> --- </ThemedText>
                 <ThemedText style={styles.borrowedListText}>
-                  {item.pricePaid}
+                  {item.PricePaid}
                 </ThemedText>
                 <ThemedText> --- </ThemedText>
                 <ThemedText style={styles.borrowedListText}>
-                  {item.date}
+                  {item.Date}
                 </ThemedText>
               </View>
             ))}

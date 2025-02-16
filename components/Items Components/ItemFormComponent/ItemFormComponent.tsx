@@ -80,7 +80,7 @@ export function ItemFormComponent({ id, updateFromItemsList }: IItemFormProps) {
           style={[styles.textInput, styles.textArea] as StyleProp<TextStyle>}
           placeholder="أدخل الملاحظات"
           placeholderTextColor="#999"
-          value={item.name}
+          value={item.notes}
           onChangeText={setItemNotes}
           onEndEditing={updateItemNotes}
         />

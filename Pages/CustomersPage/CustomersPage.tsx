@@ -4,11 +4,11 @@ import styles from "./CustomersPage.style";
 import AccordionComponent from "@/Components/Reusable Components/AccordionComponent/AccordionComponent";
 import { CustomerFormComponent } from "@/Components/Customer Components/CustomerFormComponent/CustomerFormComponent";
 import Constants from "@/Global/Constants/Constants";
-import Customer from "@/Global/Models/Customer";
 import { FAB } from "react-native-paper";
 import React from "react";
 import AddCustomerFormComponent from "@/Components/Customer Components/AddCustomerFormComponent/AddCustomerFormComponent";
 import CustomModal from "@/Components/Reusable Components/CustomModalComponent/CustomModalComponent";
+import ICustomer from "@/Global/ViewModels/Customers/ICustomer";
 
 export default function CustomersPage() {
   const {
@@ -16,7 +16,6 @@ export default function CustomersPage() {
     modalVisible,
     toggleModal,
     addToCustomersList,
-    deleteFromCustomerList,
     updateFromCustomersList,
     handleDeleteCustomer,
   } = useCustomersPageService();
@@ -36,7 +35,7 @@ export default function CustomersPage() {
         data={customers}
         numColumns={1}
         keyExtractor={(item) => item.id?.toString() as string}
-        renderItem={({ item }: { item: Customer }) => (
+        renderItem={({ item }: { item: ICustomer }) => (
           <AccordionComponent
             key={item.id}
             headerColor={Constants.colors.blue}

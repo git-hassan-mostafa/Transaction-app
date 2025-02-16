@@ -29,7 +29,7 @@ export default function useProviderFormComponentService({
   async function getProvider() {
     const providerDB = await providerManager.getProvider(id);
     if (!providerDB) return;
-    const provider = mapService.mapIProvider(providerDB);
+    const provider = mapService.mapToIProvider(providerDB);
     setProvider(provider);
     return provider;
   }
@@ -66,7 +66,7 @@ export default function useProviderFormComponentService({
 
   async function updateProvider() {
     validateProviderFields(provider);
-    const updateProvider = mapService.mapProvider(provider);
+    const updateProvider = mapService.mapToProvider(provider);
     const result = await providerManager.updateProvider(updateProvider);
     if ((result?.changes || 0) > 0) updateFromProvidersList(provider);
   }

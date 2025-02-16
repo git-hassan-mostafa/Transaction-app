@@ -1,94 +1,129 @@
 import Customer from "../Models/Customer";
+import InnerDebt from "../Models/InnerDebt";
 import Item from "../Models/Item";
 import Person from "../Models/Person";
 import Provider from "../Models/Provider";
 import ICustomer from "../ViewModels/Customers/ICustomer";
+import IInnerDebt from "../ViewModels/InnerDebts/IInerDebts";
 import IItem from "../ViewModels/Items/IItem";
 import IPerson from "../ViewModels/People/IPerson";
 import IProvider from "../ViewModels/Providers/IProvider";
 
 export default class MapService {
-  mapCustomer(customer: ICustomer): Customer {
+  mapToCustomer(customer: ICustomer): Customer {
     return {
-      id: customer.id as number,
-      name: customer.name as string,
-      borrowedPrice: customer.borrowedPrice as number,
-      payedPrice: customer.payedPrice as number,
-      phoneNumber: customer.phoneNumber as string,
-      notes: customer.notes as string,
+      Id: customer.id as number,
+      Name: customer.name as string,
+      BorrowedPrice: customer.borrowedPrice as number,
+      PayedPrice: customer.payedPrice as number,
+      PhoneNumber: customer.phoneNumber as string,
+      Notes: customer.notes as string,
     };
   }
 
-  mapICustomer(customer: Customer): ICustomer {
+  mapToICustomer(customer: Customer): ICustomer {
     return {
-      id: customer.id as number,
-      name: customer.name as string,
-      borrowedPrice: customer.borrowedPrice as number,
-      payedPrice: customer.payedPrice as number,
-      phoneNumber: customer.phoneNumber as string,
+      id: customer.Id as number,
+      name: customer.Name as string,
+      borrowedPrice: customer.BorrowedPrice as number,
+      payedPrice: customer.PayedPrice as number,
+      phoneNumber: customer.PhoneNumber as string,
       borrowList: [],
-      notes: customer.notes as string,
+      notes: customer.Notes as string,
     };
   }
 
-  mapItem(item: IItem): Item {
+  mapToItem(item: IItem): Item {
     return {
-      id: item.id,
-      name: item.name,
-      quantity: item.quantity,
-      price: item.price,
-      providerId: item.providerId,
-      notes: item.notes,
+      Id: item.id,
+      Name: item.name,
+      Quantity: item.quantity,
+      Price: item.price,
+      ProviderId: item.providerId,
+      Notes: item.notes,
     };
   }
 
-  mapIItem(item: Item): IItem {
+  mapToIItem(item: Item): IItem {
     return {
-      id: item.id as number,
-      name: item.name as string,
-      quantity: item.quantity as number,
-      price: item.price as number,
-      providerId: item.providerId as number,
-      notes: item.notes as string,
+      id: item.Id as number,
+      name: item.Name as string,
+      quantity: item.Quantity as number,
+      price: item.Price as number,
+      providerId: item.ProviderId as number,
+      notes: item.Notes as string,
     };
   }
 
-  mapPerson(person: IPerson): Person {
+  mapToPerson(person: IPerson): Person {
     return {
-      id: person.id,
-      name: person.name,
-      phoneNumber: person.phoneNumber,
+      Id: person.id,
+      Name: person.name,
+      PhoneNumber: person.phoneNumber,
     };
   }
 
-  mapIPerson(person: Person): IPerson {
+  mapToIPerson(person: Person): IPerson {
     return {
-      id: person.id as number,
-      name: person.name as string,
-      phoneNumber: person.phoneNumber as string,
+      id: person.Id as number,
+      name: person.Name as string,
+      phoneNumber: person.PhoneNumber as string,
     };
   }
 
-  mapProvider(provider: IProvider): Provider {
+  mapToProvider(provider: IProvider): Provider {
     return {
-      id: provider.id as number,
-      name: provider.name as string,
-      borrowedPrice: provider.borrowedPrice as number,
-      payedPrice: provider.payedPrice as number,
-      phoneNumber: provider.phoneNumber as string,
-      notes: provider.notes as string,
+      Id: provider.id as number,
+      Name: provider.name as string,
+      BorrowedPrice: provider.borrowedPrice as number,
+      PayedPrice: provider.payedPrice as number,
+      PhoneNumber: provider.phoneNumber as string,
+      Notes: provider.notes as string,
     };
   }
 
-  mapIProvider(provider: Provider): IProvider {
+  mapToIProvider(provider: Provider): IProvider {
     return {
-      id: provider.id as number,
-      name: provider.name as string,
-      borrowedPrice: provider.borrowedPrice as number,
-      payedPrice: provider.payedPrice as number,
-      phoneNumber: provider.phoneNumber as string,
-      notes: provider.notes as string,
+      id: provider.Id as number,
+      name: provider.Name as string,
+      borrowedPrice: provider.BorrowedPrice as number,
+      payedPrice: provider.PayedPrice as number,
+      phoneNumber: provider.PhoneNumber as string,
+      notes: provider.Notes as string,
       itemsList: [],
+    };
+  }
+
+  mapToInnerDebt(innerDebt: IInnerDebt): InnerDebt {
+    return {
+      Id: innerDebt.id,
+      TotalPrice: innerDebt.totalPrice,
+      PricePaid: innerDebt.pricePaid,
+      Date: innerDebt.date,
+      ItemsList: innerDebt.itemsList,
+      PaymentsList: innerDebt.paymentsList,
+      PersonId: innerDebt.personId,
+      CustomerId: innerDebt.customerId,
+      Notes: innerDebt.notes,
+    };
+  }
+
+  mapToIInnerDebt(
+    innerDebt: InnerDebt,
+    customer: Customer | undefined | null = null
+  ): IInnerDebt {
+    return {
+      id: innerDebt.Id as number,
+      totalPrice: innerDebt.TotalPrice as number,
+      pricePaid: innerDebt.PricePaid as number,
+      date: innerDebt.Date as string,
+      itemsList: innerDebt.ItemsList as string,
+      paymentsList: innerDebt.PaymentsList as string,
+      personId: innerDebt.PersonId as number,
+      customerId: innerDebt.CustomerId as number,
+      notes: innerDebt.Notes as string,
+      customer:
+        this.mapToICustomer(customer || ({} as Customer)) || ({} as ICustomer),
     };
   }
 }

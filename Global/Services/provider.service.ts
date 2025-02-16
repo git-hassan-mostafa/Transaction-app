@@ -24,7 +24,7 @@ export default class ProviderManager extends AbstractManager {
   async getProvider(id: number) {
     try {
       const sqlBuilder = new SqlBuilder<Provider>(this.db, this.table);
-      const provider = await sqlBuilder.select().where({ id }).firstAsync();
+      const provider = await sqlBuilder.select().where({ Id: id }).firstAsync();
       return provider;
     } catch (error) {
       console.log("error getProvider ", error);
@@ -46,7 +46,7 @@ export default class ProviderManager extends AbstractManager {
       const sqlBuilder = new SqlBuilder<Provider>(this.db, this.table);
       const result = await sqlBuilder
         .update(provider)
-        .where({ id: provider.id })
+        .where({ Id: provider.Id })
         .executeAsync();
       return result as SQLiteRunResult;
     } catch (error) {
@@ -70,7 +70,7 @@ export default class ProviderManager extends AbstractManager {
       const sqlBuilder = new SqlBuilder<OuterDebt>(this.db, OuterDebtsTable);
       const result = await sqlBuilder
         .select()
-        .where({ providerId: id })
+        .where({ ProviderId: id })
         .executeAsync();
       return result as InnerDebt[];
     } catch (error) {

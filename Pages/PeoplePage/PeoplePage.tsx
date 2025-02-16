@@ -9,6 +9,7 @@ import { FAB } from "react-native-paper";
 import PeopleFormComponent from "@/Components/People Components/PeopleFormComponent/PeopleFormComponent";
 import CustomModal from "@/Components/Reusable Components/CustomModalComponent/CustomModalComponent";
 import AddPeopleFormComponent from "@/Components/People Components/AddPeopleFormComponent/AddPeopleFormComponent";
+import IPerson from "@/Global/ViewModels/People/IPerson";
 
 export default function PeoplePage() {
   const {
@@ -16,16 +17,15 @@ export default function PeoplePage() {
     modalVisible,
     toggleModal,
     addToPeopleList,
-    deleteFromPeopleList,
     updateFromPeopleList,
     handleDeletePerson,
   } = usePeoplePageService();
 
   people?.sort((a, b) => {
     if (a.name && b.name) {
-      return a.name
-        .toString()
-        .localeCompare(b.name.toString(), undefined, { sensitivity: "base" });
+      return a.name.toString().localeCompare(b.name.toString(), undefined, {
+        sensitivity: "base",
+      });
     }
     return 0;
   });
@@ -37,7 +37,7 @@ export default function PeoplePage() {
         data={people}
         numColumns={1}
         keyExtractor={(item) => item.id?.toString() as string}
-        renderItem={({ item }: { item: Person }) => (
+        renderItem={({ item }: { item: IPerson }) => (
           <AccordionComponent
             key={item.id}
             headerColor={Constants.colors.lighBlue}

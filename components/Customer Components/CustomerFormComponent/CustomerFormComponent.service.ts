@@ -30,7 +30,7 @@ export default function useCustomerFormComponentService({
   async function getCustomer() {
     const customerDB = await customerManager.getCustomer(id);
     if (!customerDB) return;
-    const customer = mapService.mapICustomer(customerDB);
+    const customer = mapService.mapToICustomer(customerDB);
     setCustomer(customer);
     return customer;
   }
@@ -67,7 +67,7 @@ export default function useCustomerFormComponentService({
 
   async function updateCustomer() {
     validateCustomerFields(customer);
-    const updatedCustomer: Customer = mapService.mapCustomer(customer);
+    const updatedCustomer: Customer = mapService.mapToCustomer(customer);
     await customerManager.updateCustomer(updatedCustomer);
     updateFromCustomersList(customer);
   }

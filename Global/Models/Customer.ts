@@ -1,8 +1,8 @@
 export default interface Customer {
-  id?: number;
-  name?: string;
-  borrowedPrice?: number;
-  payedPrice?: number;
-  phoneNumber?: string;
-  notes?: string;
+  Id?: number;
+  Name?: string;
+  BorrowedPrice?: number;
+  PayedPrice?: number;
+  PhoneNumber?: string;
+  Notes?: string;
 }
