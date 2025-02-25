@@ -1,6 +1,6 @@
-import IInnerDebt from "./IInerDebts";
+import { ICustomerInnerDebt } from "../RelationModels/ICustomerInnerDebt";
 
 export interface IAddInnerDebtProps {
-  addToInnerDebtsList: (value: IInnerDebt) => void;
+  addToInnerDebtsList: (value: ICustomerInnerDebt) => void;
   toggleModal: () => void;
 }

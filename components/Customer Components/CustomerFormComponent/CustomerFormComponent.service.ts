@@ -73,11 +73,16 @@ export default function useCustomerFormComponentService({
   }
 
   function validateCustomerFields(customer: ICustomer) {
-    customer.id = id;
+    customer.customerId = id;
     customer.name = customer.name.trim();
     customer.phoneNumber = customer.phoneNumber.trim();
     customer.notes = customer.notes?.trim();
   }
+
+  const formatNumber = (number: number | undefined) => {
+    if (!number) return 0;
+    return number > 999 ? "999+" : number;
+  };
 
   return {
     customer,
@@ -87,5 +92,6 @@ export default function useCustomerFormComponentService({
     updateCustomerName,
     updateCustomerPhoneNumber,
     updateCustomerNotes,
+    formatNumber,
   };
 }

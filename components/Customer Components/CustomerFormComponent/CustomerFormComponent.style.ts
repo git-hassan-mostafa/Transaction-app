@@ -14,6 +14,10 @@ const styles = StyleSheet.create({
   container: {
     justifyContent: "center",
     padding: 20,
+    paddingTop: 0,
+  },
+  customerScrollView: {
+    maxHeight: 370,
   },
   iconHeader: {
     flexDirection: "row",
@@ -97,15 +101,12 @@ const styles = StyleSheet.create({
     width: "100%",
     flexDirection: "row-reverse",
     alignItems: "center",
+    justifyContent: "space-around",
     padding: 5,
     paddingRight: 10,
     gap: 20,
     borderRightColor: Constants.colors.blue,
     borderRightWidth: 5,
-  },
-  borrowedListText: {
-    fontSize: 14,
-    fontFamily: Constants.fontFamily.font400Regular,
   },
 });
 

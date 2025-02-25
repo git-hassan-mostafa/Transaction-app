@@ -2,7 +2,6 @@ import { FlatList, View } from "react-native";
 import useInnerDebtsPageService from "./InnerDebtsPage.service";
 import styles from "./InnerDebtsPage.style";
 import React from "react";
-import InnerDebt from "@/Global/Models/InnerDebt";
 import AccordionComponent from "@/Components/Reusable Components/AccordionComponent/AccordionComponent";
 import Constants from "@/Global/Constants/Constants";
 import CustomModal from "@/Components/Reusable Components/CustomModalComponent/CustomModalComponent";
@@ -10,6 +9,7 @@ import { FAB } from "react-native-paper";
 import InnerDebtsFormComponent from "@/Components/Inner Debts Components/InnerDebtsFormComponent/InnerDebtsFormComponent";
 import AddInnerDebtsComponent from "@/Components/Inner Debts Components/AddInnerDebtsComponent/AddInnerDebtsComponent";
 import IInnerDebt from "@/Global/ViewModels/InnerDebts/IInerDebts";
+import { ICustomerInnerDebt } from "@/Global/ViewModels/RelationModels/ICustomerInnerDebt";
 
 export default function InnerDebtsPage() {
   const {
@@ -34,18 +34,18 @@ export default function InnerDebtsPage() {
         style={styles.flatList}
         data={innerDebts}
         numColumns={1}
-        keyExtractor={(item) => item.id?.toString() as string}
+        keyExtractor={(item) => item.innerDebtId?.toString() as string}
         renderItem={({ item }: { item: IInnerDebt }) => (
           <AccordionComponent
-            key={item.id}
-            id={item.id as number}
+            key={item.innerDebtId}
+            id={item.innerDebtId as number}
             handleDelete={handleDeleteInnerDebt}
             headerColor={Constants.colors.red}
             iconColor={Constants.colors.lightGray}
-            headerText={`دين على - ${item.customer.name}`}
+            headerText={`@${(item as ICustomerInnerDebt).name}`}
           >
             <InnerDebtsFormComponent
-              id={item.id as number}
+              id={item.innerDebtId as number}
               updateFromInnerDebtsList={updateFromInnerDebtsList}
             />
           </AccordionComponent>

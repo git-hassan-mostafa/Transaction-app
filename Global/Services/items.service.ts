@@ -22,7 +22,7 @@ export default class ItemManager extends AbstractManager {
   async getItem(id: number) {
     try {
       const sqlBuilder = new SqlBuilder<Item>(this.db, this.table);
-      const item = await sqlBuilder.select().where({ Id: id }).firstAsync();
+      const item = await sqlBuilder.select().where({ ItemId: id }).firstAsync();
       return item;
     } catch (error) {
       console.log("error ", error);
@@ -44,7 +44,7 @@ export default class ItemManager extends AbstractManager {
       const sqlBuilder = new SqlBuilder<Item>(this.db, this.table);
       const result = await sqlBuilder
         .update(item)
-        .where({ Id: item.Id })
+        .where({ ItemId: item.ItemId })
         .executeAsync();
       return result as SQLiteRunResult;
     } catch (error) {
@@ -57,7 +57,7 @@ export default class ItemManager extends AbstractManager {
       const sqlBuilder = new SqlBuilder<Item>(this.db, this.table);
       const result = await sqlBuilder
         .updateField("ProviderId", providerId)
-        .where({ Id: id })
+        .where({ ItemId: id })
         .executeAsync();
       return result as SQLiteRunResult;
     } catch (error) {

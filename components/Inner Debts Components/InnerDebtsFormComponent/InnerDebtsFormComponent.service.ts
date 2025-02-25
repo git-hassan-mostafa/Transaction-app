@@ -34,7 +34,7 @@ export default function useInnerDebtsFormComponentService({
     const sortedCustomers = [
       { label: "", value: undefined },
       ...(customers?.map((c) => {
-        return { label: c.Name, value: c.Id };
+        return { label: c.Name, value: c.CustomerId };
       }) as IDropDownItem[]),
     ];
     setCustomers(sortedCustomers);
@@ -81,7 +81,10 @@ export default function useInnerDebtsFormComponentService({
   }
 
   async function updateCustomer(customerId: number) {
-    innerDebtsManager.updateInnerDebtCustomer(innerDebt.id, customerId);
+    innerDebtsManager.updateInnerDebtCustomer(
+      innerDebt.innerDebtId,
+      customerId
+    );
   }
 
   async function updateNotes() {
@@ -96,7 +99,7 @@ export default function useInnerDebtsFormComponentService({
   }
 
   function validateInnerDebtFields(innerDebt: IInnerDebt) {
-    innerDebt.id = id;
+    innerDebt.innerDebtId = id;
     if (!innerDebt.totalPrice) {
       toggleSnackBar({
         visible: true,

@@ -1,4 +1,6 @@
 import { SQLiteDatabase, useSQLiteContext } from "expo-sqlite";
+import TableDetails from "../Constants/ColumnsDetails";
+import tableDetails from "../Constants/ColumnsDetails";
 
 export default class SqlBuilder<T> {
   private tableName: string;
@@ -14,7 +16,7 @@ export default class SqlBuilder<T> {
     this.tableName = tableName;
   }
 
-  select(values: string[] = []) {
+  select(values: string[] = ["*"]) {
     this.type = "select";
     if (values.length === 0) return this;
     this.getQuery = this.getQuery.replace("*", values.join(" , "));
@@ -40,7 +42,7 @@ export default class SqlBuilder<T> {
                    }
                    return value;
                  })
-                 .join(" , ")}) RETURNING id`;
+                 .join(" , ")}) RETURNING *`;
       const result = await this.db.runAsync(query);
       return result;
     } catch (error) {
@@ -51,9 +53,10 @@ export default class SqlBuilder<T> {
 
   async delete(id: number) {
     try {
+      var tableId = this.getTableId(this.tableName);
       this.deleteQuery = this.deleteQuery.replace("{0}", this.tableName);
       if (id === -1) this.deleteQuery = this.deleteQuery.replace("{1}", "");
-      var whereQuery = `where id = ${id}`;
+      var whereQuery = `where ${tableId} = ${id}`;
       this.deleteQuery = this.deleteQuery.replace("{1}", whereQuery);
       const result = await this.db.runAsync(this.deleteQuery);
       return result;
@@ -95,7 +98,7 @@ export default class SqlBuilder<T> {
 
   where(value: T) {
     if (!value) {
-      this.getQuery = this.getQuery.replace("{1}", "");
+      this.getQuery = this.getQuery.replace("{2}", "");
       this.updateQuery = this.updateQuery.replace("{2}", "");
       return this;
     }
@@ -107,30 +110,39 @@ export default class SqlBuilder<T> {
         return `${key} = ${value}`;
       })
       .join(" and ")}`;
-    this.getQuery = this.getQuery.replace("{1}", query);
+    this.getQuery = this.getQuery.replace("{2}", query);
     this.updateQuery = this.updateQuery.replace("{2}", query);
     return this;
   }
 
   orderBy(value: string) {
     if (!value) {
-      this.getQuery = this.getQuery.replace("{2}", "");
+      this.getQuery = this.getQuery.replace("{3}", "");
       return this;
     }
-    this.getQuery = this.getQuery.replace("{2}", `order by ${value}`);
+    this.getQuery = this.getQuery.replace("{3}", `order by ${value}`);
     return this;
   }
 
-  join(table: string, keys: string[]) {
-    this.joinQuery = `join ${table} on ${table}.${keys[0]} = ${this.tableName}.${keys[1]}`;
+  join(table: string, type = "") {
+    const foreignTableKey = this.getTableId(table);
+    this.joinQuery = `${type} join ${table} on ${this.tableName}.${foreignTableKey} = ${table}.${foreignTableKey}`;
     return this;
+  }
+
+  leftJoin(table: string) {
+    return this.join(table, "left");
+  }
+
+  rightJoin(table: string) {
+    return this.join(table, "right");
   }
 
   async firstAsync() {
     if (this.type == "select") {
-      this.getQuery = this.getQuery.replace("{1}", "");
       this.getQuery = this.getQuery.replace("{2}", "");
-      this.getQuery = this.getQuery.replace("{3}", this.joinQuery);
+      this.getQuery = this.getQuery.replace("{3}", "");
+      this.getQuery = this.getQuery.replace("{1}", this.joinQuery);
       this.getQuery = this.getQuery.replace("{0}", this.tableName);
       const result = await this.db.getFirstAsync<T>(this.getQuery);
       return result;
@@ -139,9 +151,9 @@ export default class SqlBuilder<T> {
 
   async executeAsync() {
     if (this.type == "select") {
-      this.getQuery = this.getQuery.replace("{1}", "");
       this.getQuery = this.getQuery.replace("{2}", "");
-      this.getQuery = this.getQuery.replace("{3}", this.joinQuery);
+      this.getQuery = this.getQuery.replace("{3}", "");
+      this.getQuery = this.getQuery.replace("{1}", this.joinQuery);
       this.getQuery = this.getQuery.replace("{0}", this.tableName);
       const result = await this.db.getAllAsync<T>(this.getQuery);
       return result;
@@ -153,5 +165,9 @@ export default class SqlBuilder<T> {
       return result;
     }
     return null;
+  }
+
+  private getTableId(table: string) {
+    return tableDetails.find((t) => t.name === table)?.id ?? "";
   }
 }

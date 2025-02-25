@@ -3,19 +3,19 @@ import InnerDebt from "../Models/InnerDebt";
 import Item from "../Models/Item";
 import Person from "../Models/Person";
 import Provider from "../Models/Provider";
+import { CustomerInnerDebt } from "../Models/RelationModels/CustomerInnerDebt";
 import ICustomer from "../ViewModels/Customers/ICustomer";
 import IInnerDebt from "../ViewModels/InnerDebts/IInerDebts";
 import IItem from "../ViewModels/Items/IItem";
 import IPerson from "../ViewModels/People/IPerson";
 import IProvider from "../ViewModels/Providers/IProvider";
+import { ICustomerInnerDebt } from "../ViewModels/RelationModels/ICustomerInnerDebt";
 
 export default class MapService {
   mapToCustomer(customer: ICustomer): Customer {
     return {
-      Id: customer.id as number,
+      CustomerId: customer.customerId as number,
       Name: customer.name as string,
-      BorrowedPrice: customer.borrowedPrice as number,
-      PayedPrice: customer.payedPrice as number,
       PhoneNumber: customer.phoneNumber as string,
       Notes: customer.notes as string,
     };
@@ -23,10 +23,10 @@ export default class MapService {
 
   mapToICustomer(customer: Customer): ICustomer {
     return {
-      id: customer.Id as number,
+      customerId: customer.CustomerId as number,
       name: customer.Name as string,
-      borrowedPrice: customer.BorrowedPrice as number,
-      payedPrice: customer.PayedPrice as number,
+      borrowedPrice: 0,
+      payedPrice: 0,
       phoneNumber: customer.PhoneNumber as string,
       borrowList: [],
       notes: customer.Notes as string,
@@ -35,7 +35,7 @@ export default class MapService {
 
   mapToItem(item: IItem): Item {
     return {
-      Id: item.id,
+      ItemId: item.id,
       Name: item.name,
       Quantity: item.quantity,
       Price: item.price,
@@ -46,7 +46,7 @@ export default class MapService {
 
   mapToIItem(item: Item): IItem {
     return {
-      id: item.Id as number,
+      id: item.ItemId as number,
       name: item.Name as string,
       quantity: item.Quantity as number,
       price: item.Price as number,
@@ -57,7 +57,7 @@ export default class MapService {
 
   mapToPerson(person: IPerson): Person {
     return {
-      Id: person.id,
+      PersonId: person.id,
       Name: person.name,
       PhoneNumber: person.phoneNumber,
     };
@@ -65,7 +65,7 @@ export default class MapService {
 
   mapToIPerson(person: Person): IPerson {
     return {
-      id: person.Id as number,
+      id: person.PersonId as number,
       name: person.Name as string,
       phoneNumber: person.PhoneNumber as string,
     };
@@ -73,7 +73,7 @@ export default class MapService {
 
   mapToProvider(provider: IProvider): Provider {
     return {
-      Id: provider.id as number,
+      ProviderId: provider.id as number,
       Name: provider.name as string,
       BorrowedPrice: provider.borrowedPrice as number,
       PayedPrice: provider.payedPrice as number,
@@ -84,7 +84,7 @@ export default class MapService {
 
   mapToIProvider(provider: Provider): IProvider {
     return {
-      id: provider.Id as number,
+      id: provider.ProviderId as number,
       name: provider.Name as string,
       borrowedPrice: provider.BorrowedPrice as number,
       payedPrice: provider.PayedPrice as number,
@@ -96,34 +96,45 @@ export default class MapService {
 
   mapToInnerDebt(innerDebt: IInnerDebt): InnerDebt {
     return {
-      Id: innerDebt.id,
+      InnerDebtId: innerDebt.innerDebtId,
       TotalPrice: innerDebt.totalPrice,
       PricePaid: innerDebt.pricePaid,
       Date: innerDebt.date,
-      ItemsList: innerDebt.itemsList,
-      PaymentsList: innerDebt.paymentsList,
       PersonId: innerDebt.personId,
       CustomerId: innerDebt.customerId,
       Notes: innerDebt.notes,
     };
   }
 
-  mapToIInnerDebt(
-    innerDebt: InnerDebt,
-    customer: Customer | undefined | null = null
-  ): IInnerDebt {
+  mapToIInnerDebt(innerDebt: InnerDebt): IInnerDebt {
     return {
-      id: innerDebt.Id as number,
+      innerDebtId: innerDebt.InnerDebtId as number,
       totalPrice: innerDebt.TotalPrice as number,
       pricePaid: innerDebt.PricePaid as number,
       date: innerDebt.Date as string,
-      itemsList: innerDebt.ItemsList as string,
-      paymentsList: innerDebt.PaymentsList as string,
+      itemsList: [],
+      paymentsList: [],
       personId: innerDebt.PersonId as number,
       customerId: innerDebt.CustomerId as number,
       notes: innerDebt.Notes as string,
-      customer:
-        this.mapToICustomer(customer || ({} as Customer)) || ({} as ICustomer),
+    };
+  }
+
+  mapToCustomerInnerDebt(
+    customerInnerDebt: ICustomerInnerDebt
+  ): CustomerInnerDebt {
+    return {
+      ...this.mapToCustomer(customerInnerDebt),
+      ...this.mapToInnerDebt(customerInnerDebt),
+    };
+  }
+
+  mapToICustomerInnerDebt(
+    customerInnerDebt: CustomerInnerDebt
+  ): ICustomerInnerDebt {
+    return {
+      ...this.mapToICustomer(customerInnerDebt),
+      ...this.mapToIInnerDebt(customerInnerDebt),
     };
   }
 }

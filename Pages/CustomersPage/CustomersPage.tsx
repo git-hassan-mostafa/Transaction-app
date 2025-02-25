@@ -34,18 +34,18 @@ export default function CustomersPage() {
         style={styles.flatList}
         data={customers}
         numColumns={1}
-        keyExtractor={(item) => item.id?.toString() as string}
+        keyExtractor={(item) => item.customerId?.toString() as string}
         renderItem={({ item }: { item: ICustomer }) => (
           <AccordionComponent
-            key={item.id}
+            key={item.customerId}
             headerColor={Constants.colors.blue}
             iconColor={Constants.colors.lightGray}
             headerText={item.name as string}
-            id={item.id as number}
+            id={item.customerId as number}
             handleDelete={handleDeleteCustomer}
           >
             <CustomerFormComponent
-              id={item.id as number}
+              id={item.customerId as number}
               updateFromCustomersList={updateFromCustomersList}
             />
           </AccordionComponent>

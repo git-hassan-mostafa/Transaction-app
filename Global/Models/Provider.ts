@@ -1,5 +1,5 @@
 export default interface Provider {
-  Id?: number;
+  ProviderId?: number;
   Name?: string;
   BorrowedPrice?: number;
   PayedPrice?: number;

@@ -22,13 +22,15 @@ export default function useCustomersPageService() {
   }
 
   function deleteFromCustomerList(id: number) {
-    setCustomers((prev) => prev.filter((c) => c.id !== id));
+    setCustomers((prev) => prev.filter((c) => c.customerId !== id));
   }
 
   function updateFromCustomersList(value: ICustomer) {
     setCustomers((prev) =>
       prev.map((customer) =>
-        customer.id === value.id ? { ...customer, ...value } : customer
+        customer.customerId === value.customerId
+          ? { ...customer, ...value }
+          : customer
       )
     );
   }

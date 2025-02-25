@@ -1,9 +1,8 @@
-import useContextProvider from "@/Global/ContextApi/ContextApi";
 import MapService from "@/Global/Helpers/MapService";
-import InnerDebt from "@/Global/Models/InnerDebt";
 import CustomerManager from "@/Global/Services/customers.service";
 import InnerDebtsManager from "@/Global/Services/innerDebts.service";
 import IInnerDebt from "@/Global/ViewModels/InnerDebts/IInerDebts";
+import { ICustomerInnerDebt } from "@/Global/ViewModels/RelationModels/ICustomerInnerDebt";
 import { useEffect, useState } from "react";
 import { Alert } from "react-native";
 
@@ -21,36 +20,30 @@ export default function useInnerDebtsPageService() {
     getAllInnerDebts();
   }, []);
 
-  async function addToInnerDebtsList(value: IInnerDebt) {
-    const customer = await customerManager.getCustomer(value.customerId);
+  async function addToInnerDebtsList(value: ICustomerInnerDebt) {
     const debt = value;
-    if (customer) debt.customer = mapService.mapToICustomer(customer);
     setInnerDebts((prev) => [...prev, debt]);
   }
 
   function deleteFromInnerDebtsList(id: number) {
-    setInnerDebts((prev) => prev.filter((c) => c.id !== id));
+    setInnerDebts((prev) => prev.filter((c) => c.innerDebtId !== id));
   }
 
   async function updateFromInnerDebtsList(value: IInnerDebt) {
-    const customer = await customerManager.getCustomer(value.customerId);
     const debt = value;
-    if (customer) debt.customer = mapService.mapToICustomer(customer);
     setInnerDebts((prev) =>
       prev.map((innerDebt) =>
-        innerDebt.id === value.id ? { ...innerDebt, ...debt } : innerDebt
+        innerDebt.innerDebtId === value.innerDebtId
+          ? { ...innerDebt, ...debt }
+          : innerDebt
       )
     );
   }
 
   async function getAllInnerDebts() {
     const innerDebtsDB = await innerDebtsManager.getAllInnerDebts();
-    const customers = await customerManager.getAllCustomers();
     const innerDebts = innerDebtsDB?.map((c) => {
-      const customer = customers?.find(
-        (customer) => customer.Id === c.CustomerId
-      );
-      return mapService.mapToIInnerDebt(c, customer);
+      return mapService.mapToICustomerInnerDebt(c);
     });
     setInnerDebts(innerDebts as IInnerDebt[]);
   }

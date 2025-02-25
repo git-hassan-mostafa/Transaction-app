@@ -7,6 +7,7 @@ import IDropDownItem from "@/Global/Types/IDropDownItem";
 import { IAddInnerDebtProps } from "@/Global/ViewModels/InnerDebts/IAddInnerDebtsProps";
 import IInnerDebt from "@/Global/ViewModels/InnerDebts/IInerDebts";
 import MapService from "@/Global/Helpers/MapService";
+import { ICustomerInnerDebt } from "@/Global/ViewModels/RelationModels/ICustomerInnerDebt";
 
 export default function useAddInnerDebtsComponentService({
   toggleModal,
@@ -33,7 +34,7 @@ export default function useAddInnerDebtsComponentService({
     const customers = await customerManager.getAllCustomers();
     setCustomers([
       ...(customers?.map((c) => {
-        return { label: c.Name, value: c.Id };
+        return { label: c.Name, value: c.CustomerId };
       }) as IDropDownItem[]),
     ]);
   }
@@ -72,6 +73,8 @@ export default function useAddInnerDebtsComponentService({
       Notes: innerDebt.notes,
       Date: new Date().toISOString(),
     };
+    const customer = await customerManager.getCustomer(innerDebt.customerId);
+    const mappedCustomer = mapService.mapToICustomer(customer || {});
     const result = await innerDebtsManager.addInnerDebt(newInnerDebt);
     if (!result || !result.lastInsertRowId)
       return toggleSnackBar({
@@ -79,8 +82,13 @@ export default function useAddInnerDebtsComponentService({
         text: "حصل خطأ ما , الرجاء اعادة المحاولة ",
         type: "error",
       });
-    innerDebt.id = result?.lastInsertRowId;
-    addToInnerDebtsList(innerDebt);
+    innerDebt.innerDebtId = result?.lastInsertRowId;
+
+    const customerInnerDebt: ICustomerInnerDebt = {
+      ...innerDebt,
+      ...mappedCustomer,
+    };
+    addToInnerDebtsList(customerInnerDebt);
     toggleModal();
   }
 

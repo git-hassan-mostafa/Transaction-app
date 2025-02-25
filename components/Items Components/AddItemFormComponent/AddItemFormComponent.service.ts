@@ -31,7 +31,7 @@ export default function useAddItemFormComponentService({
     setProviders([
       { label: "", value: undefined },
       ...(providers?.map((p) => {
-        return { label: p.Name, value: p.Id };
+        return { label: p.Name, value: p.ProviderId };
       }) as IDropDownItem[]),
     ]);
   }

@@ -1,14 +1,13 @@
-import ICustomer from "../Customers/ICustomer";
+import IItem from "../Items/IItem";
 
 export default interface IInnerDebt {
-  id: number;
+  innerDebtId: number;
   totalPrice: number;
   pricePaid: number;
   date: string;
-  itemsList: string;
-  paymentsList: string;
+  itemsList: IItem[];
+  paymentsList: IItem[]; // to be changed;
   personId: number;
   customerId: number;
   notes: string;
-  customer: ICustomer;
 }

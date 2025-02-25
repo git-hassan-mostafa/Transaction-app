@@ -66,7 +66,7 @@ export default function useAddCustomerFormComponentService({
         text: "حصل خطأ ما , الرجاء اعادة المحاولة ",
         type: "error",
       });
-    customer.id = result?.lastInsertRowId;
+    customer.customerId = result?.lastInsertRowId;
     addToCustomersList(customer);
     toggleModal();
   }

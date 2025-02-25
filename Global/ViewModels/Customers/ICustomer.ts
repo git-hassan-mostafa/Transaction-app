@@ -1,7 +1,7 @@
 import InnerDebt from "@/Global/Models/InnerDebt";
 
 export default interface ICustomer {
-  id: number;
+  customerId: number;
   name: string;
   borrowedPrice: number;
   payedPrice: number;

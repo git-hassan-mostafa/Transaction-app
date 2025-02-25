@@ -86,7 +86,7 @@ export function ProviderFormComponent({
           </View>
           <View style={styles.itemsList}>
             {provider.itemsList?.map((item) => (
-              <View key={item.Id} style={styles.borrowedListItem}>
+              <View key={item.InnerDebtId} style={styles.borrowedListItem}>
                 <ThemedText style={styles.borrowedListText}>
                   {item.TotalPrice}
                 </ThemedText>

@@ -31,7 +31,7 @@ export function ThemedText({
 const styles = StyleSheet.create({
   default: {
     fontSize: 14,
-    fontFamily: Constants.fontFamily.font400Regular,
+    fontFamily: Constants.fontFamily.font600SemiBold,
   },
   defaultSemiBold: {
     fontSize: 16,
@@ -43,12 +43,10 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 32,
-    fontWeight: "bold",
     fontFamily: Constants.fontFamily.font400Regular,
   },
   subtitle: {
     fontSize: 20,
-    fontWeight: "bold",
     fontFamily: Constants.fontFamily.font400Regular,
   },
   link: {
