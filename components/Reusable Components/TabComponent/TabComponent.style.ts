@@ -1,9 +1,6 @@
 import { StyleSheet } from "react-native";
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
   tabContainer: {
     flexDirection: "row",
     borderBottomWidth: 1,
@@ -23,7 +20,6 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   contentContainer: {
-    flex: 1,
     padding: 10,
   },
 });

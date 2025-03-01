@@ -20,7 +20,7 @@ export default function TabComponent({
   const { activeTab, setActiveTab } = useTabComponentService();
 
   return (
-    <View style={styles.container}>
+    <View>
       <ScrollView
         horizontal
         style={styles.tabContainer}
