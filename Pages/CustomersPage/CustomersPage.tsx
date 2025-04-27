@@ -20,14 +20,6 @@ export default function CustomersPage() {
     handleDeleteCustomer,
   } = useCustomersPageService();
 
-  customers?.sort((a, b) => {
-    if (a.name && b.name) {
-      return a.name
-        .toString()
-        .localeCompare(b.name.toString(), undefined, { sensitivity: "base" });
-    }
-    return 0;
-  });
   return (
     <React.Fragment>
       <FlatList

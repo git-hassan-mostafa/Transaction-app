@@ -16,6 +16,7 @@ const Constants = {
   fontFamily: {
     font400Regular: "NotoKufiArabic_400Regular",
     font600SemiBold: "NotoKufiArabic_600SemiBold",
+    font700Bold: "NotoKufiArabic_600SemiBold",
     font800ExtraBold: "NotoKufiArabic_800ExtraBold",
   },
 };

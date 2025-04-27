@@ -60,6 +60,20 @@ export default function useCustomersPageService() {
     setModalVisible((prev) => !prev);
   }
 
+  function sortCustomers() {
+    customers?.sort((a, b) => {
+      if (a.name && b.name) {
+        return a.name
+          .toString()
+          .localeCompare(b.name.toString(), undefined, { sensitivity: "base" });
+      }
+      return 0;
+    });
+  }
+
+  //constructor
+  sortCustomers();
+
   return {
     customers,
     modalVisible,

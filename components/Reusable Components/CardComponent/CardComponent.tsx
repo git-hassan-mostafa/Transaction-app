@@ -9,14 +9,22 @@ export default function CardComponent(props: ICardType) {
   const cardcomponentService = useCardComponentService();
   return (
     <TouchableOpacity
-      style={[styles.container]}
+      style={[styles.container, { borderColor: props.color }]}
       onPress={() => cardcomponentService.onNavigationButtonClick(props.route)}
     >
-      <Icon name={props.icon} color={props.color} style={styles.icon} />
-      <View>
-        <ThemedText style={[styles.title, { color: props.color }]}>
-          {props.title}
-        </ThemedText>
+      <View style={styles.content}>
+        <View
+          style={[
+            styles.iconContainer,
+            { backgroundColor: `${props.color}20` },
+          ]}
+        >
+          <Icon
+            name={props.icon}
+            style={[styles.icon, { color: props.color }]}
+          />
+        </View>
+        <ThemedText style={styles.title}>{props.title}</ThemedText>
       </View>
     </TouchableOpacity>
   );

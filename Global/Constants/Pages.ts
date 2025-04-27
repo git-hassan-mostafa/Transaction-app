@@ -1,4 +1,4 @@
-import CardType from "@/Components/Reusable Components/CardComponent/CardComponent.types";
+import CardType from "../Types/ICardType";
 import Constants from "./Constants";
 
 const pages: CardType[] = [
@@ -24,31 +24,31 @@ const pages: CardType[] = [
     title: "الديون الخارجية",
     route: "outerDebts",
     color: Constants.colors.oil,
-    icon: "credit-card",
+    icon: "money-bill-transfer",
   },
   {
     title: "الديون الداخلية",
     route: "innerDebts",
     color: Constants.colors.red,
-    icon: "wallet",
+    icon: "money-bill-wave",
   },
   {
     route: "providers",
     title: "التجار",
     color: Constants.colors.brown,
-    icon: "truck-arrow-right",
+    icon: "sack-dollar",
   },
   {
     title: "الأشخاص",
     route: "people",
     color: Constants.colors.lighBlue,
-    icon: "people-carry-box",
+    icon: "users",
   },
   {
     title: "النتائج",
     route: "results",
     color: Constants.colors.green,
-    icon: "money-check-dollar",
+    icon: "chart-line",
   },
 ];
 
