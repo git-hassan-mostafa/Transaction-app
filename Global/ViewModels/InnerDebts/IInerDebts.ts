@@ -1,4 +1,5 @@
 import IItem from "../Items/IItem";
+import IInnerDebtPayment from "./IInnerDebtPayment";
 
 export default interface IInnerDebt {
   innerDebtId: number;
@@ -6,7 +7,7 @@ export default interface IInnerDebt {
   pricePaid: number;
   date: string;
   itemsList: IItem[];
-  paymentsList: IItem[]; // to be changed;
+  paymentsList: IInnerDebtPayment[];
   personId: number;
   customerId: number;
   notes: string;

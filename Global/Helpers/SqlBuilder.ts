@@ -1,5 +1,4 @@
-import { SQLiteDatabase, useSQLiteContext } from "expo-sqlite";
-import TableDetails from "../Constants/ColumnsDetails";
+import { SQLiteDatabase } from "expo-sqlite";
 import tableDetails from "../Constants/ColumnsDetails";
 
 export default class SqlBuilder<T> {
@@ -58,6 +57,7 @@ export default class SqlBuilder<T> {
       if (id === -1) this.deleteQuery = this.deleteQuery.replace("{1}", "");
       var whereQuery = `where ${tableId} = ${id}`;
       this.deleteQuery = this.deleteQuery.replace("{1}", whereQuery);
+      console.log(this.deleteQuery);
       const result = await this.db.runAsync(this.deleteQuery);
       return result;
     } catch (error) {
@@ -168,6 +168,9 @@ export default class SqlBuilder<T> {
   }
 
   private getTableId(table: string) {
-    return tableDetails.find((t) => t.name === table)?.id ?? "";
+    return (
+      tableDetails.find((t) => t.name.toLowerCase() === table.toLowerCase())
+        ?.id ?? ""
+    );
   }
 }

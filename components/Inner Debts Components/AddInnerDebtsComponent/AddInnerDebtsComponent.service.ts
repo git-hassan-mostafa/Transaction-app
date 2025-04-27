@@ -10,6 +10,7 @@ import MapService from "@/Global/Helpers/MapService";
 import { ICustomerInnerDebt } from "@/Global/ViewModels/RelationModels/ICustomerInnerDebt";
 
 export default function useAddInnerDebtsComponentService({
+  innerDebtsItemsListService,
   toggleModal,
   addToInnerDebtsList,
 }: IAddInnerDebtProps) {
@@ -18,6 +19,7 @@ export default function useAddInnerDebtsComponentService({
   const innerDebtsManager = new InnerDebtsManager();
   const customerManager = new CustomerManager();
   const mapService = new MapService();
+  const {} = innerDebtsItemsListService;
 
   //states
   const [innerDebt, setInnerDebt] = useState<IInnerDebt>({} as IInnerDebt);

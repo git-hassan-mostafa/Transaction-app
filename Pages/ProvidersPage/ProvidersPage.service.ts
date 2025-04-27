@@ -1,6 +1,4 @@
-import useContextProvider from "@/Global/ContextApi/ContextApi";
 import MapService from "@/Global/Helpers/MapService";
-import Provider from "@/Global/Models/Provider";
 import ProviderManager from "@/Global/Services/provider.service";
 import IProvider from "@/Global/ViewModels/Providers/IProvider";
 import { useEffect, useState } from "react";
@@ -37,7 +35,7 @@ export default function useProvidersPageService() {
   async function getAllProviders() {
     const providersDB = await providerManager.getAllProviders();
     const providers = providersDB?.map((provider) =>
-      mapService.mapToIPerson(provider)
+      mapService.mapToIProvider(provider)
     );
     setProviders(providers as IProvider[]);
   }

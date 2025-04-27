@@ -13,6 +13,8 @@ import { ThemedText } from "../../HelperComponents/ThemedText";
 import ICustomerFormProps from "@/Global/ViewModels/Customers/ICustomerFormProps";
 import TabComponent from "@/Components/Reusable Components/TabComponent/TabComponent";
 import Constants from "@/Global/Constants/Constants";
+import CustomerDebtsListComponent from "./CustomerDebtsListComponent";
+import ICustomer from "@/Global/ViewModels/Customers/ICustomer";
 export function CustomerFormComponent({
   id,
   updateFromCustomersList,
@@ -31,54 +33,13 @@ export function CustomerFormComponent({
     updateFromCustomersList,
   });
 
-  const options: Intl.DateTimeFormatOptions = {
-    year: "numeric",
-    month: "numeric",
-    day: "numeric",
-    hour12: true,
-    hour: "2-digit",
-    minute: "2-digit",
-  };
-
   return (
     <View style={styles.container}>
       <TabComponent titles={["الديون", "التفاصيل"]}>
-        <ScrollView style={styles.customerScrollView}>
-          {(customer?.borrowList?.length as number) > 0 && (
-            <View style={styles.borrowedListContainer}>
-              <View>
-                <ThemedText style={styles.borrowedListTitle}>
-                  قائمة الديون
-                </ThemedText>
-              </View>
-              <View style={styles.borrowedList}>
-                {customer.borrowList?.map((item) => {
-                  const totalPrice = formatNumber(item.TotalPrice);
-                  const pricePaid = formatNumber(item.PricePaid);
-                  return (
-                    <View
-                      key={item.InnerDebtId}
-                      style={styles.borrowedListItem}
-                    >
-                      <ThemedText style={[{ color: Constants.colors.red }]}>
-                        {totalPrice}
-                      </ThemedText>
-                      <ThemedText style={[{ color: Constants.colors.green }]}>
-                        {pricePaid}
-                      </ThemedText>
-                      <ThemedText type="default">
-                        {new Date(item.Date ?? "")?.toLocaleDateString(
-                          "ar-lb",
-                          options
-                        )}
-                      </ThemedText>
-                    </View>
-                  );
-                })}
-              </View>
-            </View>
-          )}
-        </ScrollView>
+        <CustomerDebtsListComponent
+          id={id}
+          updateFromCustomersList={updateFromCustomersList}
+        />
         <View>
           <View style={styles.pricesRow}>
             <View style={[styles.pricesContainer, styles.borrowedConainer]}>

@@ -6,6 +6,10 @@ const dropTables = `
   -- drop table Customers;
   -- drop table InnerDebts;
   -- drop table OuterDebts;
+  -- drop table InnerDebtPayments;
+  -- drop table InnerDebtItems;
+  -- drop table OuterDebtItems;
+  -- drop table OuterDebtPayments;
   `;
 const createTables = `
 -- Ensure foreign key support is enabled
@@ -21,8 +25,6 @@ CREATE TABLE IF NOT EXISTS People (
 CREATE TABLE IF NOT EXISTS Providers (
     ProviderId INTEGER PRIMARY KEY AUTOINCREMENT,
     Name TEXT NOT NULL,
-    BorrowedPrice REAL NOT NULL,
-    PayedPrice REAL NOT NULL,
     PhoneNumber TEXT UNIQUE,
     Notes TEXT DEFAULT NULL
 );
@@ -70,6 +72,44 @@ CREATE TABLE IF NOT EXISTS OuterDebts (
     ProviderId INTEGER NOT NULL,
     FOREIGN KEY (ProviderId) REFERENCES Providers (ProviderId) ON DELETE CASCADE,
     FOREIGN KEY (PersonId) REFERENCES People (PersonId) ON DELETE CASCADE
+);
+
+-- Table: InnerDebtPayments
+CREATE TABLE IF NOT EXISTS InnerDebtPayments (
+    InnerDebtPaymentId INTEGER PRIMARY KEY AUTOINCREMENT,
+    Amount REAL NOT NULL,
+    Date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    InnerDebtId INTEGER NOT NULL,
+    FOREIGN KEY (InnerDebtId) REFERENCES InnerDebts (InnerDebtId) ON DELETE CASCADE
+);
+
+-- Table: InnerDebtItems
+CREATE TABLE IF NOT EXISTS InnerDebtItems (
+    InnerDebtItemId INTEGER PRIMARY KEY AUTOINCREMENT,
+    Quantity INTEGER NOT NULL,
+    InnerDebtId INTEGER NOT NULL,
+    ItemId INTEGER NOT NULL,
+    FOREIGN KEY (InnerDebtId) REFERENCES InnerDebts (InnerDebtId) ON DELETE CASCADE,
+    FOREIGN KEY (ItemId) REFERENCES Items (ItemId) ON DELETE CASCADE
+);
+
+-- Table: OuterDebtPayments
+CREATE TABLE IF NOT EXISTS OuterDebtPayments (
+    OuterDebtPaymentId INTEGER PRIMARY KEY AUTOINCREMENT,
+    Amount REAL NOT NULL,
+    Date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    OuterDebtId INTEGER NOT NULL,
+    FOREIGN KEY (OuterDebtId) REFERENCES OuterDebts (OuterDebtId) ON DELETE CASCADE
+);
+
+-- Table: OuterDebtItems
+CREATE TABLE IF NOT EXISTS OuterDebtItems (
+    OuterDebtItemId INTEGER PRIMARY KEY AUTOINCREMENT,
+    Quantity INTEGER NOT NULL,
+    OuterDebtId INTEGER NOT NULL,
+    ItemId INTEGER NOT NULL,
+    FOREIGN KEY (OuterDebtId) REFERENCES OuterDebts (OuterDebtId) ON DELETE CASCADE,
+    FOREIGN KEY (ItemId) REFERENCES Items (ItemId) ON DELETE CASCADE
 );
 `;
 const createTablesQuery = OtherQueries + dropTables + createTables;

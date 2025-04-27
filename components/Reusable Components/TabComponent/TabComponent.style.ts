@@ -20,7 +20,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   contentContainer: {
-    padding: 10,
+    padding: 5,
   },
 });
 

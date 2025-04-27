@@ -72,6 +72,7 @@ export default class InnerDebtsManager extends AbstractManager {
       console.log("error ", error);
     }
   }
+
   async deleteInnerDebt(id: number) {
     try {
       const sqlBuilder = new SqlBuilder<InnerDebt>(this.db, this.table);

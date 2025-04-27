@@ -46,7 +46,7 @@ export default function useItemFormComponentService({
 
   function setItemName(value: string) {
     setItem((prev) => {
-      return { ...prev, name: value };
+      return { ...prev, itemName: value };
     });
   }
 

@@ -35,7 +35,7 @@ export default function AddItemFormComponent({
           style={styles.textInput as StyleProp<TextStyle>}
           placeholder="أدخل الإسم"
           placeholderTextColor="#999"
-          value={item.name}
+          value={item.itemName}
           onChangeText={setItemName}
         />
       </View>

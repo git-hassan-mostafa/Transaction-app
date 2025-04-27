@@ -55,8 +55,6 @@ export default function useAddCustomerFormComponentService({
     const newCustomer: Customer = {
       Name: customer?.name.trim(),
       PhoneNumber: customer.phoneNumber.trim(),
-      BorrowedPrice: 0,
-      PayedPrice: 0,
       Notes: customer.notes,
     };
     const result = await customerManager.addCustomer(newCustomer);

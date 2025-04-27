@@ -59,8 +59,6 @@ export default function useAddProviderFormComponentService({
       const newProvider: Provider = {
         Name: provider?.name.trim(),
         PhoneNumber: provider.phoneNumber.trim(),
-        BorrowedPrice: 0,
-        PayedPrice: 0,
         Notes: provider.notes,
       };
       const result = await providerManager.addProvider(newProvider);

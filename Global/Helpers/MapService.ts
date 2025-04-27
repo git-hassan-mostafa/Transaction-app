@@ -36,7 +36,7 @@ export default class MapService {
   mapToItem(item: IItem): Item {
     return {
       ItemId: item.id,
-      Name: item.name,
+      Name: item.itemName,
       Quantity: item.quantity,
       Price: item.price,
       ProviderId: item.providerId,
@@ -47,7 +47,7 @@ export default class MapService {
   mapToIItem(item: Item): IItem {
     return {
       id: item.ItemId as number,
-      name: item.Name as string,
+      itemName: item.Name as string,
       quantity: item.Quantity as number,
       price: item.Price as number,
       providerId: item.ProviderId as number,
@@ -75,8 +75,6 @@ export default class MapService {
     return {
       ProviderId: provider.id as number,
       Name: provider.name as string,
-      BorrowedPrice: provider.borrowedPrice as number,
-      PayedPrice: provider.payedPrice as number,
       PhoneNumber: provider.phoneNumber as string,
       Notes: provider.notes as string,
     };
@@ -86,8 +84,8 @@ export default class MapService {
     return {
       id: provider.ProviderId as number,
       name: provider.Name as string,
-      borrowedPrice: provider.BorrowedPrice as number,
-      payedPrice: provider.PayedPrice as number,
+      borrowedPrice: 0,
+      payedPrice: 0,
       phoneNumber: provider.PhoneNumber as string,
       notes: provider.Notes as string,
       itemsList: [],

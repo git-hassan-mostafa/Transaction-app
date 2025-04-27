@@ -1,6 +1,6 @@
 export default interface IItem {
   id: number;
-  name: string;
+  itemName: string;
   quantity: number;
   price: number;
   providerId: number;

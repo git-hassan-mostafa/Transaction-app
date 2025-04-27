@@ -6,7 +6,7 @@ const styles = StyleSheet.create({
     height: 50,
     borderColor: "gray",
     borderWidth: 0.5,
-    borderRadius: 8,
+    borderRadius: 5,
     paddingHorizontal: 5,
   },
   placeholderStyle: {

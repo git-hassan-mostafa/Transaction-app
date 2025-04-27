@@ -17,6 +17,16 @@ export default function useCustomerFormComponentService({
   // states
   const [customer, setCustomer] = useState<ICustomer>({} as ICustomer);
 
+  //date options
+  const options: Intl.DateTimeFormatOptions = {
+    year: "numeric",
+    month: "numeric",
+    day: "numeric",
+    hour12: true,
+    hour: "2-digit",
+    minute: "2-digit",
+  };
+
   useEffect(() => {
     getCustomer().then(() => {
       customerManager.getCustomerDebts(id).then((data) => {
@@ -93,5 +103,6 @@ export default function useCustomerFormComponentService({
     updateCustomerPhoneNumber,
     updateCustomerNotes,
     formatNumber,
+    options,
   };
 }

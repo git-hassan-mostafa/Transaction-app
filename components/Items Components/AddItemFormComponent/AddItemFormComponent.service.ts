@@ -38,7 +38,7 @@ export default function useAddItemFormComponentService({
 
   function setItemName(value: string) {
     setItem((prev) => {
-      return { ...prev, name: value };
+      return { ...prev, itemName: value };
     });
   }
 
@@ -67,7 +67,7 @@ export default function useAddItemFormComponentService({
   }
 
   async function addItem() {
-    if (!item.name) {
+    if (!item.itemName) {
       toggleSnackBar({
         visible: true,
         text: "الرجاء ادخال اسم البضاعة",
@@ -84,7 +84,7 @@ export default function useAddItemFormComponentService({
       return;
     }
     const newItem: Item = {
-      Name: item?.name.trim(),
+      Name: item?.itemName.trim(),
       Quantity: item.quantity,
       Price: item.price,
       ProviderId: item.providerId,

@@ -33,7 +33,7 @@ export function ItemFormComponent({ id, updateFromItemsList }: IItemFormProps) {
           style={styles.textInput as StyleProp<TextStyle>}
           placeholder="أدخل الإسم"
           placeholderTextColor="#999"
-          value={item.name}
+          value={item.itemName}
           onChangeText={setItemName}
           onEndEditing={updateItemName}
         />

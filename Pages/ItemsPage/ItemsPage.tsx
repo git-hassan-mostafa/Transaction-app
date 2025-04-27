@@ -22,10 +22,12 @@ export default function ItemsPage() {
   } = useItemsPageService();
 
   items?.sort((a, b) => {
-    if (a.name && b.name) {
-      return a.name.toString().localeCompare(b.name.toString(), undefined, {
-        sensitivity: "base",
-      });
+    if (a.itemName && b.itemName) {
+      return a.itemName
+        .toString()
+        .localeCompare(b.itemName.toString(), undefined, {
+          sensitivity: "base",
+        });
     }
     return 0;
   });
@@ -43,7 +45,7 @@ export default function ItemsPage() {
             handleDelete={handleDeleteItem}
             headerColor={Constants.colors.orange}
             iconColor={Constants.colors.lightGray}
-            headerText={item.name as string}
+            headerText={item.itemName as string}
           >
             <ItemFormComponent
               id={item.id as number}
