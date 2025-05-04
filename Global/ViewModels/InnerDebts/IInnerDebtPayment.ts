@@ -1,6 +1,6 @@
 export default interface IInnerDebtPayment {
   innerDebtPaymentId: number;
-  amount: number;
-  date: string;
-  innerDebtId: number;
+  innerDebtPaymentAmount: number;
+  innerDebtPaymentDate: string;
+  innerDebtPayment_InnerDebtId: number;
 }

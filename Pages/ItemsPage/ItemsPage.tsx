@@ -37,18 +37,18 @@ export default function ItemsPage() {
         style={styles.flatList}
         data={items}
         numColumns={1}
-        keyExtractor={(item) => item.id?.toString() as string}
+        keyExtractor={(item) => item.itemId?.toString() as string}
         renderItem={({ item }: { item: IItem }) => (
           <AccordionComponent
-            key={item.id}
-            id={item.id as number}
+            key={item.itemId}
+            id={item.itemId as number}
             handleDelete={handleDeleteItem}
             headerColor={Constants.colors.orange}
             iconColor={Constants.colors.lightGray}
             headerText={item.itemName as string}
           >
             <ItemFormComponent
-              id={item.id as number}
+              id={item.itemId as number}
               updateFromItemsList={updateFromItemsList}
             />
           </AccordionComponent>

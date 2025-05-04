@@ -31,7 +31,7 @@ export default function AddCustomerFormComponent({
           style={styles.textInput as StyleProp<TextStyle>}
           placeholder="أدخل الإسم"
           placeholderTextColor="#999"
-          value={customer.name}
+          value={customer.customerName}
           onChangeText={setCustomerName}
         />
       </View>
@@ -42,7 +42,7 @@ export default function AddCustomerFormComponent({
           style={styles.input as StyleProp<TextStyle>}
           placeholder="أدخل رقم الهاتف"
           placeholderTextColor="#999"
-          value={customer.phoneNumber}
+          value={customer.customerPhoneNumber}
           keyboardType="phone-pad"
           textContentType="telephoneNumber"
           onChangeText={setCustomerPhoneNumber}
@@ -54,7 +54,7 @@ export default function AddCustomerFormComponent({
           style={[styles.input, styles.textArea] as StyleProp<TextStyle>}
           placeholder="أدخل الملاحظات"
           placeholderTextColor="#999"
-          value={customer.notes}
+          value={customer.customerNotes}
           onChangeText={setCustomerNotes}
           multiline
         />

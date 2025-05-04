@@ -32,6 +32,13 @@ const styles = StyleSheet.create({
     height: 100,
     textAlignVertical: "top",
   },
+  errorMessage: {
+    color: Constants.colors.red,
+    fontSize: 12,
+    textAlign: "right",
+    writingDirection: "rtl",
+    fontFamily: Constants.fontFamily.font400Regular,
+  },
   saveButton: {
     backgroundColor: Constants.colors.red,
     borderRadius: 10,

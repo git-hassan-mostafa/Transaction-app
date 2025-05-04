@@ -1,50 +1,45 @@
+import MapService from "@/Global/Helpers/MapService";
 import ItemManager from "@/Global/Services/items.service";
 import IDropDownItem from "@/Global/Types/IDropDownItem";
-import InnerDebtsItemItems from "@/Global/ViewModels/RelationModels/IInerDebtsItemItems";
+import IItem from "@/Global/ViewModels/Items/IItem";
+import IInnerDebtItem_IInnerDebt_IItem from "@/Global/ViewModels/RelationModels/IInnerDebtItem_IInnerDebt_IItem";
 import { useEffect, useState } from "react";
 
 export default function useAddInnerDebtsItemsListComponentService() {
   //managers
   const itemManager = new ItemManager();
-
+  const map = new MapService();
   //states
-  const [innerDebtsItems, setInnerDebtsItems] = useState<InnerDebtsItemItems[]>(
-    []
-  );
+  const [items, setItems] = useState<IItem[]>([]);
+  const [dropDownItems, setDropDownItems] = useState<IDropDownItem[]>([]);
+  const [innerDebtsItems, setInnerDebtsItems] = useState<
+    IInnerDebtItem_IInnerDebt_IItem[]
+  >([]);
   const [showAddItem, setShowAddItem] = useState(false);
-  const [newInnerDebtsItem, setNewInnerDebtsItems] =
-    useState<InnerDebtsItemItems>({} as InnerDebtsItemItems);
+  var newInnerDebtsItem: IInnerDebtItem_IInnerDebt_IItem =
+    {} as IInnerDebtItem_IInnerDebt_IItem;
+
   useEffect(() => {
     getAllItems();
   }, []);
 
-  const [items, setItems] = useState<IDropDownItem[]>([]);
-
   async function getAllItems() {
     const itemsDB = await itemManager.getAllItems();
-    setItems([
-      ...(itemsDB?.map((i) => {
-        return { label: i.Name, value: i.ItemId };
-      }) as IDropDownItem[]),
-    ]);
-  }
-
-  function setNewItemPrice(value: string) {
-    setNewInnerDebtsItems((prev) => ({ ...prev, price: Number(value) }));
+    const items = itemsDB?.map((i) => map.mapToIItem(i)) || [];
+    setItems(items as IItem[]);
+    setDropDownItems(
+      items.map((i) => ({ value: i.itemId, label: i.itemName }))
+    );
   }
 
   function setNewItemQuantity(value: string) {
-    setNewInnerDebtsItems((prev) => ({
-      ...prev,
-      innerDebtQuantity: Number(value),
-    }));
+    newInnerDebtsItem.innerDebtItemQuantity = Number(value);
   }
 
   function setInnerDebtsItem(id: number) {
-    const itemName = items.find((i) => i.value === id)?.label.toString() || "";
-    setNewInnerDebtsItems((prev) => {
-      return { ...prev, id, innerDebtId: id, itemName };
-    });
+    const currentItem = items.find((i) => i.itemId === id);
+    newInnerDebtsItem.innerDebtItem_ItemId = id;
+    newInnerDebtsItem.itemName = currentItem?.itemName || "";
   }
 
   function toggleAddItem(value: boolean) {
@@ -52,17 +47,28 @@ export default function useAddInnerDebtsItemsListComponentService() {
   }
 
   function handleAddItem() {
+    const currentItem = items.find(
+      (i) => i.itemId === newInnerDebtsItem.innerDebtItem_ItemId
+    );
+    newInnerDebtsItem.innerDebtItemId = Date.now();
+    newInnerDebtsItem.itemPrice =
+      newInnerDebtsItem.innerDebtItemQuantity * (currentItem?.itemPrice || 0);
     setInnerDebtsItems((prev) => [...prev, newInnerDebtsItem]);
     setShowAddItem(false);
+
+    // bug in quantity
   }
 
-  function handleDeleteItem() {}
+  function handleDeleteItem(id: number) {
+    setInnerDebtsItems((prev) => prev.filter((i) => i.innerDebtItemId !== id));
+  }
+
   return {
     items,
+    dropDownItems,
     innerDebtsItems,
     newInnerDebtsItem,
     setInnerDebtsItem,
-    setNewItemPrice,
     setNewItemQuantity,
     showAddItem,
     handleAddItem,

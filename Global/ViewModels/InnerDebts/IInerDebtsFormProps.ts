@@ -1,6 +1,11 @@
-import IInnerDebt from "./IInerDebts";
+import { ICustomer_IInnerDebt } from "../RelationModels/ICustomer_IInnerDebt";
+import IInnerDebtsItemsListProps from "./IInnerDebtsItemsListProps";
 
 export interface IInnerDebtFormProps {
   id: number;
-  updateFromInnerDebtsList: (innerDebt: IInnerDebt) => void;
+  updateFromInnerDebtsList: (innerDebt: ICustomer_IInnerDebt) => void;
+}
+
+export interface IInnerDebtsFormServiceProps extends IInnerDebtFormProps {
+  innerDebtsItemsListService: IInnerDebtsItemsListProps;
 }

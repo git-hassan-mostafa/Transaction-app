@@ -21,18 +21,18 @@ export default function useAddPeopleFormComponentService({
 
   function setPersonName(value: string) {
     setPerson((prev) => {
-      return { ...prev, name: value };
+      return { ...prev, personName: value };
     });
   }
 
   function setPersonPhoneNumber(value: string) {
     setPerson((prev) => {
-      return { ...prev, phoneNumber: value };
+      return { ...prev, personPhoneNumber: value };
     });
   }
 
   async function addPerson() {
-    if (!person.name) {
+    if (!person.personName) {
       toggleSnackBar({
         visible: true,
         text: "الرجاء ادخال اسم الزبون",
@@ -40,7 +40,7 @@ export default function useAddPeopleFormComponentService({
       });
       return;
     }
-    if (!person.phoneNumber) {
+    if (!person.personPhoneNumber) {
       toggleSnackBar({
         visible: true,
         text: "الرجاء ادخال رقم الهاتف ",
@@ -49,8 +49,8 @@ export default function useAddPeopleFormComponentService({
       return;
     }
     const newPerson: Person = {
-      Name: person?.name.trim(),
-      PhoneNumber: person.phoneNumber.trim(),
+      Name: person?.personName.trim(),
+      PhoneNumber: person.personPhoneNumber.trim(),
     };
     const result = await peopleManager.addPerson(newPerson);
     if (!result || !result.lastInsertRowId)

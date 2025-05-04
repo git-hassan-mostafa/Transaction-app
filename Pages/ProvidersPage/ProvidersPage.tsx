@@ -22,10 +22,12 @@ export default function ProvidersPage() {
   } = useProvidersPageService();
 
   providers.sort((a, b) => {
-    if (a.name && b.name) {
-      return a.name.toString().localeCompare(b.name.toString(), undefined, {
-        sensitivity: "base",
-      });
+    if (a.providerName && b.providerName) {
+      return a.providerName
+        .toString()
+        .localeCompare(b.providerName.toString(), undefined, {
+          sensitivity: "base",
+        });
     }
     return 0;
   });
@@ -36,18 +38,18 @@ export default function ProvidersPage() {
         style={styles.flatList}
         data={providers}
         numColumns={1}
-        keyExtractor={(item) => item.id?.toString() as string}
+        keyExtractor={(item) => item.providerId?.toString() as string}
         renderItem={({ item }: { item: IProvider }) => (
           <AccordionComponent
-            key={item.id}
+            key={item.providerId}
             headerColor={Constants.colors.brown}
             iconColor={Constants.colors.lightGray}
-            headerText={item.name as string}
-            id={item.id as number}
+            headerText={item.providerName as string}
+            id={item.providerId as number}
             handleDelete={handleDeleteProvider}
           >
             <ProviderFormComponent
-              id={item.id as number}
+              id={item.providerId as number}
               deleteFromProvidersList={deleteFromProvidersList}
               updateFromProvidersList={updateFromProvidersList}
             />

@@ -32,7 +32,7 @@ export default function CustomersPage() {
             key={item.customerId}
             headerColor={Constants.colors.blue}
             iconColor={Constants.colors.lightGray}
-            headerText={item.name as string}
+            headerText={item.customerName as string}
             id={item.customerId as number}
             handleDelete={handleDeleteCustomer}
           >

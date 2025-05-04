@@ -31,13 +31,13 @@ export default function usePeopleFormComponentService({
 
   function setPersonName(value: string) {
     setPerson((prev) => {
-      return { ...prev, name: value };
+      return { ...prev, personName: value };
     });
   }
 
   function setPersonPhoneNumber(value: string) {
     setPerson((prev) => {
-      return { ...prev, phoneNumber: value };
+      return { ...prev, personPhoneNumber: value };
     });
   }
 
@@ -51,8 +51,8 @@ export default function usePeopleFormComponentService({
 
   async function updatePerson() {
     person.id = id;
-    person.name = person.name?.trim();
-    person.phoneNumber = person.phoneNumber?.trim();
+    person.personName = person.personName?.trim();
+    person.personPhoneNumber = person.personPhoneNumber?.trim();
     const personDB = mapService.mapToPerson(person);
     const result = await peopleManager.updatePerson(personDB);
     if ((result?.changes || 0) > 0) updateFromPeopleList(person);

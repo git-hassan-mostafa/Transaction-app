@@ -15,7 +15,7 @@ export default class ItemManager extends AbstractManager {
       const items = await sqlBuilder.select().executeAsync();
       return items as Item[];
     } catch (error) {
-      console.log("error ", error);
+      console.log("error getAllItems", error);
     }
   }
 
@@ -25,7 +25,7 @@ export default class ItemManager extends AbstractManager {
       const item = await sqlBuilder.select().where({ ItemId: id }).firstAsync();
       return item;
     } catch (error) {
-      console.log("error ", error);
+      console.log("error getItem", error);
     }
   }
 
@@ -35,7 +35,7 @@ export default class ItemManager extends AbstractManager {
       const result = await sqlBuilder.insert(item);
       return result;
     } catch (error) {
-      console.log("error ", error);
+      console.log("error addItem", error);
     }
   }
 
@@ -48,7 +48,7 @@ export default class ItemManager extends AbstractManager {
         .executeAsync();
       return result as SQLiteRunResult;
     } catch (error) {
-      console.log("error ", error);
+      console.log("error updateItem", error);
     }
   }
 
@@ -61,7 +61,7 @@ export default class ItemManager extends AbstractManager {
         .executeAsync();
       return result as SQLiteRunResult;
     } catch (error) {
-      console.log("error ", error);
+      console.log("error updateProviderId", error);
     }
   }
 
@@ -71,7 +71,7 @@ export default class ItemManager extends AbstractManager {
       const result = await sqlBuilder.delete(id);
       return result;
     } catch (error) {
-      console.log("error ", error);
+      console.log("error deleteItem", error);
     }
   }
 }

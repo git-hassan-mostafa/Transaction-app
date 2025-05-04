@@ -62,10 +62,12 @@ export default function useCustomersPageService() {
 
   function sortCustomers() {
     customers?.sort((a, b) => {
-      if (a.name && b.name) {
-        return a.name
+      if (a.customerName && b.customerName) {
+        return a.customerName
           .toString()
-          .localeCompare(b.name.toString(), undefined, { sensitivity: "base" });
+          .localeCompare(b.customerName.toString(), undefined, {
+            sensitivity: "base",
+          });
       }
       return 0;
     });

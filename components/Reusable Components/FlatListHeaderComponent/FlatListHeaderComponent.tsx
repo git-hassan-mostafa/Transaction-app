@@ -18,19 +18,19 @@ export default function FlatListHeaderComponent() {
         <ThemedText style={styles.total}>$200.00</ThemedText>
       </View>
       <View style={styles.statsContainer}>
-        <View style={[styles.statItem, styles.incomeStat]}>
-          <View style={styles.statIconContainer}>
-            <ThemedText style={styles.statIcon}>↑</ThemedText>
-          </View>
-          <ThemedText style={styles.statValue}>$100.00</ThemedText>
-          <ThemedText style={styles.statLabel}>الدخل</ThemedText>
-        </View>
         <View style={[styles.statItem, styles.expenseStat]}>
           <View style={styles.statIconContainer}>
             <ThemedText style={styles.statIcon}>↓</ThemedText>
           </View>
           <ThemedText style={styles.statValue}>$100.00</ThemedText>
-          <ThemedText style={styles.statLabel}>المصروفات</ThemedText>
+          <ThemedText style={styles.statLabel}>عليك</ThemedText>
+        </View>
+        <View style={[styles.statItem, styles.incomeStat]}>
+          <View style={styles.statIconContainer}>
+            <ThemedText style={styles.statIcon}>↑</ThemedText>
+          </View>
+          <ThemedText style={styles.statValue}>$100.00</ThemedText>
+          <ThemedText style={styles.statLabel}>لك</ThemedText>
         </View>
       </View>
     </LinearGradient>

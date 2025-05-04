@@ -5,6 +5,7 @@ import CustomerManager from "@/Global/Services/customers.service";
 import ICustomerFormProps from "@/Global/ViewModels/Customers/ICustomerFormProps";
 import ICustomer from "@/Global/ViewModels/Customers/ICustomer";
 import MapService from "@/Global/Helpers/MapService";
+import { ICustomer_IInerDebt_IInnerDebtItem_IItem } from "@/Global/ViewModels/RelationModels/ICustomer_IInerDebt_IInnerDebtItem_IItem";
 
 export default function useCustomerFormComponentService({
   id,
@@ -16,26 +17,27 @@ export default function useCustomerFormComponentService({
 
   // states
   const [customer, setCustomer] = useState<ICustomer>({} as ICustomer);
+  const [borrowList, setBorrowList] = useState<
+    ICustomer_IInerDebt_IInnerDebtItem_IItem[]
+  >([]);
 
   //date options
   const options: Intl.DateTimeFormatOptions = {
     year: "numeric",
     month: "numeric",
     day: "numeric",
-    hour12: true,
+    hour12: false,
     hour: "2-digit",
     minute: "2-digit",
   };
 
   useEffect(() => {
-    getCustomer().then(() => {
-      customerManager.getCustomerDebts(id).then((data) => {
-        setCustomer((prev) => {
-          return { ...prev, borrowList: data as InnerDebt[] };
-        });
-      });
-    });
+    getAllData();
   }, []);
+
+  async function getAllData() {
+    await Promise.all([getCustomer(), getBorrowList()]);
+  }
 
   async function getCustomer() {
     const customerDB = await customerManager.getCustomer(id);
@@ -45,21 +47,35 @@ export default function useCustomerFormComponentService({
     return customer;
   }
 
+  async function getBorrowList() {
+    const borrowListDB = await customerManager.getCustomerBorrowList(id);
+    const mappedBorrowList = borrowListDB?.map((b) => {
+      const result =
+        mapService.mapTo_IICustomer_IInerDebt_IInnerDebtItem_IItem(b);
+      result.innerDebtItemTotalPrice =
+        result.itemPrice * result.innerDebtItemQuantity;
+      return result;
+    });
+    setBorrowList(
+      mappedBorrowList as ICustomer_IInerDebt_IInnerDebtItem_IItem[]
+    );
+  }
+
   function setCustomerName(value: string) {
     setCustomer((prev) => {
-      return { ...prev, name: value };
+      return { ...prev, customerName: value };
     });
   }
 
   function setCustomerPhoneNumber(value: string) {
     setCustomer((prev) => {
-      return { ...prev, phoneNumber: value };
+      return { ...prev, customerPhoneNumber: value };
     });
   }
 
   function setCustomerNotes(value: string) {
     setCustomer((prev) => {
-      return { ...prev, notes: value };
+      return { ...prev, customerNotes: value };
     });
   }
 
@@ -84,9 +100,9 @@ export default function useCustomerFormComponentService({
 
   function validateCustomerFields(customer: ICustomer) {
     customer.customerId = id;
-    customer.name = customer.name.trim();
-    customer.phoneNumber = customer.phoneNumber.trim();
-    customer.notes = customer.notes?.trim();
+    customer.customerName = customer.customerName.trim();
+    customer.customerPhoneNumber = customer.customerPhoneNumber.trim();
+    customer.customerNotes = customer.customerNotes?.trim();
   }
 
   const formatNumber = (number: number | undefined) => {
@@ -96,6 +112,8 @@ export default function useCustomerFormComponentService({
 
   return {
     customer,
+    borrowList,
+    options,
     setCustomerName,
     setCustomerPhoneNumber,
     setCustomerNotes,
@@ -103,6 +121,5 @@ export default function useCustomerFormComponentService({
     updateCustomerPhoneNumber,
     updateCustomerNotes,
     formatNumber,
-    options,
   };
 }

@@ -5,9 +5,9 @@ import styles from "./CustomDropDownComponent.style";
 import IDropDownType from "@/Global/Types/IDropDownType";
 
 export default function CustomDropDown(props: IDropDownType) {
-  props.data.sort((a, b) =>
+  props?.data?.sort((a, b) =>
     a.label
-      .toLocaleString()
+      ?.toLocaleString()
       .localeCompare(b.label.toString(), undefined, { sensitivity: "base" })
   );
 

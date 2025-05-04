@@ -1,8 +1,6 @@
 import MapService from "@/Global/Helpers/MapService";
-import CustomerManager from "@/Global/Services/customers.service";
 import InnerDebtsManager from "@/Global/Services/innerDebts.service";
-import IInnerDebt from "@/Global/ViewModels/InnerDebts/IInerDebts";
-import { ICustomerInnerDebt } from "@/Global/ViewModels/RelationModels/ICustomerInnerDebt";
+import { ICustomer_IInnerDebt } from "@/Global/ViewModels/RelationModels/ICustomer_IInnerDebt";
 import { useEffect, useState } from "react";
 import { Alert } from "react-native";
 
@@ -10,18 +8,16 @@ export default function useInnerDebtsPageService() {
   //services
   const innerDebtsManager = new InnerDebtsManager();
   const mapService = new MapService();
-  const customerManager = new CustomerManager();
 
   //states
-  const [innerDebts, setInnerDebts] = useState<IInnerDebt[]>([]);
+  const [innerDebts, setInnerDebts] = useState<ICustomer_IInnerDebt[]>([]);
   const [modalVisible, setModalVisible] = useState(false);
 
   useEffect(() => {
     getAllInnerDebts();
   }, []);
 
-  async function addToInnerDebtsList(value: ICustomerInnerDebt) {
-    const debt = value;
+  async function addToInnerDebtsList(debt: ICustomer_IInnerDebt) {
     setInnerDebts((prev) => [...prev, debt]);
   }
 
@@ -29,7 +25,7 @@ export default function useInnerDebtsPageService() {
     setInnerDebts((prev) => prev.filter((c) => c.innerDebtId !== id));
   }
 
-  async function updateFromInnerDebtsList(value: IInnerDebt) {
+  async function updateFromInnerDebtsList(value: ICustomer_IInnerDebt) {
     const debt = value;
     setInnerDebts((prev) =>
       prev.map((innerDebt) =>
@@ -43,9 +39,9 @@ export default function useInnerDebtsPageService() {
   async function getAllInnerDebts() {
     const innerDebtsDB = await innerDebtsManager.getAllInnerDebts();
     const innerDebts = innerDebtsDB?.map((c) => {
-      return mapService.mapToICustomerInnerDebt(c);
+      return mapService.mapToICustomer_IInnerDebt(c);
     });
-    setInnerDebts(innerDebts as IInnerDebt[]);
+    setInnerDebts(innerDebts as ICustomer_IInnerDebt[]);
   }
 
   async function handleDeleteInnerDebt(id: number) {

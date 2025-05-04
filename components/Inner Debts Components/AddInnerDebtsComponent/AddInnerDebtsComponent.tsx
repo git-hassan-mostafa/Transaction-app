@@ -29,9 +29,9 @@ export default function AddInnerDebtsComponent(props: IAddInnerDebtProps) {
           <View style={styles.row}>
             <ThemedText style={styles.label}>الزبون</ThemedText>
             <CustomDropDown
-              value={service.innerDebt.customerId as number}
+              value={service.innerDebt.innerDebt_CustomerId as number}
               setValue={(value) => service.setCustomer(value as number)}
-              data={service.customers}
+              data={service.customersDropDown}
             />
           </View>
           <View style={styles.row}>
@@ -40,7 +40,7 @@ export default function AddInnerDebtsComponent(props: IAddInnerDebtProps) {
               style={styles.input as StyleProp<TextStyle>}
               placeholder="أدخل السعر الكلي"
               placeholderTextColor="#999"
-              value={service.innerDebt.totalPrice?.toString()}
+              value={service.innerDebt.innerDebtTotalPrice?.toString()}
               keyboardType="numeric"
               onChangeText={(text) => service.setTotalPrice(text)}
             />
@@ -51,7 +51,7 @@ export default function AddInnerDebtsComponent(props: IAddInnerDebtProps) {
               style={styles.input as StyleProp<TextStyle>}
               placeholder="أدخل السعر المدفوع"
               placeholderTextColor="#999"
-              value={service.innerDebt.pricePaid?.toString()}
+              value={service.innerDebt.innerDebtPricePaid?.toString()}
               keyboardType="numeric"
               onChangeText={(text) => service.setPricePaid(text)}
             />
@@ -64,12 +64,16 @@ export default function AddInnerDebtsComponent(props: IAddInnerDebtProps) {
               }
               placeholder=" أدخل الملاحظات"
               placeholderTextColor="#999"
-              value={service.innerDebt.notes}
+              value={service.innerDebt.innerDebtNotes}
               onChangeText={service.setNotes}
             />
           </View>
           <View style={styles.row}>
-            <ThemedText></ThemedText>
+            {service.validationError.visible && (
+              <ThemedText style={styles.errorMessage}>
+                *{service.validationError.text}
+              </ThemedText>
+            )}
           </View>
           <TouchableOpacity>
             <Button

@@ -26,7 +26,7 @@ export default function PeopleFormComponent({
           style={styles.textInput as StyleProp<TextStyle>}
           placeholder="أدخل الاسم"
           placeholderTextColor="#999"
-          value={person.name}
+          value={person.personName}
           onChangeText={setPersonName}
           onEndEditing={updatePersonName}
         />
@@ -38,7 +38,7 @@ export default function PeopleFormComponent({
           style={styles.input as StyleProp<TextStyle>}
           placeholder="أدخل رقم الهاتف"
           placeholderTextColor="#999"
-          value={person.phoneNumber}
+          value={person.personPhoneNumber}
           keyboardType="phone-pad"
           textContentType="telephoneNumber"
           onChangeText={setPersonPhoneNumber}

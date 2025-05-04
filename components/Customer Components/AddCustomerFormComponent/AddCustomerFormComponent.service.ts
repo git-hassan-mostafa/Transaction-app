@@ -19,24 +19,24 @@ export default function useAddCustomerFormComponentService({
 
   function setCustomerName(value: string) {
     setCustomer((prev) => {
-      return { ...prev, name: value };
+      return { ...prev, customerName: value };
     });
   }
 
   function setCustomerPhoneNumber(value: string) {
     setCustomer((prev) => {
-      return { ...prev, phoneNumber: value };
+      return { ...prev, customerPhoneNumber: value };
     });
   }
 
   function setCustomerNotes(value: string) {
     setCustomer((prev) => {
-      return { ...prev, notes: value };
+      return { ...prev, customerNotes: value };
     });
   }
 
   async function addCustomer() {
-    if (!customer.name) {
+    if (!customer.customerName) {
       toggleSnackBar({
         visible: true,
         text: "الرجاء ادخال اسم الزبون",
@@ -44,7 +44,7 @@ export default function useAddCustomerFormComponentService({
       });
       return;
     }
-    if (!customer.phoneNumber) {
+    if (!customer.customerPhoneNumber) {
       toggleSnackBar({
         visible: true,
         text: "الرجاء ادخال رقم الهاتف ",
@@ -53,9 +53,9 @@ export default function useAddCustomerFormComponentService({
       return;
     }
     const newCustomer: Customer = {
-      Name: customer?.name.trim(),
-      PhoneNumber: customer.phoneNumber.trim(),
-      Notes: customer.notes,
+      Name: customer?.customerName.trim(),
+      PhoneNumber: customer.customerPhoneNumber.trim(),
+      Notes: customer.customerNotes,
     };
     const result = await customerManager.addCustomer(newCustomer);
     if (!result || !result.lastInsertRowId)

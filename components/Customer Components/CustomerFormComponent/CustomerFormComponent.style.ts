@@ -17,6 +17,7 @@ const styles = StyleSheet.create({
     paddingTop: 0,
   },
   customerScrollView: {
+    marginTop: 20,
     maxHeight: 370,
   },
   iconHeader: {
@@ -31,9 +32,6 @@ const styles = StyleSheet.create({
   editCustomer: {
     fontSize: 40,
     color: Constants.colors.lighBlue,
-  },
-  row: {
-    marginBottom: 15,
   },
   label: {
     flex: 1.5,
@@ -85,28 +83,33 @@ const styles = StyleSheet.create({
     textAlignVertical: "top",
   },
   borrowedListContainer: {},
-  borrowedListTitle: {
-    fontSize: 20,
-    fontFamily: Constants.fontFamily.font800ExtraBold,
-    textAlign: "right",
-    marginBottom: 10,
-  },
   borrowedList: {
     alignItems: "flex-end",
     gap: 10,
   },
-  borrowedListItem: {
-    backgroundColor: Constants.colors.lightGray,
+  itemName: { width: 90, textAlign: "center" },
+  column: { width: 40, textAlign: "center" },
+  dateColumn: { flex: 1, textAlign: "center" },
+  itemRow: {
+    backgroundColor: Constants.colors.white,
     borderRadius: 5,
     width: "100%",
     flexDirection: "row-reverse",
     alignItems: "center",
-    justifyContent: "space-around",
-    padding: 5,
+    padding: 2,
     paddingRight: 10,
-    gap: 20,
     borderRightColor: Constants.colors.blue,
     borderRightWidth: 5,
+  },
+  itemRowTitle: {
+    backgroundColor: Constants.colors.white,
+    borderRadius: 5,
+    width: "100%",
+    flexDirection: "row-reverse",
+    alignItems: "center",
+    padding: 5,
+    paddingRight: 15,
+    // borderRightWidth: 5,
   },
 });
 

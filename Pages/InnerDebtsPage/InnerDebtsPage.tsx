@@ -9,7 +9,7 @@ import { FAB } from "react-native-paper";
 import InnerDebtsFormComponent from "@/Components/Inner Debts Components/InnerDebtsFormComponent/InnerDebtsFormComponent";
 import AddInnerDebtsComponent from "@/Components/Inner Debts Components/AddInnerDebtsComponent/AddInnerDebtsComponent";
 import IInnerDebt from "@/Global/ViewModels/InnerDebts/IInerDebts";
-import { ICustomerInnerDebt } from "@/Global/ViewModels/RelationModels/ICustomerInnerDebt";
+import { ICustomer_IInnerDebt } from "@/Global/ViewModels/RelationModels/ICustomer_IInnerDebt";
 
 export default function InnerDebtsPage() {
   const {
@@ -22,8 +22,11 @@ export default function InnerDebtsPage() {
   } = useInnerDebtsPageService();
 
   innerDebts?.sort((a, b) => {
-    if (a.date && b.date) {
-      return new Date(a.date).getTime() - new Date(b.date).getTime();
+    if (a.innerDebtDate && b.innerDebtDate) {
+      return (
+        new Date(a.innerDebtDate).getTime() -
+        new Date(b.innerDebtDate).getTime()
+      );
     }
     return 0;
   });
@@ -42,7 +45,7 @@ export default function InnerDebtsPage() {
             handleDelete={handleDeleteInnerDebt}
             headerColor={Constants.colors.red}
             iconColor={Constants.colors.lightGray}
-            headerText={`@${(item as ICustomerInnerDebt).name}`}
+            headerText={`@${(item as ICustomer_IInnerDebt).customerName}`}
           >
             <InnerDebtsFormComponent
               id={item.innerDebtId as number}

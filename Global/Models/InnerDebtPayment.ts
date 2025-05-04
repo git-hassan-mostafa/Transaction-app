@@ -1,6 +1,6 @@
-export default interface InnerDebtPayments {
+export default interface InnerDebtPayment {
   InnerDebtPaymentId: number;
   Amount: number;
   Date: Date;
-  InnerDebtId: number;
+  InnerDebtPayment_InnerDebtId: number;
 }

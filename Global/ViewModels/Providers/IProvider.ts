@@ -1,11 +1,10 @@
 import InnerDebt from "@/Global/Models/InnerDebt";
 
 export default interface IProvider {
-  id: number;
-  name: string;
-  borrowedPrice: number;
-  payedPrice: number;
-  phoneNumber: string;
-  itemsList: InnerDebt[];
-  notes: string;
+  providerId: number;
+  providerName: string;
+  providerBorrowedPrice: number;
+  providerayedPrice: number;
+  providerPhoneNumber: string;
+  providerNotes: string;
 }

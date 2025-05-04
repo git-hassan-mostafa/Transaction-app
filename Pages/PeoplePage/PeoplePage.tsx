@@ -22,10 +22,12 @@ export default function PeoplePage() {
   } = usePeoplePageService();
 
   people?.sort((a, b) => {
-    if (a.name && b.name) {
-      return a.name.toString().localeCompare(b.name.toString(), undefined, {
-        sensitivity: "base",
-      });
+    if (a.personName && b.personName) {
+      return a.personName
+        .toString()
+        .localeCompare(b.personName.toString(), undefined, {
+          sensitivity: "base",
+        });
     }
     return 0;
   });
@@ -42,7 +44,7 @@ export default function PeoplePage() {
             key={item.id}
             headerColor={Constants.colors.lighBlue}
             iconColor={Constants.colors.lightGray}
-            headerText={item.name as string}
+            headerText={item.personName as string}
             handleDelete={handleDeletePerson}
             id={item.id as number}
           >

@@ -8,6 +8,7 @@ const Constants = {
     oil: "#7ab336",
     lighBlue: "#21b8b0",
     gray: "#ccc",
+    darkGray: "#626363",
     lightGray: "#f2f2f2",
     yellow: "#f0f716",
     brown: "#914e0a",

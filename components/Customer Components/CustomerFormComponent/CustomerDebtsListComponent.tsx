@@ -9,40 +9,72 @@ export default function CustomerDebtsListComponent({
   id,
   updateFromCustomersList,
 }: ICustomerFormProps) {
-  const { customer, formatNumber, options } = useCustomerFormComponentService({
+  const { customer, borrowList, options } = useCustomerFormComponentService({
     id,
     updateFromCustomersList,
   });
   return (
     <ScrollView style={styles.customerScrollView}>
-      {(customer?.borrowList?.length as number) > 0 && (
+      {(borrowList?.length as number) > 0 && (
         <View style={styles.borrowedListContainer}>
-          <View>
-            <ThemedText style={styles.borrowedListTitle}>
-              قائمة الديون
-            </ThemedText>
-          </View>
           <View style={styles.borrowedList}>
-            {customer.borrowList?.map((item) => {
-              const totalPrice = formatNumber(item.TotalPrice);
-              const pricePaid = formatNumber(item.PricePaid);
-              return (
-                <View key={item.InnerDebtId} style={styles.borrowedListItem}>
-                  <ThemedText style={[{ color: Constants.colors.red }]}>
-                    {totalPrice}
-                  </ThemedText>
-                  <ThemedText style={[{ color: Constants.colors.green }]}>
-                    {pricePaid}
-                  </ThemedText>
-                  <ThemedText type="default">
-                    {new Date(item.Date ?? "")?.toLocaleDateString(
-                      "ar-lb",
-                      options
-                    )}
-                  </ThemedText>
-                </View>
-              );
-            })}
+            <View style={styles.itemRowTitle}>
+              <ThemedText type="small" style={[styles.itemName]}>
+                اسم المنتج
+              </ThemedText>
+              <ThemedText style={styles.column} type="small">
+                السعر
+              </ThemedText>
+              <ThemedText style={styles.column} type="small">
+                الكمية
+              </ThemedText>
+              <ThemedText style={styles.dateColumn} type="small">
+                التاريخ
+              </ThemedText>
+            </View>
+            <View style={styles.borrowedList}>
+              {borrowList?.map((item) => {
+                return (
+                  <View key={item.innerDebtItemId} style={styles.itemRow}>
+                    <ThemedText
+                      type="medium"
+                      style={[
+                        styles.itemName,
+                        { color: Constants.colors.darkGray },
+                      ]}
+                    >
+                      {item.itemName.length > 10
+                        ? item.itemName.slice(0, 7) + "..."
+                        : item.itemName}
+                    </ThemedText>
+                    <ThemedText
+                      type="medium"
+                      style={[styles.column, { color: Constants.colors.red }]}
+                    >
+                      ${item.innerDebtItemTotalPrice}
+                    </ThemedText>
+                    <ThemedText
+                      type="medium"
+                      style={[styles.column, { color: Constants.colors.blue }]}
+                    >
+                      {item.innerDebtItemQuantity}
+                    </ThemedText>
+                    <ThemedText
+                      style={[
+                        styles.dateColumn,
+                        { color: Constants.colors.darkGray },
+                      ]}
+                      type="medium"
+                    >
+                      {new Date(item.innerDebtDate ?? "")?.toLocaleDateString(
+                        "ar-lb",
+                        options
+                      )}
+                    </ThemedText>
+                  </View>
+                );
+              })}
+            </View>
           </View>
         </View>
       )}

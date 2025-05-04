@@ -44,25 +44,25 @@ export default function useAddItemFormComponentService({
 
   function setItemQuantity(value: string) {
     setItem((prev) => {
-      return { ...prev, quantity: Number(value) };
+      return { ...prev, itemQuantity: Number(value) };
     });
   }
 
   function setItemPrice(value: string) {
     setItem((prev) => {
-      return { ...prev, price: Number(value) };
+      return { ...prev, itemPrice: Number(value) };
     });
   }
 
   function setProvider(providerId: number) {
     setItem((prev) => {
-      return { ...prev, providerId };
+      return { ...prev, item_ProviderId: providerId };
     });
   }
 
   function setcustomerNotes(value: string) {
     setItem((prev) => {
-      return { ...prev, notes: value };
+      return { ...prev, itemNotes: value };
     });
   }
 
@@ -75,7 +75,7 @@ export default function useAddItemFormComponentService({
       });
       return;
     }
-    if (!item.price) {
+    if (!item.itemPrice) {
       toggleSnackBar({
         visible: true,
         text: "الرجاء ادخال السعر",
@@ -85,10 +85,10 @@ export default function useAddItemFormComponentService({
     }
     const newItem: Item = {
       Name: item?.itemName.trim(),
-      Quantity: item.quantity,
-      Price: item.price,
-      ProviderId: item.providerId,
-      Notes: item.notes,
+      Quantity: item.itemQuantity,
+      Price: item.itemPrice,
+      Item_ProviderId: item.item_ProviderId,
+      Notes: item.itemNotes,
     };
     const result = await itemManager.addItem(newItem);
     if (!result || !result.lastInsertRowId)
@@ -97,7 +97,7 @@ export default function useAddItemFormComponentService({
         text: "حصل خطأ ما , الرجاء اعادة المحاولة ",
         type: "error",
       });
-    item.id = result?.lastInsertRowId;
+    item.itemId = result?.lastInsertRowId;
     addToItemsList(item);
     toggleModal();
   }

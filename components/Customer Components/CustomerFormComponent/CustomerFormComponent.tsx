@@ -45,19 +45,22 @@ export function CustomerFormComponent({
             <View style={[styles.pricesContainer, styles.borrowedConainer]}>
               <Icon style={styles.priceIcon} name="cash-remove" />
               <ThemedText style={styles.price}>
-                ${formatNumber(customer.borrowedPrice)}
+                ${formatNumber(customer.customerBorrowedPrice)}
               </ThemedText>
             </View>
             <View style={[styles.pricesContainer, styles.payedContainer]}>
               <Icon style={styles.priceIcon} name="cash-check" />
               <ThemedText style={styles.price}>
-                ${formatNumber(customer.payedPrice)}
+                ${formatNumber(customer.customerPayedPrice)}
               </ThemedText>
             </View>
             <View style={[styles.pricesContainer, styles.totalContainer]}>
               <Icon style={styles.priceIcon} name="account-cash" />
               <ThemedText style={styles.price}>
-                ${formatNumber(customer.borrowedPrice - customer.payedPrice)}
+                $
+                {formatNumber(
+                  customer.customerBorrowedPrice - customer.customerPayedPrice
+                )}
               </ThemedText>
             </View>
           </View>
@@ -67,7 +70,7 @@ export function CustomerFormComponent({
               style={styles.textInput as StyleProp<TextStyle>}
               placeholder="أدخل الاسم"
               placeholderTextColor="#999"
-              value={customer.name}
+              value={customer.customerName}
               onChangeText={setCustomerName}
               onEndEditing={updateCustomerName}
             />
@@ -79,7 +82,7 @@ export function CustomerFormComponent({
               style={styles.input as StyleProp<TextStyle>}
               placeholder="أدخل رقم الهاتف"
               placeholderTextColor="#999"
-              value={customer.phoneNumber}
+              value={customer.customerPhoneNumber}
               keyboardType="phone-pad"
               textContentType="telephoneNumber"
               onChangeText={setCustomerPhoneNumber}
@@ -94,7 +97,7 @@ export function CustomerFormComponent({
               }
               placeholder="أدخل الملاحظات"
               placeholderTextColor="#999"
-              value={customer.notes}
+              value={customer.customerNotes}
               onChangeText={setCustomerNotes}
               onEndEditing={updateCustomerNotes}
               onBlur={updateCustomerNotes}

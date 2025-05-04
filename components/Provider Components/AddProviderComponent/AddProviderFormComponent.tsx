@@ -31,7 +31,7 @@ export default function AddProviderFormComponent({
           style={styles.textInput as StyleProp<TextStyle>}
           placeholder="أدخل الإسم"
           placeholderTextColor="#999"
-          value={provider.name}
+          value={provider.providerName}
           onChangeText={setProviderName}
         />
       </View>
@@ -42,7 +42,7 @@ export default function AddProviderFormComponent({
           style={styles.input as StyleProp<TextStyle>}
           placeholder="أدخل رقم الهاتف"
           placeholderTextColor="#999"
-          value={provider.phoneNumber}
+          value={provider.providerPhoneNumber}
           keyboardType="phone-pad"
           textContentType="telephoneNumber"
           onChangeText={setProviderPhoneNumber}
@@ -55,7 +55,7 @@ export default function AddProviderFormComponent({
           style={[styles.textInput, styles.textArea] as StyleProp<TextStyle>}
           placeholder=" أدخل الملاحظات"
           placeholderTextColor="#999"
-          value={provider.notes}
+          value={provider.providerNotes}
           onChangeText={setProviderNotes}
         />
       </View>

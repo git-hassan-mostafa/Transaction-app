@@ -2,8 +2,7 @@ import AbstractManager from "./AbstractManager";
 import SqlBuilder from "../Helpers/SqlBuilder";
 import { SQLiteRunResult } from "expo-sqlite";
 import InnerDebt from "../Models/InnerDebt";
-import Customer from "../Models/Customer";
-import { CustomerInnerDebt } from "../Models/RelationModels/CustomerInnerDebt";
+import { Customer_InnerDebt } from "../Models/RelationModels/Customer_InnerDebt";
 
 export default class InnerDebtsManager extends AbstractManager {
   table = "InnerDebts";
@@ -13,14 +12,17 @@ export default class InnerDebtsManager extends AbstractManager {
 
   async getAllInnerDebts() {
     try {
-      const sqlBuilder = new SqlBuilder<CustomerInnerDebt>(this.db, this.table);
+      const sqlBuilder = new SqlBuilder<Customer_InnerDebt>(
+        this.db,
+        this.table
+      );
       const innerDebts = await sqlBuilder
         .select()
         .join("Customers")
         .executeAsync();
-      return innerDebts as CustomerInnerDebt[];
+      return innerDebts as Customer_InnerDebt[];
     } catch (error) {
-      console.log("error ", error);
+      console.log("error getAllInnerDebts", error);
     }
   }
 
@@ -33,7 +35,7 @@ export default class InnerDebtsManager extends AbstractManager {
         .firstAsync();
       return innerDebt;
     } catch (error) {
-      console.log("error ", error);
+      console.log("error getInnerDebt", error);
     }
   }
 
@@ -43,7 +45,7 @@ export default class InnerDebtsManager extends AbstractManager {
       const result = await sqlBuilder.insert(innerDebt);
       return result;
     } catch (error) {
-      console.log("error ", error);
+      console.log("error addInnerDebt", error);
     }
   }
 
@@ -56,7 +58,7 @@ export default class InnerDebtsManager extends AbstractManager {
         .executeAsync();
       return result as SQLiteRunResult;
     } catch (error) {
-      console.log("error ", error);
+      console.log("error updateInnerDebt", error);
     }
   }
 
@@ -64,12 +66,12 @@ export default class InnerDebtsManager extends AbstractManager {
     try {
       const sqlBuilder = new SqlBuilder<InnerDebt>(this.db, this.table);
       const result = await sqlBuilder
-        .updateField("CustomerId", customerId)
+        .updateField("InnerDebt_CustomerId", customerId)
         .where({ InnerDebtId: id })
         .executeAsync();
       return result as SQLiteRunResult;
     } catch (error) {
-      console.log("error ", error);
+      console.log("error updateInnerDebtCustomer", error);
     }
   }
 
@@ -79,7 +81,7 @@ export default class InnerDebtsManager extends AbstractManager {
       const result = await sqlBuilder.delete(id);
       return result;
     } catch (error) {
-      console.log("error ", error);
+      console.log("error deleteInnerDebt", error);
     }
   }
 }

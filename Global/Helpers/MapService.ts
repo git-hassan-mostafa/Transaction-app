@@ -1,138 +1,180 @@
 import Customer from "../Models/Customer";
 import InnerDebt from "../Models/InnerDebt";
+import InnerDebtItem from "../Models/InnerDebtItem";
 import Item from "../Models/Item";
 import Person from "../Models/Person";
 import Provider from "../Models/Provider";
-import { CustomerInnerDebt } from "../Models/RelationModels/CustomerInnerDebt";
+import { Customer_InnerDebt } from "../Models/RelationModels/Customer_InnerDebt";
+import Customer_InnerDebt_InnerDebtItem_Item from "../Models/RelationModels/Customer_InnerDebt_InnerDebtItem_Item";
+import InnerDebtItem_InnerDebt_Item from "../Models/RelationModels/InnerDebtItem_InnerDebt_Item";
 import ICustomer from "../ViewModels/Customers/ICustomer";
 import IInnerDebt from "../ViewModels/InnerDebts/IInerDebts";
+import IInnerDebtItem from "../ViewModels/InnerDebts/IInnerDebtItem";
 import IItem from "../ViewModels/Items/IItem";
 import IPerson from "../ViewModels/People/IPerson";
 import IProvider from "../ViewModels/Providers/IProvider";
-import { ICustomerInnerDebt } from "../ViewModels/RelationModels/ICustomerInnerDebt";
+import { ICustomer_IInerDebt_IInnerDebtItem_IItem } from "../ViewModels/RelationModels/ICustomer_IInerDebt_IInnerDebtItem_IItem";
+import { ICustomer_IInnerDebt } from "../ViewModels/RelationModels/ICustomer_IInnerDebt";
+import IInnerDebtItem_IInnerDebt_IItem from "../ViewModels/RelationModels/IInnerDebtItem_IInnerDebt_IItem";
 
 export default class MapService {
   mapToCustomer(customer: ICustomer): Customer {
     return {
       CustomerId: customer.customerId as number,
-      Name: customer.name as string,
-      PhoneNumber: customer.phoneNumber as string,
-      Notes: customer.notes as string,
+      Name: customer.customerName as string,
+      PhoneNumber: customer.customerPhoneNumber as string,
+      Notes: customer.customerNotes as string,
     };
   }
 
   mapToICustomer(customer: Customer): ICustomer {
     return {
       customerId: customer.CustomerId as number,
-      name: customer.Name as string,
-      borrowedPrice: 0,
-      payedPrice: 0,
-      phoneNumber: customer.PhoneNumber as string,
-      borrowList: [],
-      notes: customer.Notes as string,
+      customerName: customer.Name as string,
+      customerBorrowedPrice: 0,
+      customerPayedPrice: 0,
+      customerPhoneNumber: customer.PhoneNumber as string,
+      customerNotes: customer.Notes as string,
     };
   }
 
   mapToItem(item: IItem): Item {
     return {
-      ItemId: item.id,
+      ItemId: item.itemId,
       Name: item.itemName,
-      Quantity: item.quantity,
-      Price: item.price,
-      ProviderId: item.providerId,
-      Notes: item.notes,
+      Quantity: item.itemQuantity,
+      Price: item.itemPrice,
+      Item_ProviderId: item.item_ProviderId,
+      Notes: item.itemNotes,
     };
   }
 
   mapToIItem(item: Item): IItem {
     return {
-      id: item.ItemId as number,
+      itemId: item.ItemId as number,
       itemName: item.Name as string,
-      quantity: item.Quantity as number,
-      price: item.Price as number,
-      providerId: item.ProviderId as number,
-      notes: item.Notes as string,
+      itemQuantity: item.Quantity as number,
+      itemPrice: item.Price as number,
+      item_ProviderId: item.Item_ProviderId as number,
+      itemNotes: item.Notes as string,
     };
   }
 
   mapToPerson(person: IPerson): Person {
     return {
       PersonId: person.id,
-      Name: person.name,
-      PhoneNumber: person.phoneNumber,
+      Name: person.personName,
+      PhoneNumber: person.personPhoneNumber,
     };
   }
 
   mapToIPerson(person: Person): IPerson {
     return {
       id: person.PersonId as number,
-      name: person.Name as string,
-      phoneNumber: person.PhoneNumber as string,
+      personName: person.Name as string,
+      personPhoneNumber: person.PhoneNumber as string,
     };
   }
 
   mapToProvider(provider: IProvider): Provider {
     return {
-      ProviderId: provider.id as number,
-      Name: provider.name as string,
-      PhoneNumber: provider.phoneNumber as string,
-      Notes: provider.notes as string,
+      ProviderId: provider.providerId as number,
+      Name: provider.providerName as string,
+      PhoneNumber: provider.providerPhoneNumber as string,
+      Notes: provider.providerNotes as string,
     };
   }
 
   mapToIProvider(provider: Provider): IProvider {
     return {
-      id: provider.ProviderId as number,
-      name: provider.Name as string,
-      borrowedPrice: 0,
-      payedPrice: 0,
-      phoneNumber: provider.PhoneNumber as string,
-      notes: provider.Notes as string,
-      itemsList: [],
+      providerId: provider.ProviderId as number,
+      providerName: provider.Name as string,
+      providerBorrowedPrice: 0,
+      providerayedPrice: 0,
+      providerPhoneNumber: provider.PhoneNumber as string,
+      providerNotes: provider.Notes as string,
     };
   }
 
   mapToInnerDebt(innerDebt: IInnerDebt): InnerDebt {
     return {
       InnerDebtId: innerDebt.innerDebtId,
-      TotalPrice: innerDebt.totalPrice,
-      PricePaid: innerDebt.pricePaid,
-      Date: innerDebt.date,
-      PersonId: innerDebt.personId,
-      CustomerId: innerDebt.customerId,
-      Notes: innerDebt.notes,
+      Date: innerDebt.innerDebtDate,
+      InnerDebt_PersonId: innerDebt.innerDebt_PersonId,
+      InnerDebt_CustomerId: innerDebt.innerDebt_CustomerId,
+      Notes: innerDebt.innerDebtNotes,
     };
   }
 
   mapToIInnerDebt(innerDebt: InnerDebt): IInnerDebt {
     return {
       innerDebtId: innerDebt.InnerDebtId as number,
-      totalPrice: innerDebt.TotalPrice as number,
-      pricePaid: innerDebt.PricePaid as number,
-      date: innerDebt.Date as string,
-      itemsList: [],
-      paymentsList: [],
-      personId: innerDebt.PersonId as number,
-      customerId: innerDebt.CustomerId as number,
-      notes: innerDebt.Notes as string,
+      innerDebtTotalPrice: 0,
+      innerDebtPricePaid: 0,
+      innerDebtDate: innerDebt.Date as string,
+      innerDebt_PersonId: innerDebt.InnerDebt_PersonId as number,
+      innerDebt_CustomerId: innerDebt.InnerDebt_CustomerId as number,
+      innerDebtNotes: innerDebt.Notes as string,
     };
   }
 
-  mapToCustomerInnerDebt(
-    customerInnerDebt: ICustomerInnerDebt
-  ): CustomerInnerDebt {
+  mapToInnerDebtItem(innerDebtsItem: IInnerDebtItem): InnerDebtItem {
     return {
-      ...this.mapToCustomer(customerInnerDebt),
-      ...this.mapToInnerDebt(customerInnerDebt),
+      InnerDebtItemId: innerDebtsItem.innerDebtItemId,
+      InnerDebtItemQuantity: innerDebtsItem.innerDebtItemQuantity,
+      InnerDebtItem_InnerDebtId: innerDebtsItem.innerDebtItem_InnerDebtId,
+      InnerDebtItem_ItemId: innerDebtsItem.innerDebtItem_ItemId,
     };
   }
 
-  mapToICustomerInnerDebt(
-    customerInnerDebt: CustomerInnerDebt
-  ): ICustomerInnerDebt {
+  mapToIInnerDebtItem(innerDebtsItem: InnerDebtItem): IInnerDebtItem {
     return {
-      ...this.mapToICustomer(customerInnerDebt),
-      ...this.mapToIInnerDebt(customerInnerDebt),
+      innerDebtItemId: innerDebtsItem.InnerDebtItemId as number,
+      innerDebtItemQuantity: innerDebtsItem.InnerDebtItemQuantity as number,
+      innerDebtItem_InnerDebtId:
+        innerDebtsItem.InnerDebtItem_InnerDebtId as number,
+      innerDebtItem_ItemId: innerDebtsItem.InnerDebtItem_ItemId as number,
+      innerDebtItemTotalPrice: 0,
+      innerDebtItemPricePaid: 0,
+    };
+  }
+
+  mapTo_Customer_InnerDebt(
+    ICustomer_IInnerDebt: ICustomer_IInnerDebt
+  ): Customer_InnerDebt {
+    return {
+      ...this.mapToCustomer(ICustomer_IInnerDebt),
+      ...this.mapToInnerDebt(ICustomer_IInnerDebt),
+    };
+  }
+
+  mapToICustomer_IInnerDebt(
+    Customer_InnerDebt: Customer_InnerDebt
+  ): ICustomer_IInnerDebt {
+    return {
+      ...this.mapToICustomer(Customer_InnerDebt),
+      ...this.mapToIInnerDebt(Customer_InnerDebt),
+    };
+  }
+
+  mapTo_IInnerDebtItem_IInnerDebt_IItem(
+    InnerDebtItem_InnerDebt_Item: InnerDebtItem_InnerDebt_Item
+  ): IInnerDebtItem_IInnerDebt_IItem {
+    return {
+      ...this.mapToIInnerDebt(InnerDebtItem_InnerDebt_Item),
+      ...this.mapToIItem(InnerDebtItem_InnerDebt_Item),
+      ...this.mapToIInnerDebtItem(InnerDebtItem_InnerDebt_Item),
+    };
+  }
+
+  mapTo_IICustomer_IInerDebt_IInnerDebtItem_IItem(
+    Customer_InnerDebt_InnerDebtItem_Item: Customer_InnerDebt_InnerDebtItem_Item
+  ): ICustomer_IInerDebt_IInnerDebtItem_IItem {
+    return {
+      ...this.mapToICustomer(Customer_InnerDebt_InnerDebtItem_Item),
+      ...this.mapToIInnerDebt(Customer_InnerDebt_InnerDebtItem_Item),
+      ...this.mapToIInnerDebtItem(Customer_InnerDebt_InnerDebtItem_Item),
+      ...this.mapToIItem(Customer_InnerDebt_InnerDebtItem_Item),
     };
   }
 }

@@ -22,25 +22,25 @@ export default function useAddProviderFormComponentService({
 
   function setProviderName(value: string) {
     setProvider((prev) => {
-      return { ...prev, name: value };
+      return { ...prev, providerName: value };
     });
   }
 
   function setProviderPhoneNumber(value: string) {
     setProvider((prev) => {
-      return { ...prev, phoneNumber: value };
+      return { ...prev, providerPhoneNumber: value };
     });
   }
 
   function setProviderNotes(value: string) {
     setProvider((prev) => {
-      return { ...prev, notes: value };
+      return { ...prev, providerNotes: value };
     });
   }
 
   async function addProvider() {
     try {
-      if (!provider.name) {
+      if (!provider.providerName) {
         toggleSnackBar({
           visible: true,
           text: "الرجاء ادخال اسم التاجر",
@@ -48,7 +48,7 @@ export default function useAddProviderFormComponentService({
         });
         return;
       }
-      if (!provider.phoneNumber) {
+      if (!provider.providerPhoneNumber) {
         toggleSnackBar({
           visible: true,
           text: "الرجاء ادخال رقم الهاتف ",
@@ -57,9 +57,9 @@ export default function useAddProviderFormComponentService({
         return;
       }
       const newProvider: Provider = {
-        Name: provider?.name.trim(),
-        PhoneNumber: provider.phoneNumber.trim(),
-        Notes: provider.notes,
+        Name: provider?.providerName.trim(),
+        PhoneNumber: provider.providerPhoneNumber.trim(),
+        Notes: provider.providerNotes,
       };
       const result = await providerManager.addProvider(newProvider);
       if (!result || !result.lastInsertRowId)
@@ -68,7 +68,7 @@ export default function useAddProviderFormComponentService({
           text: "حصل خطأ ما , الرجاء اعادة المحاولة ",
           type: "error",
         });
-      provider.id = result?.lastInsertRowId;
+      provider.providerId = result?.lastInsertRowId;
       addToProvidersList(provider);
       toggleModal();
     } catch (error) {

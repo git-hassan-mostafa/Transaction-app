@@ -36,19 +36,19 @@ export default function useProviderFormComponentService({
 
   function setProviderName(value: string) {
     setProvider((prev) => {
-      return { ...prev, name: value };
+      return { ...prev, providerName: value };
     });
   }
 
   function setProviderPhoneNumber(value: string) {
     setProvider((prev) => {
-      return { ...prev, phoneNumber: value };
+      return { ...prev, providerPhoneNumber: value };
     });
   }
 
   function setProviderNotes(value: string) {
     setProvider((prev) => {
-      return { ...prev, notes: value };
+      return { ...prev, providerNotes: value };
     });
   }
 
@@ -72,9 +72,9 @@ export default function useProviderFormComponentService({
   }
 
   function validateProviderFields(provider: IProvider) {
-    provider.id = id;
-    provider.name = provider.name.trim();
-    provider.phoneNumber = provider.phoneNumber.trim();
+    provider.providerId = id;
+    provider.providerName = provider.providerName.trim();
+    provider.providerPhoneNumber = provider.providerPhoneNumber.trim();
   }
 
   return {

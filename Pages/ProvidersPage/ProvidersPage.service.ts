@@ -22,13 +22,15 @@ export default function useProvidersPageService() {
   }
 
   function deleteFromProvidersList(id: number) {
-    setProviders((prev) => prev.filter((c) => c.id !== id));
+    setProviders((prev) => prev.filter((c) => c.providerId !== id));
   }
 
   function updateFromProvidersList(value: IProvider) {
     setProviders((prev) =>
       prev.map((provider) =>
-        provider.id === value.id ? { ...provider, ...value } : provider
+        provider.providerId === value.providerId
+          ? { ...provider, ...value }
+          : provider
       )
     );
   }

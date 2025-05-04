@@ -23,12 +23,14 @@ export default function useItemsPageService() {
   }
 
   function deleteFromItemsList(id: number) {
-    setItems((prev) => prev.filter((c) => c.id !== id));
+    setItems((prev) => prev.filter((c) => c.itemId !== id));
   }
 
   function updateFromItemsList(value: IItem) {
     setItems((prev) =>
-      prev.map((item) => (item.id === value.id ? { ...item, ...value } : item))
+      prev.map((item) =>
+        item.itemId === value.itemId ? { ...item, ...value } : item
+      )
     );
   }
   async function getAllItems() {

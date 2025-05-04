@@ -3,6 +3,7 @@ import Customer from "../Models/Customer";
 import SqlBuilder from "../Helpers/SqlBuilder";
 import InnerDebt from "../Models/InnerDebt";
 import { SQLiteRunResult } from "expo-sqlite";
+import Customer_InnerDebt_InnerDebtItem_Item from "../Models/RelationModels/Customer_InnerDebt_InnerDebtItem_Item";
 
 export default class CustomerManager extends AbstractManager {
   table = "customers";
@@ -16,7 +17,7 @@ export default class CustomerManager extends AbstractManager {
       const customers = await sqlBuilder.select().executeAsync();
       return customers as Customer[];
     } catch (error) {
-      console.log("error ", error);
+      console.log("error getAllCustomers", error);
     }
   }
 
@@ -29,7 +30,7 @@ export default class CustomerManager extends AbstractManager {
         .firstAsync();
       return customer;
     } catch (error) {
-      console.log("error ", error);
+      console.log("error getCustomer", error);
     }
   }
 
@@ -39,7 +40,7 @@ export default class CustomerManager extends AbstractManager {
       const result = await sqlBuilder.insert(customer);
       return result;
     } catch (error) {
-      console.log("error ", error);
+      console.log("error addCustomer", error);
     }
   }
 
@@ -52,7 +53,7 @@ export default class CustomerManager extends AbstractManager {
         .executeAsync();
       return result as SQLiteRunResult;
     } catch (error) {
-      console.log("error ", error);
+      console.log("error updateCustomer", error);
     }
   }
 
@@ -62,19 +63,24 @@ export default class CustomerManager extends AbstractManager {
       const result = await sqlBuilder.delete(id);
       return result;
     } catch (error) {
-      console.log("error ", error);
+      console.log("error deleteCustomer", error);
     }
   }
 
-  async getCustomerDebts(id: number) {
+  async getCustomerBorrowList(id: number) {
     try {
-      const InnerDebtsTable = "InnerDebts";
-      const sqlBuilder = new SqlBuilder<InnerDebt>(this.db, InnerDebtsTable);
+      const sqlBuilder = new SqlBuilder<Customer_InnerDebt_InnerDebtItem_Item>(
+        this.db,
+        this.table
+      );
       const result = await sqlBuilder
         .select()
+        .rightJoin("InnerDebts")
+        .rightJoin("InnerDebtItems", "InnerDebts")
+        .leftJoin("Items", "InnerDebtItems")
         .where({ CustomerId: id })
         .executeAsync();
-      return result as InnerDebt[];
+      return result as Customer_InnerDebt_InnerDebtItem_Item[];
     } catch (error) {
       console.error("error ", error);
     }

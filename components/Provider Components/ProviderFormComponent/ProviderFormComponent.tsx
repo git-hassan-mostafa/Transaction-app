@@ -29,17 +29,19 @@ export function ProviderFormComponent({
       <View style={styles.pricesRow}>
         <View style={[styles.pricesContainer, styles.borrowedConainer]}>
           <ThemedText style={styles.price}>
-            ${provider.borrowedPrice}
+            ${provider.providerBorrowedPrice}
           </ThemedText>
         </View>
         <View style={[styles.pricesContainer, styles.payedContainer]}>
           <Icon style={styles.priceIcon} name="cash-check" />
-          <ThemedText style={styles.price}>${provider.payedPrice}</ThemedText>
+          <ThemedText style={styles.price}>
+            ${provider.providerayedPrice}
+          </ThemedText>
         </View>
         <View style={[styles.pricesContainer, styles.totalContainer]}>
           <Icon style={styles.priceIcon} name="account-cash" />
           <ThemedText style={styles.price}>
-            ${provider.borrowedPrice - provider.payedPrice}
+            ${provider.providerBorrowedPrice - provider.providerayedPrice}
           </ThemedText>
         </View>
       </View>
@@ -49,7 +51,7 @@ export function ProviderFormComponent({
           style={styles.textInput as StyleProp<TextStyle>}
           placeholder="أدخل الاسم"
           placeholderTextColor="#999"
-          value={provider.name}
+          value={provider.providerName}
           onChangeText={setProviderName}
           onEndEditing={updateProviderName}
         />
@@ -61,7 +63,7 @@ export function ProviderFormComponent({
           style={styles.input as StyleProp<TextStyle>}
           placeholder="أدخل رقم الهاتف"
           placeholderTextColor="#999"
-          value={provider.phoneNumber}
+          value={provider.providerPhoneNumber}
           keyboardType="phone-pad"
           textContentType="telephoneNumber"
           onChangeText={setProviderPhoneNumber}
@@ -74,7 +76,7 @@ export function ProviderFormComponent({
           style={[styles.textInput, styles.textArea] as StyleProp<TextStyle>}
           placeholder="أدخل الملاحظات"
           placeholderTextColor="#999"
-          value={provider.notes}
+          value={provider.providerNotes}
           onChangeText={setProviderNotes}
           onEndEditing={updateProviderNotes}
         />
@@ -88,11 +90,11 @@ export function ProviderFormComponent({
             {provider.itemsList?.map((item) => (
               <View key={item.InnerDebtId} style={styles.borrowedListItem}>
                 <ThemedText style={styles.borrowedListText}>
-                  {item.TotalPrice}
+                  {/* {item.TotalPrice} */}
                 </ThemedText>
                 <ThemedText> --- </ThemedText>
                 <ThemedText style={styles.borrowedListText}>
-                  {item.PricePaid}
+                  {/* {item.PricePaid} */}
                 </ThemedText>
                 <ThemedText> --- </ThemedText>
                 <ThemedText style={styles.borrowedListText}>

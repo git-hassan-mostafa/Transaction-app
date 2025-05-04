@@ -3,6 +3,6 @@ export default interface Item {
   Name?: string;
   Quantity?: number;
   Price?: number;
-  ProviderId?: number;
+  Item_ProviderId?: number;
   Notes?: string;
 }

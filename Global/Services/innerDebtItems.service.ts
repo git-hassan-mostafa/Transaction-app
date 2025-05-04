@@ -1,0 +1,68 @@
+import AbstractManager from "./AbstractManager";
+import SqlBuilder from "../Helpers/SqlBuilder";
+import InnerDebtItem from "../Models/InnerDebtItem";
+import Item from "../Models/Item";
+import IInnerDebtItem_IInnerDebt_IItem from "../ViewModels/RelationModels/IInnerDebtItem_IInnerDebt_IItem";
+import InnerDebtItem_InnerDebt_Item from "../Models/RelationModels/InnerDebtItem_InnerDebt_Item";
+
+export default class InnerDebtItemsManager extends AbstractManager {
+  table = "InnerDebtItems";
+  constructor() {
+    super();
+  }
+
+  async getInnerDebtItems(innerDebtId: number) {
+    try {
+      const sqlBuilder = new SqlBuilder<InnerDebtItem_InnerDebt_Item>(
+        this.db,
+        this.table
+      );
+      const items = await sqlBuilder
+        .select()
+        .leftJoin("InnerDebts")
+        .leftJoin("Items")
+        .where({ [`${this.table}.InnerDebtItem_InnerDebtId`]: innerDebtId })
+        .executeAsync();
+      return items;
+    } catch (error) {
+      console.log("error getInnerDebtItems", error);
+    }
+  }
+
+  async getAllInnerDebtsItemsList() {
+    try {
+      const sqlBuilder = new SqlBuilder<InnerDebtItem_InnerDebt_Item>(
+        this.db,
+        this.table
+      );
+      const items = await sqlBuilder
+        .select()
+        .leftJoin("InnerDebts")
+        .leftJoin("Items")
+        .executeAsync();
+      return items;
+    } catch (error) {
+      console.log("error getAllInnerDebtsItemsList", error);
+    }
+  }
+
+  async addInnerDebtItems(innerDebtItems: InnerDebtItem[]) {
+    try {
+      const sqlBuilder = new SqlBuilder<InnerDebtItem>(this.db, this.table);
+      const result = await sqlBuilder.insertAll(innerDebtItems);
+      return result;
+    } catch (error) {
+      console.log("error addInnerDebtItems", error);
+    }
+  }
+
+  async deleteInnerDebtItem(innerDebtItemId: number) {
+    try {
+      const sqlBuilder = new SqlBuilder<InnerDebtItem>(this.db, this.table);
+      const result = await sqlBuilder.delete(innerDebtItemId);
+      return result;
+    } catch (error) {
+      console.log("error deleteInnerDebtItem", error);
+    }
+  }
+}

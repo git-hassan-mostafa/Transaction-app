@@ -73,7 +73,7 @@ export default class ProviderManager extends AbstractManager {
       const sqlBuilder = new SqlBuilder<OuterDebt>(this.db, OuterDebtsTable);
       const result = await sqlBuilder
         .select()
-        .where({ ProviderId: id })
+        .where({ OuterDebtProviderId: id })
         .executeAsync();
       return result as InnerDebt[];
     } catch (error) {

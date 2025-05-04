@@ -3,11 +3,11 @@ import { View, Text, TextInput, Button, TouchableOpacity } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import CustomDropDown from "@/Components/Reusable Components/CustomDropDownComponent/CustomDropDownComponent";
 import IInnerDebtsItemsListProps from "@/Global/ViewModels/InnerDebts/IInnerDebtsItemsListProps";
-import styles from "./AddInnerDebtsItemsListComponent.style";
+import styles from "./InnerDebtsItemsListFormComponent.style";
 import { ThemedText } from "@/Components/HelperComponents/ThemedText";
 import MaterialIcon from "react-native-vector-icons/MaterialCommunityIcons";
 
-export default function AddInnerDebtsItemsListComponent(
+export default function InnerDebtsItemsListFormComponent(
   props: IInnerDebtsItemsListProps
 ) {
   return (

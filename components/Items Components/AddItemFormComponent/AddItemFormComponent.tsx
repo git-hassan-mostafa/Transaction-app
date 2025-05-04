@@ -46,7 +46,7 @@ export default function AddItemFormComponent({
           style={styles.input as StyleProp<TextStyle>}
           placeholder="أدخل السعر"
           placeholderTextColor="#999"
-          value={item.price?.toString()}
+          value={item.itemPrice?.toString()}
           keyboardType="numeric"
           onChangeText={(text) => setItemPrice(text)}
         />
@@ -57,7 +57,7 @@ export default function AddItemFormComponent({
           style={styles.input as StyleProp<TextStyle>}
           placeholder="أدخل الكمية"
           placeholderTextColor="#999"
-          value={item.quantity?.toString()}
+          value={item.itemQuantity?.toString()}
           keyboardType="numeric"
           onChangeText={(text) => setItemQuantity(text)}
         />
@@ -65,7 +65,7 @@ export default function AddItemFormComponent({
       <View style={styles.row}>
         <ThemedText style={styles.label}>التاجر</ThemedText>
         <CustomDropDown
-          value={item.providerId}
+          value={item.item_ProviderId}
           setValue={(value) => setProvider(value as number)}
           data={providers}
         />
@@ -76,7 +76,7 @@ export default function AddItemFormComponent({
           style={[styles.textInput, styles.textArea] as StyleProp<TextStyle>}
           placeholder=" أدخل الملاحظات"
           placeholderTextColor="#999"
-          value={item.notes}
+          value={item.itemNotes}
           onChangeText={setcustomerNotes}
         />
       </View>

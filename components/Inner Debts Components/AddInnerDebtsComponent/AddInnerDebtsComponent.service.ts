@@ -2,66 +2,93 @@ import useContextProvider from "@/Global/ContextApi/ContextApi";
 import { useEffect, useState } from "react";
 import InnerDebt from "@/Global/Models/InnerDebt";
 import InnerDebtsManager from "@/Global/Services/innerDebts.service";
+import InnerDebtItemsManager from "@/Global/Services/innerDebtItems.service";
 import CustomerManager from "@/Global/Services/customers.service";
 import IDropDownItem from "@/Global/Types/IDropDownItem";
-import { IAddInnerDebtProps } from "@/Global/ViewModels/InnerDebts/IAddInnerDebtsProps";
+import { IAddInnerDebtServiceProps } from "@/Global/ViewModels/InnerDebts/IAddInnerDebtsProps";
 import IInnerDebt from "@/Global/ViewModels/InnerDebts/IInerDebts";
 import MapService from "@/Global/Helpers/MapService";
-import { ICustomerInnerDebt } from "@/Global/ViewModels/RelationModels/ICustomerInnerDebt";
+import { ICustomer_IInnerDebt } from "@/Global/ViewModels/RelationModels/ICustomer_IInnerDebt";
+import InnerDebtItem from "@/Global/Models/InnerDebtItem";
+import { IValidationErrorType } from "@/Global/Types/IValidationErrorType";
+import ICustomer from "@/Global/ViewModels/Customers/ICustomer";
 
 export default function useAddInnerDebtsComponentService({
   innerDebtsItemsListService,
   toggleModal,
   addToInnerDebtsList,
-}: IAddInnerDebtProps) {
+}: IAddInnerDebtServiceProps) {
   //services
-
   const innerDebtsManager = new InnerDebtsManager();
+  const innerDebtItemsManager = new InnerDebtItemsManager();
   const customerManager = new CustomerManager();
   const mapService = new MapService();
-  const {} = innerDebtsItemsListService;
 
   //states
   const [innerDebt, setInnerDebt] = useState<IInnerDebt>({} as IInnerDebt);
-  const [customers, setCustomers] = useState<IDropDownItem[]>([]);
-
-  //context
-  const { toggleSnackBar } = useContextProvider();
-
+  const [customersDropDown, setCustomersDropDown] = useState<IDropDownItem[]>(
+    []
+  );
+  const [customers, setCustomers] = useState<ICustomer[]>([]);
+  const [validationError, setValidationError] = useState<IValidationErrorType>({
+    visible: false,
+    text: "",
+  });
   useEffect(() => {
     getAllCustomers();
   }, []);
 
+  useEffect(() => {
+    setTotoalPriceSum();
+  }, [innerDebtsItemsListService.innerDebtsItems]);
+
   async function getAllCustomers() {
     const customers = await customerManager.getAllCustomers();
-    setCustomers([
+    const mappedCustomers = customers?.map((c) => {
+      return mapService.mapToICustomer(c);
+    }) as ICustomer[];
+
+    const sortedCustomers = [
+      { label: "", value: undefined },
       ...(customers?.map((c) => {
         return { label: c.Name, value: c.CustomerId };
       }) as IDropDownItem[]),
-    ]);
+    ];
+    setCustomers(mappedCustomers);
+    setCustomersDropDown(sortedCustomers);
+  }
+
+  function setTotoalPriceSum() {
+    const totalPrice = innerDebtsItemsListService.innerDebtsItems.reduce(
+      (sum, item) => {
+        return sum + item.itemPrice;
+      },
+      0
+    );
+    setInnerDebt((prev) => ({ ...prev, innerDebtTotalPrice: totalPrice }));
   }
 
   function setTotalPrice(value: string) {
     setInnerDebt((prev) => {
-      return { ...prev, totalPrice: Number(value) };
+      return { ...prev, innerDebtTotalPrice: Number(value) };
     });
   }
 
   function setPricePaid(value: string) {
-    setInnerDebt((prev) => {
-      return { ...prev, pricePaid: Number(value) };
-    });
+    // setInnerDebt((prev) => {
+    //   return { ...prev, pricePaid: Number(value) };
+    // });
   }
 
   function setCustomer(customerId: number) {
     setInnerDebt((prev) => {
-      return { ...prev, customerId };
+      return { ...prev, innerDebt_CustomerId: customerId };
     });
   }
 
   function setNotes(value: string) {
     setInnerDebt((prev) => {
-      return { ...prev, notes: value };
+      return { ...prev, innerDebtNotes: value };
     });
   }
 
@@ -69,24 +96,42 @@ export default function useAddInnerDebtsComponentService({
     if (!validateInnerDebtFields()) return;
 
     const newInnerDebt: InnerDebt = {
-      TotalPrice: innerDebt.totalPrice,
-      PricePaid: innerDebt.pricePaid,
-      CustomerId: innerDebt.customerId,
-      Notes: innerDebt.notes,
+      InnerDebt_CustomerId: innerDebt.innerDebt_CustomerId,
+      Notes: innerDebt.innerDebtNotes,
       Date: new Date().toISOString(),
     };
-    const customer = await customerManager.getCustomer(innerDebt.customerId);
+    const customer = await customerManager.getCustomer(
+      innerDebt.innerDebt_CustomerId
+    );
     const mappedCustomer = mapService.mapToICustomer(customer || {});
-    const result = await innerDebtsManager.addInnerDebt(newInnerDebt);
-    if (!result || !result.lastInsertRowId)
-      return toggleSnackBar({
-        visible: true,
-        text: "حصل خطأ ما , الرجاء اعادة المحاولة ",
-        type: "error",
-      });
-    innerDebt.innerDebtId = result?.lastInsertRowId;
 
-    const customerInnerDebt: ICustomerInnerDebt = {
+    //check if inner debt already exists
+    if (!innerDebt.innerDebtId) {
+      const result = await innerDebtsManager.addInnerDebt(newInnerDebt);
+      if (!result || !result.lastInsertRowId)
+        return toggleSnackBar("حصل خطأ ما , الرجاء اعادة المحاولة ");
+      setInnerDebt((prev) => {
+        return { ...prev, innerDebtId: result.lastInsertRowId };
+      });
+      innerDebt.innerDebtId = result.lastInsertRowId;
+    }
+    // Save inner debt items
+    const innerDebtItems: InnerDebtItem[] =
+      innerDebtsItemsListService.innerDebtsItems.map((item) => {
+        item.innerDebtItem_InnerDebtId = innerDebt.innerDebtId;
+        return mapService.mapToInnerDebtItem(item);
+      });
+
+    const itemsResult = await innerDebtItemsManager.addInnerDebtItems(
+      innerDebtItems
+    );
+    if (!itemsResult) {
+      return toggleSnackBar(
+        "حصل خطأ ما في حفظ المنتجات , الرجاء اعادة المحاولة "
+      );
+    }
+
+    const customerInnerDebt: ICustomer_IInnerDebt = {
       ...innerDebt,
       ...mappedCustomer,
     };
@@ -95,36 +140,32 @@ export default function useAddInnerDebtsComponentService({
   }
 
   function validateInnerDebtFields() {
-    if (!innerDebt.totalPrice) {
-      toggleSnackBar({
-        visible: true,
-        text: "الرجاء ادخال السعر الكلي",
-        type: "error",
-      });
+    if (!innerDebt.innerDebt_CustomerId) {
+      toggleSnackBar("الرجاء اختيار زبون من القائمة");
       return false;
     }
-    if (!innerDebt.pricePaid) {
-      toggleSnackBar({
-        visible: true,
-        text: "الرجاء ادخال السعر المدفوع",
-        type: "error",
-      });
+    if (!innerDebtsItemsListService.innerDebtsItems.length) {
+      toggleSnackBar("الرجاء اضافة منتجات الى القائمة");
       return false;
     }
-    if (innerDebt.pricePaid > innerDebt.totalPrice) {
-      toggleSnackBar({
-        visible: true,
-        text: "السعر المدفوع اكبر من السعر الكلي",
-        type: "error",
-      });
+    if (innerDebt.innerDebtPricePaid > innerDebt.innerDebtTotalPrice) {
+      toggleSnackBar("السعر المدفوع اكبر من السعر الكلي");
       return false;
     }
     return true;
   }
 
+  function toggleSnackBar(text: string) {
+    setValidationError({
+      visible: true,
+      text,
+    });
+  }
+
   return {
     innerDebt,
-    customers,
+    customersDropDown,
+    validationError,
     setTotalPrice,
     setPricePaid,
     setCustomer,

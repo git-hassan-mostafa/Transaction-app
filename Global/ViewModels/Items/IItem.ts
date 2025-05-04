@@ -1,8 +1,8 @@
 export default interface IItem {
-  id: number;
+  itemId: number;
   itemName: string;
-  quantity: number;
-  price: number;
-  providerId: number;
-  notes: string;
+  itemQuantity: number;
+  itemPrice: number;
+  item_ProviderId: number;
+  itemNotes: string;
 }

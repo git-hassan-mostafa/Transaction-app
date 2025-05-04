@@ -1,7 +1,7 @@
 import { SQLiteDatabase } from "expo-sqlite";
 import tableDetails from "../Constants/ColumnsDetails";
 
-export default class SqlBuilder<T> {
+export default class SqlBuilder<T extends Record<string, any>> {
   private tableName: string;
   private db: SQLiteDatabase;
   private type!: "select" | "update";
@@ -45,7 +45,41 @@ export default class SqlBuilder<T> {
       const result = await this.db.runAsync(query);
       return result;
     } catch (error) {
-      console.log("an error occurred", error);
+      console.log("an error occurred in insert", error);
+      return null;
+    }
+  }
+
+  async insertAll(values: T[]) {
+    try {
+      if (!values || values.length === 0) return false;
+
+      const columns = Object.keys(values[0]).join(" , ");
+      const valuesList = values
+        .map(
+          (value) =>
+            `(${Object.values(value)
+              .map((val) => {
+                if (typeof val === "string") {
+                  return `'${val}'`;
+                }
+                if (typeof val === "object" || Array.isArray(val)) {
+                  return `'${JSON.stringify(val)}'`;
+                }
+                if (val === null || val === undefined) {
+                  return "NULL";
+                }
+                return val;
+              })
+              .join(" , ")})`
+        )
+        .join(" , ");
+
+      const query = `insert into ${this.tableName} (${columns}) values ${valuesList} RETURNING *`;
+      const result = await this.db.runAsync(query);
+      return result;
+    } catch (error) {
+      console.log("an error occurred in insertAll", error);
       return null;
     }
   }
@@ -57,11 +91,10 @@ export default class SqlBuilder<T> {
       if (id === -1) this.deleteQuery = this.deleteQuery.replace("{1}", "");
       var whereQuery = `where ${tableId} = ${id}`;
       this.deleteQuery = this.deleteQuery.replace("{1}", whereQuery);
-      console.log(this.deleteQuery);
       const result = await this.db.runAsync(this.deleteQuery);
       return result;
     } catch (error) {
-      console.log("an error occurred ", error);
+      console.log("an error occurred in delete", error);
       return null;
     }
   }
@@ -96,7 +129,7 @@ export default class SqlBuilder<T> {
     return this;
   }
 
-  where(value: T) {
+  where(value: Partial<T>) {
     if (!value) {
       this.getQuery = this.getQuery.replace("{2}", "");
       this.updateQuery = this.updateQuery.replace("{2}", "");
@@ -124,47 +157,76 @@ export default class SqlBuilder<T> {
     return this;
   }
 
-  join(table: string, type = "") {
-    const foreignTableKey = this.getTableId(table);
-    this.joinQuery = `${type} join ${table} on ${this.tableName}.${foreignTableKey} = ${table}.${foreignTableKey}`;
+  join(table: string, table2: string | null = null, type = "") {
+    if (type === "right") this.rightJoinQueryBuilder(table, table2);
+    else this.joinQueryBuilder(table, table2, type);
     return this;
   }
 
-  leftJoin(table: string) {
-    return this.join(table, "left");
+  leftJoin(table: string, table2: string | null = null) {
+    return this.join(table, table2, "left");
   }
 
-  rightJoin(table: string) {
-    return this.join(table, "right");
+  rightJoin(table: string, table2: string | null = null) {
+    return this.join(table, table2, "right");
   }
 
   async firstAsync() {
-    if (this.type == "select") {
-      this.getQuery = this.getQuery.replace("{2}", "");
-      this.getQuery = this.getQuery.replace("{3}", "");
-      this.getQuery = this.getQuery.replace("{1}", this.joinQuery);
-      this.getQuery = this.getQuery.replace("{0}", this.tableName);
-      const result = await this.db.getFirstAsync<T>(this.getQuery);
-      return result;
+    try {
+      if (this.type == "select") {
+        this.getQuery = this.getQuery.replace("{2}", "");
+        this.getQuery = this.getQuery.replace("{3}", "");
+        this.getQuery = this.getQuery.replace("{1}", this.joinQuery);
+        this.getQuery = this.getQuery.replace("{0}", this.tableName);
+        const result = await this.db.getFirstAsync<T>(this.getQuery);
+        return result;
+      }
+    } catch (error) {
+      console.log("an error occurred in firstAsync", error);
+      return null;
     }
   }
 
   async executeAsync() {
-    if (this.type == "select") {
-      this.getQuery = this.getQuery.replace("{2}", "");
-      this.getQuery = this.getQuery.replace("{3}", "");
-      this.getQuery = this.getQuery.replace("{1}", this.joinQuery);
-      this.getQuery = this.getQuery.replace("{0}", this.tableName);
-      const result = await this.db.getAllAsync<T>(this.getQuery);
-      return result;
+    try {
+      if (this.type == "select") {
+        this.getQuery = this.getQuery.replace("{2}", "");
+        this.getQuery = this.getQuery.replace("{3}", "");
+        this.getQuery = this.getQuery.replace("{1}", this.joinQuery);
+        this.getQuery = this.getQuery.replace("{0}", this.tableName);
+        const result = await this.db.getAllAsync<T>(this.getQuery);
+        return result;
+      }
+      if (this.type == "update") {
+        this.updateQuery = this.updateQuery.replace("{2}", "");
+        this.updateQuery = this.updateQuery.replace("{0}", this.tableName);
+        const result = await this.db.runAsync(this.updateQuery);
+        return result;
+      }
+      return null;
+    } catch (error) {
+      console.log("an error occurred in executeAsync", error);
+      return null;
     }
-    if (this.type == "update") {
-      this.updateQuery = this.updateQuery.replace("{2}", "");
-      this.updateQuery = this.updateQuery.replace("{0}", this.tableName);
-      const result = await this.db.runAsync(this.updateQuery);
-      return result;
-    }
-    return null;
+  }
+
+  joinQueryBuilder(table: string, table2: string | null = null, type = "") {
+    var foreignTableKey = this.getTableId(table);
+    var primaryTableKey = table2
+      ? table2.slice(0, -1)
+      : this.tableName.slice(0, -1);
+    var usedTable = table2 || this.tableName;
+    var primaryTableForeignKey = primaryTableKey + "_" + foreignTableKey;
+    this.joinQuery += ` ${type} join ${table} on ${usedTable}.${primaryTableForeignKey} = ${table}.${foreignTableKey} `;
+  }
+
+  rightJoinQueryBuilder(table: string, table2: string | null = null) {
+    var foreignTableKey = this.getTableId(table2 || this.tableName);
+    var primaryTableKey = table?.slice(0, -1) ?? "";
+    var usedTable = table2 || this.tableName;
+
+    var primaryTableForeignKey = primaryTableKey + "_" + foreignTableKey;
+    this.joinQuery += ` right join ${table} on ${table}.${primaryTableForeignKey} = ${usedTable}.${foreignTableKey} `;
   }
 
   private getTableId(table: string) {

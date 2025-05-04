@@ -52,25 +52,25 @@ export default function useItemFormComponentService({
 
   function setItemQuantity(value: string) {
     setItem((prev) => {
-      return { ...prev, quantity: Number(value) };
+      return { ...prev, itemQuantity: Number(value) };
     });
   }
 
   function setItemPrice(value: string) {
     setItem((prev) => {
-      return { ...prev, price: Number(value) };
+      return { ...prev, itemPrice: Number(value) };
     });
   }
 
   function setProvider(providerId: number) {
     setItem((prev) => {
-      return { ...prev, providerId: providerId };
+      return { ...prev, item_ProviderId: providerId };
     });
   }
 
   function setItemNotes(value: string) {
     setItem((prev) => {
-      return { ...prev, notes: value };
+      return { ...prev, itemNotes: value };
     });
   }
 
@@ -91,7 +91,7 @@ export default function useItemFormComponentService({
   }
 
   async function updateItemProvider(providerId: number) {
-    itemManager.updateProviderId(item.id, providerId);
+    itemManager.updateProviderId(item.itemId, providerId);
   }
 
   async function updateItem() {
@@ -102,7 +102,7 @@ export default function useItemFormComponentService({
   }
 
   function validateItemFields(item: IItem) {
-    item.id = id;
+    item.itemId = id;
   }
 
   return {

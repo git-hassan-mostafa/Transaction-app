@@ -1,6 +1,6 @@
 export default interface IOuterDebtItem {
   outerDebtItemId: number;
-  quantity: number;
-  outerDebtId: number;
-  itemId: number;
+  outerDebtItemQuantity: number;
+  outerDebtItem_OuterDebtId: number;
+  outerDebtItem_ItemId: number;
 }

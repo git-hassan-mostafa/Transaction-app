@@ -23,6 +23,10 @@ const tableDetails = [
     name: "Providers",
     id: "ProviderId",
   },
+  {
+    name: "InnerDebtItems",
+    id: "InnerDebtItemId",
+  },
 ];
 
 export default tableDetails;
