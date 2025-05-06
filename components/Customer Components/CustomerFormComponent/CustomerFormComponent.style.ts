@@ -25,6 +25,9 @@ const styles = StyleSheet.create({
     gap: 20,
     marginBottom: 20,
   },
+  row: {
+    marginBottom: 15,
+  },
   deleteCustomer: {
     fontSize: 40,
     color: Constants.colors.red,
@@ -43,33 +46,28 @@ const styles = StyleSheet.create({
   pricesRow: {
     flexDirection: "row-reverse",
     alignItems: "center",
-    marginBottom: 15,
     width: "100%",
     justifyContent: "space-between",
   },
   pricesContainer: {
-    flexDirection: "row-reverse",
     gap: 5,
     alignItems: "center",
-    backgroundColor: "red",
     padding: 7,
     borderRadius: 10,
   },
-  borrowedConainer: {
-    backgroundColor: Constants.colors.red,
+  totalDebtPrice: {
+    color: Constants.colors.darkGray,
   },
-  payedContainer: {
-    backgroundColor: Constants.colors.green,
+  payedPrice: {
+    color: Constants.colors.green,
   },
-  totalContainer: {
-    backgroundColor: Constants.colors.lighBlue,
+  remainingPrice: {
+    color: Constants.colors.red,
   },
   priceIcon: {
     fontSize: 30,
-    color: "white",
   },
   price: {
-    color: "white",
     fontSize: 16,
     fontWeight: "bold",
   },
@@ -91,7 +89,7 @@ const styles = StyleSheet.create({
   column: { width: 40, textAlign: "center" },
   dateColumn: { flex: 1, textAlign: "center" },
   itemRow: {
-    backgroundColor: Constants.colors.white,
+    backgroundColor: Constants.colors.lightGray,
     borderRadius: 5,
     width: "100%",
     flexDirection: "row-reverse",

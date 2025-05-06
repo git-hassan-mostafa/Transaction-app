@@ -35,28 +35,35 @@ export function CustomerFormComponent({
 
   return (
     <View style={styles.container}>
-      <TabComponent titles={["الديون", "التفاصيل"]}>
+      <TabComponent titles={["قائمة الديون", "التفاصيل"]}>
         <CustomerDebtsListComponent
           id={id}
           updateFromCustomersList={updateFromCustomersList}
         />
         <View>
           <View style={styles.pricesRow}>
-            <View style={[styles.pricesContainer, styles.borrowedConainer]}>
-              <Icon style={styles.priceIcon} name="cash-remove" />
-              <ThemedText style={styles.price}>
+            <View style={styles.pricesContainer}>
+              {/* <Icon style={styles.priceIcon} name="cash-remove" /> */}
+              <ThemedText style={styles.totalDebtPrice} type="medium">
+                الدين الكامل
+              </ThemedText>
+              <ThemedText style={[styles.price, styles.totalDebtPrice]}>
                 ${formatNumber(customer.customerBorrowedPrice)}
               </ThemedText>
             </View>
-            <View style={[styles.pricesContainer, styles.payedContainer]}>
-              <Icon style={styles.priceIcon} name="cash-check" />
-              <ThemedText style={styles.price}>
+            <View style={styles.pricesContainer}>
+              <ThemedText style={styles.payedPrice} type="medium">
+                المبلغ المدفوع
+              </ThemedText>
+              <ThemedText style={[styles.price, styles.payedPrice]}>
                 ${formatNumber(customer.customerPayedPrice)}
               </ThemedText>
             </View>
-            <View style={[styles.pricesContainer, styles.totalContainer]}>
-              <Icon style={styles.priceIcon} name="account-cash" />
-              <ThemedText style={styles.price}>
+            <View style={styles.pricesContainer}>
+              <ThemedText style={styles.remainingPrice} type="medium">
+                المبلغ المتبقي
+              </ThemedText>
+              <ThemedText style={[styles.price, styles.remainingPrice]}>
                 $
                 {formatNumber(
                   customer.customerBorrowedPrice - customer.customerPayedPrice

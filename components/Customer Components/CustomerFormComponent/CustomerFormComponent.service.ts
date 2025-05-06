@@ -59,6 +59,20 @@ export default function useCustomerFormComponentService({
     setBorrowList(
       mappedBorrowList as ICustomer_IInerDebt_IInnerDebtItem_IItem[]
     );
+    setCustomerBorrowedPrice(
+      mappedBorrowList as ICustomer_IInerDebt_IInnerDebtItem_IItem[]
+    );
+  }
+
+  function setCustomerBorrowedPrice(
+    borrowedList: ICustomer_IInerDebt_IInnerDebtItem_IItem[]
+  ) {
+    const sum = borrowedList.reduce((sum, item) => {
+      return sum + item.innerDebtItemTotalPrice;
+    }, 0);
+    setCustomer((prev) => {
+      return { ...prev, customerBorrowedPrice: sum };
+    });
   }
 
   function setCustomerName(value: string) {
