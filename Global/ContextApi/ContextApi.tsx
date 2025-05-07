@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState } from "react";
-import ContextProps, { SnackBarOptions } from "./ContextApi.type";
-import { useContextService } from "./useContextService";
+import ContextProps from "../Types/IContextApiType";
+import { useContextService } from "../Hooks/useContextService";
 
 const Context = createContext<ContextProps>({} as ContextProps);
 
