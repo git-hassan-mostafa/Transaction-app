@@ -26,7 +26,7 @@ export default function useCustomerFormComponentService({
     year: "numeric",
     month: "numeric",
     day: "numeric",
-    hour12: false,
+    hour12: true,
     hour: "2-digit",
     minute: "2-digit",
   };

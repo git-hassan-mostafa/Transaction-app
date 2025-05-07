@@ -23,7 +23,7 @@ const pages: CardType[] = [
   {
     title: "الديون الخارجية",
     route: "outerDebts",
-    color: Constants.colors.oil,
+    color: Constants.colors.darkGray,
     icon: "money-bill-transfer",
   },
   {
