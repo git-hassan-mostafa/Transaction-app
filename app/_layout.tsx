@@ -1,4 +1,4 @@
-import { ContextProvider } from "@/Global/ContextApi/ContextApi";
+import { ContextProvider } from "@/Global/Context/ContextProvider";
 import LayoutPage from "@/Pages/Layout/LayoutPage";
 import { SQLiteProvider } from "expo-sqlite";
 import { Provider } from "react-native-paper";

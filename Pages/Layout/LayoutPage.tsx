@@ -1,4 +1,4 @@
-import useContextProvider from "@/Global/ContextApi/ContextApi";
+import useGlobalContext from "@/Global/Context/ContextProvider";
 import { Stack } from "expo-router";
 import useLayoutPageService from "./LayoutPage.service";
 import Constants from "@/Global/Constants/Constants";
@@ -8,7 +8,7 @@ import pages from "@/Global/Constants/Pages";
 
 export default function LayoutPage() {
   const layoutService = useLayoutPageService();
-  const { fontsLoaded } = useContextProvider();
+  const { fontsLoaded } = useGlobalContext();
   if (fontsLoaded) {
     return (
       <React.Fragment>

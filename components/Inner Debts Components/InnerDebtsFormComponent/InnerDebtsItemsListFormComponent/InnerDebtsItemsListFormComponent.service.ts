@@ -1,4 +1,4 @@
-import useContextProvider from "@/Global/ContextApi/ContextApi";
+import useGlobalContext from "@/Global/Context/ContextProvider";
 import MapService from "@/Global/Helpers/MapService";
 import InnerDebtItem from "@/Global/Models/InnerDebtItem";
 import Item from "@/Global/Models/Item";
@@ -31,7 +31,7 @@ export default function useInnerDebtsItemsListFormComponentService(
     {} as IInnerDebtItem_IInnerDebt_IItem;
 
   //context
-  const { toggleSnackBar } = useContextProvider();
+  const { toggleSnackBar } = useGlobalContext();
 
   useEffect(() => {
     getAllItems();

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import Person from "@/Global/Models/Person";
-import useContextProvider from "@/Global/ContextApi/ContextApi";
+import useGlobalContext from "@/Global/Context/ContextProvider";
 import IPeopleFormProps from "@/Global/ViewModels/People/IPersonFormProps";
 import { PeopleManager } from "@/Global/Services/people.service";
 import MapService from "@/Global/Helpers/MapService";

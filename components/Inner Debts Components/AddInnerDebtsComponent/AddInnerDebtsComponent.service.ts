@@ -1,4 +1,4 @@
-import useContextProvider from "@/Global/ContextApi/ContextApi";
+import useGlobalContext from "@/Global/Context/ContextProvider";
 import { useEffect, useState } from "react";
 import InnerDebt from "@/Global/Models/InnerDebt";
 import InnerDebtsManager from "@/Global/Services/innerDebts.service";

@@ -1,6 +1,6 @@
 import Person from "@/Global/Models/Person";
 import { useState } from "react";
-import useContextProvider from "@/Global/ContextApi/ContextApi";
+import useGlobalContext from "@/Global/Context/ContextProvider";
 import IAddPeopleProps from "@/Global/ViewModels/People/IAddPersonProps";
 import { PeopleManager } from "@/Global/Services/people.service";
 import MapService from "@/Global/Helpers/MapService";
@@ -17,7 +17,7 @@ export default function useAddPeopleFormComponentService({
   //states
   const [person, setPerson] = useState<IPerson>({} as IPerson);
 
-  const { toggleSnackBar } = useContextProvider();
+  const { toggleSnackBar } = useGlobalContext();
 
   function setPersonName(value: string) {
     setPerson((prev) => {

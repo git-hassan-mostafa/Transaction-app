@@ -1,4 +1,4 @@
-import useContextProvider from "@/Global/ContextApi/ContextApi";
+import useGlobalContext from "@/Global/Context/ContextProvider";
 import { useState } from "react";
 import Customer from "@/Global/Models/Customer";
 import IAddCustomerProps from "@/Global/ViewModels/Customers/IAddCustomerProps";
@@ -15,7 +15,7 @@ export default function useAddCustomerFormComponentService({
   const [customer, setCustomer] = useState<ICustomer>({} as ICustomer);
 
   // context
-  const { toggleSnackBar } = useContextProvider();
+  const { toggleSnackBar } = useGlobalContext();
 
   function setCustomerName(value: string) {
     setCustomer((prev) => {

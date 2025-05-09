@@ -1,8 +1,8 @@
 import Constants from "@/Global/Constants/Constants";
-import useContextProvider from "@/Global/ContextApi/ContextApi";
+import useGlobalContext from "@/Global/Context/ContextProvider";
 
 export default function useCustomSnackBarComponentService() {
-  const { snackBarOptions, onDismissSnackBar } = useContextProvider();
+  const { snackBarOptions, onDismissSnackBar } = useGlobalContext();
 
   var backgroundColor;
   switch (snackBarOptions.type) {

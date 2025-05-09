@@ -1,4 +1,4 @@
-import useContextProvider from "@/Global/ContextApi/ContextApi";
+import useGlobalContext from "@/Global/Context/ContextProvider";
 import { useState } from "react";
 import Provider from "@/Global/Models/Provider";
 import IAddProviderProps from "@/Global/ViewModels/Providers/IAddProviderProps";
@@ -18,7 +18,7 @@ export default function useAddProviderFormComponentService({
   const [provider, setProvider] = useState<IProvider>({} as IProvider);
 
   //context
-  const { toggleSnackBar } = useContextProvider();
+  const { toggleSnackBar } = useGlobalContext();
 
   function setProviderName(value: string) {
     setProvider((prev) => {

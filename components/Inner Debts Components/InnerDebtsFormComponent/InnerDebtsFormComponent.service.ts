@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import useContextProvider from "@/Global/ContextApi/ContextApi";
+import useGlobalContext from "@/Global/Context/ContextProvider";
 import InnerDebt from "@/Global/Models/InnerDebt";
 import {
   IInnerDebtFormProps,
@@ -31,7 +31,7 @@ export default function useInnerDebtsFormComponentService({
   const [customers, setCustomers] = useState<ICustomer[]>([]);
 
   //context
-  const { toggleSnackBar } = useContextProvider();
+  const { toggleSnackBar } = useGlobalContext();
 
   useEffect(() => {
     getInnerDebt();

@@ -1,8 +1,12 @@
-import React, { createContext, useContext, useState } from "react";
+import React, { createContext, useContext } from "react";
 import ContextProps from "../Types/IContextApiType";
-import { useContextService } from "../Hooks/useContextService";
+import { useContextService } from "./useContextService";
 
 const Context = createContext<ContextProps>({} as ContextProps);
+
+export default function useGlobalContext() {
+  return useContext(Context);
+}
 
 export const ContextProvider = ({
   children,
@@ -20,7 +24,3 @@ export const ContextProvider = ({
     </Context.Provider>
   );
 };
-
-export default function useContextProvider() {
-  return useContext(Context);
-}

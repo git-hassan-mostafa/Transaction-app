@@ -1,4 +1,4 @@
-import useContextProvider from "@/Global/ContextApi/ContextApi";
+import useGlobalContext from "@/Global/Context/ContextProvider";
 import { useEffect, useState } from "react";
 import Item from "@/Global/Models/Item";
 import IDropDownItem from "@/Global/Types/IDropDownItem";
@@ -20,7 +20,7 @@ export default function useAddItemFormComponentService({
   const [providers, setProviders] = useState<IDropDownItem[]>([]);
 
   //context
-  const { toggleSnackBar } = useContextProvider();
+  const { toggleSnackBar } = useGlobalContext();
 
   useEffect(() => {
     getAllProviders();
