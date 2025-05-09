@@ -3,7 +3,7 @@ import { OuterDebt } from "@/Global/Models/OuterDebt";
 import { IProviderFormProps } from "@/Global/ViewModels/Providers/IProviderFormProps";
 import IProvider from "@/Global/ViewModels/Providers/IProvider";
 import ProviderManager from "@/Global/Services/provider.service";
-import MapService from "@/Global/Helpers/MapService";
+import Mapper from "@/Global/Helpers/MapService";
 
 export default function useProviderFormComponentService({
   id,
@@ -11,7 +11,7 @@ export default function useProviderFormComponentService({
 }: IProviderFormProps) {
   //services
   const providerManager = new ProviderManager();
-  const mapService = new MapService();
+  const mapper = new Mapper();
 
   //states
   const [provider, setProvider] = useState<IProvider>({} as IProvider);
@@ -29,7 +29,7 @@ export default function useProviderFormComponentService({
   async function getProvider() {
     const providerDB = await providerManager.getProvider(id);
     if (!providerDB) return;
-    const provider = mapService.mapToIProvider(providerDB);
+    const provider = mapper.mapToIProvider(providerDB);
     setProvider(provider);
     return provider;
   }
@@ -66,7 +66,7 @@ export default function useProviderFormComponentService({
 
   async function updateProvider() {
     validateProviderFields(provider);
-    const updateProvider = mapService.mapToProvider(provider);
+    const updateProvider = mapper.mapToProvider(provider);
     const result = await providerManager.updateProvider(updateProvider);
     if ((result?.changes || 0) > 0) updateFromProvidersList(provider);
   }

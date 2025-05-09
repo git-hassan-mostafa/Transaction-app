@@ -1,4 +1,4 @@
-import MapService from "@/Global/Helpers/MapService";
+import Mapper from "@/Global/Helpers/MapService";
 import ItemManager from "@/Global/Services/items.service";
 import IDropDownItem from "@/Global/Types/IDropDownItem";
 import IItem from "@/Global/ViewModels/Items/IItem";
@@ -8,7 +8,7 @@ import { useEffect, useState } from "react";
 export default function useAddInnerDebtsItemsListComponentService() {
   //managers
   const itemManager = new ItemManager();
-  const map = new MapService();
+  const mapper = new Mapper();
   //states
   const [items, setItems] = useState<IItem[]>([]);
   const [dropDownItems, setDropDownItems] = useState<IDropDownItem[]>([]);
@@ -25,7 +25,7 @@ export default function useAddInnerDebtsItemsListComponentService() {
 
   async function getAllItems() {
     const itemsDB = await itemManager.getAllItems();
-    const items = itemsDB?.map((i) => map.mapToIItem(i)) || [];
+    const items = itemsDB?.map((i) => mapper.mapToIItem(i)) || [];
     setItems(items as IItem[]);
     setDropDownItems(
       items.map((i) => ({ value: i.itemId, label: i.itemName }))

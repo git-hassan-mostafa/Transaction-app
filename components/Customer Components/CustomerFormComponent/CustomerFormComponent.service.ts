@@ -4,7 +4,7 @@ import InnerDebt from "@/Global/Models/InnerDebt";
 import CustomerManager from "@/Global/Services/customers.service";
 import ICustomerFormProps from "@/Global/ViewModels/Customers/ICustomerFormProps";
 import ICustomer from "@/Global/ViewModels/Customers/ICustomer";
-import MapService from "@/Global/Helpers/MapService";
+import Mapper from "@/Global/Helpers/MapService";
 import { ICustomer_IInerDebt_IInnerDebtItem_IItem } from "@/Global/ViewModels/RelationModels/ICustomer_IInerDebt_IInnerDebtItem_IItem";
 
 export default function useCustomerFormComponentService({
@@ -13,7 +13,7 @@ export default function useCustomerFormComponentService({
 }: ICustomerFormProps) {
   //services
   const customerManager = new CustomerManager();
-  const mapService = new MapService();
+  const mapper = new Mapper();
 
   // states
   const [customer, setCustomer] = useState<ICustomer>({} as ICustomer);
@@ -42,7 +42,7 @@ export default function useCustomerFormComponentService({
   async function getCustomer() {
     const customerDB = await customerManager.getCustomer(id);
     if (!customerDB) return;
-    const customer = mapService.mapToICustomer(customerDB);
+    const customer = mapper.mapToICustomer(customerDB);
     setCustomer(customer);
     return customer;
   }
@@ -50,8 +50,7 @@ export default function useCustomerFormComponentService({
   async function getBorrowList() {
     const borrowListDB = await customerManager.getCustomerBorrowList(id);
     const mappedBorrowList = borrowListDB?.map((b) => {
-      const result =
-        mapService.mapTo_IICustomer_IInerDebt_IInnerDebtItem_IItem(b);
+      const result = mapper.mapTo_IICustomer_IInerDebt_IInnerDebtItem_IItem(b);
       result.innerDebtItemTotalPrice =
         result.itemPrice * result.innerDebtItemQuantity;
       return result;
@@ -107,7 +106,7 @@ export default function useCustomerFormComponentService({
 
   async function updateCustomer() {
     validateCustomerFields(customer);
-    const updatedCustomer: Customer = mapService.mapToCustomer(customer);
+    const updatedCustomer: Customer = mapper.mapToCustomer(customer);
     await customerManager.updateCustomer(updatedCustomer);
     updateFromCustomersList(customer);
   }

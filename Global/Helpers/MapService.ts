@@ -17,7 +17,7 @@ import { ICustomer_IInerDebt_IInnerDebtItem_IItem } from "../ViewModels/Relation
 import { ICustomer_IInnerDebt } from "../ViewModels/RelationModels/ICustomer_IInnerDebt";
 import IInnerDebtItem_IInnerDebt_IItem from "../ViewModels/RelationModels/IInnerDebtItem_IInnerDebt_IItem";
 
-export default class MapService {
+export default class Mapper {
   mapToCustomer(customer: ICustomer): Customer {
     return {
       CustomerId: customer.customerId as number,

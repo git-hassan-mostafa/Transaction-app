@@ -1,5 +1,5 @@
 import useGlobalContext from "@/Global/Context/ContextProvider";
-import MapService from "@/Global/Helpers/MapService";
+import Mapper from "@/Global/Helpers/MapService";
 import InnerDebtItem from "@/Global/Models/InnerDebtItem";
 import Item from "@/Global/Models/Item";
 import InnerDebtItem_InnerDebt_Item from "@/Global/Models/RelationModels/InnerDebtItem_InnerDebt_Item";
@@ -17,7 +17,7 @@ export default function useInnerDebtsItemsListFormComponentService(
   //managers
   const itemManager = new ItemManager();
   const innerDebtItemsManager = new InnerDebtItemsManager();
-  const map = new MapService();
+  const mapper = new Mapper();
 
   //states
   const [items, setItems] = useState<IItem[]>([]);
@@ -46,7 +46,7 @@ export default function useInnerDebtsItemsListFormComponentService(
     const mappedItems = (
       innerDebtsItemsDB as InnerDebtItem_InnerDebt_Item[]
     ).map((item) => {
-      var i = map.mapTo_IInnerDebtItem_IInnerDebt_IItem(item);
+      var i = mapper.mapTo_IInnerDebtItem_IInnerDebt_IItem(item);
       i.itemPrice = i.innerDebtItemQuantity * (item?.Price ?? 0);
       return i;
     });
@@ -55,7 +55,7 @@ export default function useInnerDebtsItemsListFormComponentService(
 
   async function getAllItems() {
     const itemsDB = await itemManager.getAllItems();
-    const items = itemsDB?.map((i) => map.mapToIItem(i)) || [];
+    const items = itemsDB?.map((i) => mapper.mapToIItem(i)) || [];
     setItems(items as IItem[]);
     setDropDownItems(
       items.map((i) => ({ value: i.itemId, label: i.itemName }))
@@ -85,7 +85,7 @@ export default function useInnerDebtsItemsListFormComponentService(
       newInnerDebtsItem.innerDebtItemQuantity * (currentItem?.itemPrice || 0);
     setInnerDebtsItems((prev) => [...prev, newInnerDebtsItem]);
     setShowAddItem(false);
-    const mappedInnerDebtItem = [map.mapToInnerDebtItem(newInnerDebtsItem)];
+    const mappedInnerDebtItem = [mapper.mapToInnerDebtItem(newInnerDebtsItem)];
     const itemsResult = await innerDebtItemsManager.addInnerDebtItems(
       mappedInnerDebtItem
     );

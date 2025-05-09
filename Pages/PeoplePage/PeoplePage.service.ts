@@ -1,4 +1,4 @@
-import MapService from "@/Global/Helpers/MapService";
+import Mapper from "@/Global/Helpers/MapService";
 import { PeopleManager } from "@/Global/Services/people.service";
 import IPerson from "@/Global/ViewModels/People/IPerson";
 import { useEffect, useState } from "react";
@@ -7,7 +7,7 @@ import { Alert } from "react-native";
 export default function usePeoplePageService() {
   //services
   const peopleManager = new PeopleManager();
-  const mapService = new MapService();
+  const mapper = new Mapper();
   //states
   const [people, setPeople] = useState<IPerson[]>([]);
   const [modalVisible, setModalVisible] = useState(false);
@@ -22,9 +22,7 @@ export default function usePeoplePageService() {
 
   async function getAllPeople() {
     const peopleDB = await peopleManager.getAllPeople();
-    const people = peopleDB?.map(
-      (c) => mapService.mapToICustomer(c) as IPerson
-    );
+    const people = peopleDB?.map((c) => mapper.mapToIPerson(c) as IPerson);
     setPeople(people as IPerson[]);
   }
 

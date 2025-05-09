@@ -1,4 +1,4 @@
-import MapService from "@/Global/Helpers/MapService";
+import Mapper from "@/Global/Helpers/MapService";
 import CustomerManager from "@/Global/Services/customers.service";
 import ICustomer from "@/Global/ViewModels/Customers/ICustomer";
 import { useEffect, useState } from "react";
@@ -7,7 +7,7 @@ import { Alert } from "react-native";
 export default function useCustomersPageService() {
   //services
   const customerManager = new CustomerManager();
-  const mapService = new MapService();
+  const mapper = new Mapper();
 
   //states
   const [customers, setCustomers] = useState<ICustomer[]>([]);
@@ -36,7 +36,7 @@ export default function useCustomersPageService() {
   }
   async function getAllCustomers() {
     const customers = await customerManager.getAllCustomers();
-    const mappedCustomers = customers?.map((c) => mapService.mapToICustomer(c));
+    const mappedCustomers = customers?.map((c) => mapper.mapToICustomer(c));
     setCustomers(mappedCustomers as ICustomer[]);
   }
 

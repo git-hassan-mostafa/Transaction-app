@@ -1,4 +1,4 @@
-import MapService from "@/Global/Helpers/MapService";
+import Mapper from "@/Global/Helpers/MapService";
 import InnerDebtsManager from "@/Global/Services/innerDebts.service";
 import { ICustomer_IInnerDebt } from "@/Global/ViewModels/RelationModels/ICustomer_IInnerDebt";
 import { useEffect, useState } from "react";
@@ -7,7 +7,7 @@ import { Alert } from "react-native";
 export default function useInnerDebtsPageService() {
   //services
   const innerDebtsManager = new InnerDebtsManager();
-  const mapService = new MapService();
+  const mapper = new Mapper();
 
   //states
   const [innerDebts, setInnerDebts] = useState<ICustomer_IInnerDebt[]>([]);
@@ -39,7 +39,7 @@ export default function useInnerDebtsPageService() {
   async function getAllInnerDebts() {
     const innerDebtsDB = await innerDebtsManager.getAllInnerDebts();
     const innerDebts = innerDebtsDB?.map((c) => {
-      return mapService.mapToICustomer_IInnerDebt(c);
+      return mapper.mapToICustomer_IInnerDebt(c);
     });
     setInnerDebts(innerDebts as ICustomer_IInnerDebt[]);
   }

@@ -9,7 +9,7 @@ import IInnerDebt from "@/Global/ViewModels/InnerDebts/IInerDebts";
 import IDropDownItem from "@/Global/Types/IDropDownItem";
 import InnerDebtsManager from "@/Global/Services/innerDebts.service";
 import CustomerManager from "@/Global/Services/customers.service";
-import MapService from "@/Global/Helpers/MapService";
+import Mapper from "@/Global/Helpers/MapService";
 import { ICustomer_IInnerDebt } from "@/Global/ViewModels/RelationModels/ICustomer_IInnerDebt";
 import ICustomer from "@/Global/ViewModels/Customers/ICustomer";
 
@@ -21,7 +21,7 @@ export default function useInnerDebtsFormComponentService({
   //services
   const innerDebtsManager = new InnerDebtsManager();
   const customerManager = new CustomerManager();
-  const mapService = new MapService();
+  const mapper = new Mapper();
 
   //states
   const [innerDebt, setInnerDebt] = useState<IInnerDebt>({} as IInnerDebt);
@@ -45,7 +45,7 @@ export default function useInnerDebtsFormComponentService({
   async function getAllCustomers() {
     const customers = await customerManager.getAllCustomers();
     const mappedCustomers = customers?.map((c) => {
-      return mapService.mapToICustomer(c);
+      return mapper.mapToICustomer(c);
     }) as ICustomer[];
 
     const sortedCustomers = [
@@ -61,7 +61,7 @@ export default function useInnerDebtsFormComponentService({
   async function getInnerDebt() {
     const innerDebtDB = await innerDebtsManager.getInnerDebt(id);
     if (!innerDebtDB) return;
-    const innerDebt = mapService.mapToIInnerDebt(innerDebtDB);
+    const innerDebt = mapper.mapToIInnerDebt(innerDebtDB);
     setInnerDebt(innerDebt);
     return innerDebtDB;
   }
@@ -136,7 +136,7 @@ export default function useInnerDebtsFormComponentService({
       ...innerDebt,
       ...(customer as ICustomer),
     };
-    const updatedInnerDebt: InnerDebt = mapService.mapToInnerDebt(innerDebt);
+    const updatedInnerDebt: InnerDebt = mapper.mapToInnerDebt(innerDebt);
     const result = await innerDebtsManager.updateInnerDebt(updatedInnerDebt);
     if ((result?.changes || 0) > 0) updateFromInnerDebtsList(customerInnerDebt);
   }

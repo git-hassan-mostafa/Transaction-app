@@ -1,4 +1,4 @@
-import MapService from "@/Global/Helpers/MapService";
+import Mapper from "@/Global/Helpers/MapService";
 import Item from "@/Global/Models/Item";
 import ItemManager from "@/Global/Services/items.service";
 import IItem from "@/Global/ViewModels/Items/IItem";
@@ -8,7 +8,7 @@ import { Alert } from "react-native";
 export default function useItemsPageService() {
   //services
   const itemManager = new ItemManager();
-  const mapService = new MapService();
+  const mapper = new Mapper();
 
   //states
   const [items, setItems] = useState<IItem[]>([]);
@@ -35,7 +35,7 @@ export default function useItemsPageService() {
   }
   async function getAllItems() {
     const itemsDB = await itemManager.getAllItems();
-    const items = itemsDB?.map((item) => mapService.mapToIItem(item));
+    const items = itemsDB?.map((item) => mapper.mapToIItem(item));
     setItems(items as IItem[]);
   }
 

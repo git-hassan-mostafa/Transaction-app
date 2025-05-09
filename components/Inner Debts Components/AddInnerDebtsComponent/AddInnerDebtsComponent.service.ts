@@ -7,7 +7,7 @@ import CustomerManager from "@/Global/Services/customers.service";
 import IDropDownItem from "@/Global/Types/IDropDownItem";
 import { IAddInnerDebtServiceProps } from "@/Global/ViewModels/InnerDebts/IAddInnerDebtsProps";
 import IInnerDebt from "@/Global/ViewModels/InnerDebts/IInerDebts";
-import MapService from "@/Global/Helpers/MapService";
+import Mapper from "@/Global/Helpers/MapService";
 import { ICustomer_IInnerDebt } from "@/Global/ViewModels/RelationModels/ICustomer_IInnerDebt";
 import InnerDebtItem from "@/Global/Models/InnerDebtItem";
 import { IValidationErrorType } from "@/Global/Types/IValidationErrorType";
@@ -22,7 +22,7 @@ export default function useAddInnerDebtsComponentService({
   const innerDebtsManager = new InnerDebtsManager();
   const innerDebtItemsManager = new InnerDebtItemsManager();
   const customerManager = new CustomerManager();
-  const mapService = new MapService();
+  const mapper = new Mapper();
 
   //states
   const [innerDebt, setInnerDebt] = useState<IInnerDebt>({} as IInnerDebt);
@@ -45,7 +45,7 @@ export default function useAddInnerDebtsComponentService({
   async function getAllCustomers() {
     const customers = await customerManager.getAllCustomers();
     const mappedCustomers = customers?.map((c) => {
-      return mapService.mapToICustomer(c);
+      return mapper.mapToICustomer(c);
     }) as ICustomer[];
 
     const sortedCustomers = [
@@ -103,7 +103,7 @@ export default function useAddInnerDebtsComponentService({
     const customer = await customerManager.getCustomer(
       innerDebt.innerDebt_CustomerId
     );
-    const mappedCustomer = mapService.mapToICustomer(customer || {});
+    const mappedCustomer = mapper.mapToICustomer(customer || {});
 
     //check if inner debt already exists
     if (!innerDebt.innerDebtId) {
@@ -119,7 +119,7 @@ export default function useAddInnerDebtsComponentService({
     const innerDebtItems: InnerDebtItem[] =
       innerDebtsItemsListService.innerDebtsItems.map((item) => {
         item.innerDebtItem_InnerDebtId = innerDebt.innerDebtId;
-        return mapService.mapToInnerDebtItem(item);
+        return mapper.mapToInnerDebtItem(item);
       });
 
     const itemsResult = await innerDebtItemsManager.addInnerDebtItems(

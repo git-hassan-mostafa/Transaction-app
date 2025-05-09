@@ -3,7 +3,7 @@ import { useState } from "react";
 import useGlobalContext from "@/Global/Context/ContextProvider";
 import IAddPeopleProps from "@/Global/ViewModels/People/IAddPersonProps";
 import { PeopleManager } from "@/Global/Services/people.service";
-import MapService from "@/Global/Helpers/MapService";
+import Mapper from "@/Global/Helpers/MapService";
 import IPerson from "@/Global/ViewModels/People/IPerson";
 
 export default function useAddPeopleFormComponentService({
@@ -12,7 +12,6 @@ export default function useAddPeopleFormComponentService({
 }: IAddPeopleProps) {
   //services
   const peopleManager = new PeopleManager();
-  const mapService = new MapService();
 
   //states
   const [person, setPerson] = useState<IPerson>({} as IPerson);

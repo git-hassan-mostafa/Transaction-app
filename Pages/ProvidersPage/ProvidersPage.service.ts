@@ -1,4 +1,4 @@
-import MapService from "@/Global/Helpers/MapService";
+import Mapper from "@/Global/Helpers/MapService";
 import ProviderManager from "@/Global/Services/provider.service";
 import IProvider from "@/Global/ViewModels/Providers/IProvider";
 import { useEffect, useState } from "react";
@@ -7,7 +7,7 @@ import { Alert } from "react-native";
 export default function useProvidersPageService() {
   //services
   const providerManager = new ProviderManager();
-  const mapService = new MapService();
+  const mapper = new Mapper();
 
   //states
   const [providers, setProviders] = useState<IProvider[]>([]);
@@ -37,7 +37,7 @@ export default function useProvidersPageService() {
   async function getAllProviders() {
     const providersDB = await providerManager.getAllProviders();
     const providers = providersDB?.map((provider) =>
-      mapService.mapToIProvider(provider)
+      mapper.mapToIProvider(provider)
     );
     setProviders(providers as IProvider[]);
   }

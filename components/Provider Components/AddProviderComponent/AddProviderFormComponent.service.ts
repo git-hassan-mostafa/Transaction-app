@@ -4,7 +4,7 @@ import Provider from "@/Global/Models/Provider";
 import IAddProviderProps from "@/Global/ViewModels/Providers/IAddProviderProps";
 import IProvider from "@/Global/ViewModels/Providers/IProvider";
 import ProviderManager from "@/Global/Services/provider.service";
-import MapService from "@/Global/Helpers/MapService";
+import Mapper from "@/Global/Helpers/MapService";
 
 export default function useAddProviderFormComponentService({
   toggleModal,
@@ -12,7 +12,6 @@ export default function useAddProviderFormComponentService({
 }: IAddProviderProps) {
   //services
   const providerManager = new ProviderManager();
-  const mapService = new MapService();
 
   //states
   const [provider, setProvider] = useState<IProvider>({} as IProvider);

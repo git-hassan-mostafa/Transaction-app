@@ -3,7 +3,7 @@ import Person from "@/Global/Models/Person";
 import useGlobalContext from "@/Global/Context/ContextProvider";
 import IPeopleFormProps from "@/Global/ViewModels/People/IPersonFormProps";
 import { PeopleManager } from "@/Global/Services/people.service";
-import MapService from "@/Global/Helpers/MapService";
+import Mapper from "@/Global/Helpers/MapService";
 import IPerson from "@/Global/ViewModels/People/IPerson";
 
 export default function usePeopleFormComponentService({
@@ -12,7 +12,7 @@ export default function usePeopleFormComponentService({
 }: IPeopleFormProps) {
   //services
   const peopleManager = new PeopleManager();
-  const mapService = new MapService();
+  const mapper = new Mapper();
 
   //states
   const [person, setPerson] = useState<IPerson>({} as IPerson);
@@ -24,7 +24,7 @@ export default function usePeopleFormComponentService({
   async function getPerson() {
     const personDB = await peopleManager.getPerson(id);
     if (!personDB) return;
-    const person = mapService.mapToIPerson(personDB);
+    const person = mapper.mapToIPerson(personDB);
     setPerson(person);
     return personDB;
   }
@@ -53,7 +53,7 @@ export default function usePeopleFormComponentService({
     person.id = id;
     person.personName = person.personName?.trim();
     person.personPhoneNumber = person.personPhoneNumber?.trim();
-    const personDB = mapService.mapToPerson(person);
+    const personDB = mapper.mapToPerson(person);
     const result = await peopleManager.updatePerson(personDB);
     if ((result?.changes || 0) > 0) updateFromPeopleList(person);
   }

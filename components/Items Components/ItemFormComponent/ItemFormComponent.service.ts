@@ -3,7 +3,7 @@ import Item from "@/Global/Models/Item";
 import IDropDownItem from "@/Global/Types/IDropDownItem";
 import ProviderManager from "@/Global/Services/provider.service";
 import ItemManager from "@/Global/Services/items.service";
-import MapService from "@/Global/Helpers/MapService";
+import Mapper from "@/Global/Helpers/MapService";
 import IItem from "@/Global/ViewModels/Items/IItem";
 import IItemFormProps from "@/Global/ViewModels/Items/IItemFormProps";
 
@@ -14,7 +14,7 @@ export default function useItemFormComponentService({
   //services
   const providerManager = new ProviderManager();
   const itemManager = new ItemManager();
-  const mapService = new MapService();
+  const mapper = new Mapper();
 
   //states
   const [item, setItem] = useState<IItem>({} as IItem);
@@ -39,7 +39,7 @@ export default function useItemFormComponentService({
   async function getItem() {
     const itemDB = await itemManager.getItem(id);
     if (!itemDB) return;
-    const item = mapService.mapToIItem(itemDB);
+    const item = mapper.mapToIItem(itemDB);
     setItem(item);
     return item;
   }
@@ -96,7 +96,7 @@ export default function useItemFormComponentService({
 
   async function updateItem() {
     validateItemFields(item);
-    const updatedItem: Item = mapService.mapToItem(item);
+    const updatedItem: Item = mapper.mapToItem(item);
     const result = await itemManager.updateItem(updatedItem);
     if ((result?.changes || 0) > 0) updateFromItemsList(item);
   }
