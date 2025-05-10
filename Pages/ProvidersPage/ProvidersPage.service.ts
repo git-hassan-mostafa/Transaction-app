@@ -1,3 +1,4 @@
+import useGlobalContext from "@/Global/Context/ContextProvider";
 import Mapper from "@/Global/Helpers/MapService";
 import ProviderManager from "@/Global/Services/provider.service";
 import IProvider from "@/Global/ViewModels/Providers/IProvider";
@@ -13,6 +14,8 @@ export default function useProvidersPageService() {
   const [providers, setProviders] = useState<IProvider[]>([]);
   const [modalVisible, setModalVisible] = useState(false);
 
+  // context
+  const { toggleSnackBar } = useGlobalContext();
   useEffect(() => {
     getAllProviders();
   }, []);
@@ -43,19 +46,29 @@ export default function useProvidersPageService() {
   }
 
   async function handleDeleteProvider(id: number) {
-    Alert.alert("ازالة زبون", "هل أنت متأكد أنك تريد ازالة هذا التاجر؟", [
-      {
-        text: "الغاء",
-        style: "cancel",
-      },
-      { text: "تأكيد", onPress: () => deleteProvider(id) },
-    ]);
+    Alert.alert(
+      "Delete Provider",
+      "Are you sure you want to delete this provider?",
+      [
+        {
+          text: "Cancel",
+          style: "cancel",
+        },
+        { text: "Confirm", onPress: () => deleteProvider(id) },
+      ]
+    );
   }
 
   async function deleteProvider(id: number) {
     const result = await providerManager.deleteProvider(id);
-    if ((result?.changes || 0) > 0) deleteFromProvidersList(id);
-    else Alert.prompt("حصل خطأ ما", "حصل خطأ ما , الرجاء المحاولة مجددا.");
+    if ((result?.changes || 0) > 0) {
+      deleteFromProvidersList(id);
+      toggleSnackBar({
+        visible: true,
+        text: "Provider deleted successfully",
+        type: "success",
+      });
+    } else Alert.prompt("Error", "Failed to delete provider");
   }
 
   function toggleModal() {

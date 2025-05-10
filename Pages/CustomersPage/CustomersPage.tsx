@@ -50,12 +50,10 @@ export default function CustomersPage() {
         isVisible={modalVisible}
         onClose={toggleModal}
       >
-        <View style={{ backgroundColor: Constants.colors.lightGray }}>
-          <AddCustomerFormComponent
-            addToCustomersList={addToCustomersList}
-            toggleModal={toggleModal}
-          />
-        </View>
+        <AddCustomerFormComponent
+          addToCustomersList={addToCustomersList}
+          toggleModal={toggleModal}
+        />
       </CustomModal>
       <FAB
         onPress={toggleModal}

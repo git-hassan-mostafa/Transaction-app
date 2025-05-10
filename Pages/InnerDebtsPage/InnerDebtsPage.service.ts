@@ -1,3 +1,4 @@
+import useGlobalContext from "@/Global/Context/ContextProvider";
 import Mapper from "@/Global/Helpers/MapService";
 import InnerDebtsManager from "@/Global/Services/innerDebts.service";
 import { ICustomer_IInnerDebt } from "@/Global/ViewModels/RelationModels/ICustomer_IInnerDebt";
@@ -13,6 +14,8 @@ export default function useInnerDebtsPageService() {
   const [innerDebts, setInnerDebts] = useState<ICustomer_IInnerDebt[]>([]);
   const [modalVisible, setModalVisible] = useState(false);
 
+  // context
+  const { toggleSnackBar } = useGlobalContext();
   useEffect(() => {
     getAllInnerDebts();
   }, []);
@@ -45,19 +48,30 @@ export default function useInnerDebtsPageService() {
   }
 
   async function handleDeleteInnerDebt(id: number) {
-    Alert.alert("ازالة دين", "هل أنت متأكد أنك تريد ازالة هذا الدين؟", [
+    Alert.alert("Delete Debt", "Are you sure you want to delete this debt?", [
       {
-        text: "الغاء",
+        text: "Cancel",
         style: "cancel",
       },
-      { text: "تأكيد", onPress: () => deleteInnerDebt(id) },
+      { text: "Confirm", onPress: () => deleteInnerDebt(id) },
     ]);
   }
 
   async function deleteInnerDebt(id: number) {
     const result = await innerDebtsManager.deleteInnerDebt(id);
-    if ((result?.changes || 0) > 0) deleteFromInnerDebtsList(id);
-    else Alert.prompt("حصل خطأ ما", "حصل خطأ ما , الرجاء المحاولة مجددا.");
+    if ((result?.changes || 0) > 0) {
+      deleteFromInnerDebtsList(id);
+      toggleSnackBar({
+        text: "Inner Debt Deleted Successfully",
+        type: "success",
+        visible: true,
+      });
+    } else
+      toggleSnackBar({
+        text: "Error deleting inner debt",
+        type: "error",
+        visible: true,
+      });
   }
 
   function toggleModal() {

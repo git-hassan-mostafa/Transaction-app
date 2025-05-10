@@ -4,6 +4,8 @@ import Customer from "@/Global/Models/Customer";
 import IAddCustomerProps from "@/Global/ViewModels/Customers/IAddCustomerProps";
 import ICustomer from "@/Global/ViewModels/Customers/ICustomer";
 import CustomerManager from "@/Global/Services/customers.service";
+import { IValidationErrorType } from "@/Global/Types/IValidationErrorType";
+import { Alert } from "react-native";
 
 export default function useAddCustomerFormComponentService({
   toggleModal,
@@ -11,8 +13,13 @@ export default function useAddCustomerFormComponentService({
 }: IAddCustomerProps) {
   // services
   const customerManager = new CustomerManager();
+
   // states
   const [customer, setCustomer] = useState<ICustomer>({} as ICustomer);
+  const [validation, setValidation] = useState<IValidationErrorType>({
+    visible: false,
+    text: "",
+  });
 
   // context
   const { toggleSnackBar } = useGlobalContext();
@@ -37,18 +44,16 @@ export default function useAddCustomerFormComponentService({
 
   async function addCustomer() {
     if (!customer.customerName) {
-      toggleSnackBar({
+      setValidation({
         visible: true,
-        text: "الرجاء ادخال اسم الزبون",
-        type: "error",
+        text: "please enter customer name",
       });
       return;
     }
     if (!customer.customerPhoneNumber) {
-      toggleSnackBar({
+      setValidation({
         visible: true,
-        text: "الرجاء ادخال رقم الهاتف ",
-        type: "error",
+        text: "please enter customer phone number",
       });
       return;
     }
@@ -58,19 +63,22 @@ export default function useAddCustomerFormComponentService({
       Notes: customer.customerNotes,
     };
     const result = await customerManager.addCustomer(newCustomer);
-    if (!result || !result.lastInsertRowId)
-      return toggleSnackBar({
-        visible: true,
-        text: "حصل خطأ ما , الرجاء اعادة المحاولة ",
-        type: "error",
-      });
+    if (!result || !result.lastInsertRowId) {
+      return Alert.alert("Error", "Failed to add customer, Please try again");
+    }
     customer.customerId = result?.lastInsertRowId;
     addToCustomersList(customer);
     toggleModal();
+    toggleSnackBar({
+      text: "customer added successfully",
+      type: "success",
+      visible: true,
+    });
   }
 
   return {
     customer,
+    validation,
     setCustomerName,
     setCustomerPhoneNumber,
     addCustomer,

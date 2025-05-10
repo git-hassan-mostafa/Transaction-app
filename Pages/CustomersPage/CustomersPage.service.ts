@@ -1,3 +1,4 @@
+import useGlobalContext from "@/Global/Context/ContextProvider";
 import Mapper from "@/Global/Helpers/MapService";
 import CustomerManager from "@/Global/Services/customers.service";
 import ICustomer from "@/Global/ViewModels/Customers/ICustomer";
@@ -13,6 +14,8 @@ export default function useCustomersPageService() {
   const [customers, setCustomers] = useState<ICustomer[]>([]);
   const [modalVisible, setModalVisible] = useState(false);
 
+  //context
+  const { toggleSnackBar } = useGlobalContext();
   useEffect(() => {
     getAllCustomers();
   }, []);
@@ -41,19 +44,36 @@ export default function useCustomersPageService() {
   }
 
   async function handleDeleteCustomer(id: number) {
-    Alert.alert("ازالة زبون", "هل أنت متأكد أنك تريد ازالة هذا الزبون؟", [
-      {
-        text: "الغاء",
-        style: "cancel",
-      },
-      { text: "تأكيد", onPress: () => deleteCustomer(id) },
-    ]);
+    const customer = customers.find((c) => c.customerId === id);
+    Alert.alert(
+      "Delete Customer",
+      "Are you sure you want to delete this customer?",
+      [
+        {
+          text: "Cancel",
+          style: "cancel",
+        },
+        { text: "Confirm", onPress: () => deleteCustomer(id) },
+      ]
+    );
   }
 
   async function deleteCustomer(id: number) {
     const result = await customerManager.deleteCustomer(id);
-    if ((result?.changes || 0) > 0) deleteFromCustomerList(id);
-    else Alert.prompt("حصل خطأ ما", "حصل خطأ ما , الرجاء المحاولة مجددا.");
+    if ((result?.changes || 0) > 0) {
+      deleteFromCustomerList(id);
+      toggleSnackBar({
+        text: "Customer deleted successfully",
+        type: "success",
+        visible: true,
+      });
+      return;
+    }
+    toggleSnackBar({
+      text: "Error deleting customer",
+      type: "error",
+      visible: true,
+    });
   }
 
   function toggleModal() {

@@ -61,12 +61,10 @@ export default function InnerDebtsPage() {
         isVisible={modalVisible}
         onClose={toggleModal}
       >
-        <View style={{ backgroundColor: Constants.colors.lightGray }}>
-          <AddInnerDebtsComponent
-            addToInnerDebtsList={addToInnerDebtsList}
-            toggleModal={toggleModal}
-          />
-        </View>
+        <AddInnerDebtsComponent
+          addToInnerDebtsList={addToInnerDebtsList}
+          toggleModal={toggleModal}
+        />
       </CustomModal>
       <FAB
         onPress={toggleModal}

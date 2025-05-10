@@ -61,12 +61,10 @@ export default function ItemsPage() {
         isVisible={modalVisible}
         onClose={toggleModal}
       >
-        <View style={{ backgroundColor: Constants.colors.lightGray }}>
-          <AddItemFormComponent
-            addToItemsList={addToItemsList}
-            toggleModal={toggleModal}
-          />
-        </View>
+        <AddItemFormComponent
+          addToItemsList={addToItemsList}
+          toggleModal={toggleModal}
+        />
       </CustomModal>
       <FAB
         onPress={toggleModal}

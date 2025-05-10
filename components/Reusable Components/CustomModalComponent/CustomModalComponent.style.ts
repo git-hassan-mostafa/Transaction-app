@@ -30,7 +30,8 @@ const styles = StyleSheet.create({
     fontFamily: Constants.fontFamily.font800ExtraBold,
   },
   content: {
-    // Auto height based on children
+    backgroundColor: Constants.colors.lightGray,
+    borderRadius: 10,
   },
 });
 

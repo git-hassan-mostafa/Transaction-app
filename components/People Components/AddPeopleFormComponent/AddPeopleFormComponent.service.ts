@@ -3,8 +3,8 @@ import { useState } from "react";
 import useGlobalContext from "@/Global/Context/ContextProvider";
 import IAddPeopleProps from "@/Global/ViewModels/People/IAddPersonProps";
 import { PeopleManager } from "@/Global/Services/people.service";
-import Mapper from "@/Global/Helpers/MapService";
 import IPerson from "@/Global/ViewModels/People/IPerson";
+import { IValidationErrorType } from "@/Global/Types/IValidationErrorType";
 
 export default function useAddPeopleFormComponentService({
   addToPeopleList,
@@ -15,7 +15,12 @@ export default function useAddPeopleFormComponentService({
 
   //states
   const [person, setPerson] = useState<IPerson>({} as IPerson);
+  const [validation, setValidation] = useState<IValidationErrorType>({
+    visible: false,
+    text: "",
+  });
 
+  // context
   const { toggleSnackBar } = useGlobalContext();
 
   function setPersonName(value: string) {
@@ -32,18 +37,16 @@ export default function useAddPeopleFormComponentService({
 
   async function addPerson() {
     if (!person.personName) {
-      toggleSnackBar({
+      setValidation({
         visible: true,
-        text: "الرجاء ادخال اسم الزبون",
-        type: "error",
+        text: "please enter the name",
       });
       return;
     }
     if (!person.personPhoneNumber) {
-      toggleSnackBar({
+      setValidation({
         visible: true,
-        text: "الرجاء ادخال رقم الهاتف ",
-        type: "error",
+        text: "please enter the phone number",
       });
       return;
     }
@@ -55,13 +58,18 @@ export default function useAddPeopleFormComponentService({
     if (!result || !result.lastInsertRowId)
       return toggleSnackBar({
         visible: true,
-        text: "حصل خطأ ما , الرجاء اعادة المحاولة ",
+        text: "Failed to add person",
         type: "error",
       });
     person.id = result?.lastInsertRowId;
     addToPeopleList(person);
     toggleModal();
+    toggleSnackBar({
+      visible: true,
+      text: "Person added successfully",
+      type: "success",
+    });
   }
 
-  return { person, setPersonName, setPersonPhoneNumber, addPerson };
+  return { person, validation, setPersonName, setPersonPhoneNumber, addPerson };
 }

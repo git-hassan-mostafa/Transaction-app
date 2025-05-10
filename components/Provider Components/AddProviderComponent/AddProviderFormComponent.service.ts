@@ -5,6 +5,7 @@ import IAddProviderProps from "@/Global/ViewModels/Providers/IAddProviderProps";
 import IProvider from "@/Global/ViewModels/Providers/IProvider";
 import ProviderManager from "@/Global/Services/provider.service";
 import Mapper from "@/Global/Helpers/MapService";
+import { IValidationErrorType } from "@/Global/Types/IValidationErrorType";
 
 export default function useAddProviderFormComponentService({
   toggleModal,
@@ -15,8 +16,12 @@ export default function useAddProviderFormComponentService({
 
   //states
   const [provider, setProvider] = useState<IProvider>({} as IProvider);
+  const [validation, setValidation] = useState<IValidationErrorType>({
+    visible: false,
+    text: "",
+  });
 
-  //context
+  // context
   const { toggleSnackBar } = useGlobalContext();
 
   function setProviderName(value: string) {
@@ -40,18 +45,16 @@ export default function useAddProviderFormComponentService({
   async function addProvider() {
     try {
       if (!provider.providerName) {
-        toggleSnackBar({
+        setValidation({
           visible: true,
-          text: "الرجاء ادخال اسم التاجر",
-          type: "error",
+          text: "please enter the provider name",
         });
         return;
       }
       if (!provider.providerPhoneNumber) {
-        toggleSnackBar({
+        setValidation({
           visible: true,
-          text: "الرجاء ادخال رقم الهاتف ",
-          type: "error",
+          text: "please enter the provider phone number",
         });
         return;
       }
@@ -64,12 +67,17 @@ export default function useAddProviderFormComponentService({
       if (!result || !result.lastInsertRowId)
         return toggleSnackBar({
           visible: true,
-          text: "حصل خطأ ما , الرجاء اعادة المحاولة ",
+          text: "Failed to add provider",
           type: "error",
         });
       provider.providerId = result?.lastInsertRowId;
       addToProvidersList(provider);
       toggleModal();
+      toggleSnackBar({
+        visible: true,
+        text: "Provider added successfully",
+        type: "success",
+      });
     } catch (error) {
       console.log(error);
     }
@@ -77,6 +85,7 @@ export default function useAddProviderFormComponentService({
 
   return {
     provider,
+    validation,
     setProviderName,
     setProviderPhoneNumber,
     setProviderNotes,

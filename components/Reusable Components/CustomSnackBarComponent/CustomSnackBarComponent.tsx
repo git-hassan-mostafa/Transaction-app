@@ -16,7 +16,7 @@ export default function CustomSnackBarComponent() {
           onDismissSnackBar();
         },
       }}
-      style={{ backgroundColor }}
+      style={{ backgroundColor, bottom: 30 }}
     >
       <ThemedText color="white">{options.text || ""}</ThemedText>
     </Snackbar>

@@ -1,3 +1,4 @@
+import useGlobalContext from "@/Global/Context/ContextProvider";
 import Mapper from "@/Global/Helpers/MapService";
 import { PeopleManager } from "@/Global/Services/people.service";
 import IPerson from "@/Global/ViewModels/People/IPerson";
@@ -11,6 +12,9 @@ export default function usePeoplePageService() {
   //states
   const [people, setPeople] = useState<IPerson[]>([]);
   const [modalVisible, setModalVisible] = useState(false);
+
+  // context
+  const { toggleSnackBar } = useGlobalContext();
 
   useEffect(() => {
     getAllPeople();
@@ -43,19 +47,34 @@ export default function usePeoplePageService() {
   }
 
   function handleDeletePerson(id: number) {
-    Alert.alert("ازالة شخص", "هل أنت متأكد أنك تريد ازالة هذا الشخص", [
-      {
-        text: "الغاء",
-        style: "cancel",
-      },
-      { text: "تأكيد", onPress: () => deletePerson(id) },
-    ]);
+    Alert.alert(
+      "Delete Person",
+      "Are you sure you want to delete this person?",
+      [
+        {
+          text: "Cancel",
+          style: "cancel",
+        },
+        { text: "Confirm", onPress: () => deletePerson(id) },
+      ]
+    );
   }
 
   async function deletePerson(id: number) {
     const result = await peopleManager.deletePerson(id);
-    if ((result?.changes || 0) > 0) deleteFromPeopleList(id);
-    else Alert.prompt("حصل خطأ ما", "حصل خطأ ما , الرجاء المحاولة مجددا.");
+    if ((result?.changes || 0) > 0) {
+      deleteFromPeopleList(id);
+      toggleSnackBar({
+        text: "Person deleted successfully",
+        type: "success",
+        visible: true,
+      });
+    } else
+      toggleSnackBar({
+        text: "Error deleting person",
+        visible: true,
+        type: "error",
+      });
   }
   return {
     people,

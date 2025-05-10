@@ -30,10 +30,14 @@ export default function useAddInnerDebtsComponentService({
     []
   );
   const [customers, setCustomers] = useState<ICustomer[]>([]);
-  const [validationError, setValidationError] = useState<IValidationErrorType>({
+  const [validation, setValidation] = useState<IValidationErrorType>({
     visible: false,
     text: "",
   });
+
+  //context
+  const { toggleSnackBar } = useGlobalContext();
+
   useEffect(() => {
     getAllCustomers();
   }, []);
@@ -75,9 +79,9 @@ export default function useAddInnerDebtsComponentService({
   }
 
   function setPricePaid(value: string) {
-    // setInnerDebt((prev) => {
-    //   return { ...prev, pricePaid: Number(value) };
-    // });
+    setInnerDebt((prev): IInnerDebt => {
+      return { ...prev, innerDebtPricePaid: Number(value) };
+    });
   }
 
   function setCustomer(customerId: number) {
@@ -109,7 +113,10 @@ export default function useAddInnerDebtsComponentService({
     if (!innerDebt.innerDebtId) {
       const result = await innerDebtsManager.addInnerDebt(newInnerDebt);
       if (!result || !result.lastInsertRowId)
-        return toggleSnackBar("حصل خطأ ما , الرجاء اعادة المحاولة ");
+        return toggleSnackBar({
+          text: "Failed to add inner debt",
+          visible: true,
+        });
       setInnerDebt((prev) => {
         return { ...prev, innerDebtId: result.lastInsertRowId };
       });
@@ -126,9 +133,11 @@ export default function useAddInnerDebtsComponentService({
       innerDebtItems
     );
     if (!itemsResult) {
-      return toggleSnackBar(
-        "حصل خطأ ما في حفظ المنتجات , الرجاء اعادة المحاولة "
-      );
+      await innerDebtsManager.deleteInnerDebt(innerDebt.innerDebtId);
+      return toggleSnackBar({
+        text: "Failed to add inner debt items",
+        visible: true,
+      });
     }
 
     const customerInnerDebt: ICustomer_IInnerDebt = {
@@ -137,35 +146,37 @@ export default function useAddInnerDebtsComponentService({
     };
     addToInnerDebtsList(customerInnerDebt);
     toggleModal();
+    toggleSnackBar({
+      text: "Inner debt added successfully",
+      visible: true,
+      type: "success",
+    });
   }
 
   function validateInnerDebtFields() {
     if (!innerDebt.innerDebt_CustomerId) {
-      toggleSnackBar("الرجاء اختيار زبون من القائمة");
+      setValidation({ text: "Please select a customer", visible: true });
       return false;
     }
     if (!innerDebtsItemsListService.innerDebtsItems.length) {
-      toggleSnackBar("الرجاء اضافة منتجات الى القائمة");
+      setValidation({ text: "Please add at least one item", visible: true });
       return false;
     }
+    console.log(innerDebt);
     if (innerDebt.innerDebtPricePaid > innerDebt.innerDebtTotalPrice) {
-      toggleSnackBar("السعر المدفوع اكبر من السعر الكلي");
+      setValidation({
+        text: "Paid price cannot be greater than total price",
+        visible: true,
+      });
       return false;
     }
     return true;
   }
 
-  function toggleSnackBar(text: string) {
-    setValidationError({
-      visible: true,
-      text,
-    });
-  }
-
   return {
     innerDebt,
     customersDropDown,
-    validationError,
+    validation,
     setTotalPrice,
     setPricePaid,
     setCustomer,

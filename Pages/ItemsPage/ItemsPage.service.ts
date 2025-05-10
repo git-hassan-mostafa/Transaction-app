@@ -1,3 +1,4 @@
+import useGlobalContext from "@/Global/Context/ContextProvider";
 import Mapper from "@/Global/Helpers/MapService";
 import Item from "@/Global/Models/Item";
 import ItemManager from "@/Global/Services/items.service";
@@ -13,6 +14,9 @@ export default function useItemsPageService() {
   //states
   const [items, setItems] = useState<IItem[]>([]);
   const [modalVisible, setModalVisible] = useState(false);
+
+  // context
+  const { toggleSnackBar } = useGlobalContext();
 
   useEffect(() => {
     getAllItems();
@@ -40,19 +44,30 @@ export default function useItemsPageService() {
   }
 
   async function handleDeleteItem(id: number) {
-    Alert.alert("ازالة زبون", "هل أنت متأكد أنك تريد ازالة هذا المنتج؟", [
+    Alert.alert("Delete Item", "Are you sure you want to delete this item?", [
       {
-        text: "الغاء",
+        text: "Cancel",
         style: "cancel",
       },
-      { text: "تأكيد", onPress: () => deleteItem(id) },
+      { text: "Confirm", onPress: () => deleteItem(id) },
     ]);
   }
 
   async function deleteItem(id: number) {
     const result = await itemManager.deleteItem(id);
-    if ((result?.changes || 0) > 0) deleteFromItemsList(id);
-    else Alert.prompt("حصل خطأ ما", "حصل خطأ ما , الرجاء المحاولة مجددا.");
+    if ((result?.changes || 0) > 0) {
+      deleteFromItemsList(id);
+      toggleSnackBar({
+        text: "Item deleted successfully",
+        type: "success",
+        visible: true,
+      });
+    } else
+      toggleSnackBar({
+        text: "Error deleting inner debt",
+        type: "error",
+        visible: true,
+      });
   }
 
   function toggleModal() {

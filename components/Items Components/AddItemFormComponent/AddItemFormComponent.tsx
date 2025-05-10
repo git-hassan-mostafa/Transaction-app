@@ -8,6 +8,7 @@ import styles from "./AddItemFormComponent.style";
 import useAddItemFormComponentService from "./AddItemFormComponent.service";
 import CustomDropDown from "@/Components/Reusable Components/CustomDropDownComponent/CustomDropDownComponent";
 import IAddItemProps from "@/Global/ViewModels/Items/IAddItemProps";
+import ValidationMessage from "@/Components/Reusable Components/HelperComponents/ValidationMessage";
 
 export default function AddItemFormComponent({
   toggleModal,
@@ -16,6 +17,7 @@ export default function AddItemFormComponent({
   const {
     item,
     providers,
+    validation,
     setItemName,
     setItemQuantity,
     setItemPrice,
@@ -79,6 +81,9 @@ export default function AddItemFormComponent({
           value={item.itemNotes}
           onChangeText={setcustomerNotes}
         />
+      </View>
+      <View style={styles.row}>
+        <ValidationMessage validation={validation} />
       </View>
       <TouchableOpacity>
         <Button

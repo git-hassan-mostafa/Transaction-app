@@ -7,6 +7,7 @@ import { TouchableOpacity } from "react-native";
 import { Button } from "react-native-paper";
 import { ThemedText } from "../../Reusable Components/HelperComponents/ThemedText";
 import IAddCustomerProps from "@/Global/ViewModels/Customers/IAddCustomerProps";
+import ValidationMessage from "@/Components/Reusable Components/HelperComponents/ValidationMessage";
 
 export default function AddCustomerFormComponent({
   toggleModal,
@@ -14,6 +15,7 @@ export default function AddCustomerFormComponent({
 }: IAddCustomerProps) {
   const {
     customer,
+    validation,
     setCustomerName,
     setCustomerPhoneNumber,
     addCustomer,
@@ -58,6 +60,9 @@ export default function AddCustomerFormComponent({
           onChangeText={setCustomerNotes}
           multiline
         />
+      </View>
+      <View style={styles.row}>
+        <ValidationMessage validation={validation} />
       </View>
       <TouchableOpacity>
         <Button

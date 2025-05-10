@@ -11,12 +11,13 @@ import Constants from "@/Global/Constants/Constants";
 import { Button } from "react-native-paper";
 import { ThemedText } from "@/Components/Reusable Components/HelperComponents/ThemedText";
 import IAddPeopleProps from "@/Global/ViewModels/People/IAddPersonProps";
+import ValidationMessage from "@/Components/Reusable Components/HelperComponents/ValidationMessage";
 
 export default function AddPeopleFormComponent({
   addToPeopleList,
   toggleModal,
 }: IAddPeopleProps) {
-  const { person, setPersonName, setPersonPhoneNumber, addPerson } =
+  const { person, validation, setPersonName, setPersonPhoneNumber, addPerson } =
     useAddPeopleFormComponentService({ addToPeopleList, toggleModal });
   return (
     <View style={styles.container}>
@@ -42,6 +43,9 @@ export default function AddPeopleFormComponent({
           textContentType="telephoneNumber"
           onChangeText={setPersonPhoneNumber}
         />
+      </View>
+      <View style={styles.row}>
+        <ValidationMessage validation={validation} />
       </View>
       <TouchableOpacity>
         <Button

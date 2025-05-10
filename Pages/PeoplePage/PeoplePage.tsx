@@ -63,12 +63,10 @@ export default function PeoplePage() {
         isVisible={modalVisible}
         onClose={toggleModal}
       >
-        <View style={{ backgroundColor: Constants.colors.lightGray }}>
-          <AddPeopleFormComponent
-            addToPeopleList={addToPeopleList}
-            toggleModal={toggleModal}
-          />
-        </View>
+        <AddPeopleFormComponent
+          addToPeopleList={addToPeopleList}
+          toggleModal={toggleModal}
+        />
       </CustomModal>
       <FAB
         onPress={toggleModal}

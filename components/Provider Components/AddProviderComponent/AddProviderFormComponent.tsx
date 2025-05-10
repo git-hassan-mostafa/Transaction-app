@@ -7,6 +7,7 @@ import { TouchableOpacity } from "react-native";
 import { Button } from "react-native-paper";
 import { ThemedText } from "../../Reusable Components/HelperComponents/ThemedText";
 import IAddProviderProps from "@/Global/ViewModels/Providers/IAddProviderProps";
+import ValidationMessage from "@/Components/Reusable Components/HelperComponents/ValidationMessage";
 
 export default function AddProviderFormComponent({
   toggleModal,
@@ -14,6 +15,7 @@ export default function AddProviderFormComponent({
 }: IAddProviderProps) {
   const {
     provider,
+    validation,
     setProviderName,
     setProviderPhoneNumber,
     setProviderNotes,
@@ -59,7 +61,9 @@ export default function AddProviderFormComponent({
           onChangeText={setProviderNotes}
         />
       </View>
-
+      <View style={styles.row}>
+        <ValidationMessage validation={validation} />
+      </View>
       <TouchableOpacity>
         <Button
           buttonColor={Constants.colors.brown}

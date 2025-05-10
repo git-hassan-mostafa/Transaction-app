@@ -63,12 +63,10 @@ export default function ProvidersPage() {
         isVisible={modalVisible}
         onClose={toggleModal}
       >
-        <View style={{ backgroundColor: Constants.colors.lightGray }}>
-          <AddProviderFormComponent
-            addToProvidersList={addToProvidersList}
-            toggleModal={toggleModal}
-          />
-        </View>
+        <AddProviderFormComponent
+          addToProvidersList={addToProvidersList}
+          toggleModal={toggleModal}
+        />
       </CustomModal>
       <FAB
         onPress={toggleModal}

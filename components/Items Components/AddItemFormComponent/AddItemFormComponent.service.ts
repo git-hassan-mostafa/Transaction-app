@@ -6,6 +6,7 @@ import ProviderManager from "@/Global/Services/provider.service";
 import ItemManager from "@/Global/Services/items.service";
 import IAddItemProps from "@/Global/ViewModels/Items/IAddItemProps";
 import IItem from "@/Global/ViewModels/Items/IItem";
+import { IValidationErrorType } from "@/Global/Types/IValidationErrorType";
 
 export default function useAddItemFormComponentService({
   toggleModal,
@@ -18,8 +19,12 @@ export default function useAddItemFormComponentService({
   //states
   const [item, setItem] = useState<IItem>({} as IItem);
   const [providers, setProviders] = useState<IDropDownItem[]>([]);
+  const [validation, setValidation] = useState<IValidationErrorType>({
+    visible: false,
+    text: "",
+  });
 
-  //context
+  // context
   const { toggleSnackBar } = useGlobalContext();
 
   useEffect(() => {
@@ -68,18 +73,23 @@ export default function useAddItemFormComponentService({
 
   async function addItem() {
     if (!item.itemName) {
-      toggleSnackBar({
+      setValidation({
         visible: true,
-        text: "الرجاء ادخال اسم البضاعة",
-        type: "error",
+        text: "please enter item name",
       });
       return;
     }
     if (!item.itemPrice) {
-      toggleSnackBar({
+      setValidation({
         visible: true,
-        text: "الرجاء ادخال السعر",
-        type: "error",
+        text: "please enter item price",
+      });
+      return;
+    }
+    if (!item.itemQuantity) {
+      setValidation({
+        visible: true,
+        text: "please enter item Quantity",
       });
       return;
     }
@@ -94,17 +104,23 @@ export default function useAddItemFormComponentService({
     if (!result || !result.lastInsertRowId)
       return toggleSnackBar({
         visible: true,
-        text: "حصل خطأ ما , الرجاء اعادة المحاولة ",
+        text: "Error adding item",
         type: "error",
       });
     item.itemId = result?.lastInsertRowId;
     addToItemsList(item);
     toggleModal();
+    toggleSnackBar({
+      visible: true,
+      text: "Item added successfully",
+      type: "success",
+    });
   }
 
   return {
     item,
     providers,
+    validation,
     setItemName,
     setItemQuantity,
     setItemPrice,

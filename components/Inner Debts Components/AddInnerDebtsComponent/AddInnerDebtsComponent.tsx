@@ -11,6 +11,7 @@ import { IAddInnerDebtProps } from "@/Global/ViewModels/InnerDebts/IAddInnerDebt
 import TabComponent from "@/Components/Reusable Components/TabComponent/TabComponent";
 import AddInnerDebtsItemsListComponent from "./AddInnerDebtsItemsListComponent/AddInnerDebtsItemsListComponent";
 import useAddInnerDebtsItemsListComponentService from "./AddInnerDebtsItemsListComponent/AddInnerDebtsItemsListComponent.service";
+import ValidationMessage from "@/Components/Reusable Components/HelperComponents/ValidationMessage";
 
 export default function AddInnerDebtsComponent(props: IAddInnerDebtProps) {
   const innerDebtsItemsListService =
@@ -69,11 +70,7 @@ export default function AddInnerDebtsComponent(props: IAddInnerDebtProps) {
             />
           </View>
           <View style={styles.row}>
-            {service.validationError.visible && (
-              <ThemedText style={styles.errorMessage}>
-                *{service.validationError.text}
-              </ThemedText>
-            )}
+            <ValidationMessage validation={service.validation} />
           </View>
           <TouchableOpacity>
             <Button
