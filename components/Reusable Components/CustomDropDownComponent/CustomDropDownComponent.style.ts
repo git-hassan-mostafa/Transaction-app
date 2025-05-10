@@ -10,21 +10,18 @@ const styles = StyleSheet.create({
     paddingHorizontal: 5,
   },
   placeholderStyle: {
-    fontSize: 16,
-    textAlign: "right",
+    fontSize: 12,
     fontFamily: Constants.fontFamily.font400Regular,
   },
   selectedTextStyle: {
-    fontSize: 16,
+    fontSize: 12,
     fontFamily: Constants.fontFamily.font400Regular,
-    textAlign: "right",
   },
   iconStyle: {
     width: 20,
     height: 20,
   },
   itemTextStyle: {
-    textAlign: "right",
     fontFamily: Constants.fontFamily.font400Regular,
   },
   inputSearchStyle: {

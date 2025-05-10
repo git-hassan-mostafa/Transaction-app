@@ -1,7 +1,5 @@
 import useGlobalContext from "@/Global/Context/ContextProvider";
 import Mapper from "@/Global/Helpers/MapService";
-import InnerDebtItem from "@/Global/Models/InnerDebtItem";
-import Item from "@/Global/Models/Item";
 import InnerDebtItem_InnerDebt_Item from "@/Global/Models/RelationModels/InnerDebtItem_InnerDebt_Item";
 import InnerDebtItemsManager from "@/Global/Services/innerDebtItems.service";
 import ItemManager from "@/Global/Services/items.service";
@@ -47,7 +45,7 @@ export default function useInnerDebtsItemsListFormComponentService(
       innerDebtsItemsDB as InnerDebtItem_InnerDebt_Item[]
     ).map((item) => {
       var i = mapper.mapTo_IInnerDebtItem_IInnerDebt_IItem(item);
-      i.itemPrice = i.innerDebtItemQuantity * (item?.Price ?? 0);
+      i.innerDebtItemTotalPrice = i.innerDebtItemQuantity * (i?.itemPrice ?? 0);
       return i;
     });
     setInnerDebtsItems(mappedItems);
@@ -81,35 +79,52 @@ export default function useInnerDebtsItemsListFormComponentService(
       (i) => i.itemId === newInnerDebtsItem.innerDebtItem_ItemId
     );
     newInnerDebtsItem.innerDebtItem_InnerDebtId = innerDebtId;
-    newInnerDebtsItem.itemPrice =
+    newInnerDebtsItem.innerDebtItemTotalPrice =
       newInnerDebtsItem.innerDebtItemQuantity * (currentItem?.itemPrice || 0);
-    setInnerDebtsItems((prev) => [...prev, newInnerDebtsItem]);
-    setShowAddItem(false);
-    const mappedInnerDebtItem = [mapper.mapToInnerDebtItem(newInnerDebtsItem)];
-    const itemsResult = await innerDebtItemsManager.addInnerDebtItems(
-      mappedInnerDebtItem
+    const itemAlreadyExists = innerDebtsItems.some(
+      (i) => i.innerDebtItem_ItemId === currentItem?.itemId
     );
-    if (!itemsResult) {
-      return toggleSnackBar({
-        visible: true,
-        text: "حصل خطأ ما في حفظ المنتجات , الرجاء اعادة المحاولة ",
-        type: "error",
+    if (itemAlreadyExists) {
+      setInnerDebtsItems((prev) => {
+        const existingItem = prev.find(
+          (i) => i.innerDebtItem_ItemId === currentItem?.itemId
+        );
+        if (!existingItem) return prev;
+        existingItem.innerDebtItemQuantity +=
+          newInnerDebtsItem.innerDebtItemQuantity;
+        return prev;
       });
+      Alert.alert("Warning", "Item already exists, quantity updated");
+    } else {
+      const mappedInnerDebtItem = [
+        mapper.mapToInnerDebtItem(newInnerDebtsItem),
+      ];
+      const itemsResult = await innerDebtItemsManager.addInnerDebtItems(
+        mappedInnerDebtItem
+      );
+      if (!itemsResult) {
+        return toggleSnackBar({
+          visible: true,
+          text: "Failed to add items",
+          type: "error",
+        });
+      }
+      if (itemsResult.lastInsertRowId) {
+        newInnerDebtsItem.innerDebtItemId = itemsResult.lastInsertRowId;
+        setInnerDebtsItems((prev) => [...prev, newInnerDebtsItem]);
+      }
     }
+    setShowAddItem(false);
   }
 
   function handleDeleteItem(id: number) {
-    Alert.alert(
-      "ازالة من القائمة",
-      "هل أنت متأكد أنك تريد ازالة هذا المنتج من القائمة؟",
-      [
-        {
-          text: "الغاء",
-          style: "cancel",
-        },
-        { text: "تأكيد", onPress: () => deleteInnerDebtItem(id) },
-      ]
-    );
+    Alert.alert("Remove Item", "Are you sure you want to remove this item?", [
+      {
+        text: "Cancel",
+        style: "cancel",
+      },
+      { text: "Confirm", onPress: () => deleteInnerDebtItem(id) },
+    ]);
   }
 
   async function deleteInnerDebtItem(id: number) {
@@ -121,7 +136,7 @@ export default function useInnerDebtsItemsListFormComponentService(
     }
     return toggleSnackBar({
       visible: true,
-      text: "حصل خطأ ما في ازالة المنتج , الرجاء اعادة المحاولة ",
+      text: "Failed to delete item",
       type: "error",
     });
   }

@@ -21,16 +21,6 @@ export default function useCustomerFormComponentService({
     ICustomer_IInerDebt_IInnerDebtItem_IItem[]
   >([]);
 
-  //date options
-  const options: Intl.DateTimeFormatOptions = {
-    year: "numeric",
-    month: "numeric",
-    day: "numeric",
-    hour12: true,
-    hour: "2-digit",
-    minute: "2-digit",
-  };
-
   useEffect(() => {
     getAllData();
   }, []);
@@ -126,7 +116,6 @@ export default function useCustomerFormComponentService({
   return {
     customer,
     borrowList,
-    options,
     setCustomerName,
     setCustomerPhoneNumber,
     setCustomerNotes,

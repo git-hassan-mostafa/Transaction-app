@@ -1,17 +1,18 @@
 import { ScrollView, View } from "react-native";
 import styles from "./CustomerFormComponent.style";
 import { ThemedText } from "@/Components/Reusable Components/HelperComponents/ThemedText";
-import Constants from "@/Global/Constants/Constants";
 import useCustomerFormComponentService from "./CustomerFormComponent.service";
 import ICustomerFormProps from "@/Global/ViewModels/Customers/ICustomerFormProps";
 import { DataTable } from "react-native-paper";
 import useDataTable from "@/Global/Hooks/useDataTable";
+import globalStyles from "@/Global/Styles/global.style";
+import dateOptions from "@/Global/Constants/DateOptions";
 
 export default function CustomerDebtsListComponent({
   id,
   updateFromCustomersList,
 }: ICustomerFormProps) {
-  const { borrowList, options } = useCustomerFormComponentService({
+  const { borrowList } = useCustomerFormComponentService({
     id,
     updateFromCustomersList,
   });
@@ -23,35 +24,35 @@ export default function CustomerDebtsListComponent({
       <ScrollView horizontal>
         <DataTable>
           <DataTable.Header>
-            <DataTable.Title style={styles.column}>
+            <DataTable.Title style={globalStyles.column}>
               <ThemedText type="medium">Product Name</ThemedText>
             </DataTable.Title>
-            <DataTable.Title style={styles.column} numeric>
+            <DataTable.Title style={globalStyles.column} numeric>
               <ThemedText type="medium">Price</ThemedText>
             </DataTable.Title>
-            <DataTable.Title style={styles.column} numeric>
+            <DataTable.Title style={globalStyles.column} numeric>
               <ThemedText type="medium">Quantity</ThemedText>
             </DataTable.Title>
-            <DataTable.Title style={styles.dateColumn}>
+            <DataTable.Title style={globalStyles.dateColumn}>
               <ThemedText type="medium">Date</ThemedText>
             </DataTable.Title>
           </DataTable.Header>
 
           {borrowList.slice(from, to).map((item) => (
             <DataTable.Row key={item.innerDebtItemId}>
-              <DataTable.Cell style={styles.column}>
+              <DataTable.Cell style={globalStyles.column}>
                 <ThemedText type="small">{item.itemName}</ThemedText>
               </DataTable.Cell>
-              <DataTable.Cell style={styles.column} numeric>
+              <DataTable.Cell style={globalStyles.column} numeric>
                 {item.innerDebtItemTotalPrice}
               </DataTable.Cell>
-              <DataTable.Cell style={styles.column} numeric>
+              <DataTable.Cell style={globalStyles.column} numeric>
                 {item.innerDebtItemQuantity}
               </DataTable.Cell>
-              <DataTable.Cell style={styles.dateColumn} numeric>
+              <DataTable.Cell style={globalStyles.dateColumn} numeric>
                 {new Date(item.innerDebtDate ?? "")?.toLocaleDateString(
                   "en-US",
-                  options
+                  dateOptions
                 )}
               </DataTable.Cell>
             </DataTable.Row>

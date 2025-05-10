@@ -24,8 +24,8 @@ export default function CustomDropDown(props: IDropDownType) {
         maxHeight={300}
         labelField="label"
         valueField="value"
-        searchPlaceholder="بحث..."
-        placeholder={props.placeholder ?? "اختر من القائمة"}
+        searchPlaceholder="search..."
+        placeholder={props.placeholder ?? "choose from list"}
         value={props.value}
         onChange={(item) => {
           props.setValue(item.value);

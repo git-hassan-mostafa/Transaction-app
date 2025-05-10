@@ -26,7 +26,6 @@ export default function useDataTable<T>(data: T[]) {
         numberOfItemsPerPage={itemsPerPage}
         onItemsPerPageChange={onItemsPerPageChange}
         showFastPaginationControls
-        selectPageDropdownLabel={"Rows per page"}
       />
     );
   }

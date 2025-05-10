@@ -69,7 +69,7 @@ export default function useInnerDebtsFormComponentService({
   function setTotoalPriceSum() {
     const totalPrice = innerDebtsItemsListService.innerDebtsItems.reduce(
       (sum, item) => {
-        return sum + item.itemPrice;
+        return sum + item.innerDebtItemTotalPrice;
       },
       0
     );

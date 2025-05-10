@@ -4,6 +4,7 @@ import IDropDownItem from "@/Global/Types/IDropDownItem";
 import IItem from "@/Global/ViewModels/Items/IItem";
 import IInnerDebtItem_IInnerDebt_IItem from "@/Global/ViewModels/RelationModels/IInnerDebtItem_IInnerDebt_IItem";
 import { useEffect, useState } from "react";
+import { Alert } from "react-native";
 
 export default function useAddInnerDebtsItemsListComponentService() {
   //managers
@@ -50,10 +51,26 @@ export default function useAddInnerDebtsItemsListComponentService() {
     const currentItem = items.find(
       (i) => i.itemId === newInnerDebtsItem.innerDebtItem_ItemId
     );
-    newInnerDebtsItem.innerDebtItemId = Date.now();
-    newInnerDebtsItem.itemPrice =
-      newInnerDebtsItem.innerDebtItemQuantity * (currentItem?.itemPrice || 0);
-    setInnerDebtsItems((prev) => [...prev, newInnerDebtsItem]);
+    const itemAlreadyExists = innerDebtsItems.some(
+      (i) => i.innerDebtItem_ItemId === currentItem?.itemId
+    );
+    if (itemAlreadyExists) {
+      setInnerDebtsItems((prev) => {
+        const existingItem = prev.find(
+          (i) => i.innerDebtItem_ItemId === currentItem?.itemId
+        );
+        if (!existingItem) return prev;
+        existingItem.innerDebtItemQuantity +=
+          newInnerDebtsItem.innerDebtItemQuantity;
+        return prev;
+      });
+      Alert.alert("Warning", "Item already exists, quantity updated");
+    } else {
+      newInnerDebtsItem.innerDebtItemId = Date.now();
+      newInnerDebtsItem.innerDebtItemTotalPrice =
+        newInnerDebtsItem.innerDebtItemQuantity * (currentItem?.itemPrice || 0);
+      setInnerDebtsItems((prev) => [...prev, newInnerDebtsItem]);
+    }
     setShowAddItem(false);
 
     // bug in quantity

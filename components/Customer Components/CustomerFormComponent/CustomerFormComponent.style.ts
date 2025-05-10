@@ -80,8 +80,6 @@ const styles = StyleSheet.create({
     textAlignVertical: "top",
   },
   dataTableContainer: { minHeight: 400 },
-  column: { width: 120, flex: 1, justifyContent: "flex-start" },
-  dateColumn: { width: 150, flex: 1, justifyContent: "flex-start" },
 });
 
 export default styles;

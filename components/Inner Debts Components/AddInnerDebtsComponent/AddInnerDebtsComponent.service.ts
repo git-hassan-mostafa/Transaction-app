@@ -65,7 +65,7 @@ export default function useAddInnerDebtsComponentService({
   function setTotoalPriceSum() {
     const totalPrice = innerDebtsItemsListService.innerDebtsItems.reduce(
       (sum, item) => {
-        return sum + item.itemPrice;
+        return sum + item.innerDebtItemTotalPrice;
       },
       0
     );
@@ -162,7 +162,6 @@ export default function useAddInnerDebtsComponentService({
       setValidation({ text: "Please add at least one item", visible: true });
       return false;
     }
-    console.log(innerDebt);
     if (innerDebt.innerDebtPricePaid > innerDebt.innerDebtTotalPrice) {
       setValidation({
         text: "Paid price cannot be greater than total price",
