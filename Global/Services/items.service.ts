@@ -56,7 +56,7 @@ export default class ItemManager extends AbstractManager {
     try {
       const sqlBuilder = new SqlBuilder<Item>(this.db, this.table);
       const result = await sqlBuilder
-        .updateField("ProviderId", providerId)
+        .updateField("Item_ProviderId", providerId)
         .where({ ItemId: id })
         .executeAsync();
       return result as SQLiteRunResult;
