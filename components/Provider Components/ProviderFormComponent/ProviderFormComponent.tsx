@@ -1,4 +1,3 @@
-import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import styles from "./ProviderFormComponent.style";
 import React from "react";
 import { View, TextInput, StyleProp, TextStyle } from "react-native";
@@ -26,25 +25,6 @@ export function ProviderFormComponent({
 
   return (
     <View style={styles.container}>
-      <View style={styles.pricesRow}>
-        <View style={[styles.pricesContainer, styles.borrowedConainer]}>
-          <ThemedText style={styles.price}>
-            ${provider.providerBorrowedPrice}
-          </ThemedText>
-        </View>
-        <View style={[styles.pricesContainer, styles.payedContainer]}>
-          <Icon style={styles.priceIcon} name="cash-check" />
-          <ThemedText style={styles.price}>
-            ${provider.providerayedPrice}
-          </ThemedText>
-        </View>
-        <View style={[styles.pricesContainer, styles.totalContainer]}>
-          <Icon style={styles.priceIcon} name="account-cash" />
-          <ThemedText style={styles.price}>
-            ${provider.providerBorrowedPrice - provider.providerayedPrice}
-          </ThemedText>
-        </View>
-      </View>
       <View style={styles.row}>
         <ThemedText style={styles.label}>الاسم</ThemedText>
         <TextInput

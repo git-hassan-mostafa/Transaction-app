@@ -6,7 +6,6 @@ const baseInputStyle = {
   borderColor: Constants.colors.gray,
   borderRadius: 5,
   padding: 5,
-  textAlign: "right",
   fontFamily: Constants.fontFamily.font400Regular,
 };
 const styles = StyleSheet.create({
@@ -38,12 +37,10 @@ const styles = StyleSheet.create({
   label: {
     flex: 1.5,
     fontSize: 16,
-    textAlign: "right",
-    writingDirection: "rtl",
     fontFamily: Constants.fontFamily.font400Regular,
   },
   pricesRow: {
-    flexDirection: "row-reverse",
+    flexDirection: "row",
     alignItems: "center",
     width: "100%",
     justifyContent: "space-between",
@@ -73,7 +70,6 @@ const styles = StyleSheet.create({
   input: baseInputStyle,
   textInput: {
     ...baseInputStyle,
-    writingDirection: "rtl",
   },
   textArea: {
     height: 100,

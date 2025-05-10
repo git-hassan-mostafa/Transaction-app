@@ -75,7 +75,7 @@ export function CustomerFormComponent({
             <ThemedText style={styles.label}>الاسم</ThemedText>
             <TextInput
               style={styles.textInput as StyleProp<TextStyle>}
-              placeholder="أدخل الاسم"
+              placeholder="Enter Customer Name..."
               placeholderTextColor="#999"
               value={customer.customerName}
               onChangeText={setCustomerName}

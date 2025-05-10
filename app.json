@@ -42,8 +42,13 @@
           "backgroundColor": "#ffffff"
         }
       ],
-      "expo-sqlite"
+      "expo-sqlite",
+      "expo-localization"
     ],
+    "extra": {
+      "supportsRTL": true,
+      "forcesRTL": true
+    },
     "experiments": {
       "typedRoutes": true
     }

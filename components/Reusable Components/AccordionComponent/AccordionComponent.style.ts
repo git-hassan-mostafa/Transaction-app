@@ -7,13 +7,13 @@ const styles = StyleSheet.create({
   },
   headerContainer: {
     borderRadius: 10,
-    flexDirection: "row-reverse",
+    flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
     padding: 15,
   },
   headerTextContainer: {
-    flexDirection: "row-reverse",
+    flexDirection: "row",
     alignItems: "center",
     gap: 10,
   },
