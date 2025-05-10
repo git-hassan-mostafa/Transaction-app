@@ -17,13 +17,7 @@ export default function useProviderFormComponentService({
   const [provider, setProvider] = useState<IProvider>({} as IProvider);
 
   useEffect(() => {
-    getProvider().then(() => {
-      providerManager.getProviderDebts(id).then((data) => {
-        setProvider((prev) => {
-          return { ...prev, borrowList: data as OuterDebt[] };
-        });
-      });
-    });
+    getProvider();
   }, []);
 
   async function getProvider() {

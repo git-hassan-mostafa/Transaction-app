@@ -2,7 +2,7 @@ import React from "react";
 import { Modal, View, TouchableOpacity } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
 import styles from "./CustomModalComponent.style";
-import { ThemedText } from "@/Components/HelperComponents/ThemedText";
+import { ThemedText } from "@/Components/Reusable Components/HelperComponents/ThemedText";
 import IModalProps from "@/Global/Types/IModalProps";
 
 const CustomModal: React.FC<IModalProps> = ({

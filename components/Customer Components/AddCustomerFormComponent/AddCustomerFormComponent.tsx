@@ -5,7 +5,7 @@ import styles from "./AddCustomerFormComponent.style";
 import Constants from "@/Global/Constants/Constants";
 import { TouchableOpacity } from "react-native";
 import { Button } from "react-native-paper";
-import { ThemedText } from "../../HelperComponents/ThemedText";
+import { ThemedText } from "../../Reusable Components/HelperComponents/ThemedText";
 import IAddCustomerProps from "@/Global/ViewModels/Customers/IAddCustomerProps";
 
 export default function AddCustomerFormComponent({

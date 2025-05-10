@@ -4,7 +4,7 @@ import React from "react";
 import { View, TouchableOpacity } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import Constants from "@/Global/Constants/Constants";
-import { ThemedText } from "../../HelperComponents/ThemedText";
+import { ThemedText } from "../HelperComponents/ThemedText";
 import MaterialIcon from "react-native-vector-icons/MaterialCommunityIcons";
 import ICustomAccordionProps from "@/Global/Types/IAccordionProps";
 
@@ -32,7 +32,12 @@ export default function AccordionComponent({
             size={iconSize}
             color={iconColor}
           />
-          <ThemedText style={styles.headerText}> {headerText}</ThemedText>
+          <ThemedText style={styles.headerText}>
+            {" "}
+            {headerText.length > 25
+              ? headerText.slice(0, 25) + "..."
+              : headerText}
+          </ThemedText>
         </View>
         <View style={styles.icons}>
           <TouchableOpacity onPress={() => handleDelete(id)}>

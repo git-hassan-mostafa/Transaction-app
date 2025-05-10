@@ -1,7 +1,7 @@
 import { StyleProp, TextInput, TextStyle, View } from "react-native";
 import usePeopleFormComponentService from "./PeopleFormComponent.service";
 import styles from "./PeopleFormComponent.style";
-import { ThemedText } from "../../HelperComponents/ThemedText";
+import { ThemedText } from "../../Reusable Components/HelperComponents/ThemedText";
 import IPeopleFormProps from "@/Global/ViewModels/People/IPersonFormProps";
 
 export default function PeopleFormComponent({

@@ -1,5 +1,5 @@
 import Constants from "@/Global/Constants/Constants";
-import { ThemedText } from "../../HelperComponents/ThemedText";
+import { ThemedText } from "../HelperComponents/ThemedText";
 import useCustomSnackBarComponentService from "./CustomSnackBarComponent.service";
 import { Snackbar } from "react-native-paper";
 

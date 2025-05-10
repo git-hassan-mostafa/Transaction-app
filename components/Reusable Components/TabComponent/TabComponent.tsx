@@ -8,7 +8,7 @@ import {
 } from "react-native";
 import useTabComponentService from "./TabComponent.service";
 import styles from "./TabComponent.style";
-import { ThemedText } from "@/Components/HelperComponents/ThemedText";
+import { ThemedText } from "@/Components/Reusable Components/HelperComponents/ThemedText";
 
 export default function TabComponent({
   titles,

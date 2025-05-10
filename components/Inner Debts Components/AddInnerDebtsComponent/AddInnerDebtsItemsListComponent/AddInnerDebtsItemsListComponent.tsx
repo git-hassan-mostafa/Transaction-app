@@ -4,7 +4,7 @@ import { Ionicons } from "@expo/vector-icons";
 import CustomDropDown from "@/Components/Reusable Components/CustomDropDownComponent/CustomDropDownComponent";
 import IInnerDebtsItemsListProps from "@/Global/ViewModels/InnerDebts/IInnerDebtsItemsListProps";
 import styles from "./AddInnerDebtsItemsListComponent.style";
-import { ThemedText } from "@/Components/HelperComponents/ThemedText";
+import { ThemedText } from "@/Components/Reusable Components/HelperComponents/ThemedText";
 import MaterialIcon from "react-native-vector-icons/MaterialCommunityIcons";
 
 export default function AddInnerDebtsItemsListComponent(

@@ -9,7 +9,7 @@ import {
   ScrollView,
 } from "react-native";
 import useCustomerFormComponentService from "./CustomerFormComponent.service";
-import { ThemedText } from "../../HelperComponents/ThemedText";
+import { ThemedText } from "../../Reusable Components/HelperComponents/ThemedText";
 import ICustomerFormProps from "@/Global/ViewModels/Customers/ICustomerFormProps";
 import TabComponent from "@/Components/Reusable Components/TabComponent/TabComponent";
 import Constants from "@/Global/Constants/Constants";

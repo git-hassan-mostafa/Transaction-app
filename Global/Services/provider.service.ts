@@ -66,18 +66,4 @@ export default class ProviderManager extends AbstractManager {
       console.log("error deleteProvider ", error);
     }
   }
-
-  async getProviderDebts(id: number) {
-    try {
-      var OuterDebtsTable = "outerDebts";
-      const sqlBuilder = new SqlBuilder<OuterDebt>(this.db, OuterDebtsTable);
-      const result = await sqlBuilder
-        .select()
-        .where({ OuterDebtProviderId: id })
-        .executeAsync();
-      return result as InnerDebt[];
-    } catch (error) {
-      console.error("error getProviderDebts ", error);
-    }
-  }
 }

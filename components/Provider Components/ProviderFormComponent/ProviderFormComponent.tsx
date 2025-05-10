@@ -3,7 +3,7 @@ import styles from "./ProviderFormComponent.style";
 import React from "react";
 import { View, TextInput, StyleProp, TextStyle } from "react-native";
 import useProviderFormComponentService from "./ProviderFormComponent.service";
-import { ThemedText } from "../../HelperComponents/ThemedText";
+import { ThemedText } from "../../Reusable Components/HelperComponents/ThemedText";
 import { IProviderFormProps } from "@/Global/ViewModels/Providers/IProviderFormProps";
 export function ProviderFormComponent({
   id,
@@ -81,30 +81,6 @@ export function ProviderFormComponent({
           onEndEditing={updateProviderNotes}
         />
       </View>
-      {(provider?.itemsList?.length as number) > 0 && (
-        <View style={styles.itemsListContainer}>
-          <View>
-            <ThemedText style={styles.itemsListTitle}>قائمة الديون</ThemedText>
-          </View>
-          <View style={styles.itemsList}>
-            {provider.itemsList?.map((item) => (
-              <View key={item.InnerDebtId} style={styles.borrowedListItem}>
-                <ThemedText style={styles.borrowedListText}>
-                  {/* {item.TotalPrice} */}
-                </ThemedText>
-                <ThemedText> --- </ThemedText>
-                <ThemedText style={styles.borrowedListText}>
-                  {/* {item.PricePaid} */}
-                </ThemedText>
-                <ThemedText> --- </ThemedText>
-                <ThemedText style={styles.borrowedListText}>
-                  {item.Date}
-                </ThemedText>
-              </View>
-            ))}
-          </View>
-        </View>
-      )}
     </View>
   );
 }

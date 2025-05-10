@@ -3,7 +3,7 @@ import { View, TextInput, StyleProp, TextStyle } from "react-native";
 import Constants from "@/Global/Constants/Constants";
 import { TouchableOpacity } from "react-native";
 import { Button } from "react-native-paper";
-import { ThemedText } from "../../HelperComponents/ThemedText";
+import { ThemedText } from "../../Reusable Components/HelperComponents/ThemedText";
 import styles from "./AddItemFormComponent.style";
 import useAddItemFormComponentService from "./AddItemFormComponent.service";
 import CustomDropDown from "@/Components/Reusable Components/CustomDropDownComponent/CustomDropDownComponent";

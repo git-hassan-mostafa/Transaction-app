@@ -31,7 +31,7 @@ const styles = StyleSheet.create({
     color: Constants.colors.white,
   },
   headerText: {
-    fontSize: 20,
+    fontSize: 15,
     fontFamily: Constants.fontFamily.font800ExtraBold,
     color: Constants.colors.lightGray,
   },

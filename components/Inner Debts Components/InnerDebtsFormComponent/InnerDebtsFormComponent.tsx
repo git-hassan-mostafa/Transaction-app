@@ -1,6 +1,6 @@
 import React from "react";
 import { View, TextInput, StyleProp, TextStyle } from "react-native";
-import { ThemedText } from "../../HelperComponents/ThemedText";
+import { ThemedText } from "../../Reusable Components/HelperComponents/ThemedText";
 import useInnerDebtsFormComponentService from "./InnerDebtsFormComponent.service";
 import styles from "./InnerDebtsFormComponent.style";
 import CustomDropDown from "@/Components/Reusable Components/CustomDropDownComponent/CustomDropDownComponent";

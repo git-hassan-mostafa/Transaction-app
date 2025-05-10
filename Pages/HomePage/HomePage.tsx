@@ -4,7 +4,7 @@ import useHomeService from "./HomePage.service";
 import CardComponent from "@/Components/Reusable Components/CardComponent/CardComponent";
 import FlatListHeaderComponent from "@/Components/Reusable Components/FlatListHeaderComponent/FlatListHeaderComponent";
 import pages from "@/Global/Constants/Pages";
-import { ThemedText } from "@/Components/HelperComponents/ThemedText";
+import { ThemedText } from "@/Components/Reusable Components/HelperComponents/ThemedText";
 
 export default function HomePage() {
   const homeService = useHomeService();

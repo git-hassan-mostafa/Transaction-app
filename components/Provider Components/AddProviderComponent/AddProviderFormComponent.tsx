@@ -5,7 +5,7 @@ import styles from "./AddProviderFormComponent.style";
 import Constants from "@/Global/Constants/Constants";
 import { TouchableOpacity } from "react-native";
 import { Button } from "react-native-paper";
-import { ThemedText } from "../../HelperComponents/ThemedText";
+import { ThemedText } from "../../Reusable Components/HelperComponents/ThemedText";
 import IAddProviderProps from "@/Global/ViewModels/Providers/IAddProviderProps";
 
 export default function AddProviderFormComponent({
