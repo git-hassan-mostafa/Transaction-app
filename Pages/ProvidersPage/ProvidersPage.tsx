@@ -9,6 +9,8 @@ import CustomModal from "@/Components/Reusable Components/CustomModalComponent/C
 import { FAB } from "react-native-paper";
 import { ProviderFormComponent } from "@/Components/Provider Components/ProviderFormComponent/ProviderFormComponent";
 import IProvider from "@/Global/ViewModels/Providers/IProvider";
+import pageStyle from "@/Global/Styles/pages.global.style";
+import pages from "@/Global/Constants/Pages";
 
 export default function ProvidersPage() {
   const {
@@ -35,7 +37,7 @@ export default function ProvidersPage() {
   return (
     <React.Fragment>
       <FlatList
-        style={styles.flatList}
+        style={pageStyle.flatList}
         data={providers}
         numColumns={1}
         keyExtractor={(item) => item.providerId?.toString() as string}
@@ -71,7 +73,7 @@ export default function ProvidersPage() {
       <FAB
         onPress={toggleModal}
         color={Constants.colors.lightGray}
-        style={styles.fab}
+        style={[styles.fab, pageStyle.fab]}
         icon="plus"
       />
     </React.Fragment>

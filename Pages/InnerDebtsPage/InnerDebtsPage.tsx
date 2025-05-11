@@ -10,6 +10,7 @@ import InnerDebtsFormComponent from "@/Components/Inner Debts Components/InnerDe
 import AddInnerDebtsComponent from "@/Components/Inner Debts Components/AddInnerDebtsComponent/AddInnerDebtsComponent";
 import IInnerDebt from "@/Global/ViewModels/InnerDebts/IInerDebts";
 import { ICustomer_IInnerDebt } from "@/Global/ViewModels/RelationModels/ICustomer_IInnerDebt";
+import pageStyle from "@/Global/Styles/pages.global.style";
 
 export default function InnerDebtsPage() {
   const {
@@ -34,7 +35,7 @@ export default function InnerDebtsPage() {
   return (
     <React.Fragment>
       <FlatList
-        style={styles.flatList}
+        style={pageStyle.flatList}
         data={innerDebts}
         numColumns={1}
         keyExtractor={(item) => item.innerDebtId?.toString() as string}
@@ -69,7 +70,7 @@ export default function InnerDebtsPage() {
       <FAB
         onPress={toggleModal}
         color={Constants.colors.lightGray}
-        style={styles.fab}
+        style={[pageStyle.fab, styles.fab]}
         icon="plus"
       />
     </React.Fragment>

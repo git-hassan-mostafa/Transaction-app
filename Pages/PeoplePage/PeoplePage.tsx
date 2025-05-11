@@ -10,6 +10,8 @@ import PeopleFormComponent from "@/Components/People Components/PeopleFormCompon
 import CustomModal from "@/Components/Reusable Components/CustomModalComponent/CustomModalComponent";
 import AddPeopleFormComponent from "@/Components/People Components/AddPeopleFormComponent/AddPeopleFormComponent";
 import IPerson from "@/Global/ViewModels/People/IPerson";
+import pageStyle from "@/Global/Styles/pages.global.style";
+import pages from "@/Global/Constants/Pages";
 
 export default function PeoplePage() {
   const {
@@ -35,7 +37,7 @@ export default function PeoplePage() {
   return (
     <React.Fragment>
       <FlatList
-        style={styles.flatList}
+        style={pageStyle.flatList}
         data={people}
         numColumns={1}
         keyExtractor={(item) => item.id?.toString() as string}
@@ -71,7 +73,7 @@ export default function PeoplePage() {
       <FAB
         onPress={toggleModal}
         color={Constants.colors.lightGray}
-        style={styles.fab}
+        style={[styles.fab, pageStyle.fab]}
         icon="plus"
       />
     </React.Fragment>

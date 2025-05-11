@@ -9,6 +9,7 @@ import React from "react";
 import AddCustomerFormComponent from "@/Components/Customer Components/AddCustomerFormComponent/AddCustomerFormComponent";
 import CustomModal from "@/Components/Reusable Components/CustomModalComponent/CustomModalComponent";
 import ICustomer from "@/Global/ViewModels/Customers/ICustomer";
+import pageStyle from "@/Global/Styles/pages.global.style";
 
 export default function CustomersPage() {
   const {
@@ -23,7 +24,7 @@ export default function CustomersPage() {
   return (
     <React.Fragment>
       <FlatList
-        style={styles.flatList}
+        style={pageStyle.flatList}
         data={customers}
         numColumns={1}
         keyExtractor={(item) => item.customerId?.toString() as string}
@@ -58,7 +59,7 @@ export default function CustomersPage() {
       <FAB
         onPress={toggleModal}
         color={Constants.colors.lightGray}
-        style={styles.fab}
+        style={[pageStyle.fab, styles.fab]}
         icon="plus"
       />
     </React.Fragment>

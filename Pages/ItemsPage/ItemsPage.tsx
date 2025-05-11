@@ -10,6 +10,8 @@ import CustomModal from "@/Components/Reusable Components/CustomModalComponent/C
 import AddItemFormComponent from "@/Components/Items Components/AddItemFormComponent/AddItemFormComponent";
 import { FAB } from "react-native-paper";
 import IItem from "@/Global/ViewModels/Items/IItem";
+import pageStyle from "@/Global/Styles/pages.global.style";
+import pages from "@/Global/Constants/Pages";
 
 export default function ItemsPage() {
   const {
@@ -34,7 +36,7 @@ export default function ItemsPage() {
   return (
     <React.Fragment>
       <FlatList
-        style={styles.flatList}
+        style={pageStyle.flatList}
         data={items}
         numColumns={1}
         keyExtractor={(item) => item.itemId?.toString() as string}
@@ -69,7 +71,7 @@ export default function ItemsPage() {
       <FAB
         onPress={toggleModal}
         color={Constants.colors.lightGray}
-        style={styles.fab}
+        style={[styles.fab, pageStyle.fab]}
         icon="plus"
       />
     </React.Fragment>
