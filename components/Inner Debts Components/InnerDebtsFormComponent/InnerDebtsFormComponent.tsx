@@ -8,6 +8,7 @@ import { IInnerDebtFormProps } from "@/Global/ViewModels/InnerDebts/IInerDebtsFo
 import InnerDebtsItemsListFormComponent from "./InnerDebtsItemsListFormComponent/InnerDebtsItemsListFormComponent";
 import TabComponent from "@/Components/Reusable Components/TabComponent/TabComponent";
 import useInnerDebtsItemsListFormComponentService from "./InnerDebtsItemsListFormComponent/InnerDebtsItemsListFormComponent.service";
+import i18n from "@/Global/I18n/I18n";
 
 export default function InnerDebtsFormComponent({
   id,
@@ -43,16 +44,17 @@ export default function InnerDebtsFormComponent({
   const date = new Date(innerDebt.innerDebtDate);
   return (
     <View style={styles.container}>
-      <TabComponent titles={["القائمة", "التفاصيل"]}>
-        <InnerDebtsItemsListFormComponent {...innerDebtsItemsListFormService} />
+      <TabComponent titles={[i18n.t("details"), i18n.t("products-list")]}>
         <View>
           <View style={styles.debtDate}>
             <ThemedText style={styles.date}>
-              {date?.toLocaleDateString("ar-lb", options)}
+              {date?.toLocaleDateString(i18n.locale, options)}
             </ThemedText>
           </View>
           <View style={styles.row}>
-            <ThemedText style={styles.label}>الزبون</ThemedText>
+            <ThemedText style={styles.label}>
+              {i18n.t("select-customer")}
+            </ThemedText>
             <CustomDropDown
               value={innerDebt.innerDebt_CustomerId as number}
               setValue={(value) => {
@@ -63,10 +65,12 @@ export default function InnerDebtsFormComponent({
             />
           </View>
           <View style={styles.row}>
-            <ThemedText style={styles.label}>السعر الكلي</ThemedText>
+            <ThemedText style={styles.label}>
+              {i18n.t("total-price")}
+            </ThemedText>
             <TextInput
               style={styles.input as StyleProp<TextStyle>}
-              placeholder="أدخل السعر الكلي"
+              placeholder={i18n.t("enter-total-price")}
               placeholderTextColor="#999"
               value={innerDebt.innerDebtTotalPrice?.toString()}
               keyboardType="numeric"
@@ -75,10 +79,12 @@ export default function InnerDebtsFormComponent({
             />
           </View>
           <View style={styles.row}>
-            <ThemedText style={styles.label}>السعر المدفوع</ThemedText>
+            <ThemedText style={styles.label}>
+              {i18n.t("payed-price")}
+            </ThemedText>
             <TextInput
               style={styles.input as StyleProp<TextStyle>}
-              placeholder="أدخل السعر المدفوع"
+              placeholder={i18n.t("enter-paid-price")}
               placeholderTextColor="#999"
               value={innerDebt.innerDebtPricePaid?.toString()}
               keyboardType="numeric"
@@ -88,12 +94,12 @@ export default function InnerDebtsFormComponent({
           </View>
 
           <View style={styles.row}>
-            <ThemedText style={styles.label}>الملاحظات</ThemedText>
+            <ThemedText style={styles.label}>{i18n.t("notes")}</ThemedText>
             <TextInput
               style={
                 [styles.textInput, styles.textArea] as StyleProp<TextStyle>
               }
-              placeholder="أدخل الملاحظات"
+              placeholder={i18n.t("enter-notes")}
               placeholderTextColor="#999"
               value={innerDebt.innerDebtNotes}
               onChangeText={setNotes}
@@ -101,6 +107,7 @@ export default function InnerDebtsFormComponent({
             />
           </View>
         </View>
+        <InnerDebtsItemsListFormComponent {...innerDebtsItemsListFormService} />
       </TabComponent>
     </View>
   );

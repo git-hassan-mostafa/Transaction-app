@@ -40,5 +40,16 @@
   "total-price":"Total Price",
   "choose-product":"Choose Product",
   "warning":"Warning",
-  "item-alreadyexists,quantity-updated":"Item already exists, quantity updated"
+  "item-alreadyexists,quantity-updated":"Item already exists, quantity updated",
+  "add-debt": "Add Debt",
+  "products-list": "Products List",
+  "select-customer": "Customer",
+  "enter-total-price": "Enter Total Price",
+  "enter-paid-price": "Enter Paid Price",
+  "enter-item-quantity": "Enter Quantity",
+  "remove-item": "Remove Item",
+  "are-you-sure-remove-item": "Are you sure you want to remove this item?",
+  "failed-delete-item": "Failed to delete item",
+  "delete-debt": "Delete Debt",
+  "are-you-sure-delete-debt": "Are you sure you want to delete this debt?"
 }

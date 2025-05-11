@@ -4,6 +4,7 @@ import InnerDebtsManager from "@/Global/Services/innerDebts.service";
 import { ICustomer_IInnerDebt } from "@/Global/ViewModels/RelationModels/ICustomer_IInnerDebt";
 import { useEffect, useState } from "react";
 import { Alert } from "react-native";
+import i18n from "@/Global/I18n/I18n";
 
 export default function useInnerDebtsPageService() {
   //services
@@ -48,12 +49,12 @@ export default function useInnerDebtsPageService() {
   }
 
   async function handleDeleteInnerDebt(id: number) {
-    Alert.alert("Delete Debt", "Are you sure you want to delete this debt?", [
+    Alert.alert(i18n.t("delete-debt"), i18n.t("are-you-sure-delete-debt"), [
       {
-        text: "Cancel",
+        text: i18n.t("cancel"),
         style: "cancel",
       },
-      { text: "Confirm", onPress: () => deleteInnerDebt(id) },
+      { text: i18n.t("confirm"), onPress: () => deleteInnerDebt(id) },
     ]);
   }
 
@@ -62,13 +63,13 @@ export default function useInnerDebtsPageService() {
     if ((result?.changes || 0) > 0) {
       deleteFromInnerDebtsList(id);
       toggleSnackBar({
-        text: "Inner Debt Deleted Successfully",
+        text: i18n.t("internal-debt-deleted-successfully"),
         type: "success",
         visible: true,
       });
     } else
       toggleSnackBar({
-        text: "Error deleting inner debt",
+        text: i18n.t("error-deleting-internal-debt"),
         type: "error",
         visible: true,
       });

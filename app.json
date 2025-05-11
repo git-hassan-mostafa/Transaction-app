@@ -3,7 +3,7 @@
     "name": "Transaction App",
     "slug": "transaction-app",
     "version": "1.0.0",
-    "orientation": "Landscape",
+    "orientation": "landscape",
     "icon": "./assets/images/icon.png",
     "scheme": "transactionapp",
     "userInterfaceStyle": "automatic",
@@ -17,14 +17,20 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "infoPlist": {
+        "ExpoLocalization_supportsRTL": true,
+        "ExpoLocalization_forcesRTL": true
+      }
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.transactionapp"
+      "package": "com.transactionapp",
+      "allowBackup": true,
+      "supportsRtl": true
     },
     "web": {
       "bundler": "metro",
@@ -47,7 +53,11 @@
     ],
     "extra": {
       "supportsRTL": true,
-      "forcesRTL": true
+      "forcesRTL": true,
+      "router": {},
+      "eas": {
+        "projectId": "4fbde3b6-5e37-48c1-926b-d10201c717fb"
+      }
     },
     "experiments": {
       "typedRoutes": true

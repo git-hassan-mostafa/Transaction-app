@@ -40,6 +40,16 @@
   "total-price":"إجمالي السعر",
   "choose-product":"اختر المنتج",
   "warning":"تحذير",
-  "item-alreadyexists,quantity-updated":"العنصر موجود بالفعل، تم تحديث الكمية"
-
+  "item-alreadyexists,quantity-updated":"العنصر موجود بالفعل، تم تحديث الكمية",
+  "add-debt": "إضافة دين",
+  "products-list": "قائمة المنتجات",
+  "select-customer": "الزبون",
+  "enter-total-price": "أدخل السعر الكلي",
+  "enter-paid-price": "أدخل السعر المدفوع",
+  "enter-item-quantity": "أدخل الكمية",
+  "remove-item": "حذف العنصر",
+  "are-you-sure-remove-item": "هل أنت متأكد أنك تريد حذف هذا العنصر؟",
+  "failed-delete-item": "فشل في حذف العنصر",
+  "delete-debt": "حذف الدين",
+  "are-you-sure-delete-debt": "هل أنت متأكد أنك تريد حذف هذا الدين؟"
 }

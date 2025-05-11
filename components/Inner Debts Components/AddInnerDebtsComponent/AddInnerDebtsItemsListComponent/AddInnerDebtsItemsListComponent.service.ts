@@ -1,4 +1,5 @@
 import Mapper from "@/Global/Helpers/MapService";
+import i18n from "@/Global/I18n/I18n";
 import ItemManager from "@/Global/Services/items.service";
 import IDropDownItem from "@/Global/Types/IDropDownItem";
 import IItem from "@/Global/ViewModels/Items/IItem";
@@ -64,7 +65,10 @@ export default function useAddInnerDebtsItemsListComponentService() {
           newInnerDebtsItem.innerDebtItemQuantity;
         return prev;
       });
-      Alert.alert("Warning", "Item already exists, quantity updated");
+      Alert.alert(
+        i18n.t("warning"),
+        i18n.t("item-alreadyexists,quantity-updated")
+      );
     } else {
       newInnerDebtsItem.innerDebtItemId = Date.now();
       newInnerDebtsItem.innerDebtItemTotalPrice =

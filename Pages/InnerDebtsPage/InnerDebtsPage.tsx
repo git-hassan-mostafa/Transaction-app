@@ -11,6 +11,7 @@ import AddInnerDebtsComponent from "@/Components/Inner Debts Components/AddInner
 import IInnerDebt from "@/Global/ViewModels/InnerDebts/IInerDebts";
 import { ICustomer_IInnerDebt } from "@/Global/ViewModels/RelationModels/ICustomer_IInnerDebt";
 import pageStyle from "@/Global/Styles/pages.global.style";
+import i18n from "@/Global/I18n/I18n";
 
 export default function InnerDebtsPage() {
   const {
@@ -58,7 +59,7 @@ export default function InnerDebtsPage() {
         contentContainerStyle={{ paddingBottom: 40 }}
       />
       <CustomModal
-        title="اضافة دين"
+        title={i18n.t("add-debt")}
         isVisible={modalVisible}
         onClose={toggleModal}
       >

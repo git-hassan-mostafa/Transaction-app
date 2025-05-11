@@ -6,6 +6,7 @@ import ItemManager from "@/Global/Services/items.service";
 import IDropDownItem from "@/Global/Types/IDropDownItem";
 import IItem from "@/Global/ViewModels/Items/IItem";
 import IInnerDebtItem_IInnerDebt_IItem from "@/Global/ViewModels/RelationModels/IInnerDebtItem_IInnerDebt_IItem";
+import i18n from "@/Global/I18n/I18n";
 import { useEffect, useState } from "react";
 import { Alert } from "react-native";
 
@@ -94,7 +95,7 @@ export default function useInnerDebtsItemsListFormComponentService(
           newInnerDebtsItem.innerDebtItemQuantity;
         return prev;
       });
-      Alert.alert("Warning", "Item already exists, quantity updated");
+      Alert.alert(i18n.t("warning"), i18n.t("item-already-exists"));
     } else {
       const mappedInnerDebtItem = [
         mapper.mapToInnerDebtItem(newInnerDebtsItem),
@@ -105,7 +106,7 @@ export default function useInnerDebtsItemsListFormComponentService(
       if (!itemsResult) {
         return toggleSnackBar({
           visible: true,
-          text: "Failed to add items",
+          text: i18n.t("failed-add-items"),
           type: "error",
         });
       }
@@ -118,12 +119,12 @@ export default function useInnerDebtsItemsListFormComponentService(
   }
 
   function handleDeleteItem(id: number) {
-    Alert.alert("Remove Item", "Are you sure you want to remove this item?", [
+    Alert.alert(i18n.t("remove-item"), i18n.t("are-you-sure-remove-item"), [
       {
-        text: "Cancel",
+        text: i18n.t("cancel"),
         style: "cancel",
       },
-      { text: "Confirm", onPress: () => deleteInnerDebtItem(id) },
+      { text: i18n.t("confirm"), onPress: () => deleteInnerDebtItem(id) },
     ]);
   }
 
@@ -136,7 +137,7 @@ export default function useInnerDebtsItemsListFormComponentService(
     }
     return toggleSnackBar({
       visible: true,
-      text: "Failed to delete item",
+      text: i18n.t("failed-delete-item"),
       type: "error",
     });
   }

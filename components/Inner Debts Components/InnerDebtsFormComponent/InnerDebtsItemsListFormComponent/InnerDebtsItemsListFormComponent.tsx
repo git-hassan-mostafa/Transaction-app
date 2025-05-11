@@ -10,7 +10,7 @@ import { DataTable } from "react-native-paper";
 import globalStyles from "@/Global/Styles/global.style";
 import React from "react";
 import useDataTable from "@/Global/Hooks/useDataTable";
-
+import i18n from "@/Global/I18n/I18n";
 export default function InnerDebtsItemsListFormComponent(
   props: IInnerDebtsItemsListProps
 ) {
@@ -22,13 +22,13 @@ export default function InnerDebtsItemsListFormComponent(
         <DataTable>
           <DataTable.Header>
             <DataTable.Title style={globalStyles.column}>
-              <ThemedText type="medium">Product Name</ThemedText>
+              <ThemedText type="medium">{i18n.t("product-name")}</ThemedText>
             </DataTable.Title>
             <DataTable.Title style={globalStyles.column} numeric>
-              <ThemedText type="medium">Quantity</ThemedText>
+              <ThemedText type="medium">{i18n.t("quantity")}</ThemedText>
             </DataTable.Title>
             <DataTable.Title style={globalStyles.column} numeric>
-              <ThemedText type="medium">Total Price</ThemedText>
+              <ThemedText type="medium">{i18n.t("total-price")}</ThemedText>
             </DataTable.Title>
             <DataTable.Title style={globalStyles.iconColumn}>
               <View />

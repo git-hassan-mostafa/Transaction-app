@@ -10,6 +10,7 @@ import { DataTable } from "react-native-paper";
 import useDataTable from "@/Global/Hooks/useDataTable";
 import globalStyles from "@/Global/Styles/global.style";
 import React from "react";
+import i18n from "@/Global/I18n/I18n";
 
 export default function AddInnerDebtsItemsListComponent(
   props: IInnerDebtsItemsListProps
@@ -22,13 +23,13 @@ export default function AddInnerDebtsItemsListComponent(
         <DataTable>
           <DataTable.Header>
             <DataTable.Title style={globalStyles.column}>
-              <ThemedText type="medium">Product Name</ThemedText>
+              <ThemedText type="medium">{i18n.t("product-name")}</ThemedText>
             </DataTable.Title>
             <DataTable.Title style={globalStyles.column} numeric>
-              <ThemedText type="medium">Quantity</ThemedText>
+              <ThemedText type="medium">{i18n.t("quantity")}</ThemedText>
             </DataTable.Title>
             <DataTable.Title style={globalStyles.column} numeric>
-              <ThemedText type="medium">Total Price</ThemedText>
+              <ThemedText type="medium">{i18n.t("total-price")}</ThemedText>
             </DataTable.Title>
             <DataTable.Title style={globalStyles.iconColumn}>
               <View />
@@ -69,14 +70,14 @@ export default function AddInnerDebtsItemsListComponent(
                       props.setInnerDebtsItem(value as number)
                     }
                     data={props.dropDownItems}
-                    placeholder="choose item"
+                    placeholder={i18n.t("choose-product")}
                   />
                 </DataTable.Cell>
                 <DataTable.Cell style={globalStyles.column} numeric>
                   <TextInput
                     keyboardType="numeric"
                     style={styles.textInput}
-                    placeholder="Quantity"
+                    placeholder={i18n.t("quantity")}
                     value={props.newInnerDebtsItem?.innerDebtItemQuantity?.toString()}
                     onChangeText={props.setNewItemQuantity}
                     onSubmitEditing={props.handleAddItem}
