@@ -1,16 +1,16 @@
 import { useEffect, useState } from "react";
 import Customer from "@/Global/Models/Customer";
-import InnerDebt from "@/Global/Models/InnerDebt";
 import CustomerManager from "@/Global/Services/customers.service";
 import ICustomerFormProps from "@/Global/ViewModels/Customers/ICustomerFormProps";
 import ICustomer from "@/Global/ViewModels/Customers/ICustomer";
 import Mapper from "@/Global/Helpers/MapService";
 import { ICustomer_IInerDebt_IInnerDebtItem_IItem } from "@/Global/ViewModels/RelationModels/ICustomer_IInerDebt_IInnerDebtItem_IItem";
+import ICustomerDetailsProps from "@/Global/ViewModels/Customers/ICustomerDetailsProps";
 
 export default function useCustomerFormComponentService({
   id,
   updateFromCustomersList,
-}: ICustomerFormProps) {
+}: ICustomerFormProps): ICustomerDetailsProps {
   //services
   const customerManager = new CustomerManager();
   const mapper = new Mapper();
@@ -109,8 +109,8 @@ export default function useCustomerFormComponentService({
   }
 
   const formatNumber = (number: number | undefined) => {
-    if (!number) return 0;
-    return number > 999 ? "999+" : number;
+    if (!number) return "0";
+    return number > 999 ? "999+" : `${number}`;
   };
 
   return {

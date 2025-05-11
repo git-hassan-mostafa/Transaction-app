@@ -8,6 +8,7 @@ import { Button } from "react-native-paper";
 import { ThemedText } from "../../Reusable Components/HelperComponents/ThemedText";
 import IAddCustomerProps from "@/Global/ViewModels/Customers/IAddCustomerProps";
 import ValidationMessage from "@/Components/Reusable Components/HelperComponents/ValidationMessage";
+import i18n from "@/Global/I18n/I18n";
 
 export default function AddCustomerFormComponent({
   toggleModal,
@@ -28,10 +29,10 @@ export default function AddCustomerFormComponent({
   return (
     <View style={styles.container}>
       <View style={styles.row}>
-        <ThemedText style={styles.label}>الإسم</ThemedText>
+        <ThemedText style={styles.label}>{i18n.t("customer-name")}</ThemedText>
         <TextInput
           style={styles.textInput as StyleProp<TextStyle>}
-          placeholder="أدخل الإسم"
+          placeholder={i18n.t("enter-customer-name") + "..."}
           placeholderTextColor="#999"
           value={customer.customerName}
           onChangeText={setCustomerName}
@@ -39,10 +40,10 @@ export default function AddCustomerFormComponent({
       </View>
 
       <View style={styles.row}>
-        <ThemedText style={styles.label}>رقم الهاتف</ThemedText>
+        <ThemedText style={styles.label}>{i18n.t("phone-number")} </ThemedText>
         <TextInput
           style={styles.input as StyleProp<TextStyle>}
-          placeholder="أدخل رقم الهاتف"
+          placeholder={i18n.t("enter-phone-number") + "..."}
           placeholderTextColor="#999"
           value={customer.customerPhoneNumber}
           keyboardType="phone-pad"
@@ -51,10 +52,10 @@ export default function AddCustomerFormComponent({
         />
       </View>
       <View style={styles.row}>
-        <ThemedText style={styles.label}>الملاحظات</ThemedText>
+        <ThemedText style={styles.label}>{i18n.t("notes")}</ThemedText>
         <TextInput
           style={[styles.input, styles.textArea] as StyleProp<TextStyle>}
-          placeholder="أدخل الملاحظات"
+          placeholder={i18n.t("enter-notes") + "..."}
           placeholderTextColor="#999"
           value={customer.customerNotes}
           onChangeText={setCustomerNotes}
@@ -71,7 +72,7 @@ export default function AddCustomerFormComponent({
           labelStyle={styles.saveButton}
           onPress={addCustomer}
         >
-          <ThemedText style={styles.saveText}>حفظ</ThemedText>
+          <ThemedText style={styles.saveText}>{i18n.t("save")}</ThemedText>
         </Button>
       </TouchableOpacity>
     </View>

@@ -1,51 +1,52 @@
+import i18n from "../I18n/I18n";
 import CardType from "../Types/ICardType";
 import Constants from "./Constants";
 
 const pages: CardType[] = [
   {
     route: "index",
-    title: "الرئيسية",
+    title: i18n.t("home"),
     color: Constants.colors.white,
     icon: "",
   },
   {
-    title: "الزبائن",
+    title: i18n.t("customers"),
     route: "customers",
     color: Constants.colors.blue,
     icon: "people-group",
   },
   {
-    title: "البضاعة",
+    title: i18n.t("products"),
     route: "items",
     color: Constants.colors.orange,
     icon: "basket-shopping",
   },
   {
-    title: "الديون الخارجية",
+    title: i18n.t("external-debts"),
     route: "outerDebts",
     color: Constants.colors.darkGray,
     icon: "money-bill-transfer",
   },
   {
-    title: "الديون الداخلية",
+    title: i18n.t("internal-debts"),
     route: "innerDebts",
     color: Constants.colors.red,
     icon: "money-bill-wave",
   },
   {
     route: "providers",
-    title: "التجار",
+    title: i18n.t("providers"),
     color: Constants.colors.brown,
     icon: "sack-dollar",
   },
   {
-    title: "الأشخاص",
+    title: i18n.t("people"),
     route: "people",
     color: Constants.colors.lighBlue,
     icon: "users",
   },
   {
-    title: "النتائج",
+    title: i18n.t("results"),
     route: "results",
     color: Constants.colors.green,
     icon: "chart-line",

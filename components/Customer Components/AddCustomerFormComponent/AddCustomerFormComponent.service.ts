@@ -6,6 +6,7 @@ import ICustomer from "@/Global/ViewModels/Customers/ICustomer";
 import CustomerManager from "@/Global/Services/customers.service";
 import { IValidationErrorType } from "@/Global/Types/IValidationErrorType";
 import { Alert } from "react-native";
+import i18n from "@/Global/I18n/I18n";
 
 export default function useAddCustomerFormComponentService({
   toggleModal,
@@ -46,14 +47,14 @@ export default function useAddCustomerFormComponentService({
     if (!customer.customerName) {
       setValidation({
         visible: true,
-        text: "please enter customer name",
+        text: i18n.t("please-enter-customer-name"),
       });
       return;
     }
     if (!customer.customerPhoneNumber) {
       setValidation({
         visible: true,
-        text: "please enter customer phone number",
+        text: i18n.t("please-enter-phone-number"),
       });
       return;
     }
@@ -64,13 +65,16 @@ export default function useAddCustomerFormComponentService({
     };
     const result = await customerManager.addCustomer(newCustomer);
     if (!result || !result.lastInsertRowId) {
-      return Alert.alert("Error", "Failed to add customer, Please try again");
+      return Alert.alert(
+        i18n.t("error"),
+        i18n.t("failed-to-add-customer,please-try-again")
+      );
     }
     customer.customerId = result?.lastInsertRowId;
     addToCustomersList(customer);
     toggleModal();
     toggleSnackBar({
-      text: "customer added successfully",
+      text: i18n.t("customer-added-successfully"),
       type: "success",
       visible: true,
     });

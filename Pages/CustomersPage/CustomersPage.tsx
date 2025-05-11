@@ -10,6 +10,7 @@ import AddCustomerFormComponent from "@/Components/Customer Components/AddCustom
 import CustomModal from "@/Components/Reusable Components/CustomModalComponent/CustomModalComponent";
 import ICustomer from "@/Global/ViewModels/Customers/ICustomer";
 import pageStyle from "@/Global/Styles/pages.global.style";
+import i18n from "@/Global/I18n/I18n";
 
 export default function CustomersPage() {
   const {
@@ -47,7 +48,7 @@ export default function CustomersPage() {
         contentContainerStyle={{ paddingBottom: 40 }}
       />
       <CustomModal
-        title="اضافة زبون"
+        title={i18n.t("add-customer")}
         isVisible={modalVisible}
         onClose={toggleModal}
       >

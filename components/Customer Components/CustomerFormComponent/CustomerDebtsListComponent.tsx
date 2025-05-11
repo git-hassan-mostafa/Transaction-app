@@ -7,6 +7,7 @@ import { DataTable } from "react-native-paper";
 import useDataTable from "@/Global/Hooks/useDataTable";
 import globalStyles from "@/Global/Styles/global.style";
 import dateOptions from "@/Global/Constants/DateOptions";
+import i18n from "@/Global/I18n/I18n";
 
 export default function CustomerDebtsListComponent({
   id,
@@ -25,16 +26,16 @@ export default function CustomerDebtsListComponent({
         <DataTable>
           <DataTable.Header>
             <DataTable.Title style={globalStyles.column}>
-              <ThemedText type="medium">Product Name</ThemedText>
+              <ThemedText type="medium">{i18n.t("product-name")}</ThemedText>
             </DataTable.Title>
             <DataTable.Title style={globalStyles.column} numeric>
-              <ThemedText type="medium">Price</ThemedText>
+              <ThemedText type="medium">{i18n.t("price")}</ThemedText>
             </DataTable.Title>
             <DataTable.Title style={globalStyles.column} numeric>
-              <ThemedText type="medium">Quantity</ThemedText>
+              <ThemedText type="medium">{i18n.t("quantity")}</ThemedText>
             </DataTable.Title>
             <DataTable.Title style={globalStyles.dateColumn}>
-              <ThemedText type="medium">Date</ThemedText>
+              <ThemedText type="medium">{i18n.t("date")}</ThemedText>
             </DataTable.Title>
           </DataTable.Header>
 
@@ -51,7 +52,7 @@ export default function CustomerDebtsListComponent({
               </DataTable.Cell>
               <DataTable.Cell style={globalStyles.dateColumn} numeric>
                 {new Date(item.innerDebtDate ?? "")?.toLocaleDateString(
-                  "en-US",
+                  i18n.locale,
                   dateOptions
                 )}
               </DataTable.Cell>
@@ -59,7 +60,7 @@ export default function CustomerDebtsListComponent({
           ))}
         </DataTable>
       </ScrollView>
-      {Pagination()}
+      {<Pagination />}
     </View>
   );
 }

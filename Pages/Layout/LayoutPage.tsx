@@ -12,7 +12,11 @@ export default function LayoutPage() {
   if (fontsLoaded) {
     return (
       <React.Fragment>
-        <Stack screenOptions={{ contentStyle: { backgroundColor: "white" } }}>
+        <Stack
+          screenOptions={{
+            contentStyle: { backgroundColor: Constants.colors.white },
+          }}
+        >
           {pages.map((p) => (
             <Stack.Screen
               key={p.route}
@@ -20,7 +24,8 @@ export default function LayoutPage() {
               options={{
                 title: p.title,
                 headerTitleStyle: {
-                  fontFamily: Constants.fontFamily.font800ExtraBold,
+                  fontFamily: Constants.fontFamily.font600SemiBold,
+                  fontSize: 18,
                   color:
                     p.route == "index"
                       ? Constants.colors.black

@@ -1,5 +1,6 @@
 import useGlobalContext from "@/Global/Context/ContextProvider";
 import Mapper from "@/Global/Helpers/MapService";
+import i18n from "@/Global/I18n/I18n";
 import CustomerManager from "@/Global/Services/customers.service";
 import ICustomer from "@/Global/ViewModels/Customers/ICustomer";
 import { useEffect, useState } from "react";
@@ -46,14 +47,14 @@ export default function useCustomersPageService() {
   async function handleDeleteCustomer(id: number) {
     const customer = customers.find((c) => c.customerId === id);
     Alert.alert(
-      "Delete Customer",
-      "Are you sure you want to delete this customer?",
+      i18n.t("delete-customer"),
+      i18n.t("are-you-sure-you-want-to-delete-this-customer?"),
       [
         {
-          text: "Cancel",
+          text: i18n.t("cancel"),
           style: "cancel",
         },
-        { text: "Confirm", onPress: () => deleteCustomer(id) },
+        { text: i18n.t("confirm"), onPress: () => deleteCustomer(id) },
       ]
     );
   }
@@ -63,14 +64,14 @@ export default function useCustomersPageService() {
     if ((result?.changes || 0) > 0) {
       deleteFromCustomerList(id);
       toggleSnackBar({
-        text: "Customer deleted successfully",
+        text: i18n.t("customer-deleted-successfully"),
         type: "success",
         visible: true,
       });
       return;
     }
     toggleSnackBar({
-      text: "Error deleting customer",
+      text: i18n.t("error-deleting-customer"),
       type: "error",
       visible: true,
     });

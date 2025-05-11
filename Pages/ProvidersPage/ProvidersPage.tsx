@@ -10,7 +10,6 @@ import { FAB } from "react-native-paper";
 import { ProviderFormComponent } from "@/Components/Provider Components/ProviderFormComponent/ProviderFormComponent";
 import IProvider from "@/Global/ViewModels/Providers/IProvider";
 import pageStyle from "@/Global/Styles/pages.global.style";
-import pages from "@/Global/Constants/Pages";
 
 export default function ProvidersPage() {
   const {

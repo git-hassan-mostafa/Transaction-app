@@ -3,6 +3,7 @@ import useFlatListHeaderComponentService from "./FlatListHeaderComponent.service
 import styles from "./FlatListHeaderComponent.style";
 import { ThemedText } from "@/Components/Reusable Components/HelperComponents/ThemedText";
 import { LinearGradient } from "expo-linear-gradient";
+import i18n from "@/Global/I18n/I18n";
 
 export default function FlatListHeaderComponent() {
   const FlatListHeaderComponentService = useFlatListHeaderComponentService();
@@ -13,24 +14,24 @@ export default function FlatListHeaderComponent() {
       end={{ x: 1, y: 1 }}
       style={styles.container}
     >
-      <View style={styles.totalContainer}>
-        <ThemedText style={styles.totalLabel}>الرصيد الكلي</ThemedText>
-        <ThemedText style={styles.total}>$200.00</ThemedText>
-      </View>
       <View style={styles.statsContainer}>
-        <View style={[styles.statItem, styles.expenseStat]}>
-          <View style={styles.statIconContainer}>
-            <ThemedText style={styles.statIcon}>↓</ThemedText>
-          </View>
-          <ThemedText style={styles.statValue}>$100.00</ThemedText>
-          <ThemedText style={styles.statLabel}>عليك</ThemedText>
-        </View>
         <View style={[styles.statItem, styles.incomeStat]}>
           <View style={styles.statIconContainer}>
             <ThemedText style={styles.statIcon}>↑</ThemedText>
           </View>
           <ThemedText style={styles.statValue}>$100.00</ThemedText>
-          <ThemedText style={styles.statLabel}>لك</ThemedText>
+          <ThemedText style={styles.statLabel}>
+            {i18n.t("customers-debts")}
+          </ThemedText>
+        </View>
+        <View style={[styles.statItem, styles.expenseStat]}>
+          <View style={styles.statIconContainer}>
+            <ThemedText style={styles.statIcon}>↓</ThemedText>
+          </View>
+          <ThemedText style={styles.statValue}>$100.00</ThemedText>
+          <ThemedText style={styles.statLabel}>
+            {i18n.t("providers-debts")}
+          </ThemedText>
         </View>
       </View>
     </LinearGradient>
