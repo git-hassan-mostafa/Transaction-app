@@ -3,7 +3,7 @@
     "name": "Transaction App",
     "slug": "transaction-app",
     "version": "1.0.0",
-    "orientation": "landscape",
+    "orientation": "default",
     "icon": "./assets/images/icon.png",
     "scheme": "transactionapp",
     "userInterfaceStyle": "automatic",

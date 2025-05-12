@@ -3,6 +3,7 @@ import { View } from "react-native";
 import { Dropdown } from "react-native-element-dropdown";
 import styles from "./CustomDropDownComponent.style";
 import IDropDownType from "@/Global/Types/IDropDownType";
+import i18n from "@/Global/I18n/I18n";
 
 export default function CustomDropDown(props: IDropDownType) {
   props?.data?.sort((a, b) =>
@@ -20,12 +21,12 @@ export default function CustomDropDown(props: IDropDownType) {
         inputSearchStyle={styles.inputSearchStyle}
         itemTextStyle={styles.itemTextStyle}
         data={props.data}
-        search
+        search={props.search || false}
         maxHeight={300}
         labelField="label"
         valueField="value"
-        searchPlaceholder="search..."
-        placeholder={props.placeholder ?? "choose from list"}
+        searchPlaceholder={i18n.t("search") + "..."}
+        placeholder={props.placeholder ?? i18n.t("select-from-list")}
         value={props.value}
         onChange={(item) => {
           props.setValue(item.value);

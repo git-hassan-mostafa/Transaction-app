@@ -70,7 +70,7 @@ export default function AddInnerDebtsItemsListComponent(
                       props.setInnerDebtsItem(value as number)
                     }
                     data={props.dropDownItems}
-                    placeholder={i18n.t("choose-product")}
+                    placeholder={i18n.t("select-product")}
                   />
                 </DataTable.Cell>
                 <DataTable.Cell style={globalStyles.column} numeric>

@@ -42,10 +42,11 @@ export default function AddInnerDebtsComponent(props: IAddInnerDebtProps) {
               {i18n.t("total-price")}
             </ThemedText>
             <TextInput
+              readOnly
               style={styles.input as StyleProp<TextStyle>}
               placeholder={i18n.t("enter-total-price")}
               placeholderTextColor="#999"
-              value={service.innerDebt.innerDebtTotalPrice?.toString()}
+              value={service.innerDebt.innerDebtTotalPrice?.toString() || "0"}
               keyboardType="numeric"
               onChangeText={(text) => service.setTotalPrice(text)}
             />
@@ -55,10 +56,11 @@ export default function AddInnerDebtsComponent(props: IAddInnerDebtProps) {
               {i18n.t("payed-price")}
             </ThemedText>
             <TextInput
+              readOnly
               style={styles.input as StyleProp<TextStyle>}
               placeholder={i18n.t("enter-paid-price")}
               placeholderTextColor="#999"
-              value={service.innerDebt.innerDebtPricePaid?.toString()}
+              value={service.innerDebt.innerDebtPricePaid?.toString() || "0"}
               keyboardType="numeric"
               onChangeText={(text) => service.setPricePaid(text)}
             />

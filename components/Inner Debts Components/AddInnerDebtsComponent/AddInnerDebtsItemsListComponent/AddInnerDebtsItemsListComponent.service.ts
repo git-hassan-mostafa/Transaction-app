@@ -67,7 +67,7 @@ export default function useAddInnerDebtsItemsListComponentService() {
       });
       Alert.alert(
         i18n.t("warning"),
-        i18n.t("item-alreadyexists,quantity-updated")
+        i18n.t("product-alreadyexists-quantity-updated")
       );
     } else {
       newInnerDebtsItem.innerDebtItemId = Date.now();

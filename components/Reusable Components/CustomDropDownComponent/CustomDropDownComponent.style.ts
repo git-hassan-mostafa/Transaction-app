@@ -10,11 +10,11 @@ const styles = StyleSheet.create({
     paddingHorizontal: 5,
   },
   placeholderStyle: {
-    fontSize: 12,
+    fontSize: 14,
     fontFamily: Constants.fontFamily.font400Regular,
   },
   selectedTextStyle: {
-    fontSize: 12,
+    fontSize: 14,
     fontFamily: Constants.fontFamily.font400Regular,
   },
   iconStyle: {
@@ -22,10 +22,13 @@ const styles = StyleSheet.create({
     height: 20,
   },
   itemTextStyle: {
+    fontSize: 14,
+
     fontFamily: Constants.fontFamily.font400Regular,
   },
   inputSearchStyle: {
-    display: "none",
+    fontSize: 14,
+    fontFamily: Constants.fontFamily.font400Regular,
   },
 });
 

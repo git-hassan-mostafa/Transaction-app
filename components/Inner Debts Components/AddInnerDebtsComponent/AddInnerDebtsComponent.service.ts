@@ -12,6 +12,7 @@ import { ICustomer_IInnerDebt } from "@/Global/ViewModels/RelationModels/ICustom
 import InnerDebtItem from "@/Global/Models/InnerDebtItem";
 import { IValidationErrorType } from "@/Global/Types/IValidationErrorType";
 import ICustomer from "@/Global/ViewModels/Customers/ICustomer";
+import i18n from "@/Global/I18n/I18n";
 
 export default function useAddInnerDebtsComponentService({
   innerDebtsItemsListService,
@@ -114,7 +115,7 @@ export default function useAddInnerDebtsComponentService({
       const result = await innerDebtsManager.addInnerDebt(newInnerDebt);
       if (!result || !result.lastInsertRowId)
         return toggleSnackBar({
-          text: "Failed to add inner debt",
+          text: i18n.t("failed-to-add-internal-debt"),
           visible: true,
         });
       setInnerDebt((prev) => {
@@ -135,7 +136,7 @@ export default function useAddInnerDebtsComponentService({
     if (!itemsResult) {
       await innerDebtsManager.deleteInnerDebt(innerDebt.innerDebtId);
       return toggleSnackBar({
-        text: "Failed to add inner debt items",
+        text: i18n.t("failed-to-add-inner-debt-products"),
         visible: true,
       });
     }
@@ -147,7 +148,7 @@ export default function useAddInnerDebtsComponentService({
     addToInnerDebtsList(customerInnerDebt);
     toggleModal();
     toggleSnackBar({
-      text: "Inner debt added successfully",
+      text: i18n.t("internal-debt-added-successfully"),
       visible: true,
       type: "success",
     });
@@ -155,16 +156,22 @@ export default function useAddInnerDebtsComponentService({
 
   function validateInnerDebtFields() {
     if (!innerDebt.innerDebt_CustomerId) {
-      setValidation({ text: "Please select a customer", visible: true });
+      setValidation({
+        text: i18n.t("please-select-a-customer"),
+        visible: true,
+      });
       return false;
     }
     if (!innerDebtsItemsListService.innerDebtsItems.length) {
-      setValidation({ text: "Please add at least one item", visible: true });
+      setValidation({
+        text: i18n.t("please-add-at-least-one-product"),
+        visible: true,
+      });
       return false;
     }
     if (innerDebt.innerDebtPricePaid > innerDebt.innerDebtTotalPrice) {
       setValidation({
-        text: "Paid price cannot be greater than total price",
+        text: i18n.t("paid-price-cannot-be-greater-than-total-price"),
         visible: true,
       });
       return false;

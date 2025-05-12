@@ -12,6 +12,7 @@ import CustomerManager from "@/Global/Services/customers.service";
 import Mapper from "@/Global/Helpers/MapService";
 import { ICustomer_IInnerDebt } from "@/Global/ViewModels/RelationModels/ICustomer_IInnerDebt";
 import ICustomer from "@/Global/ViewModels/Customers/ICustomer";
+import i18n from "@/Global/I18n/I18n";
 
 export default function useInnerDebtsFormComponentService({
   id,
@@ -143,18 +144,17 @@ export default function useInnerDebtsFormComponentService({
 
   function validateInnerDebtFields(innerDebt: IInnerDebt) {
     innerDebt.innerDebtId = id;
-    if (!innerDebt.innerDebtTotalPrice) {
+    if (!innerDebt.innerDebt_CustomerId) {
       toggleSnackBar({
+        text: i18n.t("please-select-a-customer"),
         visible: true,
-        text: "الرجاء ادخال السعر الكلي",
-        type: "error",
       });
       return false;
     }
-    if (!innerDebt.innerDebtPricePaid) {
+    if (!innerDebtsItemsListService.innerDebtsItems.length) {
       toggleSnackBar({
         visible: true,
-        text: "الرجاء ادخال السعر المدفوع",
+        text: i18n.t("please-add-at-least-one-product"),
         type: "error",
       });
       return false;
@@ -162,7 +162,7 @@ export default function useInnerDebtsFormComponentService({
     if (innerDebt.innerDebtPricePaid > innerDebt.innerDebtTotalPrice) {
       toggleSnackBar({
         visible: true,
-        text: "السعر المدفوع اكبر من السعر الكلي",
+        text: i18n.t("paid-price-cannot-be-greater-than-total-price"),
         type: "error",
       });
       return false;

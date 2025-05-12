@@ -32,7 +32,7 @@ export default function TabComponent({
             style={[styles.tab, activeTab === index && styles.activeTab]}
             onPress={() => setActiveTab(index)}
           >
-            <ThemedText type="defaultSemiBold" style={styles.tabText}>
+            <ThemedText type="default" style={styles.tabText}>
               {title}
             </ThemedText>
           </TouchableOpacity>

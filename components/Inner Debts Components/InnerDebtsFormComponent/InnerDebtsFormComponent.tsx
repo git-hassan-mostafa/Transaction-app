@@ -69,6 +69,7 @@ export default function InnerDebtsFormComponent({
               {i18n.t("total-price")}
             </ThemedText>
             <TextInput
+              readOnly
               style={styles.input as StyleProp<TextStyle>}
               placeholder={i18n.t("enter-total-price")}
               placeholderTextColor="#999"
@@ -83,6 +84,7 @@ export default function InnerDebtsFormComponent({
               {i18n.t("payed-price")}
             </ThemedText>
             <TextInput
+              readOnly
               style={styles.input as StyleProp<TextStyle>}
               placeholder={i18n.t("enter-paid-price")}
               placeholderTextColor="#999"

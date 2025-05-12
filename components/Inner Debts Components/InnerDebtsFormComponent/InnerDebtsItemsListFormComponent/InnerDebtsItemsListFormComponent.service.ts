@@ -95,7 +95,10 @@ export default function useInnerDebtsItemsListFormComponentService(
           newInnerDebtsItem.innerDebtItemQuantity;
         return prev;
       });
-      Alert.alert(i18n.t("warning"), i18n.t("item-already-exists"));
+      Alert.alert(
+        i18n.t("warning"),
+        i18n.t("product-alreadyexists-quantity-updated")
+      );
     } else {
       const mappedInnerDebtItem = [
         mapper.mapToInnerDebtItem(newInnerDebtsItem),
@@ -106,7 +109,7 @@ export default function useInnerDebtsItemsListFormComponentService(
       if (!itemsResult) {
         return toggleSnackBar({
           visible: true,
-          text: i18n.t("failed-add-items"),
+          text: i18n.t("failed-adding-products"),
           type: "error",
         });
       }
@@ -119,13 +122,17 @@ export default function useInnerDebtsItemsListFormComponentService(
   }
 
   function handleDeleteItem(id: number) {
-    Alert.alert(i18n.t("remove-item"), i18n.t("are-you-sure-remove-item"), [
-      {
-        text: i18n.t("cancel"),
-        style: "cancel",
-      },
-      { text: i18n.t("confirm"), onPress: () => deleteInnerDebtItem(id) },
-    ]);
+    Alert.alert(
+      i18n.t("remove-product"),
+      i18n.t("are-you-sureyou-want-to-remove-this-product"),
+      [
+        {
+          text: i18n.t("cancel"),
+          style: "cancel",
+        },
+        { text: i18n.t("confirm"), onPress: () => deleteInnerDebtItem(id) },
+      ]
+    );
   }
 
   async function deleteInnerDebtItem(id: number) {
@@ -137,7 +144,7 @@ export default function useInnerDebtsItemsListFormComponentService(
     }
     return toggleSnackBar({
       visible: true,
-      text: i18n.t("failed-delete-item"),
+      text: i18n.t("failed-deleting-product"),
       type: "error",
     });
   }

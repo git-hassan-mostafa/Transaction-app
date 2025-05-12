@@ -49,13 +49,17 @@ export default function useInnerDebtsPageService() {
   }
 
   async function handleDeleteInnerDebt(id: number) {
-    Alert.alert(i18n.t("delete-debt"), i18n.t("are-you-sure-delete-debt"), [
-      {
-        text: i18n.t("cancel"),
-        style: "cancel",
-      },
-      { text: i18n.t("confirm"), onPress: () => deleteInnerDebt(id) },
-    ]);
+    Alert.alert(
+      i18n.t("delete-debt"),
+      i18n.t("are-you-sure-you-want-to-delete-this-debt"),
+      [
+        {
+          text: i18n.t("cancel"),
+          style: "cancel",
+        },
+        { text: i18n.t("confirm"), onPress: () => deleteInnerDebt(id) },
+      ]
+    );
   }
 
   async function deleteInnerDebt(id: number) {

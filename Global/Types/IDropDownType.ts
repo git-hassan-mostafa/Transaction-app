@@ -12,4 +12,5 @@ export default interface IDropDownType {
   inputSearchStyle?: StyleProp<TextStyle>;
   itemTextStyle?: StyleProp<TextStyle>;
   placeholder?: string;
+  search?: boolean;
 }

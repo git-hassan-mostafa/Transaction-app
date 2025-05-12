@@ -1,5 +1,11 @@
 import React from "react";
-import { Modal, View, TouchableOpacity } from "react-native";
+import {
+  Modal,
+  View,
+  TouchableOpacity,
+  ScrollView,
+  useWindowDimensions,
+} from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
 import styles from "./CustomModalComponent.style";
 import { ThemedText } from "@/Components/Reusable Components/HelperComponents/ThemedText";
@@ -11,6 +17,7 @@ const CustomModal: React.FC<IModalProps> = ({
   title,
   children,
 }) => {
+  const { height } = useWindowDimensions();
   return (
     <Modal
       animationType="fade"
@@ -28,7 +35,9 @@ const CustomModal: React.FC<IModalProps> = ({
             </TouchableOpacity>
           </View>
           {/* Content */}
-          <View style={styles.content}>{children}</View>
+          <ScrollView style={[styles.content, { maxHeight: height * 0.6 }]}>
+            {children}
+          </ScrollView>
         </View>
       </View>
     </Modal>
