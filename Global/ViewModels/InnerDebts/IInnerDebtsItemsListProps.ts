@@ -13,4 +13,5 @@ export default interface IInnerDebtsItemsListProps {
   handleAddItem: () => void;
   toggleAddItem: (value: boolean) => void;
   handleDeleteItem: (id: number) => void;
+  refreshInnerDebtsItems?: (id: number) => Promise<void>;
 }

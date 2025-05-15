@@ -6,6 +6,8 @@ import ItemManager from "@/Global/Services/items.service";
 import Mapper from "@/Global/Helpers/MapService";
 import IItem from "@/Global/ViewModels/Items/IItem";
 import IItemFormProps from "@/Global/ViewModels/Items/IItemFormProps";
+import { IValidationErrorType } from "@/Global/Types/IValidationErrorType";
+import useGlobalContext from "@/Global/Context/ContextProvider";
 
 export default function useItemFormComponentService({
   id,
@@ -16,10 +18,15 @@ export default function useItemFormComponentService({
   const itemManager = new ItemManager();
   const mapper = new Mapper();
 
-  //states
   const [item, setItem] = useState<IItem>({} as IItem);
   const [providers, setProviders] = useState<IDropDownItem[]>([]);
+  const [validation, setValidation] = useState<IValidationErrorType>({
+    visible: false,
+    text: "",
+  });
 
+  //context
+  const { toggleSnackBar } = useGlobalContext();
   useEffect(() => {
     getItem();
     getAllProviders();
@@ -52,13 +59,13 @@ export default function useItemFormComponentService({
 
   function setItemQuantity(value: string) {
     setItem((prev) => {
-      return { ...prev, itemQuantity: Number(value) };
+      return { ...prev, itemQuantity: Number(value).toString() };
     });
   }
 
   function setItemPrice(value: string) {
     setItem((prev) => {
-      return { ...prev, itemPrice: Number(value) };
+      return { ...prev, itemPrice: value };
     });
   }
 
@@ -74,49 +81,58 @@ export default function useItemFormComponentService({
     });
   }
 
-  async function updateItemName() {
-    updateItem();
-  }
-
-  async function updateItemQuantity() {
-    updateItem();
-  }
-
-  async function updateItemPrice() {
-    updateItem();
-  }
-
-  async function updateItemNotes() {
-    updateItem();
-  }
-
-  async function updateItemProvider(providerId: number) {
-    itemManager.updateProviderId(item.itemId, providerId);
-  }
-
   async function updateItem() {
-    validateItemFields(item);
+    if (!validateItem()) return;
     const updatedItem: Item = mapper.mapToItem(item);
     const result = await itemManager.updateItem(updatedItem);
-    if ((result?.changes || 0) > 0) updateFromItemsList(item);
+    if (!result?.changes)
+      return toggleSnackBar({
+        visible: true,
+        text: "Error adding item",
+        type: "error",
+      });
+    updateFromItemsList(item);
+    toggleSnackBar({
+      visible: true,
+      text: "Item updated successfully",
+      type: "success",
+    });
   }
 
-  function validateItemFields(item: IItem) {
-    item.itemId = id;
+  function validateItem() {
+    if (!item.itemName) {
+      setValidation({
+        visible: true,
+        text: "please enter item name",
+      });
+      return false;
+    }
+    if (!item.itemPrice) {
+      setValidation({
+        visible: true,
+        text: "please enter item price",
+      });
+      return false;
+    }
+    if (!item.itemQuantity) {
+      setValidation({
+        visible: true,
+        text: "please enter item Quantity",
+      });
+      return false;
+    }
+    return true;
   }
 
   return {
     item,
+    validation,
     providers,
+    updateItem,
     setItemName,
     setItemPrice,
     setItemQuantity,
     setProvider,
     setItemNotes,
-    updateItemName,
-    updateItemPrice,
-    updateItemQuantity,
-    updateItemProvider,
-    updateItemNotes,
   };
 }

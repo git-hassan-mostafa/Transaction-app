@@ -82,7 +82,7 @@ export default function AddInnerDebtsComponent(props: IAddInnerDebtProps) {
           </View>
           <TouchableOpacity>
             <Button
-              buttonColor={Constants.colors.red}
+              buttonColor={Constants.colors.internalDebts}
               textColor={Constants.colors.lightGray}
               labelStyle={styles.saveButton}
               onPress={service.addInnerDebt}

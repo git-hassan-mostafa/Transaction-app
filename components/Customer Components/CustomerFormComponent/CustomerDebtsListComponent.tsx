@@ -6,8 +6,8 @@ import ICustomerFormProps from "@/Global/ViewModels/Customers/ICustomerFormProps
 import { DataTable } from "react-native-paper";
 import useDataTable from "@/Global/Hooks/useDataTable";
 import globalStyles from "@/Global/Styles/global.style";
-import dateOptions from "@/Global/Constants/DateOptions";
 import i18n from "@/Global/I18n/I18n";
+import { dateOptions } from "@/Global/Constants/DateOptions";
 
 export default function CustomerDebtsListComponent({
   id,
@@ -45,16 +45,22 @@ export default function CustomerDebtsListComponent({
                 <ThemedText type="small">{item.itemName}</ThemedText>
               </DataTable.Cell>
               <DataTable.Cell style={globalStyles.column} numeric>
-                {item.innerDebtItemTotalPrice}
+                <ThemedText type="small">
+                  {item.innerDebtItemTotalPrice}
+                </ThemedText>
               </DataTable.Cell>
               <DataTable.Cell style={globalStyles.column} numeric>
-                {item.innerDebtItemQuantity}
+                <ThemedText type="small">
+                  {item.innerDebtItemQuantity}
+                </ThemedText>
               </DataTable.Cell>
               <DataTable.Cell style={globalStyles.dateColumn} numeric>
-                {new Date(item.innerDebtDate ?? "")?.toLocaleDateString(
-                  i18n.locale,
-                  dateOptions
-                )}
+                <ThemedText type="small">
+                  {new Date(item.innerDebtDate ?? "")?.toLocaleDateString(
+                    i18n.locale,
+                    dateOptions
+                  )}
+                </ThemedText>
               </DataTable.Cell>
             </DataTable.Row>
           ))}

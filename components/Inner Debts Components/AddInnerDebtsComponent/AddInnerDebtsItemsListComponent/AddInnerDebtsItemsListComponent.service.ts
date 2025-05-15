@@ -1,15 +1,19 @@
 import Mapper from "@/Global/Helpers/MapService";
 import i18n from "@/Global/I18n/I18n";
+import InnerDebtItem_InnerDebt_Item from "@/Global/Models/RelationModels/InnerDebtItem_InnerDebt_Item";
+import InnerDebtItemsManager from "@/Global/Services/innerDebtItems.service";
 import ItemManager from "@/Global/Services/items.service";
 import IDropDownItem from "@/Global/Types/IDropDownItem";
+import IInnerDebtsItemsListProps from "@/Global/ViewModels/InnerDebts/IInnerDebtsItemsListProps";
 import IItem from "@/Global/ViewModels/Items/IItem";
 import IInnerDebtItem_IInnerDebt_IItem from "@/Global/ViewModels/RelationModels/IInnerDebtItem_IInnerDebt_IItem";
 import { useEffect, useState } from "react";
 import { Alert } from "react-native";
 
-export default function useAddInnerDebtsItemsListComponentService() {
+export default function useAddInnerDebtsItemsListComponentService(): IInnerDebtsItemsListProps {
   //managers
   const itemManager = new ItemManager();
+  const innerDebtItemsManager = new InnerDebtItemsManager();
   const mapper = new Mapper();
   //states
   const [items, setItems] = useState<IItem[]>([]);
@@ -52,6 +56,24 @@ export default function useAddInnerDebtsItemsListComponentService() {
     const currentItem = items.find(
       (i) => i.itemId === newInnerDebtsItem.innerDebtItem_ItemId
     );
+    newInnerDebtsItem.innerDebtItemId = Date.now();
+    newInnerDebtsItem.innerDebtItemTotalPrice =
+      newInnerDebtsItem.innerDebtItemQuantity *
+      (Number(currentItem?.itemPrice) || 0);
+
+    if (!handleExistingItem())
+      setInnerDebtsItems((prev) => [...prev, newInnerDebtsItem]);
+    setShowAddItem(false);
+  }
+
+  function handleDeleteItem(id: number) {
+    setInnerDebtsItems((prev) => prev.filter((i) => i.innerDebtItemId !== id));
+  }
+
+  function handleExistingItem() {
+    const currentItem = items.find(
+      (i) => i.itemId === newInnerDebtsItem.innerDebtItem_ItemId
+    );
     const itemAlreadyExists = innerDebtsItems.some(
       (i) => i.innerDebtItem_ItemId === currentItem?.itemId
     );
@@ -63,25 +85,33 @@ export default function useAddInnerDebtsItemsListComponentService() {
         if (!existingItem) return prev;
         existingItem.innerDebtItemQuantity +=
           newInnerDebtsItem.innerDebtItemQuantity;
+        existingItem.innerDebtItemTotalPrice =
+          existingItem.innerDebtItemTotalPrice +
+          newInnerDebtsItem.innerDebtItemQuantity *
+            (Number(currentItem?.itemPrice) || 0);
         return prev;
       });
       Alert.alert(
         i18n.t("warning"),
         i18n.t("product-alreadyexists-quantity-updated")
       );
-    } else {
-      newInnerDebtsItem.innerDebtItemId = Date.now();
-      newInnerDebtsItem.innerDebtItemTotalPrice =
-        newInnerDebtsItem.innerDebtItemQuantity * (currentItem?.itemPrice || 0);
-      setInnerDebtsItems((prev) => [...prev, newInnerDebtsItem]);
     }
-    setShowAddItem(false);
-
-    // bug in quantity
+    return itemAlreadyExists;
   }
 
-  function handleDeleteItem(id: number) {
-    setInnerDebtsItems((prev) => prev.filter((i) => i.innerDebtItemId !== id));
+  async function refreshInnerDebtsItems(innerDebtId: number) {
+    const innerDebtsItemsDB = await innerDebtItemsManager.getInnerDebtItems(
+      innerDebtId
+    );
+    const mappedItems = (
+      innerDebtsItemsDB as InnerDebtItem_InnerDebt_Item[]
+    ).map((item) => {
+      var i = mapper.mapTo_IInnerDebtItem_IInnerDebt_IItem(item);
+      i.innerDebtItemTotalPrice =
+        i.innerDebtItemQuantity * (Number(i?.itemPrice) || 0);
+      return i;
+    });
+    setInnerDebtsItems(mappedItems);
   }
 
   return {
@@ -89,11 +119,12 @@ export default function useAddInnerDebtsItemsListComponentService() {
     dropDownItems,
     innerDebtsItems,
     newInnerDebtsItem,
+    showAddItem,
     setInnerDebtsItem,
     setNewItemQuantity,
-    showAddItem,
     handleAddItem,
     toggleAddItem,
     handleDeleteItem,
+    refreshInnerDebtsItems,
   };
 }

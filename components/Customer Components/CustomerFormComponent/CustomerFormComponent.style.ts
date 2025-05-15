@@ -26,14 +26,6 @@ const styles = StyleSheet.create({
   row: {
     marginBottom: 15,
   },
-  deleteCustomer: {
-    fontSize: 40,
-    color: Constants.colors.red,
-  },
-  editCustomer: {
-    fontSize: 40,
-    color: Constants.colors.lighBlue,
-  },
   label: {
     flex: 1.5,
     fontSize: 16,
@@ -55,7 +47,7 @@ const styles = StyleSheet.create({
     color: Constants.colors.darkGray,
   },
   payedPrice: {
-    color: Constants.colors.green,
+    color: Constants.colors.darkGreen,
   },
   remainingPrice: {
     color: Constants.colors.red,

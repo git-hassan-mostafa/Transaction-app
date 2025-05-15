@@ -16,7 +16,7 @@ export default function useCustomSnackBarComponentService() {
       backgroundColor = Constants.colors.red;
       break;
     case "success":
-      backgroundColor = Constants.colors.green;
+      backgroundColor = Constants.colors.darkGreen;
   }
 
   return { options: snackBarOptions, onDismissSnackBar, backgroundColor };

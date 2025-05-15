@@ -67,7 +67,7 @@ export default function AddCustomerFormComponent({
       </View>
       <TouchableOpacity>
         <Button
-          buttonColor={Constants.colors.blue}
+          buttonColor={Constants.colors.customers}
           textColor={Constants.colors.lightGray}
           labelStyle={styles.saveButton}
           onPress={addCustomer}

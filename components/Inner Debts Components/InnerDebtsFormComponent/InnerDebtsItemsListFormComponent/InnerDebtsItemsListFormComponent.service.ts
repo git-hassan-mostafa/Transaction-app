@@ -9,10 +9,13 @@ import IInnerDebtItem_IInnerDebt_IItem from "@/Global/ViewModels/RelationModels/
 import i18n from "@/Global/I18n/I18n";
 import { useEffect, useState } from "react";
 import { Alert } from "react-native";
+import Item from "@/Global/Models/Item";
+import InnerDebtItem from "@/Global/Models/InnerDebtItem";
+import IInnerDebtsItemsListProps from "@/Global/ViewModels/InnerDebts/IInnerDebtsItemsListProps";
 
 export default function useInnerDebtsItemsListFormComponentService(
   innerDebtId: number
-) {
+): IInnerDebtsItemsListProps {
   //managers
   const itemManager = new ItemManager();
   const innerDebtItemsManager = new InnerDebtItemsManager();
@@ -41,12 +44,12 @@ export default function useInnerDebtsItemsListFormComponentService(
     const innerDebtsItemsDB = await innerDebtItemsManager.getInnerDebtItems(
       innerDebtId
     );
-    const item = items?.find((i) => i.itemId === item.itemId) as IItem;
     const mappedItems = (
       innerDebtsItemsDB as InnerDebtItem_InnerDebt_Item[]
     ).map((item) => {
       var i = mapper.mapTo_IInnerDebtItem_IInnerDebt_IItem(item);
-      i.innerDebtItemTotalPrice = i.innerDebtItemQuantity * (i?.itemPrice ?? 0);
+      i.innerDebtItemTotalPrice =
+        i.innerDebtItemQuantity * (Number(i?.itemPrice) || 0);
       return i;
     });
     setInnerDebtsItems(mappedItems);
@@ -81,31 +84,19 @@ export default function useInnerDebtsItemsListFormComponentService(
     );
     newInnerDebtsItem.innerDebtItem_InnerDebtId = innerDebtId;
     newInnerDebtsItem.innerDebtItemTotalPrice =
-      newInnerDebtsItem.innerDebtItemQuantity * (currentItem?.itemPrice || 0);
-    const itemAlreadyExists = innerDebtsItems.some(
-      (i) => i.innerDebtItem_ItemId === currentItem?.itemId
-    );
-    if (itemAlreadyExists) {
-      setInnerDebtsItems((prev) => {
-        const existingItem = prev.find(
-          (i) => i.innerDebtItem_ItemId === currentItem?.itemId
-        );
-        if (!existingItem) return prev;
-        existingItem.innerDebtItemQuantity +=
-          newInnerDebtsItem.innerDebtItemQuantity;
-        return prev;
-      });
-      Alert.alert(
-        i18n.t("warning"),
-        i18n.t("product-alreadyexists-quantity-updated")
+      newInnerDebtsItem.innerDebtItemQuantity *
+      (Number(currentItem?.itemPrice) || 0);
+
+    if (!handleExistingItem()) {
+      const innerDebtItemToAdd: Partial<InnerDebtItem> = {
+        InnerDebtItemQuantity: newInnerDebtsItem.innerDebtItemQuantity,
+        InnerDebtItem_InnerDebtId: newInnerDebtsItem.innerDebtItem_InnerDebtId,
+        InnerDebtItem_ItemId: newInnerDebtsItem.innerDebtItem_ItemId,
+      };
+      const itemsResult = await innerDebtItemsManager.addInnerDebtItem(
+        innerDebtItemToAdd
       );
-    } else {
-      const mappedInnerDebtItem = [
-        mapper.mapToInnerDebtItem(newInnerDebtsItem),
-      ];
-      const itemsResult = await innerDebtItemsManager.addInnerDebtItems(
-        mappedInnerDebtItem
-      );
+      console.log("itemsResult", itemsResult);
       if (!itemsResult) {
         return toggleSnackBar({
           visible: true,
@@ -118,10 +109,12 @@ export default function useInnerDebtsItemsListFormComponentService(
         setInnerDebtsItems((prev) => [...prev, newInnerDebtsItem]);
       }
     }
+
     setShowAddItem(false);
   }
 
   function handleDeleteItem(id: number) {
+    console.log("delete", id);
     Alert.alert(
       i18n.t("remove-product"),
       i18n.t("are-you-sureyou-want-to-remove-this-product"),
@@ -147,6 +140,35 @@ export default function useInnerDebtsItemsListFormComponentService(
       text: i18n.t("failed-deleting-product"),
       type: "error",
     });
+  }
+
+  function handleExistingItem() {
+    const currentItem = items.find(
+      (i) => i.itemId === newInnerDebtsItem.innerDebtItem_ItemId
+    );
+    const itemAlreadyExists = innerDebtsItems.some(
+      (i) => i.innerDebtItem_ItemId === currentItem?.itemId
+    );
+    if (itemAlreadyExists) {
+      setInnerDebtsItems((prev) => {
+        const existingItem = prev.find(
+          (i) => i.innerDebtItem_ItemId === currentItem?.itemId
+        );
+        if (!existingItem) return prev;
+        existingItem.innerDebtItemQuantity +=
+          newInnerDebtsItem.innerDebtItemQuantity;
+        existingItem.innerDebtItemTotalPrice =
+          existingItem.innerDebtItemTotalPrice +
+          newInnerDebtsItem.innerDebtItemQuantity *
+            (Number(currentItem?.itemPrice) || 0);
+        return prev;
+      });
+      Alert.alert(
+        i18n.t("warning"),
+        i18n.t("product-alreadyexists-quantity-updated")
+      );
+    }
+    return itemAlreadyExists;
   }
 
   return {

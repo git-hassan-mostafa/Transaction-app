@@ -24,7 +24,9 @@ export default function CardComponent(props: ICardType) {
             style={[styles.icon, { color: props.color }]}
           />
         </View>
-        <ThemedText style={styles.title}>{props.title}</ThemedText>
+        <ThemedText type="defaultSemiBold" style={styles.title}>
+          {props.title}
+        </ThemedText>
       </View>
     </TouchableOpacity>
   );

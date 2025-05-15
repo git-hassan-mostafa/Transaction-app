@@ -50,7 +50,10 @@ export default function InnerDebtsItemsListFormComponent(
                 <TouchableOpacity
                   onPress={() => props.handleDeleteItem(item.innerDebtItemId)}
                 >
-                  <MaterialIcon style={styles.delete} name="delete-forever" />
+                  <MaterialIcon
+                    style={globalStyles.delete}
+                    name="delete-forever"
+                  />
                 </TouchableOpacity>
               </DataTable.Cell>
             </DataTable.Row>
@@ -69,7 +72,7 @@ export default function InnerDebtsItemsListFormComponent(
                       props.setInnerDebtsItem(value as number)
                     }
                     data={props.dropDownItems}
-                    placeholder={i18n.t("select-item")}
+                    placeholder={i18n.t("select-product")}
                   />
                 </DataTable.Cell>
                 <DataTable.Cell style={globalStyles.column} numeric>

@@ -14,7 +14,9 @@ export default function LayoutPage() {
       <React.Fragment>
         <Stack
           screenOptions={{
-            contentStyle: { backgroundColor: Constants.colors.white },
+            contentStyle: {
+              backgroundColor: Constants.colors.white,
+            },
           }}
         >
           {pages.map((p) => (
@@ -35,8 +37,7 @@ export default function LayoutPage() {
                   backgroundColor: p.color,
                 },
                 statusBarBackgroundColor: p.color,
-                statusBarStyle: "dark",
-                headerTitleAlign: p.route === "index" ? "center" : "left",
+                headerTitleAlign: p.route === "index" ? "center" : undefined,
                 headerTintColor:
                   p.route == "index"
                     ? Constants.colors.black

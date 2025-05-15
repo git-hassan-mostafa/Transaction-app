@@ -43,7 +43,7 @@ export default function ProvidersPage() {
         renderItem={({ item }: { item: IProvider }) => (
           <AccordionComponent
             key={item.providerId}
-            headerColor={Constants.colors.brown}
+            headerColor={Constants.colors.providers}
             iconColor={Constants.colors.lightGray}
             headerText={item.providerName as string}
             id={item.providerId as number}
@@ -56,8 +56,8 @@ export default function ProvidersPage() {
             />
           </AccordionComponent>
         )}
-        ItemSeparatorComponent={() => <View style={{ height: 10 }} />}
-        contentContainerStyle={{ paddingBottom: 40 }}
+        ItemSeparatorComponent={() => <View style={{ height: 5 }} />}
+        contentContainerStyle={{ paddingBottom: 120 }}
       />
       <CustomModal
         title="اضافة تاجر"

@@ -22,7 +22,6 @@ const styles = StyleSheet.create({
     fontSize: 12,
     fontFamily: Constants.fontFamily.font400Regular,
   },
-  delete: { fontSize: 20, color: Constants.colors.red },
 });
 
 export default styles;

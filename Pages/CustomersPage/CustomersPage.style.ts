@@ -3,7 +3,7 @@ import { StyleSheet } from "react-native";
 
 const styles = StyleSheet.create({
   fab: {
-    backgroundColor: Constants.colors.blue,
+    backgroundColor: Constants.colors.customers,
   },
 });
 

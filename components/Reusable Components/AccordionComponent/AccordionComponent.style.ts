@@ -27,8 +27,8 @@ const styles = StyleSheet.create({
     gap: 20,
   },
   deleteItem: {
-    fontSize: 30,
-    color: Constants.colors.white,
+    fontSize: 25,
+    color: Constants.colors.lightGray,
   },
   headerText: {
     fontSize: 15,

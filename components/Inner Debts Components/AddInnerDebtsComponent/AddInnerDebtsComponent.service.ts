@@ -110,6 +110,7 @@ export default function useAddInnerDebtsComponentService({
     );
     const mappedCustomer = mapper.mapToICustomer(customer || {});
 
+    var insertedId = -1;
     //check if inner debt already exists
     if (!innerDebt.innerDebtId) {
       const result = await innerDebtsManager.addInnerDebt(newInnerDebt);
@@ -118,6 +119,7 @@ export default function useAddInnerDebtsComponentService({
           text: i18n.t("failed-to-add-internal-debt"),
           visible: true,
         });
+      insertedId = result.lastInsertRowId;
       setInnerDebt((prev) => {
         return { ...prev, innerDebtId: result.lastInsertRowId };
       });
@@ -125,9 +127,12 @@ export default function useAddInnerDebtsComponentService({
     }
     // Save inner debt items
     const innerDebtItems: InnerDebtItem[] =
-      innerDebtsItemsListService.innerDebtsItems.map((item) => {
-        item.innerDebtItem_InnerDebtId = innerDebt.innerDebtId;
-        return mapper.mapToInnerDebtItem(item);
+      innerDebtsItemsListService.innerDebtsItems.map((item): InnerDebtItem => {
+        return {
+          InnerDebtItemQuantity: item.innerDebtItemQuantity,
+          InnerDebtItem_ItemId: item.innerDebtItem_ItemId,
+          InnerDebtItem_InnerDebtId: innerDebt.innerDebtId,
+        };
       });
 
     const itemsResult = await innerDebtItemsManager.addInnerDebtItems(
@@ -141,6 +146,8 @@ export default function useAddInnerDebtsComponentService({
       });
     }
 
+    insertedId > 0 &&
+      (await innerDebtsItemsListService.refreshInnerDebtsItems?.(insertedId));
     const customerInnerDebt: ICustomer_IInnerDebt = {
       ...innerDebt,
       ...mappedCustomer,

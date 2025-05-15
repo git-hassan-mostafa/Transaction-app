@@ -16,9 +16,9 @@ const styles = StyleSheet.create({
   debtDate: {
     flexDirection: "row",
     alignItems: "center",
-    // marginBottom: 15,
+    marginBottom: 15,
     width: "100%",
-    justifyContent: "space-between",
+    justifyContent: "flex-end",
   },
   row: {
     marginBottom: 15,

@@ -42,7 +42,7 @@ export default function useCustomerFormComponentService({
     const mappedBorrowList = borrowListDB?.map((b) => {
       const result = mapper.mapTo_IICustomer_IInerDebt_IInnerDebtItem_IItem(b);
       result.innerDebtItemTotalPrice =
-        result.itemPrice * result.innerDebtItemQuantity;
+        Number(result.itemPrice) * result.innerDebtItemQuantity;
       return result;
     });
     setBorrowList(

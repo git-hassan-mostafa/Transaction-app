@@ -1,18 +1,24 @@
 const Constants = {
   colors: {
     white: "white",
-    blue: "#3271f0",
-    orange: "#ff9d00",
-    red: "#c2281d",
-    green: "#068701",
-    oil: "#7ab336",
-    lighBlue: "#21b8b0",
+    customers: "#42A5F5",
+    products: "#66BB6A",
+    internalDebts: "#FF7043",
+    externalDebts: "#5C6BC0",
+    providers: "#FFA726",
+    people: "#21b8b0",
+    results: "#388E3C",
+
+    ///////////////////////
+
+    darkGreen: "#047000",
     gray: "#ccc",
     darkGray: "#626363",
     lightGray: "#f2f2f2",
     yellow: "#f0f716",
-    brown: "#914e0a",
     black: "black",
+    red: "#c2281d",
+    oil: "#7ab336",
   },
   fontFamily: {
     font400Regular: "NotoKufiArabic_400Regular",

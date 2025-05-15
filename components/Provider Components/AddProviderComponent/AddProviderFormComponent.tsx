@@ -66,7 +66,7 @@ export default function AddProviderFormComponent({
       </View>
       <TouchableOpacity>
         <Button
-          buttonColor={Constants.colors.brown}
+          buttonColor={Constants.colors.providers}
           textColor={Constants.colors.lightGray}
           labelStyle={styles.saveButton}
           onPress={addProvider}

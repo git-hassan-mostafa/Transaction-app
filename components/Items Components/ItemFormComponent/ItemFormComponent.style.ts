@@ -18,10 +18,6 @@ const styles = StyleSheet.create({
     gap: 20,
     marginBottom: 20,
   },
-  deleteItem: {
-    fontSize: 40,
-    color: Constants.colors.red,
-  },
   row: {
     marginBottom: 15,
   },
@@ -38,9 +34,8 @@ const styles = StyleSheet.create({
     textAlignVertical: "top",
   },
   saveButton: {
-    backgroundColor: Constants.colors.orange,
+    backgroundColor: Constants.colors.products,
     borderRadius: 10,
-    paddingTop: 5,
   },
   saveText: {
     fontFamily: Constants.fontFamily.font400Regular,

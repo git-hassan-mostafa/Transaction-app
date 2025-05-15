@@ -1,4 +1,3 @@
-import Constants from "@/Global/Constants/Constants";
 import { StyleSheet } from "react-native";
 
 const pageStyle = StyleSheet.create({

@@ -42,8 +42,8 @@ export default class Mapper {
     return {
       ItemId: item.itemId,
       Name: item.itemName,
-      Quantity: item.itemQuantity,
-      Price: item.itemPrice,
+      Quantity: Number(item.itemQuantity),
+      Price: Number(item.itemPrice),
       Item_ProviderId: item.item_ProviderId,
       Notes: item.itemNotes,
     };
@@ -53,8 +53,8 @@ export default class Mapper {
     return {
       itemId: item.ItemId as number,
       itemName: item.Name as string,
-      itemQuantity: item.Quantity as number,
-      itemPrice: item.Price as number,
+      itemQuantity: item.Quantity?.toString() as string,
+      itemPrice: item.Price?.toString() as string,
       item_ProviderId: item.Item_ProviderId as number,
       itemNotes: item.Notes as string,
     };

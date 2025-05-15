@@ -7,4 +7,12 @@ const dateOptions: Intl.DateTimeFormatOptions = {
   minute: "2-digit",
 };
 
-export default dateOptions;
+const dateOptionsWithDay: Intl.DateTimeFormatOptions = {
+  weekday: "long",
+  year: "numeric",
+  month: "long",
+  day: "numeric",
+  hour: "numeric",
+  minute: "numeric",
+};
+export { dateOptions, dateOptionsWithDay };

@@ -45,7 +45,7 @@ export default function InnerDebtsPage() {
             key={item.innerDebtId}
             id={item.innerDebtId as number}
             handleDelete={handleDeleteInnerDebt}
-            headerColor={Constants.colors.red}
+            headerColor={Constants.colors.internalDebts}
             iconColor={Constants.colors.lightGray}
             headerText={`@${(item as ICustomer_IInnerDebt).customerName}`}
           >
@@ -55,8 +55,8 @@ export default function InnerDebtsPage() {
             />
           </AccordionComponent>
         )}
-        ItemSeparatorComponent={() => <View style={{ height: 10 }} />}
-        contentContainerStyle={{ paddingBottom: 40 }}
+        ItemSeparatorComponent={() => <View style={{ height: 5 }} />}
+        contentContainerStyle={{ paddingBottom: 120 }}
       />
       <CustomModal
         title={i18n.t("add-debt")}

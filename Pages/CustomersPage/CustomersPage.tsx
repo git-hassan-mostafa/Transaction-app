@@ -32,7 +32,7 @@ export default function CustomersPage() {
         renderItem={({ item }: { item: ICustomer }) => (
           <AccordionComponent
             key={item.customerId}
-            headerColor={Constants.colors.blue}
+            headerColor={Constants.colors.customers}
             iconColor={Constants.colors.lightGray}
             headerText={item.customerName as string}
             id={item.customerId as number}
@@ -44,8 +44,8 @@ export default function CustomersPage() {
             />
           </AccordionComponent>
         )}
-        ItemSeparatorComponent={() => <View style={{ height: 10 }} />}
-        contentContainerStyle={{ paddingBottom: 40 }}
+        ItemSeparatorComponent={() => <View style={{ height: 5 }} />}
+        contentContainerStyle={{ paddingBottom: 120 }}
       />
       <CustomModal
         title={i18n.t("add-customer")}

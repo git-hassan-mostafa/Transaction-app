@@ -49,7 +49,7 @@ export default function AddPeopleFormComponent({
       </View>
       <TouchableOpacity>
         <Button
-          buttonColor={Constants.colors.lighBlue}
+          buttonColor={Constants.colors.people}
           textColor={Constants.colors.lightGray}
           labelStyle={styles.saveButton}
           onPress={addPerson}

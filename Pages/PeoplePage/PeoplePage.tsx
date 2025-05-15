@@ -44,7 +44,7 @@ export default function PeoplePage() {
         renderItem={({ item }: { item: IPerson }) => (
           <AccordionComponent
             key={item.id}
-            headerColor={Constants.colors.lighBlue}
+            headerColor={Constants.colors.people}
             iconColor={Constants.colors.lightGray}
             headerText={item.personName as string}
             handleDelete={handleDeletePerson}
@@ -57,8 +57,8 @@ export default function PeoplePage() {
             />
           </AccordionComponent>
         )}
-        ItemSeparatorComponent={() => <View style={{ height: 10 }} />}
-        contentContainerStyle={{ paddingBottom: 40 }}
+        ItemSeparatorComponent={() => <View style={{ height: 5 }} />}
+        contentContainerStyle={{ paddingBottom: 120 }}
       />
       <CustomModal
         title="اضافة شخص"

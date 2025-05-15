@@ -29,7 +29,6 @@ const styles = StyleSheet.create({
   addIcon: {
     padding: 10,
   },
-  delete: { fontSize: 20, color: Constants.colors.red },
 });
 
 export default styles;

@@ -22,7 +22,7 @@ export default class SqlBuilder<T extends Record<string, any>> {
     return this;
   }
 
-  async insert(value: T) {
+  async insert(value: Partial<T>) {
     try {
       if (!value) return false;
       var query = `insert into ${this.tableName} (${Object.keys(value).join(
@@ -50,7 +50,7 @@ export default class SqlBuilder<T extends Record<string, any>> {
     }
   }
 
-  async insertAll(values: T[]) {
+  async insertAll(values: Partial<T>[]) {
     try {
       if (!values || values.length === 0) return false;
 

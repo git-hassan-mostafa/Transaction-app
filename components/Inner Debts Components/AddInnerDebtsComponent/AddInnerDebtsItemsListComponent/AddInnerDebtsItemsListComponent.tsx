@@ -51,7 +51,10 @@ export default function AddInnerDebtsItemsListComponent(
                 <TouchableOpacity
                   onPress={() => props.handleDeleteItem(item.innerDebtItemId)}
                 >
-                  <MaterialIcon style={styles.delete} name="delete-forever" />
+                  <MaterialIcon
+                    style={globalStyles.delete}
+                    name="delete-forever"
+                  />
                 </TouchableOpacity>
               </DataTable.Cell>
             </DataTable.Row>

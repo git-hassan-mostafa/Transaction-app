@@ -7,6 +7,7 @@ import ItemManager from "@/Global/Services/items.service";
 import IAddItemProps from "@/Global/ViewModels/Items/IAddItemProps";
 import IItem from "@/Global/ViewModels/Items/IItem";
 import { IValidationErrorType } from "@/Global/Types/IValidationErrorType";
+import Mapper from "@/Global/Helpers/MapService";
 
 export default function useAddItemFormComponentService({
   toggleModal,
@@ -15,9 +16,10 @@ export default function useAddItemFormComponentService({
   // services
   const providerManager = new ProviderManager();
   const itemManager = new ItemManager();
+  const map = new Mapper();
 
   //states
-  const [item, setItem] = useState<IItem>({} as IItem);
+  const item: IItem = {} as IItem;
   const [providers, setProviders] = useState<IDropDownItem[]>([]);
   const [validation, setValidation] = useState<IValidationErrorType>({
     visible: false,
@@ -42,33 +44,23 @@ export default function useAddItemFormComponentService({
   }
 
   function setItemName(value: string) {
-    setItem((prev) => {
-      return { ...prev, itemName: value };
-    });
+    item.itemName = value;
   }
 
   function setItemQuantity(value: string) {
-    setItem((prev) => {
-      return { ...prev, itemQuantity: Number(value) };
-    });
+    item.itemQuantity = value;
   }
 
   function setItemPrice(value: string) {
-    setItem((prev) => {
-      return { ...prev, itemPrice: Number(value) };
-    });
+    item.itemPrice = Number(value).toString();
   }
 
   function setProvider(providerId: number) {
-    setItem((prev) => {
-      return { ...prev, item_ProviderId: providerId };
-    });
+    item.item_ProviderId = providerId;
   }
 
   function setcustomerNotes(value: string) {
-    setItem((prev) => {
-      return { ...prev, itemNotes: value };
-    });
+    item.itemNotes = value;
   }
 
   async function addItem() {
@@ -93,13 +85,7 @@ export default function useAddItemFormComponentService({
       });
       return;
     }
-    const newItem: Item = {
-      Name: item?.itemName.trim(),
-      Quantity: item.itemQuantity,
-      Price: item.itemPrice,
-      Item_ProviderId: item.item_ProviderId,
-      Notes: item.itemNotes,
-    };
+    const newItem: Item = map.mapToItem(item);
     const result = await itemManager.addItem(newItem);
     if (!result || !result.lastInsertRowId)
       return toggleSnackBar({

@@ -87,7 +87,7 @@ export default function AddItemFormComponent({
       </View>
       <TouchableOpacity>
         <Button
-          buttonColor={Constants.colors.orange}
+          buttonColor={Constants.colors.products}
           textColor={Constants.colors.lightGray}
           labelStyle={styles.saveButton}
           onPress={addItem}

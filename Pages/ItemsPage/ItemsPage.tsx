@@ -45,7 +45,7 @@ export default function ItemsPage() {
             key={item.itemId}
             id={item.itemId as number}
             handleDelete={handleDeleteItem}
-            headerColor={Constants.colors.orange}
+            headerColor={Constants.colors.products}
             iconColor={Constants.colors.lightGray}
             headerText={item.itemName as string}
           >
@@ -55,8 +55,8 @@ export default function ItemsPage() {
             />
           </AccordionComponent>
         )}
-        ItemSeparatorComponent={() => <View style={{ height: 10 }} />}
-        contentContainerStyle={{ paddingBottom: 40 }}
+        ItemSeparatorComponent={() => <View style={{ height: 5 }} />}
+        contentContainerStyle={{ paddingBottom: 120 }}
       />
       <CustomModal
         title="اضافة منتج"

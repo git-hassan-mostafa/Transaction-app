@@ -1,8 +1,6 @@
 import AbstractManager from "./AbstractManager";
 import SqlBuilder from "../Helpers/SqlBuilder";
 import InnerDebtItem from "../Models/InnerDebtItem";
-import Item from "../Models/Item";
-import IInnerDebtItem_IInnerDebt_IItem from "../ViewModels/RelationModels/IInnerDebtItem_IInnerDebt_IItem";
 import InnerDebtItem_InnerDebt_Item from "../Models/RelationModels/InnerDebtItem_InnerDebt_Item";
 
 export default class InnerDebtItemsManager extends AbstractManager {
@@ -43,6 +41,16 @@ export default class InnerDebtItemsManager extends AbstractManager {
       return items;
     } catch (error) {
       console.log("error getAllInnerDebtsItemsList", error);
+    }
+  }
+
+  async addInnerDebtItem(innerDebtItems: Partial<InnerDebtItem>) {
+    try {
+      const sqlBuilder = new SqlBuilder<InnerDebtItem>(this.db, this.table);
+      const result = await sqlBuilder.insert(innerDebtItems);
+      return result;
+    } catch (error) {
+      console.log("error addInnerDebtItems", error);
     }
   }
 

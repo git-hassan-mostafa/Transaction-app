@@ -9,6 +9,7 @@ import InnerDebtsItemsListFormComponent from "./InnerDebtsItemsListFormComponent
 import TabComponent from "@/Components/Reusable Components/TabComponent/TabComponent";
 import useInnerDebtsItemsListFormComponentService from "./InnerDebtsItemsListFormComponent/InnerDebtsItemsListFormComponent.service";
 import i18n from "@/Global/I18n/I18n";
+import { dateOptionsWithDay } from "@/Global/Constants/DateOptions";
 
 export default function InnerDebtsFormComponent({
   id,
@@ -33,14 +34,6 @@ export default function InnerDebtsFormComponent({
     updateFromInnerDebtsList,
     innerDebtsItemsListService: innerDebtsItemsListFormService,
   });
-  const options: Intl.DateTimeFormatOptions = {
-    weekday: "long",
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-    hour: "numeric",
-    minute: "numeric",
-  };
   const date = new Date(innerDebt.innerDebtDate);
   return (
     <View style={styles.container}>
@@ -48,7 +41,7 @@ export default function InnerDebtsFormComponent({
         <View>
           <View style={styles.debtDate}>
             <ThemedText style={styles.date}>
-              {date?.toLocaleDateString(i18n.locale, options)}
+              {date?.toLocaleDateString(i18n.locale, dateOptionsWithDay)}
             </ThemedText>
           </View>
           <View style={styles.row}>

@@ -42,10 +42,7 @@ const styles = StyleSheet.create({
     fontSize: 32,
   },
   title: {
-    fontSize: 16,
     textAlign: "center",
-    fontFamily: Constants.fontFamily.font600SemiBold,
-    color: Constants.colors.black,
     maxWidth: "100%",
   },
 });

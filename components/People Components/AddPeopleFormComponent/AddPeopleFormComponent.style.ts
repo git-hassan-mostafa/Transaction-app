@@ -25,7 +25,7 @@ const styles = StyleSheet.create({
     ...baseInputStyle,
   },
   saveButton: {
-    backgroundColor: Constants.colors.lighBlue,
+    backgroundColor: Constants.colors.people,
     borderRadius: 10,
     paddingTop: 5,
   },
