@@ -1,11 +1,11 @@
 import { View } from "react-native";
-import useFlatListHeaderComponentService from "./FlatListHeaderComponent.service";
-import styles from "./FlatListHeaderComponent.style";
+import useFlatListHeaderComponentService from "./FlatListHeader.service";
+import styles from "./FlatListHeader.style";
 import { ThemedText } from "@/Components/Reusables/HelperComponents/ThemedText";
 import { LinearGradient } from "expo-linear-gradient";
 import i18n from "@/Global/I18n/I18n";
 
-export default function FlatListHeaderComponent() {
+export default function FlatListHeader() {
   const FlatListHeaderComponentService = useFlatListHeaderComponentService();
   return (
     <LinearGradient
