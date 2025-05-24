@@ -3,12 +3,12 @@ import usePeoplePageService from "./PeoplePage.service";
 import styles from "./PeoplePage.style";
 import React from "react";
 import Person from "@/Global/Models/Person";
-import AccordionComponent from "@/Components/Reusable Components/AccordionComponent/AccordionComponent";
+import AccordionComponent from "@/Components/Reusables/AccordionComponent/AccordionComponent";
 import Constants from "@/Global/Constants/Constants";
 import { FAB } from "react-native-paper";
-import PeopleFormComponent from "@/Components/People Components/PeopleFormComponent/PeopleFormComponent";
-import CustomModal from "@/Components/Reusable Components/CustomModalComponent/CustomModalComponent";
-import AddPeopleFormComponent from "@/Components/People Components/AddPeopleFormComponent/AddPeopleFormComponent";
+import EditPeople from "@/Components/People/Edit/EditPeople";
+import CustomModal from "@/Components/Reusables/CustomModalComponent/CustomModalComponent";
+import AddPeople from "@/Components/People/Add/AddPeople";
 import IPerson from "@/Global/ViewModels/People/IPerson";
 import pageStyle from "@/Global/Styles/pages.global.style";
 import pages from "@/Global/Constants/Pages";
@@ -51,7 +51,7 @@ export default function PeoplePage() {
             id={item.id as number}
           >
             <View></View>
-            <PeopleFormComponent
+            <EditPeople
               updateFromPeopleList={updateFromPeopleList}
               id={item.id as number}
             />
@@ -65,7 +65,7 @@ export default function PeoplePage() {
         isVisible={modalVisible}
         onClose={toggleModal}
       >
-        <AddPeopleFormComponent
+        <AddPeople
           addToPeopleList={addToPeopleList}
           toggleModal={toggleModal}
         />

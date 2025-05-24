@@ -2,12 +2,12 @@ import { FlatList, View } from "react-native";
 import useInnerDebtsPageService from "./InnerDebtsPage.service";
 import styles from "./InnerDebtsPage.style";
 import React from "react";
-import AccordionComponent from "@/Components/Reusable Components/AccordionComponent/AccordionComponent";
+import AccordionComponent from "@/Components/Reusables/AccordionComponent/AccordionComponent";
 import Constants from "@/Global/Constants/Constants";
-import CustomModal from "@/Components/Reusable Components/CustomModalComponent/CustomModalComponent";
+import CustomModal from "@/Components/Reusables/CustomModalComponent/CustomModalComponent";
 import { FAB } from "react-native-paper";
-import InnerDebtsFormComponent from "@/Components/Inner Debts Components/InnerDebtsFormComponent/InnerDebtsFormComponent";
-import AddInnerDebtsComponent from "@/Components/Inner Debts Components/AddInnerDebtsComponent/AddInnerDebtsComponent";
+import EditInternalDebt from "@/Components/InternalDebt/Edit/EditInternalDebt";
+import AddInternalDebt from "@/Components/InternalDebt/Add/AddInternalDebt";
 import IInnerDebt from "@/Global/ViewModels/InnerDebts/IInerDebts";
 import { ICustomer_IInnerDebt } from "@/Global/ViewModels/RelationModels/ICustomer_IInnerDebt";
 import pageStyle from "@/Global/Styles/pages.global.style";
@@ -49,7 +49,7 @@ export default function InnerDebtsPage() {
             iconColor={Constants.colors.lightGray}
             headerText={`@${(item as ICustomer_IInnerDebt).customerName}`}
           >
-            <InnerDebtsFormComponent
+            <EditInternalDebt
               id={item.innerDebtId as number}
               updateFromInnerDebtsList={updateFromInnerDebtsList}
             />
@@ -63,7 +63,7 @@ export default function InnerDebtsPage() {
         isVisible={modalVisible}
         onClose={toggleModal}
       >
-        <AddInnerDebtsComponent
+        <AddInternalDebt
           addToInnerDebtsList={addToInnerDebtsList}
           toggleModal={toggleModal}
         />

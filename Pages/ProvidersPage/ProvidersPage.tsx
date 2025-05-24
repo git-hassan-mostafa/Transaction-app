@@ -2,12 +2,12 @@ import { FlatList, View } from "react-native";
 import useProvidersPageService from "./ProvidersPage.service";
 import styles from "./ProvidersPage.style";
 import React from "react";
-import AccordionComponent from "@/Components/Reusable Components/AccordionComponent/AccordionComponent";
+import AccordionComponent from "@/Components/Reusables/AccordionComponent/AccordionComponent";
 import Constants from "@/Global/Constants/Constants";
-import AddProviderFormComponent from "@/Components/Provider Components/AddProviderComponent/AddProviderFormComponent";
-import CustomModal from "@/Components/Reusable Components/CustomModalComponent/CustomModalComponent";
+import AddProvider from "@/Components/Provider/Add/AddProvider";
+import CustomModal from "@/Components/Reusables/CustomModalComponent/CustomModalComponent";
 import { FAB } from "react-native-paper";
-import { ProviderFormComponent } from "@/Components/Provider Components/ProviderFormComponent/ProviderFormComponent";
+import { ProviderFormComponent } from "@/Components/Provider/Edit/ProviderFormComponent";
 import IProvider from "@/Global/ViewModels/Providers/IProvider";
 import pageStyle from "@/Global/Styles/pages.global.style";
 
@@ -64,7 +64,7 @@ export default function ProvidersPage() {
         isVisible={modalVisible}
         onClose={toggleModal}
       >
-        <AddProviderFormComponent
+        <AddProvider
           addToProvidersList={addToProvidersList}
           toggleModal={toggleModal}
         />

@@ -3,27 +3,19 @@ import useItemsPageService from "./ItemsPage.service";
 import styles from "./ItemsPage.style";
 import React from "react";
 import Item from "@/Global/Models/Item";
-import AccordionComponent from "@/Components/Reusable Components/AccordionComponent/AccordionComponent";
+import AccordionComponent from "@/Components/Reusables/AccordionComponent/AccordionComponent";
 import Constants from "@/Global/Constants/Constants";
-import { ItemFormComponent } from "@/Components/Items Components/ItemFormComponent/ItemFormComponent";
-import CustomModal from "@/Components/Reusable Components/CustomModalComponent/CustomModalComponent";
-import AddItemFormComponent from "@/Components/Items Components/AddItemFormComponent/AddItemFormComponent";
+import { EditProduct } from "@/Components/Products/Edit/EditProduct";
+import CustomModal from "@/Components/Reusables/CustomModalComponent/CustomModalComponent";
+import AddProduct from "@/Components/Products/Add/AddProduct";
 import { FAB } from "react-native-paper";
 import IItem from "@/Global/ViewModels/Items/IItem";
 import pageStyle from "@/Global/Styles/pages.global.style";
-import pages from "@/Global/Constants/Pages";
 
 export default function ItemsPage() {
-  const {
-    items,
-    modalVisible,
-    toggleModal,
-    addToItemsList,
-    updateFromItemsList,
-    handleDeleteItem,
-  } = useItemsPageService();
+  const service = useItemsPageService();
 
-  items?.sort((a, b) => {
+  service.items?.sort((a, b) => {
     if (a.itemName && b.itemName) {
       return a.itemName
         .toString()
@@ -37,21 +29,21 @@ export default function ItemsPage() {
     <React.Fragment>
       <FlatList
         style={pageStyle.flatList}
-        data={items}
+        data={service.items}
         numColumns={1}
         keyExtractor={(item) => item.itemId?.toString() as string}
         renderItem={({ item }: { item: IItem }) => (
           <AccordionComponent
             key={item.itemId}
             id={item.itemId as number}
-            handleDelete={handleDeleteItem}
+            handleDelete={service.handleDeleteItem}
             headerColor={Constants.colors.products}
             iconColor={Constants.colors.lightGray}
             headerText={item.itemName as string}
           >
-            <ItemFormComponent
+            <EditProduct
               id={item.itemId as number}
-              updateFromItemsList={updateFromItemsList}
+              updateFromProductsList={service.updateFromProductsList}
             />
           </AccordionComponent>
         )}
@@ -60,16 +52,16 @@ export default function ItemsPage() {
       />
       <CustomModal
         title="اضافة منتج"
-        isVisible={modalVisible}
-        onClose={toggleModal}
+        isVisible={service.modalVisible}
+        onClose={service.toggleModal}
       >
-        <AddItemFormComponent
-          addToItemsList={addToItemsList}
-          toggleModal={toggleModal}
+        <AddProduct
+          addToItemsList={service.addToItemsList}
+          toggleModal={service.toggleModal}
         />
       </CustomModal>
       <FAB
-        onPress={toggleModal}
+        onPress={service.toggleModal}
         color={Constants.colors.lightGray}
         style={[styles.fab, pageStyle.fab]}
         icon="plus"

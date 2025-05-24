@@ -1,6 +1,5 @@
 import useGlobalContext from "@/Global/Context/ContextProvider";
 import Mapper from "@/Global/Helpers/MapService";
-import Item from "@/Global/Models/Item";
 import ItemManager from "@/Global/Services/items.service";
 import IItem from "@/Global/ViewModels/Items/IItem";
 import { useEffect, useState } from "react";
@@ -30,7 +29,7 @@ export default function useItemsPageService() {
     setItems((prev) => prev.filter((c) => c.itemId !== id));
   }
 
-  function updateFromItemsList(value: IItem) {
+  function updateFromProductsList(value: IItem) {
     setItems((prev) =>
       prev.map((item) =>
         item.itemId === value.itemId ? { ...item, ...value } : item
@@ -80,7 +79,7 @@ export default function useItemsPageService() {
     toggleModal,
     addToItemsList,
     deleteFromItemsList,
-    updateFromItemsList,
+    updateFromProductsList,
     handleDeleteItem,
   };
 }

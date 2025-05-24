@@ -61,5 +61,11 @@
   "are-you-sureyou-want-to-remove-this-product":"Are you sure you want to remove this product?",
   "failed-deleting-product":"Failed deleting product",
   "search":"Search",
-  "select-from-list":"Select from list"
+  "select-from-list":"Select from list",
+  "please-enter-the-name":"Please enter the name",
+  "please-enter-the-phone-number":"Please enter the phone number",
+  "error-adding-person":"Error adding person",
+  "person-added-successfully":"Person added successfully",
+  "person-name":"Name",
+  "person-phone":"Phone"
 }

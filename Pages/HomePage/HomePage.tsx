@@ -1,10 +1,10 @@
 import { FlatList, useWindowDimensions, View } from "react-native";
 import styles from "./HomePage.style";
 import useHomeService from "./HomePage.service";
-import CardComponent from "@/Components/Reusable Components/CardComponent/CardComponent";
-import FlatListHeaderComponent from "@/Components/Reusable Components/FlatListHeaderComponent/FlatListHeaderComponent";
+import CardComponent from "@/Components/Reusables/CardComponent/CardComponent";
+import FlatListHeaderComponent from "@/Components/Reusables/FlatListHeaderComponent/FlatListHeaderComponent";
 import pages from "@/Global/Constants/Pages";
-import { ThemedText } from "@/Components/Reusable Components/HelperComponents/ThemedText";
+import { ThemedText } from "@/Components/Reusables/HelperComponents/ThemedText";
 
 export default function HomePage() {
   const homeService = useHomeService();

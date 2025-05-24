@@ -61,7 +61,13 @@
   "are-you-sureyou-want-to-remove-this-product":"هل أنت متأكد أنك تريد إزالة هذا المنتج",
   "failed-deleting-product":"فشل في حذف المنتج",
   "search":"بحث",
-  "select-from-list":"اختر من القائمة"
+  "select-from-list":"اختر من القائمة",
+  "please-enter-the-name":"يرجى إدخال الاسم",
+  "please-enter-the-phone-number":"يرجى إدخال رقم الهاتف",
+  "error-adding-person":"خطأ في إضافة الشخص",
+  "person-added-successfully":"تم إضافة الشخص بنجاح",
+  "person-name":"الاسم",
+  "person-phone":"رقم الهاتف"
 
 
 }

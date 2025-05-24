@@ -1,0 +1,90 @@
+import React from "react";
+import { View, TextInput, StyleProp, TextStyle } from "react-native";
+import Constants from "@/Global/Constants/Constants";
+import { TouchableOpacity } from "react-native";
+import { Button } from "react-native-paper";
+import { ThemedText } from "../../Reusables/HelperComponents/ThemedText";
+import styles from "./AddProduct.style";
+import useAddProductService from "./AddProduct.service";
+import CustomDropDown from "@/Components/Reusables/CustomDropDownComponent/CustomDropDownComponent";
+import IAddItemProps from "@/Global/ViewModels/Items/IAddItemProps";
+import ValidationMessage from "@/Components/Reusables/HelperComponents/ValidationMessage";
+
+export default function AddProduct({
+  toggleModal,
+  addToItemsList,
+}: IAddItemProps) {
+  const service = useAddProductService({
+    toggleModal,
+    addToItemsList,
+  });
+
+  return (
+    <View style={styles.container}>
+      <View style={styles.row}>
+        <ThemedText style={styles.label}>اسم المنتج</ThemedText>
+        <TextInput
+          style={styles.textInput as StyleProp<TextStyle>}
+          placeholder="أدخل الإسم"
+          placeholderTextColor="#999"
+          value={service.item.itemName}
+          onChangeText={service.setItemName}
+        />
+      </View>
+
+      <View style={styles.row}>
+        <ThemedText style={styles.label}>السعر</ThemedText>
+        <TextInput
+          style={styles.input as StyleProp<TextStyle>}
+          placeholder="أدخل السعر"
+          placeholderTextColor="#999"
+          value={service.item.itemPrice?.toString()}
+          keyboardType="numeric"
+          onChangeText={(text) => service.setItemPrice(text)}
+        />
+      </View>
+      <View style={styles.row}>
+        <ThemedText style={styles.label}>الكمية</ThemedText>
+        <TextInput
+          style={styles.input as StyleProp<TextStyle>}
+          placeholder="أدخل الكمية"
+          placeholderTextColor="#999"
+          value={service.item.itemQuantity?.toString()}
+          keyboardType="numeric"
+          onChangeText={(text) => service.setItemQuantity(text)}
+        />
+      </View>
+      <View style={styles.row}>
+        <ThemedText style={styles.label}>التاجر</ThemedText>
+        <CustomDropDown
+          value={service.item.item_ProviderId}
+          setValue={(value) => service.setProvider(value as number)}
+          data={service.providers}
+        />
+      </View>
+      <View style={styles.row}>
+        <ThemedText style={styles.label}>الملاحظات</ThemedText>
+        <TextInput
+          style={[styles.textInput, styles.textArea] as StyleProp<TextStyle>}
+          placeholder=" أدخل الملاحظات"
+          placeholderTextColor="#999"
+          value={service.item.itemNotes}
+          onChangeText={service.setcustomerNotes}
+        />
+      </View>
+      <View style={styles.row}>
+        <ValidationMessage validation={service.validation} />
+      </View>
+      <TouchableOpacity>
+        <Button
+          buttonColor={Constants.colors.products}
+          textColor={Constants.colors.lightGray}
+          labelStyle={styles.saveButton}
+          onPress={service.addItem}
+        >
+          <ThemedText style={styles.saveText}>حفظ</ThemedText>
+        </Button>
+      </TouchableOpacity>
+    </View>
+  );
+}
