@@ -28,6 +28,9 @@ export default function CustomerDebtList({
             <DataTable.Title style={globalStyles.column}>
               <ThemedText type="medium">{i18n.t("product-name")}</ThemedText>
             </DataTable.Title>
+            <DataTable.Title style={globalStyles.column}>
+              <ThemedText type="medium">{i18n.t("product-price")}</ThemedText>
+            </DataTable.Title>
             <DataTable.Title style={globalStyles.column} numeric>
               <ThemedText type="medium">{i18n.t("price")}</ThemedText>
             </DataTable.Title>
@@ -44,9 +47,12 @@ export default function CustomerDebtList({
               <DataTable.Cell style={globalStyles.column}>
                 <ThemedText type="small">{item.itemName}</ThemedText>
               </DataTable.Cell>
+              <DataTable.Cell style={globalStyles.column}>
+                <ThemedText type="small">${item.itemPrice}</ThemedText>
+              </DataTable.Cell>
               <DataTable.Cell style={globalStyles.column} numeric>
                 <ThemedText type="small">
-                  {item.innerDebtItemTotalPrice}
+                  ${item.innerDebtItemTotalPrice.toFixed(2)}
                 </ThemedText>
               </DataTable.Cell>
               <DataTable.Cell style={globalStyles.column} numeric>

@@ -9,6 +9,7 @@ import useAddProductService from "./AddProduct.service";
 import CustomDropDown from "@/Components/Reusables/CustomDropDownComponent/CustomDropDownComponent";
 import IAddItemProps from "@/Global/ViewModels/Items/IAddItemProps";
 import ValidationMessage from "@/Components/Reusables/HelperComponents/ValidationMessage";
+import i18n from "@/Global/I18n/I18n";
 
 export default function AddProduct({
   toggleModal,
@@ -22,10 +23,10 @@ export default function AddProduct({
   return (
     <View style={styles.container}>
       <View style={styles.row}>
-        <ThemedText style={styles.label}>اسم المنتج</ThemedText>
+        <ThemedText style={styles.label}>{i18n.t("product-name")}</ThemedText>
         <TextInput
           style={styles.textInput as StyleProp<TextStyle>}
-          placeholder="أدخل الإسم"
+          placeholder={i18n.t("please-enter-product-name") + "..."}
           placeholderTextColor="#999"
           value={service.item.itemName}
           onChangeText={service.setItemName}
@@ -33,10 +34,10 @@ export default function AddProduct({
       </View>
 
       <View style={styles.row}>
-        <ThemedText style={styles.label}>السعر</ThemedText>
+        <ThemedText style={styles.label}>{i18n.t("product-price")}</ThemedText>
         <TextInput
           style={styles.input as StyleProp<TextStyle>}
-          placeholder="أدخل السعر"
+          placeholder={"00.00"}
           placeholderTextColor="#999"
           value={service.item.itemPrice?.toString()}
           keyboardType="numeric"
@@ -44,10 +45,12 @@ export default function AddProduct({
         />
       </View>
       <View style={styles.row}>
-        <ThemedText style={styles.label}>الكمية</ThemedText>
+        <ThemedText style={styles.label}>
+          {i18n.t("product-quantity")}
+        </ThemedText>
         <TextInput
           style={styles.input as StyleProp<TextStyle>}
-          placeholder="أدخل الكمية"
+          placeholder={"0"}
           placeholderTextColor="#999"
           value={service.item.itemQuantity?.toString()}
           keyboardType="numeric"
@@ -55,7 +58,7 @@ export default function AddProduct({
         />
       </View>
       <View style={styles.row}>
-        <ThemedText style={styles.label}>التاجر</ThemedText>
+        <ThemedText style={styles.label}>{i18n.t("provider")}</ThemedText>
         <CustomDropDown
           value={service.item.item_ProviderId}
           setValue={(value) => service.setProvider(value as number)}
@@ -63,10 +66,10 @@ export default function AddProduct({
         />
       </View>
       <View style={styles.row}>
-        <ThemedText style={styles.label}>الملاحظات</ThemedText>
+        <ThemedText style={styles.label}>{i18n.t("notes")}</ThemedText>
         <TextInput
           style={[styles.textInput, styles.textArea] as StyleProp<TextStyle>}
-          placeholder=" أدخل الملاحظات"
+          placeholder={i18n.t("enter-notes") + "..."}
           placeholderTextColor="#999"
           value={service.item.itemNotes}
           onChangeText={service.setcustomerNotes}
@@ -82,7 +85,7 @@ export default function AddProduct({
           labelStyle={styles.saveButton}
           onPress={service.addItem}
         >
-          <ThemedText style={styles.saveText}>حفظ</ThemedText>
+          <ThemedText style={styles.saveText}>{i18n.t("save")}</ThemedText>
         </Button>
       </TouchableOpacity>
     </View>

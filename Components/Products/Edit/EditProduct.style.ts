@@ -36,6 +36,7 @@ const styles = StyleSheet.create({
   saveButton: {
     backgroundColor: Constants.colors.products,
     borderRadius: 10,
+    paddingVertical: 5,
   },
   saveText: {
     fontFamily: Constants.fontFamily.font400Regular,

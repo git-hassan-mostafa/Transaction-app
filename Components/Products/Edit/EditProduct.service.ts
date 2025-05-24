@@ -8,6 +8,7 @@ import IItem from "@/Global/ViewModels/Items/IItem";
 import IEditProductProps from "@/Global/ViewModels/Items/IItemFormProps";
 import { IValidationErrorType } from "@/Global/Types/IValidationErrorType";
 import useGlobalContext from "@/Global/Context/ContextProvider";
+import i18n from "@/Global/I18n/I18n";
 
 export default function useEditProductService({
   id,
@@ -82,42 +83,42 @@ export default function useEditProductService({
   }
 
   async function updateItem() {
-    if (!validateItem()) return;
+    if (!validateProduct()) return;
     const updatedItem: Item = mapper.mapToItem(item);
     const result = await itemManager.updateItem(updatedItem);
     if (!result?.changes)
       return toggleSnackBar({
         visible: true,
-        text: "Error adding item",
+        text: i18n.t("error-updating-product"),
         type: "error",
       });
     updateFromProductsList(item);
     toggleSnackBar({
       visible: true,
-      text: "Item updated successfully",
+      text: i18n.t("product-updated-successfully"),
       type: "success",
     });
   }
 
-  function validateItem() {
+  function validateProduct() {
     if (!item.itemName) {
       setValidation({
         visible: true,
-        text: "please enter item name",
+        text: i18n.t("please-enter-product-name"),
       });
       return false;
     }
     if (!item.itemPrice) {
       setValidation({
         visible: true,
-        text: "please enter item price",
+        text: i18n.t("please-enter-product-price"),
       });
       return false;
     }
-    if (!item.itemQuantity) {
+    if (!item.itemQuantity || Number(item.itemQuantity) < 1) {
       setValidation({
         visible: true,
-        text: "please enter item Quantity",
+        text: i18n.t("please-enter-product-quantity"),
       });
       return false;
     }

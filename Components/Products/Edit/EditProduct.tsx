@@ -1,5 +1,11 @@
 import React from "react";
-import { View, TextInput, StyleProp, TextStyle } from "react-native";
+import {
+  View,
+  TextInput,
+  StyleProp,
+  TextStyle,
+  TouchableOpacity,
+} from "react-native";
 import { ThemedText } from "../../Reusables/HelperComponents/ThemedText";
 import useEditProductService from "./EditProduct.service";
 import styles from "./EditProduct.style";
@@ -8,6 +14,7 @@ import IEditProductProps from "@/Global/ViewModels/Items/IItemFormProps";
 import ValidationMessage from "@/Components/Reusables/HelperComponents/ValidationMessage";
 import { Button } from "react-native-paper";
 import Constants from "@/Global/Constants/Constants";
+import i18n from "@/Global/I18n/I18n";
 
 export function EditProduct({ id, updateFromProductsList }: IEditProductProps) {
   const service = useEditProductService({
@@ -24,22 +31,12 @@ export function EditProduct({ id, updateFromProductsList }: IEditProductProps) {
           justifyContent: "flex-end",
           marginBottom: 20,
         }}
-      >
-        <Button
-          buttonColor={Constants.colors.products}
-          textColor={Constants.colors.lightGray}
-          labelStyle={styles.saveButton}
-          style={{ width: 100 }}
-          onPress={service.updateItem}
-        >
-          <ThemedText style={styles.saveText}>حفظ</ThemedText>
-        </Button>
-      </View>
+      ></View>
       <View style={styles.row}>
-        <ThemedText style={styles.label}>اسم المنتج</ThemedText>
+        <ThemedText style={styles.label}>{i18n.t("product-name")}</ThemedText>
         <TextInput
           style={styles.textInput as StyleProp<TextStyle>}
-          placeholder="أدخل الإسم"
+          placeholder={i18n.t("please-enter-product-name") + "..."}
           placeholderTextColor="#999"
           value={service.item.itemName}
           onChangeText={service.setItemName}
@@ -47,10 +44,10 @@ export function EditProduct({ id, updateFromProductsList }: IEditProductProps) {
       </View>
 
       <View style={styles.row}>
-        <ThemedText style={styles.label}>السعر</ThemedText>
+        <ThemedText style={styles.label}>{i18n.t("product-price")}</ThemedText>
         <TextInput
           style={styles.input as StyleProp<TextStyle>}
-          placeholder="أدخل السعر"
+          placeholder={"00.00"}
           placeholderTextColor="#999"
           value={service.item.itemPrice?.toString()}
           keyboardType="decimal-pad"
@@ -58,10 +55,12 @@ export function EditProduct({ id, updateFromProductsList }: IEditProductProps) {
         />
       </View>
       <View style={styles.row}>
-        <ThemedText style={styles.label}>الكمية</ThemedText>
+        <ThemedText style={styles.label}>
+          {i18n.t("product-quantity")}
+        </ThemedText>
         <TextInput
           style={styles.input as StyleProp<TextStyle>}
-          placeholder="أدخل الكمية"
+          placeholder={"0"}
           placeholderTextColor="#999"
           value={service.item.itemQuantity?.toString()}
           keyboardType="numeric"
@@ -69,7 +68,7 @@ export function EditProduct({ id, updateFromProductsList }: IEditProductProps) {
         />
       </View>
       <View style={styles.row}>
-        <ThemedText style={styles.label}>التاجر</ThemedText>
+        <ThemedText style={styles.label}>{i18n.t("provider")}</ThemedText>
         <CustomDropDown
           value={service.item.item_ProviderId}
           setValue={(value) => service.setProvider(value as number)}
@@ -77,10 +76,10 @@ export function EditProduct({ id, updateFromProductsList }: IEditProductProps) {
         />
       </View>
       <View style={styles.row}>
-        <ThemedText style={styles.label}>الملاحظات</ThemedText>
+        <ThemedText style={styles.label}>{i18n.t("notes")}</ThemedText>
         <TextInput
           style={[styles.textInput, styles.textArea] as StyleProp<TextStyle>}
-          placeholder="أدخل الملاحظات"
+          placeholder={i18n.t("enter-notes") + "..."}
           placeholderTextColor="#999"
           value={service.item.itemNotes}
           onChangeText={service.setItemNotes}
@@ -89,6 +88,17 @@ export function EditProduct({ id, updateFromProductsList }: IEditProductProps) {
       <View style={styles.row}>
         <ValidationMessage validation={service.validation} />
       </View>
+      <TouchableOpacity>
+        <Button
+          buttonColor={Constants.colors.products}
+          textColor={Constants.colors.lightGray}
+          labelStyle={styles.saveButton}
+          // style={{ width: 100 }}
+          onPress={service.updateItem}
+        >
+          <ThemedText style={styles.saveText}>{i18n.t("save")}</ThemedText>
+        </Button>
+      </TouchableOpacity>
     </View>
   );
 }

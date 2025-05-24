@@ -8,6 +8,7 @@ import IAddProductProps from "@/Global/ViewModels/Items/IAddItemProps";
 import IItem from "@/Global/ViewModels/Items/IItem";
 import { IValidationErrorType } from "@/Global/Types/IValidationErrorType";
 import Mapper from "@/Global/Helpers/MapService";
+import i18n from "@/Global/I18n/I18n";
 
 export default function useAddProductService({
   toggleModal,
@@ -19,7 +20,8 @@ export default function useAddProductService({
   const map = new Mapper();
 
   //states
-  const item: IItem = {} as IItem;
+  const [itemState, setItemState] = useState<IItem>({} as IItem);
+  var item: IItem = itemState;
   const [providers, setProviders] = useState<IDropDownItem[]>([]);
   const [validation, setValidation] = useState<IValidationErrorType>({
     visible: false,
@@ -44,7 +46,7 @@ export default function useAddProductService({
   }
 
   function setItemName(value: string) {
-    item.itemName = value;
+    item = { ...item, itemName: value };
   }
 
   function setItemQuantity(value: string) {
@@ -64,33 +66,14 @@ export default function useAddProductService({
   }
 
   async function addItem() {
-    if (!item.itemName) {
-      setValidation({
-        visible: true,
-        text: "please enter item name",
-      });
-      return;
-    }
-    if (!item.itemPrice) {
-      setValidation({
-        visible: true,
-        text: "please enter item price",
-      });
-      return;
-    }
-    if (!item.itemQuantity) {
-      setValidation({
-        visible: true,
-        text: "please enter item Quantity",
-      });
-      return;
-    }
+    setItemState(item);
+    if (!validateProduct()) return;
     const newItem: Item = map.mapToItem(item);
     const result = await itemManager.addItem(newItem);
     if (!result || !result.lastInsertRowId)
       return toggleSnackBar({
         visible: true,
-        text: "Error adding item",
+        text: i18n.t("error-adding-product"),
         type: "error",
       });
     item.itemId = result?.lastInsertRowId;
@@ -98,9 +81,34 @@ export default function useAddProductService({
     toggleModal();
     toggleSnackBar({
       visible: true,
-      text: "Item added successfully",
+      text: i18n.t("product-added-successfully"),
       type: "success",
     });
+  }
+
+  function validateProduct() {
+    if (!item.itemName) {
+      setValidation({
+        visible: true,
+        text: i18n.t("please-enter-product-name"),
+      });
+      return false;
+    }
+    if (!item.itemPrice) {
+      setValidation({
+        visible: true,
+        text: i18n.t("please-enter-product-price"),
+      });
+      return false;
+    }
+    if (!item.itemQuantity) {
+      setValidation({
+        visible: true,
+        text: i18n.t("please-enter-product-quantity"),
+      });
+      return false;
+    }
+    return true;
   }
 
   return {

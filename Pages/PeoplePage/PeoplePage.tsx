@@ -12,6 +12,7 @@ import AddPeople from "@/Components/People/Add/AddPeople";
 import IPerson from "@/Global/ViewModels/People/IPerson";
 import pageStyle from "@/Global/Styles/pages.global.style";
 import pages from "@/Global/Constants/Pages";
+import i18n from "@/Global/I18n/I18n";
 
 export default function PeoplePage() {
   const {
@@ -61,7 +62,7 @@ export default function PeoplePage() {
         contentContainerStyle={{ paddingBottom: 120 }}
       />
       <CustomModal
-        title="اضافة شخص"
+        title={i18n.t("add-person")}
         isVisible={modalVisible}
         onClose={toggleModal}
       >

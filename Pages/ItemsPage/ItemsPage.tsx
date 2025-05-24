@@ -11,6 +11,7 @@ import AddProduct from "@/Components/Products/Add/AddProduct";
 import { FAB } from "react-native-paper";
 import IItem from "@/Global/ViewModels/Items/IItem";
 import pageStyle from "@/Global/Styles/pages.global.style";
+import i18n from "@/Global/I18n/I18n";
 
 export default function ItemsPage() {
   const service = useItemsPageService();
@@ -51,7 +52,7 @@ export default function ItemsPage() {
         contentContainerStyle={{ paddingBottom: 120 }}
       />
       <CustomModal
-        title="اضافة منتج"
+        title={i18n.t("add-product")}
         isVisible={service.modalVisible}
         onClose={service.toggleModal}
       >

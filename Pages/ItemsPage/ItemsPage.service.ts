@@ -1,5 +1,6 @@
 import useGlobalContext from "@/Global/Context/ContextProvider";
 import Mapper from "@/Global/Helpers/MapService";
+import i18n from "@/Global/I18n/I18n";
 import ItemManager from "@/Global/Services/items.service";
 import IItem from "@/Global/ViewModels/Items/IItem";
 import { useEffect, useState } from "react";
@@ -43,13 +44,17 @@ export default function useItemsPageService() {
   }
 
   async function handleDeleteItem(id: number) {
-    Alert.alert("Delete Item", "Are you sure you want to delete this item?", [
-      {
-        text: "Cancel",
-        style: "cancel",
-      },
-      { text: "Confirm", onPress: () => deleteItem(id) },
-    ]);
+    Alert.alert(
+      i18n.t("delete-product"),
+      i18n.t("are-you-sure-you-want-to-delete-this-product"),
+      [
+        {
+          text: i18n.t("cancel"),
+          style: "cancel",
+        },
+        { text: i18n.t("confirm"), onPress: () => deleteItem(id) },
+      ]
+    );
   }
 
   async function deleteItem(id: number) {
@@ -57,13 +62,13 @@ export default function useItemsPageService() {
     if ((result?.changes || 0) > 0) {
       deleteFromItemsList(id);
       toggleSnackBar({
-        text: "Item deleted successfully",
+        text: i18n.t("product-deleted-successfully"),
         type: "success",
         visible: true,
       });
     } else
       toggleSnackBar({
-        text: "Error deleting inner debt",
+        text: i18n.t("error-deleting-product"),
         type: "error",
         visible: true,
       });
