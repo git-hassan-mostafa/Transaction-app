@@ -1,4 +1,4 @@
-import PeoplePage from "@/Pages/PeoplePage/PeoplePage";
+import PeoplePage from "@/Pages/People/People";
 
 export default function People() {
   return <PeoplePage />;

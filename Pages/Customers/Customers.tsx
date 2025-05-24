@@ -1,6 +1,6 @@
 import { View, FlatList } from "react-native";
-import useCustomersPageService from "./CustomersPage.service";
-import styles from "./CustomersPage.style";
+import useCustomersService from "./Customers.service";
+import styles from "./Customers.style";
 import AccordionComponent from "@/Components/Reusables/AccordionComponent/AccordionComponent";
 import { EditCustomer } from "@/Components/Customer/Edit/EditCustomer";
 import Constants from "@/Global/Constants/Constants";
@@ -12,21 +12,14 @@ import ICustomer from "@/Global/ViewModels/Customers/ICustomer";
 import pageStyle from "@/Global/Styles/pages.global.style";
 import i18n from "@/Global/I18n/I18n";
 
-export default function CustomersPage() {
-  const {
-    customers,
-    modalVisible,
-    toggleModal,
-    addToCustomersList,
-    updateFromCustomersList,
-    handleDeleteCustomer,
-  } = useCustomersPageService();
+export default function Customers() {
+  const service = useCustomersService();
 
   return (
     <React.Fragment>
       <FlatList
         style={pageStyle.flatList}
-        data={customers}
+        data={service.customers}
         numColumns={1}
         keyExtractor={(item) => item.customerId?.toString() as string}
         renderItem={({ item }: { item: ICustomer }) => (
@@ -36,11 +29,11 @@ export default function CustomersPage() {
             iconColor={Constants.colors.lightGray}
             headerText={item.customerName as string}
             id={item.customerId as number}
-            handleDelete={handleDeleteCustomer}
+            handleDelete={service.handleDeleteCustomer}
           >
             <EditCustomer
               id={item.customerId as number}
-              updateFromCustomersList={updateFromCustomersList}
+              updateFromCustomersList={service.updateFromCustomersList}
             />
           </AccordionComponent>
         )}
@@ -49,16 +42,16 @@ export default function CustomersPage() {
       />
       <CustomModal
         title={i18n.t("add-customer")}
-        isVisible={modalVisible}
-        onClose={toggleModal}
+        isVisible={service.modalVisible}
+        onClose={service.toggleModal}
       >
         <AddCustomer
-          addToCustomersList={addToCustomersList}
-          toggleModal={toggleModal}
+          addToCustomersList={service.addToCustomersList}
+          toggleModal={service.toggleModal}
         />
       </CustomModal>
       <FAB
-        onPress={toggleModal}
+        onPress={service.toggleModal}
         color={Constants.colors.lightGray}
         style={[pageStyle.fab, styles.fab]}
         icon="plus"

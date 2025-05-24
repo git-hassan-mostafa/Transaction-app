@@ -1,5 +1,5 @@
-import InnerDebtsPage from "@/Pages/InnerDebtsPage/InnerDebtsPage";
+import InternalDebtsPage from "@/Pages/InternalDebts/InternalDebts";
 
 export default function InnerDebts() {
-  return <InnerDebtsPage />;
+  return <InternalDebtsPage />;
 }

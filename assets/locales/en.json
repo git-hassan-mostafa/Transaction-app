@@ -112,5 +112,8 @@
   "delete-person":"Delete person",
   "are-you-sure-you-want-to-delete-this-person":"Are you sure you want to delete this person?",
   "person-deleted-successfully":"Person deleted successfully",
-  "error-deleting-person":"Error deleting person"
+  "error-deleting-person":"Error deleting person",
+
+  "// Settings":"",
+  "settings":"Settings"
 }

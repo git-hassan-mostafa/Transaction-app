@@ -1,4 +1,4 @@
-import ResultsPage from "@/Pages/ResultsPage/ResultsPage";
+import ResultsPage from "@/Pages/Results/Results";
 
 export default function Results() {
   return <ResultsPage />;

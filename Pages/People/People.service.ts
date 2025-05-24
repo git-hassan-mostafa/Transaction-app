@@ -1,12 +1,13 @@
 import useGlobalContext from "@/Global/Context/ContextProvider";
 import Mapper from "@/Global/Helpers/MapService";
+import SortList from "@/Global/Helpers/SortList";
 import i18n from "@/Global/I18n/I18n";
 import { PeopleManager } from "@/Global/Services/people.service";
 import IPerson from "@/Global/ViewModels/People/IPerson";
 import { useEffect, useState } from "react";
 import { Alert } from "react-native";
 
-export default function usePeoplePageService() {
+export default function usePeopleService() {
   //services
   const peopleManager = new PeopleManager();
   const mapper = new Mapper();
@@ -18,6 +19,8 @@ export default function usePeoplePageService() {
   // context
   const { toggleSnackBar } = useGlobalContext();
 
+  //constructor
+  sortPeople();
   useEffect(() => {
     getAllPeople();
   }, []);
@@ -77,6 +80,10 @@ export default function usePeoplePageService() {
         visible: true,
         type: "error",
       });
+  }
+
+  function sortPeople() {
+    SortList(people, (e) => e.personName);
   }
   return {
     people,

@@ -1,6 +1,6 @@
 import { FlatList, View } from "react-native";
-import useProvidersPageService from "./ProvidersPage.service";
-import styles from "./ProvidersPage.style";
+import useProvidersService from "./Providers.service";
+import styles from "./Providers.style";
 import React from "react";
 import AccordionComponent from "@/Components/Reusables/AccordionComponent/AccordionComponent";
 import Constants from "@/Global/Constants/Constants";
@@ -12,33 +12,14 @@ import IProvider from "@/Global/ViewModels/Providers/IProvider";
 import pageStyle from "@/Global/Styles/pages.global.style";
 import i18n from "@/Global/I18n/I18n";
 
-export default function ProvidersPage() {
-  const {
-    providers,
-    modalVisible,
-    toggleModal,
-    addToProvidersList,
-    deleteFromProvidersList,
-    updateFromProvidersList,
-    handleDeleteProvider,
-  } = useProvidersPageService();
-
-  providers.sort((a, b) => {
-    if (a.providerName && b.providerName) {
-      return a.providerName
-        .toString()
-        .localeCompare(b.providerName.toString(), undefined, {
-          sensitivity: "base",
-        });
-    }
-    return 0;
-  });
+export default function Providers() {
+  const service = useProvidersService();
 
   return (
     <React.Fragment>
       <FlatList
         style={pageStyle.flatList}
-        data={providers}
+        data={service.providers}
         numColumns={1}
         keyExtractor={(item) => item.providerId?.toString() as string}
         renderItem={({ item }: { item: IProvider }) => (
@@ -48,12 +29,12 @@ export default function ProvidersPage() {
             iconColor={Constants.colors.lightGray}
             headerText={item.providerName as string}
             id={item.providerId as number}
-            handleDelete={handleDeleteProvider}
+            handleDelete={service.handleDeleteProvider}
           >
             <EditProvider
               id={item.providerId as number}
-              deleteFromProvidersList={deleteFromProvidersList}
-              updateFromProvidersList={updateFromProvidersList}
+              deleteFromProvidersList={service.deleteFromProvidersList}
+              updateFromProvidersList={service.updateFromProvidersList}
             />
           </AccordionComponent>
         )}
@@ -62,16 +43,16 @@ export default function ProvidersPage() {
       />
       <CustomModal
         title={i18n.t("add-provider")}
-        isVisible={modalVisible}
-        onClose={toggleModal}
+        isVisible={service.modalVisible}
+        onClose={service.toggleModal}
       >
         <AddProvider
-          addToProvidersList={addToProvidersList}
-          toggleModal={toggleModal}
+          addToProvidersList={service.addToProvidersList}
+          toggleModal={service.toggleModal}
         />
       </CustomModal>
       <FAB
-        onPress={toggleModal}
+        onPress={service.toggleModal}
         color={Constants.colors.lightGray}
         style={[styles.fab, pageStyle.fab]}
         icon="plus"

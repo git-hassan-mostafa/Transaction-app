@@ -10,12 +10,8 @@ if (args.length !== 1) {
 }
 
 const fullPath = args[0];
-var prefixToAdd = "Page";
-if (fullPath.toLowerCase().includes("components/")) {
-  prefixToAdd = "Component";
-}
-const componentName = path.basename(fullPath) + prefixToAdd;
-const targetDir = path.join(process.cwd(), fullPath + prefixToAdd);
+const componentName = path.basename(fullPath);
+const targetDir = path.join(process.cwd(), fullPath);
 
 const files = [
   {
@@ -25,7 +21,7 @@ import use${componentName}Service from "./${componentName}.service";
 import styles from "./${componentName}.style";
 
 export default function ${componentName}() {
-  const ${componentName}Service = use${componentName}Service();
+  const service = use${componentName}Service();
   return (
     <View></View>
   );
@@ -47,13 +43,29 @@ export default styles;`,
   },
 ];
 
+if (fullPath.toLowerCase().includes("pages")) {
+  files.push({
+    name: `${componentName.toLowerCase()}.tsx`,
+    content: `import ${componentName}Page from "@/Pages/${componentName}/${componentName}";
+
+export default function ${componentName}() {
+  return <${componentName}Page />;
+}
+    `,
+    targetDir: "/app",
+  });
+}
+
 try {
   // Create the folder
   fs.mkdirSync(targetDir, { recursive: true });
 
   // Create each file with its respective content
   files.forEach((file) => {
-    const filePath = path.join(targetDir, file.name);
+    const filePath = path.join(
+      file.targetDir ? path.join(process.cwd(), file.targetDir) : targetDir,
+      file.name
+    );
     if (!fs.existsSync(filePath)) {
       fs.writeFileSync(filePath, file.content);
     }

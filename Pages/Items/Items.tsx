@@ -1,6 +1,6 @@
 import { FlatList, View } from "react-native";
-import useItemsPageService from "./ItemsPage.service";
-import styles from "./ItemsPage.style";
+import useItemsService from "./Items.service";
+import styles from "./Items.style";
 import React from "react";
 import Item from "@/Global/Models/Item";
 import AccordionComponent from "@/Components/Reusables/AccordionComponent/AccordionComponent";
@@ -13,19 +13,9 @@ import IItem from "@/Global/ViewModels/Items/IItem";
 import pageStyle from "@/Global/Styles/pages.global.style";
 import i18n from "@/Global/I18n/I18n";
 
-export default function ItemsPage() {
-  const service = useItemsPageService();
+export default function Items() {
+  const service = useItemsService();
 
-  service.items?.sort((a, b) => {
-    if (a.itemName && b.itemName) {
-      return a.itemName
-        .toString()
-        .localeCompare(b.itemName.toString(), undefined, {
-          sensitivity: "base",
-        });
-    }
-    return 0;
-  });
   return (
     <React.Fragment>
       <FlatList

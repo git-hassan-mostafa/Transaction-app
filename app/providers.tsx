@@ -1,4 +1,4 @@
-import ProviderPage from "@/Pages/ProvidersPage/ProvidersPage";
+import ProviderPage from "@/Pages/Providers/Providers";
 
 export default function Providers() {
   return <ProviderPage />;

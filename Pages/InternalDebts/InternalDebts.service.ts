@@ -5,8 +5,9 @@ import { ICustomer_IInnerDebt } from "@/Global/ViewModels/RelationModels/ICustom
 import { useEffect, useState } from "react";
 import { Alert } from "react-native";
 import i18n from "@/Global/I18n/I18n";
+import SortList from "@/Global/Helpers/SortList";
 
-export default function useInnerDebtsPageService() {
+export default function useInnerDebtsService() {
   //services
   const innerDebtsManager = new InnerDebtsManager();
   const mapper = new Mapper();
@@ -17,6 +18,10 @@ export default function useInnerDebtsPageService() {
 
   // context
   const { toggleSnackBar } = useGlobalContext();
+
+  //constructor
+  sortInternalDebts();
+
   useEffect(() => {
     getAllInnerDebts();
   }, []);
@@ -81,6 +86,10 @@ export default function useInnerDebtsPageService() {
 
   function toggleModal() {
     setModalVisible((prev) => !prev);
+  }
+
+  function sortInternalDebts() {
+    SortList(innerDebts, (e) => e.innerDebtDate);
   }
 
   return {

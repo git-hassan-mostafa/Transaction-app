@@ -1,8 +1,7 @@
 import { FlatList, View } from "react-native";
-import usePeoplePageService from "./PeoplePage.service";
-import styles from "./PeoplePage.style";
+import usePeopleService from "./People.service";
+import styles from "./People.style";
 import React from "react";
-import Person from "@/Global/Models/Person";
 import AccordionComponent from "@/Components/Reusables/AccordionComponent/AccordionComponent";
 import Constants from "@/Global/Constants/Constants";
 import { FAB } from "react-native-paper";
@@ -11,35 +10,16 @@ import CustomModal from "@/Components/Reusables/CustomModalComponent/CustomModal
 import AddPeople from "@/Components/People/Add/AddPeople";
 import IPerson from "@/Global/ViewModels/People/IPerson";
 import pageStyle from "@/Global/Styles/pages.global.style";
-import pages from "@/Global/Constants/Pages";
 import i18n from "@/Global/I18n/I18n";
 
-export default function PeoplePage() {
-  const {
-    people,
-    modalVisible,
-    toggleModal,
-    addToPeopleList,
-    updateFromPeopleList,
-    handleDeletePerson,
-  } = usePeoplePageService();
-
-  people?.sort((a, b) => {
-    if (a.personName && b.personName) {
-      return a.personName
-        .toString()
-        .localeCompare(b.personName.toString(), undefined, {
-          sensitivity: "base",
-        });
-    }
-    return 0;
-  });
+export default function People() {
+  const service = usePeopleService();
 
   return (
     <React.Fragment>
       <FlatList
         style={pageStyle.flatList}
-        data={people}
+        data={service.people}
         numColumns={1}
         keyExtractor={(item) => item.id?.toString() as string}
         renderItem={({ item }: { item: IPerson }) => (
@@ -48,12 +28,12 @@ export default function PeoplePage() {
             headerColor={Constants.colors.people}
             iconColor={Constants.colors.lightGray}
             headerText={item.personName as string}
-            handleDelete={handleDeletePerson}
+            handleDelete={service.handleDeletePerson}
             id={item.id as number}
           >
             <View></View>
             <EditPeople
-              updateFromPeopleList={updateFromPeopleList}
+              updateFromPeopleList={service.updateFromPeopleList}
               id={item.id as number}
             />
           </AccordionComponent>
@@ -63,16 +43,16 @@ export default function PeoplePage() {
       />
       <CustomModal
         title={i18n.t("add-person")}
-        isVisible={modalVisible}
-        onClose={toggleModal}
+        isVisible={service.modalVisible}
+        onClose={service.toggleModal}
       >
         <AddPeople
-          addToPeopleList={addToPeopleList}
-          toggleModal={toggleModal}
+          addToPeopleList={service.addToPeopleList}
+          toggleModal={service.toggleModal}
         />
       </CustomModal>
       <FAB
-        onPress={toggleModal}
+        onPress={service.toggleModal}
         color={Constants.colors.lightGray}
         style={[styles.fab, pageStyle.fab]}
         icon="plus"

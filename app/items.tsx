@@ -1,4 +1,4 @@
-import ItemsPage from "@/Pages/ItemsPage/ItemsPage";
+import ItemsPage from "@/Pages/Items/Items";
 
 export default function Items() {
   return <ItemsPage />;

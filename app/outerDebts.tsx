@@ -1,4 +1,4 @@
-import OuterDebtsPage from "@/Pages/OuterDebtsPage/OuterDebtsPage";
+import OuterDebtsPage from "@/Pages/OuterDebts/OuterDebts";
 
 export default function OuterDebts() {
   return <OuterDebtsPage />;

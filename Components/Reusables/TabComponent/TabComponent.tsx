@@ -1,11 +1,5 @@
 import React from "react";
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  ScrollView,
-  Dimensions,
-} from "react-native";
+import { View, Text, TouchableOpacity, ScrollView } from "react-native";
 import useTabComponentService from "./TabComponent.service";
 import styles from "./TabComponent.style";
 import { ThemedText } from "@/Components/Reusables/HelperComponents/ThemedText";
@@ -17,7 +11,7 @@ export default function TabComponent({
   titles: string[];
   children: React.ReactNode[];
 }) {
-  const { activeTab, setActiveTab } = useTabComponentService();
+  const service = useTabComponentService();
 
   return (
     <View>
@@ -29,8 +23,11 @@ export default function TabComponent({
         {titles.map((title, index) => (
           <TouchableOpacity
             key={index}
-            style={[styles.tab, activeTab === index && styles.activeTab]}
-            onPress={() => setActiveTab(index)}
+            style={[
+              styles.tab,
+              service.activeTab === index && styles.activeTab,
+            ]}
+            onPress={() => service.setActiveTab(index)}
           >
             <ThemedText type="default" style={styles.tabText}>
               {title}
@@ -38,7 +35,7 @@ export default function TabComponent({
           </TouchableOpacity>
         ))}
       </ScrollView>
-      <View style={styles.contentContainer}>{children[activeTab]}</View>
+      <View style={styles.contentContainer}>{children[service.activeTab]}</View>
     </View>
   );
 }

@@ -113,5 +113,8 @@
   "delete-person":"حذف الشخص",
   "are-you-sure-you-want-to-delete-this-person":"هل أنت متأكد من حذف هذا الشخص",
   "person-deleted-successfully":"تم حذف الشخص بنجاح",
-  "error-deleting-person":"خطأ في حذف الشخص"
+  "error-deleting-person":"خطأ في حذف الشخص",
+
+  "// Settings":"",
+  "settings":"الخيارات"
 }

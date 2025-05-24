@@ -1,12 +1,13 @@
 import useGlobalContext from "@/Global/Context/ContextProvider";
 import Mapper from "@/Global/Helpers/MapService";
+import SortList from "@/Global/Helpers/SortList";
 import i18n from "@/Global/I18n/I18n";
 import ProviderManager from "@/Global/Services/provider.service";
 import IProvider from "@/Global/ViewModels/Providers/IProvider";
 import { useEffect, useState } from "react";
 import { Alert } from "react-native";
 
-export default function useProvidersPageService() {
+export default function useProvidersService() {
   //services
   const providerManager = new ProviderManager();
   const mapper = new Mapper();
@@ -17,6 +18,9 @@ export default function useProvidersPageService() {
 
   // context
   const { toggleSnackBar } = useGlobalContext();
+
+  //constructor
+  sortProviders();
   useEffect(() => {
     getAllProviders();
   }, []);
@@ -78,6 +82,10 @@ export default function useProvidersPageService() {
 
   function toggleModal() {
     setModalVisible((prev) => !prev);
+  }
+
+  function sortProviders() {
+    SortList(providers, (e) => e.providerName);
   }
 
   return {

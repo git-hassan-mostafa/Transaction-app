@@ -1,11 +1,11 @@
 import { FlatList, useWindowDimensions, View } from "react-native";
-import styles from "./HomePage.style";
-import useHomeService from "./HomePage.service";
+import styles from "./Home.style";
+import useHomeService from "./Home.service";
 import CardComponent from "@/Components/Reusables/CardComponent/CardComponent";
 import FlatListHeader from "@/Components/FlatListHeader/FlatListHeader";
 import pages from "@/Global/Constants/Pages";
 
-export default function HomePage() {
+export default function Home() {
   const homeService = useHomeService();
 
   const { width } = useWindowDimensions();

@@ -51,6 +51,12 @@ const pages: CardType[] = [
     color: Constants.colors.results,
     icon: "chart-line",
   },
+  {
+    title: i18n.t("settings"),
+    route: "settings",
+    color: Constants.colors.settings,
+    icon: "sliders",
+  },
 ];
 
 export default pages;

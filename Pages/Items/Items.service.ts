@@ -1,12 +1,13 @@
 import useGlobalContext from "@/Global/Context/ContextProvider";
 import Mapper from "@/Global/Helpers/MapService";
+import SortList from "@/Global/Helpers/SortList";
 import i18n from "@/Global/I18n/I18n";
 import ItemManager from "@/Global/Services/items.service";
 import IItem from "@/Global/ViewModels/Items/IItem";
 import { useEffect, useState } from "react";
 import { Alert } from "react-native";
 
-export default function useItemsPageService() {
+export default function useItemsService() {
   //services
   const itemManager = new ItemManager();
   const mapper = new Mapper();
@@ -18,6 +19,8 @@ export default function useItemsPageService() {
   // context
   const { toggleSnackBar } = useGlobalContext();
 
+  //constructor
+  sortItems();
   useEffect(() => {
     getAllItems();
   }, []);
@@ -76,6 +79,10 @@ export default function useItemsPageService() {
 
   function toggleModal() {
     setModalVisible((prev) => !prev);
+  }
+
+  function sortItems() {
+    SortList(items, (e) => e.itemName);
   }
 
   return {

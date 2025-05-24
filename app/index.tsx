@@ -1,5 +1,5 @@
-import HomePage from "@/Pages/HomePage/HomePage";
+import Home from "@/Pages/Home/Home";
 
 export default function Index() {
-  return <HomePage />;
+  return <Home />;
 }

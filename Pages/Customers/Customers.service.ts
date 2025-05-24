@@ -1,12 +1,13 @@
 import useGlobalContext from "@/Global/Context/ContextProvider";
 import Mapper from "@/Global/Helpers/MapService";
+import sortList from "@/Global/Helpers/SortList";
 import i18n from "@/Global/I18n/I18n";
 import CustomerManager from "@/Global/Services/customers.service";
 import ICustomer from "@/Global/ViewModels/Customers/ICustomer";
 import { useEffect, useState } from "react";
 import { Alert } from "react-native";
 
-export default function useCustomersPageService() {
+export default function useCustomersService() {
   //services
   const customerManager = new CustomerManager();
   const mapper = new Mapper();
@@ -17,6 +18,9 @@ export default function useCustomersPageService() {
 
   //context
   const { toggleSnackBar } = useGlobalContext();
+
+  //constructor
+  sortCustomers();
   useEffect(() => {
     getAllCustomers();
   }, []);
@@ -82,20 +86,8 @@ export default function useCustomersPageService() {
   }
 
   function sortCustomers() {
-    customers?.sort((a, b) => {
-      if (a.customerName && b.customerName) {
-        return a.customerName
-          .toString()
-          .localeCompare(b.customerName.toString(), undefined, {
-            sensitivity: "base",
-          });
-      }
-      return 0;
-    });
+    sortList(customers, (e) => e.customerName);
   }
-
-  //constructor
-  sortCustomers();
 
   return {
     customers,

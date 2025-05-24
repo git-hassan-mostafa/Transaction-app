@@ -8,6 +8,7 @@ const Constants = {
     providers: "#FFA726",
     people: "#21b8b0",
     results: "#388E3C",
+    settings: "#1F2937",
 
     ///////////////////////
 

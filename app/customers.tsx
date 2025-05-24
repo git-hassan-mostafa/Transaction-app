@@ -1,4 +1,4 @@
-import CustomersPage from "@/Pages/CustomersPage/CustomersPage";
+import CustomersPage from "@/Pages/Customers/Customers";
 
 export default function Customers() {
   return <CustomersPage />;
