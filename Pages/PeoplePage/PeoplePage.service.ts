@@ -1,5 +1,6 @@
 import useGlobalContext from "@/Global/Context/ContextProvider";
 import Mapper from "@/Global/Helpers/MapService";
+import i18n from "@/Global/I18n/I18n";
 import { PeopleManager } from "@/Global/Services/people.service";
 import IPerson from "@/Global/ViewModels/People/IPerson";
 import { useEffect, useState } from "react";
@@ -9,6 +10,7 @@ export default function usePeoplePageService() {
   //services
   const peopleManager = new PeopleManager();
   const mapper = new Mapper();
+
   //states
   const [people, setPeople] = useState<IPerson[]>([]);
   const [modalVisible, setModalVisible] = useState(false);
@@ -48,14 +50,14 @@ export default function usePeoplePageService() {
 
   function handleDeletePerson(id: number) {
     Alert.alert(
-      "Delete Person",
-      "Are you sure you want to delete this person?",
+      i18n.t("delete-person"),
+      i18n.t("are-you-sure-you-want-to-delete-this-person"),
       [
         {
-          text: "Cancel",
+          text: i18n.t("cancel"),
           style: "cancel",
         },
-        { text: "Confirm", onPress: () => deletePerson(id) },
+        { text: i18n.t("Confirm"), onPress: () => deletePerson(id) },
       ]
     );
   }
@@ -65,21 +67,21 @@ export default function usePeoplePageService() {
     if ((result?.changes || 0) > 0) {
       deleteFromPeopleList(id);
       toggleSnackBar({
-        text: "Person deleted successfully",
+        text: i18n.t("person-deleted-successfully"),
         type: "success",
         visible: true,
       });
     } else
       toggleSnackBar({
-        text: "Error deleting person",
+        text: i18n.t("error-deleting-person"),
         visible: true,
         type: "error",
       });
   }
   return {
     people,
-    toggleModal,
     modalVisible,
+    toggleModal,
     addToPeopleList,
     deleteFromPeopleList,
     updateFromPeopleList,

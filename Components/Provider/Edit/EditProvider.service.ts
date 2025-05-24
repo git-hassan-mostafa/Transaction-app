@@ -5,7 +5,7 @@ import IProvider from "@/Global/ViewModels/Providers/IProvider";
 import ProviderManager from "@/Global/Services/provider.service";
 import Mapper from "@/Global/Helpers/MapService";
 
-export default function useProviderFormComponentService({
+export default function useEditProviderService({
   id,
   updateFromProvidersList,
 }: IProviderFormProps) {

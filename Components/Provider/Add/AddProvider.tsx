@@ -8,6 +8,7 @@ import { Button } from "react-native-paper";
 import { ThemedText } from "../../Reusables/HelperComponents/ThemedText";
 import IAddProviderProps from "@/Global/ViewModels/Providers/IAddProviderProps";
 import ValidationMessage from "@/Components/Reusables/HelperComponents/ValidationMessage";
+import i18n from "@/Global/I18n/I18n";
 
 export default function AddProvider({
   toggleModal,
@@ -21,10 +22,10 @@ export default function AddProvider({
   return (
     <View style={styles.container}>
       <View style={styles.row}>
-        <ThemedText style={styles.label}>الإسم</ThemedText>
+        <ThemedText style={styles.label}>{i18n.t("provider-name")}</ThemedText>
         <TextInput
           style={styles.textInput as StyleProp<TextStyle>}
-          placeholder="أدخل الإسم"
+          placeholder={i18n.t("please-enter-provider-name") + "..."}
           placeholderTextColor="#999"
           value={service.provider.providerName}
           onChangeText={service.setProviderName}
@@ -32,10 +33,10 @@ export default function AddProvider({
       </View>
 
       <View style={styles.row}>
-        <ThemedText style={styles.label}>رقم الهاتف</ThemedText>
+        <ThemedText style={styles.label}>{i18n.t("phone-number")}</ThemedText>
         <TextInput
           style={styles.input as StyleProp<TextStyle>}
-          placeholder="أدخل رقم الهاتف"
+          placeholder={i18n.t("enter-phone-number")}
           placeholderTextColor="#999"
           value={service.provider.providerPhoneNumber}
           keyboardType="phone-pad"
@@ -45,10 +46,10 @@ export default function AddProvider({
       </View>
 
       <View style={styles.row}>
-        <ThemedText style={styles.label}>الملاحظات</ThemedText>
+        <ThemedText style={styles.label}>{i18n.t("notes")}</ThemedText>
         <TextInput
           style={[styles.textInput, styles.textArea] as StyleProp<TextStyle>}
-          placeholder=" أدخل الملاحظات"
+          placeholder={i18n.t("enter-notes")}
           placeholderTextColor="#999"
           value={service.provider.providerNotes}
           onChangeText={service.setProviderNotes}
@@ -64,7 +65,7 @@ export default function AddProvider({
           labelStyle={styles.saveButton}
           onPress={service.addProvider}
         >
-          <ThemedText style={styles.saveText}>حفظ</ThemedText>
+          <ThemedText style={styles.saveText}>{i18n.t("save")}</ThemedText>
         </Button>
       </TouchableOpacity>
     </View>

@@ -5,6 +5,7 @@ import IAddProviderProps from "@/Global/ViewModels/Providers/IAddProviderProps";
 import IProvider from "@/Global/ViewModels/Providers/IProvider";
 import ProviderManager from "@/Global/Services/provider.service";
 import { IValidationErrorType } from "@/Global/Types/IValidationErrorType";
+import i18n from "@/Global/I18n/I18n";
 
 export default function useAddProviderService({
   toggleModal,
@@ -46,14 +47,14 @@ export default function useAddProviderService({
       if (!provider.providerName) {
         setValidation({
           visible: true,
-          text: "please enter the provider name",
+          text: i18n.t("please-enter-provider-name"),
         });
         return;
       }
       if (!provider.providerPhoneNumber) {
         setValidation({
           visible: true,
-          text: "please enter the provider phone number",
+          text: i18n.t("enter-phone-number"),
         });
         return;
       }
@@ -66,7 +67,7 @@ export default function useAddProviderService({
       if (!result || !result.lastInsertRowId)
         return toggleSnackBar({
           visible: true,
-          text: "Failed to add provider",
+          text: i18n.t("error-adding-provider"),
           type: "error",
         });
       provider.providerId = result?.lastInsertRowId;
@@ -74,7 +75,7 @@ export default function useAddProviderService({
       toggleModal();
       toggleSnackBar({
         visible: true,
-        text: "Provider added successfully",
+        text: i18n.t("provider-added-successfully"),
         type: "success",
       });
     } catch (error) {

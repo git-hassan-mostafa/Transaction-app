@@ -22,14 +22,15 @@
   "notes": "Notes",
   "enter-notes": "Enter Notes",
   "price": "Price",
+  "phone-number": "Phone Number",
+  "enter-phone-number": "Enter Phone Number",
 
 
   "// Customers Page": "",
   "add-customer": "Add Customer",
   "customer-name": "Customer Name",
   "enter-customer-name": "Enter Customer Name",
-  "phone-number": "Phone Number",
-  "enter-phone-number": "Enter Phone Number",
+
   "delete-customer": "Delete Customer",
   "are-you-sure-you-want-to-delete-this-customer?": "Are you sure you want to delete this customer?",
   "customer-deleted-successfully": "Customer deleted successfully",
@@ -63,6 +64,10 @@
   "error-adding-product": "Error adding product",
   "error-updating-product":"Error updating product",
   "product-updated-successfully":"Product upated successfully",
+  "are-you-sure-you-want-to-delete-this-product":"Are you sure you want to delete this product",
+  "delete-product":"Delete Product",
+  "product-deleted-successfully":"Product-deleted-successfully",
+  "error-deleting-product":"Error deleting product",
 
   "// Debts": "",
   "borrowed-list": "Borrowed List",
@@ -86,6 +91,15 @@
   "// Providers": "",
   "providers-debts": "Providers Debts",
   "provider": "Provider",
+  "provider-name":"Provider name",
+  "please-enter-provider-name":"Please enter provider name",
+  "error-adding-provider":"Error adding provider",
+  "provider-added-successfully":"Provider added successfully",
+  "add-provider":"Add Provider",
+  "delete-provider":"Delete provider",
+  "are-you-sure-you-want-to-delete-this-provider":"Are you sure you want to delete this provider",
+  "provider-deleted-successfully":"Provider deleted successfully",
+  "error-deleting-provider":"Error deleting provider",
 
   "// People": "",
   "add-person": "Add Person",
@@ -94,5 +108,9 @@
   "error-adding-person": "Error adding person",
   "person-added-successfully": "Person added successfully",
   "person-name": "Name",
-  "person-phone": "Phone"
+  "person-phone": "Phone",
+  "delete-person":"Delete person",
+  "are-you-sure-you-want-to-delete-this-person":"Are you sure you want to delete this person?",
+  "person-deleted-successfully":"Person deleted successfully",
+  "error-deleting-person":"Error deleting person"
 }

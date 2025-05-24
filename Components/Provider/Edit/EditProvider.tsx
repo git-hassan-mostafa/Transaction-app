@@ -1,10 +1,11 @@
-import styles from "./ProviderFormComponent.style";
+import styles from "./EditProvider.style";
 import React from "react";
 import { View, TextInput, StyleProp, TextStyle } from "react-native";
-import useProviderFormComponentService from "./ProviderFormComponent.service";
+import useEditProviderService from "./EditProvider.service";
 import { ThemedText } from "../../Reusables/HelperComponents/ThemedText";
 import { IProviderFormProps } from "@/Global/ViewModels/Providers/IProviderFormProps";
-export function ProviderFormComponent({
+import i18n from "@/Global/I18n/I18n";
+export function EditProvider({
   id,
   updateFromProvidersList,
   deleteFromProvidersList,
@@ -17,7 +18,7 @@ export function ProviderFormComponent({
     updateProviderPhonember,
     setProviderNotes,
     updateProviderNotes,
-  } = useProviderFormComponentService({
+  } = useEditProviderService({
     id,
     updateFromProvidersList,
     deleteFromProvidersList,
@@ -26,10 +27,10 @@ export function ProviderFormComponent({
   return (
     <View style={styles.container}>
       <View style={styles.row}>
-        <ThemedText style={styles.label}>الاسم</ThemedText>
+        <ThemedText style={styles.label}>{i18n.t("provider-name")}</ThemedText>
         <TextInput
           style={styles.textInput as StyleProp<TextStyle>}
-          placeholder="أدخل الاسم"
+          placeholder={i18n.t("please-enter-provider-name") + "..."}
           placeholderTextColor="#999"
           value={provider.providerName}
           onChangeText={setProviderName}
@@ -38,10 +39,10 @@ export function ProviderFormComponent({
       </View>
 
       <View style={styles.row}>
-        <ThemedText style={styles.label}>رقم الهاتف</ThemedText>
+        <ThemedText style={styles.label}>{i18n.t("phone-number")}</ThemedText>
         <TextInput
           style={styles.input as StyleProp<TextStyle>}
-          placeholder="أدخل رقم الهاتف"
+          placeholder={i18n.t("enter-phone-number")}
           placeholderTextColor="#999"
           value={provider.providerPhoneNumber}
           keyboardType="phone-pad"
@@ -51,10 +52,10 @@ export function ProviderFormComponent({
         />
       </View>
       <View style={styles.row}>
-        <ThemedText style={styles.label}>الملاحظات</ThemedText>
+        <ThemedText style={styles.label}>{i18n.t("notes")}</ThemedText>
         <TextInput
           style={[styles.textInput, styles.textArea] as StyleProp<TextStyle>}
-          placeholder="أدخل الملاحظات"
+          placeholder={i18n.t("enter-notes")}
           placeholderTextColor="#999"
           value={provider.providerNotes}
           onChangeText={setProviderNotes}

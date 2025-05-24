@@ -22,14 +22,14 @@
   "notes": "الملاحظات",
   "enter-notes": "أدخل الملاحظات",
   "price": "السعر",
+  "phone-number": "رقم الهاتف",
+  "enter-phone-number": "أدخل رقم الهاتف",
 
 
   "// Customers Page": "",
   "add-customer": "إضافة زبون",
   "customer-name": "اسم الزبون",
   "enter-customer-name": "أدخل اسم الزبون",
-  "phone-number": "رقم الهاتف",
-  "enter-phone-number": "أدخل رقم الهاتف",
   "delete-customer": "حذف الزبون",
   "are-you-sure-you-want-to-delete-this-customer?": "هل أنت متأكد أنك تريد حذف هذا الزبون؟",
   "customer-deleted-successfully": "تم حذف الزبون بنجاح",
@@ -62,8 +62,12 @@
   "please-enter-product-quantity": "يرجى إدخال كمية المنتج",
   "product-added-successfully": "تم إضافة المنتج بنجاح",
   "error-adding-product": "خطأ في إضافة المنتج",
-    "error-updating-product":"خطأ في تعديل المنتج",
+  "error-updating-product":"خطأ في تعديل المنتج",
   "product-updated-successfully":"تم تعديل المنتج بنجاح",
+  "are-you-sure-you-want-to-delete-this-product":"هل أنت متأكد من حذف هذا المنتج",
+  "delete-product":"حذف منتج",
+  "product-deleted-successfully":"تم حذف المنتج بنجاح",
+  "error-deleting-product":"خطأ في حذف المنتج",
 
   "// Debts": "",
   "borrowed-list": "قائمة الديون",
@@ -86,7 +90,16 @@
 
   "// Providers": "",
   "providers-debts": "ديون الموردين",
-    "provider": "المورد",
+  "provider": "المورد",
+  "provider-name":"اسم المورد",
+  "please-enter-provider-name":"يرجى ادخال اسم المورد",
+  "error-adding-provider":"خطأ في اضافة المورد",
+  "provider-added-successfully":"تم اضافة المورد بنجاح",
+  "add-provider":"اضافة مورد",
+  "delete-provider":"حذف المورد",
+  "are-you-sure-you-want-to-delete-this-provider":"هل أنت متأد من حذف هذا المورد",
+  "provider-deleted-successfully":"تم حذف المورد بنجاح",
+  "error-deleting-provider":"خطأ في حذف المورد",
 
 
   "// People": "",
@@ -96,5 +109,9 @@
   "error-adding-person": "خطأ في إضافة الشخص",
   "person-added-successfully": "تم إضافة الشخص بنجاح",
   "person-name": "الاسم",
-  "person-phone": "رقم الهاتف"
+  "person-phone": "رقم الهاتف",
+  "delete-person":"حذف الشخص",
+  "are-you-sure-you-want-to-delete-this-person":"هل أنت متأكد من حذف هذا الشخص",
+  "person-deleted-successfully":"تم حذف الشخص بنجاح",
+  "error-deleting-person":"خطأ في حذف الشخص"
 }

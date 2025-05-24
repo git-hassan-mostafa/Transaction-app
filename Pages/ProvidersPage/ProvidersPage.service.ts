@@ -1,5 +1,6 @@
 import useGlobalContext from "@/Global/Context/ContextProvider";
 import Mapper from "@/Global/Helpers/MapService";
+import i18n from "@/Global/I18n/I18n";
 import ProviderManager from "@/Global/Services/provider.service";
 import IProvider from "@/Global/ViewModels/Providers/IProvider";
 import { useEffect, useState } from "react";
@@ -47,14 +48,14 @@ export default function useProvidersPageService() {
 
   async function handleDeleteProvider(id: number) {
     Alert.alert(
-      "Delete Provider",
-      "Are you sure you want to delete this provider?",
+      i18n.t("delete-provider"),
+      i18n.t("are-you-sure-you-want-to-delete-this-provider"),
       [
         {
-          text: "Cancel",
+          text: i18n.t("Cancel"),
           style: "cancel",
         },
-        { text: "Confirm", onPress: () => deleteProvider(id) },
+        { text: i18n.t("Confirm"), onPress: () => deleteProvider(id) },
       ]
     );
   }
@@ -65,10 +66,14 @@ export default function useProvidersPageService() {
       deleteFromProvidersList(id);
       toggleSnackBar({
         visible: true,
-        text: "Provider deleted successfully",
+        text: i18n.t("provider-deleted-successfully"),
         type: "success",
       });
-    } else Alert.prompt("Error", "Failed to delete provider");
+    } else
+      toggleSnackBar({
+        visible: true,
+        text: i18n.t("error-deleting-provider"),
+      });
   }
 
   function toggleModal() {

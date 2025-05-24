@@ -7,9 +7,10 @@ import Constants from "@/Global/Constants/Constants";
 import AddProvider from "@/Components/Provider/Add/AddProvider";
 import CustomModal from "@/Components/Reusables/CustomModalComponent/CustomModalComponent";
 import { FAB } from "react-native-paper";
-import { ProviderFormComponent } from "@/Components/Provider/Edit/ProviderFormComponent";
+import { EditProvider } from "@/Components/Provider/Edit/EditProvider";
 import IProvider from "@/Global/ViewModels/Providers/IProvider";
 import pageStyle from "@/Global/Styles/pages.global.style";
+import i18n from "@/Global/I18n/I18n";
 
 export default function ProvidersPage() {
   const {
@@ -49,7 +50,7 @@ export default function ProvidersPage() {
             id={item.providerId as number}
             handleDelete={handleDeleteProvider}
           >
-            <ProviderFormComponent
+            <EditProvider
               id={item.providerId as number}
               deleteFromProvidersList={deleteFromProvidersList}
               updateFromProvidersList={updateFromProvidersList}
@@ -60,7 +61,7 @@ export default function ProvidersPage() {
         contentContainerStyle={{ paddingBottom: 120 }}
       />
       <CustomModal
-        title="اضافة تاجر"
+        title={i18n.t("add-provider")}
         isVisible={modalVisible}
         onClose={toggleModal}
       >
