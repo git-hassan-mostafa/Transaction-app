@@ -2,7 +2,7 @@ import React from "react";
 import { View, Text, TouchableOpacity, ScrollView } from "react-native";
 import useTabComponentService from "./TabComponent.service";
 import styles from "./TabComponent.style";
-import { ThemedText } from "@/Components/Reusables/HelperComponents/ThemedText";
+import { ThemedText } from "@/Global/Reusable Components/HelperComponents/ThemedText";
 
 export default function TabComponent({
   titles,

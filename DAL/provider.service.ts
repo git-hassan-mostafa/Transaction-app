@@ -1,5 +1,5 @@
 import AbstractManager from "./AbstractManager";
-import SqlBuilder from "../Helpers/SqlBuilder";
+import SqlBuilder from "../Global/Helpers/SqlBuilder";
 import InnerDebt from "../Models/InnerDebt";
 import { SQLiteRunResult } from "expo-sqlite";
 import Provider from "../Models/Provider";

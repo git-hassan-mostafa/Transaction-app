@@ -9,9 +9,9 @@ import useAddPeopleService from "./AddPeople.service";
 import styles from "./AddPeople.style";
 import Constants from "@/Global/Constants/Constants";
 import { Button } from "react-native-paper";
-import { ThemedText } from "@/Components/Reusables/HelperComponents/ThemedText";
-import IAddPeopleProps from "@/Global/ViewModels/People/IAddPersonProps";
-import ValidationMessage from "@/Components/Reusables/HelperComponents/ValidationMessage";
+import { ThemedText } from "@/Global/Reusable Components/HelperComponents/ThemedText";
+import IAddPeopleProps from "@/ViewModels/People/IAddPersonProps";
+import ValidationMessage from "@/Global/Reusable Components/HelperComponents/ValidationMessage";
 import i18n from "@/Global/I18n/I18n";
 
 export default function AddPeople({

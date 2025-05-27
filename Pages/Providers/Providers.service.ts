@@ -1,9 +1,9 @@
 import useGlobalContext from "@/Global/Context/ContextProvider";
-import ProviderManager from "@/Global/DAL/provider.service";
+import ProviderManager from "@/DAL/provider.service";
 import Mapper from "@/Global/Helpers/MapService";
 import SortList from "@/Global/Helpers/SortList";
 import i18n from "@/Global/I18n/I18n";
-import IProvider from "@/Global/ViewModels/Providers/IProvider";
+import IProvider from "@/ViewModels/Providers/IProvider";
 import { useEffect, useState } from "react";
 import { Alert } from "react-native";
 

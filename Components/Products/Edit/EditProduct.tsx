@@ -6,12 +6,12 @@ import {
   TextStyle,
   TouchableOpacity,
 } from "react-native";
-import { ThemedText } from "../../Reusables/HelperComponents/ThemedText";
+import { ThemedText } from "../../../Global/Reusable Components/HelperComponents/ThemedText";
 import useEditProductService from "./EditProduct.service";
 import styles from "./EditProduct.style";
-import CustomDropDown from "@/Components/Reusables/CustomDropDownComponent/CustomDropDownComponent";
-import IEditProductProps from "@/Global/ViewModels/Items/IItemFormProps";
-import ValidationMessage from "@/Components/Reusables/HelperComponents/ValidationMessage";
+import CustomDropDown from "@/Global/Reusable Components/CustomDropDownComponent/CustomDropDownComponent";
+import IEditProductProps from "@/ViewModels/Items/IItemFormProps";
+import ValidationMessage from "@/Global/Reusable Components/HelperComponents/ValidationMessage";
 import { Button } from "react-native-paper";
 import Constants from "@/Global/Constants/Constants";
 import i18n from "@/Global/I18n/I18n";

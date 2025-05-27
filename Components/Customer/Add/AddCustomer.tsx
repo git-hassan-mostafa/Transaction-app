@@ -5,9 +5,9 @@ import styles from "./AddCustomer.style";
 import Constants from "@/Global/Constants/Constants";
 import { TouchableOpacity } from "react-native";
 import { Button } from "react-native-paper";
-import { ThemedText } from "../../Reusables/HelperComponents/ThemedText";
-import IAddCustomerProps from "@/Global/ViewModels/Customers/IAddCustomerProps";
-import ValidationMessage from "@/Components/Reusables/HelperComponents/ValidationMessage";
+import { ThemedText } from "../../../Global/Reusable Components/HelperComponents/ThemedText";
+import IAddCustomerProps from "@/ViewModels/Customers/IAddCustomerProps";
+import ValidationMessage from "@/Global/Reusable Components/HelperComponents/ValidationMessage";
 import i18n from "@/Global/I18n/I18n";
 
 export default function AddCustomer(props: IAddCustomerProps) {

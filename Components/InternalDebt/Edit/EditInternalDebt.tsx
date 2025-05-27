@@ -1,12 +1,12 @@
 import React from "react";
 import { View, TextInput, StyleProp, TextStyle } from "react-native";
-import { ThemedText } from "../../Reusables/HelperComponents/ThemedText";
+import { ThemedText } from "../../../Global/Reusable Components/HelperComponents/ThemedText";
 import useEditInternalDebtService from "./EditInternalDebt.service";
 import styles from "./EditInternalDebt.style";
-import CustomDropDown from "@/Components/Reusables/CustomDropDownComponent/CustomDropDownComponent";
-import { IInnerDebtFormProps } from "@/Global/ViewModels/InnerDebts/IInerDebtsFormProps";
+import CustomDropDown from "@/Global/Reusable Components/CustomDropDownComponent/CustomDropDownComponent";
+import { IInnerDebtFormProps } from "@/ViewModels/InnerDebts/IInerDebtsFormProps";
 import InternalDebtProductsList from "./InternalDebtProductsList/InternalDebtProductsList";
-import TabComponent from "@/Components/Reusables/TabComponent/TabComponent";
+import TabComponent from "@/Global/Reusable Components/TabComponent/TabComponent";
 import useInnerDebtsItemsListFormComponentService from "./InternalDebtProductsList/InternalDebtProductsList.service";
 import i18n from "@/Global/I18n/I18n";
 import { dateOptionsWithDay } from "@/Global/Constants/DateOptions";

@@ -6,11 +6,11 @@ import Constants from "@/Global/Constants/Constants";
 import { FAB } from "react-native-paper";
 import React from "react";
 import AddCustomer from "@/Components/Customer/Add/AddCustomer";
-import CustomModal from "@/Components/Reusables/CustomModalComponent/CustomModalComponent";
-import ICustomer from "@/Global/ViewModels/Customers/ICustomer";
+import CustomModal from "@/Global/Reusable Components/CustomModalComponent/CustomModalComponent";
+import ICustomer from "@/ViewModels/Customers/ICustomer";
 import pageStyle from "@/Global/Styles/pages.global.style";
 import i18n from "@/Global/I18n/I18n";
-import ListItem from "@/Components/Reusables/ListItem/ListItem";
+import ListItem from "@/Global/Reusable Components/ListItem/ListItem";
 
 export default function Customers() {
   const service = useCustomersService();

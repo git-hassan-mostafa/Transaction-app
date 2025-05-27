@@ -2,14 +2,14 @@ import { FlatList, View } from "react-native";
 import useItemsService from "./Items.service";
 import styles from "./Items.style";
 import React from "react";
-import Item from "@/Global/Models/Item";
-import AccordionComponent from "@/Components/Reusables/AccordionComponent/AccordionComponent";
+import Item from "@/Models/Item";
+import AccordionComponent from "@/Global/Reusable Components/AccordionComponent/AccordionComponent";
 import Constants from "@/Global/Constants/Constants";
 import { EditProduct } from "@/Components/Products/Edit/EditProduct";
-import CustomModal from "@/Components/Reusables/CustomModalComponent/CustomModalComponent";
+import CustomModal from "@/Global/Reusable Components/CustomModalComponent/CustomModalComponent";
 import AddProduct from "@/Components/Products/Add/AddProduct";
 import { FAB } from "react-native-paper";
-import IItem from "@/Global/ViewModels/Items/IItem";
+import IItem from "@/ViewModels/Items/IItem";
 import pageStyle from "@/Global/Styles/pages.global.style";
 import i18n from "@/Global/I18n/I18n";
 

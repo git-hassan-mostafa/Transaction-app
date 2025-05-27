@@ -3,7 +3,7 @@ import { Stack } from "expo-router";
 import useLayoutPageService from "./LayoutPage.service";
 import Constants from "@/Global/Constants/Constants";
 import React from "react";
-import CustomSnackBarComponent from "@/Components/Reusables/CustomSnackBarComponent/CustomSnackBarComponent";
+import CustomSnackBarComponent from "@/Global/Reusable Components/CustomSnackBarComponent/CustomSnackBarComponent";
 import pages from "@/Global/Constants/Pages";
 
 export default function LayoutPage() {

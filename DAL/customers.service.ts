@@ -1,6 +1,6 @@
 import AbstractManager from "./AbstractManager";
 import Customer from "../Models/Customer";
-import SqlBuilder from "../Helpers/SqlBuilder";
+import SqlBuilder from "../Global/Helpers/SqlBuilder";
 import InnerDebt from "../Models/InnerDebt";
 import { SQLiteRunResult } from "expo-sqlite";
 import Customer_InnerDebt_InnerDebtItem_Item from "../Models/RelationModels/Customer_InnerDebt_InnerDebtItem_Item";

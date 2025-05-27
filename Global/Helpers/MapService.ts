@@ -1,21 +1,21 @@
-import Customer from "../Models/Customer";
-import InnerDebt from "../Models/InnerDebt";
-import InnerDebtItem from "../Models/InnerDebtItem";
-import Item from "../Models/Item";
-import Person from "../Models/Person";
-import Provider from "../Models/Provider";
-import { Customer_InnerDebt } from "../Models/RelationModels/Customer_InnerDebt";
-import Customer_InnerDebt_InnerDebtItem_Item from "../Models/RelationModels/Customer_InnerDebt_InnerDebtItem_Item";
-import InnerDebtItem_InnerDebt_Item from "../Models/RelationModels/InnerDebtItem_InnerDebt_Item";
-import ICustomer from "../ViewModels/Customers/ICustomer";
-import IInnerDebt from "../ViewModels/InnerDebts/IInerDebts";
-import IInnerDebtItem from "../ViewModels/InnerDebts/IInnerDebtItem";
-import IItem from "../ViewModels/Items/IItem";
-import IPerson from "../ViewModels/People/IPerson";
-import IProvider from "../ViewModels/Providers/IProvider";
-import { ICustomer_IInerDebt_IInnerDebtItem_IItem } from "../ViewModels/RelationModels/ICustomer_IInerDebt_IInnerDebtItem_IItem";
-import { ICustomer_IInnerDebt } from "../ViewModels/RelationModels/ICustomer_IInnerDebt";
-import IInnerDebtItem_IInnerDebt_IItem from "../ViewModels/RelationModels/IInnerDebtItem_IInnerDebt_IItem";
+import Customer from "../../Models/Customer";
+import InnerDebt from "../../Models/InnerDebt";
+import InnerDebtItem from "../../Models/InnerDebtItem";
+import Item from "../../Models/Item";
+import Person from "../../Models/Person";
+import Provider from "../../Models/Provider";
+import { Customer_InnerDebt } from "../../Models/RelationModels/Customer_InnerDebt";
+import Customer_InnerDebt_InnerDebtItem_Item from "../../Models/RelationModels/Customer_InnerDebt_InnerDebtItem_Item";
+import InnerDebtItem_InnerDebt_Item from "../../Models/RelationModels/InnerDebtItem_InnerDebt_Item";
+import ICustomer from "../../ViewModels/Customers/ICustomer";
+import IInnerDebt from "../../ViewModels/InnerDebts/IInerDebts";
+import IInnerDebtItem from "../../ViewModels/InnerDebts/IInnerDebtItem";
+import IItem from "../../ViewModels/Items/IItem";
+import IPerson from "../../ViewModels/People/IPerson";
+import IProvider from "../../ViewModels/Providers/IProvider";
+import { ICustomer_IInerDebt_IInnerDebtItem_IItem } from "../../ViewModels/RelationModels/ICustomer_IInerDebt_IInnerDebtItem_IItem";
+import { ICustomer_IInnerDebt } from "../../ViewModels/RelationModels/ICustomer_IInnerDebt";
+import IInnerDebtItem_IInnerDebt_IItem from "../../ViewModels/RelationModels/IInnerDebtItem_IInnerDebt_IItem";
 
 export default class Mapper {
   mapToCustomer(customer: ICustomer): Customer {

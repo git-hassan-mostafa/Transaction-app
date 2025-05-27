@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
-import ICustomerFormProps from "@/Global/ViewModels/Customers/ICustomerFormProps";
-import ICustomer from "@/Global/ViewModels/Customers/ICustomer";
-import { ICustomer_IInerDebt_IInnerDebtItem_IItem } from "@/Global/ViewModels/RelationModels/ICustomer_IInerDebt_IInnerDebtItem_IItem";
-import ICustomerDetailsProps from "@/Global/ViewModels/Customers/ICustomerDetailsProps";
-import BLLFactory from "@/Global/BLL/Factory/BLLFactory";
+import ICustomerFormProps from "@/ViewModels/Customers/ICustomerFormProps";
+import ICustomer from "@/ViewModels/Customers/ICustomer";
+import { ICustomer_IInerDebt_IInnerDebtItem_IItem } from "@/ViewModels/RelationModels/ICustomer_IInerDebt_IInnerDebtItem_IItem";
+import ICustomerDetailsProps from "@/ViewModels/Customers/ICustomerDetailsProps";
+import BLLFactory from "@/BLL/Factory/BLLFactory";
 
 export default function useEditCustomerService({
   id,

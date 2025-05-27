@@ -1,9 +1,9 @@
 import useGlobalContext from "@/Global/Context/ContextProvider";
-import BLLFactory from "@/Global/BLL/Factory/BLLFactory";
+import BLLFactory from "@/BLL/Factory/BLLFactory";
 import sortList from "@/Global/Helpers/SortList";
 import i18n from "@/Global/I18n/I18n";
 import IEditModalType from "@/Global/Types/IEditModalType";
-import ICustomer from "@/Global/ViewModels/Customers/ICustomer";
+import ICustomer from "@/ViewModels/Customers/ICustomer";
 import { useEffect, useState } from "react";
 import { Alert } from "react-native";
 

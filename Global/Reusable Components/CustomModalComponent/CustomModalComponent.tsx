@@ -8,7 +8,7 @@ import {
 } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
 import styles from "./CustomModalComponent.style";
-import { ThemedText } from "@/Components/Reusables/HelperComponents/ThemedText";
+import { ThemedText } from "@/Global/Reusable Components/HelperComponents/ThemedText";
 import IModalProps from "@/Global/Types/IModalProps";
 
 const CustomModal: React.FC<IModalProps> = ({

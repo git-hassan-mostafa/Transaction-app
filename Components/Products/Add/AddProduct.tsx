@@ -3,12 +3,12 @@ import { View, TextInput, StyleProp, TextStyle } from "react-native";
 import Constants from "@/Global/Constants/Constants";
 import { TouchableOpacity } from "react-native";
 import { Button } from "react-native-paper";
-import { ThemedText } from "../../Reusables/HelperComponents/ThemedText";
+import { ThemedText } from "../../../Global/Reusable Components/HelperComponents/ThemedText";
 import styles from "./AddProduct.style";
 import useAddProductService from "./AddProduct.service";
-import CustomDropDown from "@/Components/Reusables/CustomDropDownComponent/CustomDropDownComponent";
-import IAddItemProps from "@/Global/ViewModels/Items/IAddItemProps";
-import ValidationMessage from "@/Components/Reusables/HelperComponents/ValidationMessage";
+import CustomDropDown from "@/Global/Reusable Components/CustomDropDownComponent/CustomDropDownComponent";
+import IAddItemProps from "@/ViewModels/Items/IAddItemProps";
+import ValidationMessage from "@/Global/Reusable Components/HelperComponents/ValidationMessage";
 import i18n from "@/Global/I18n/I18n";
 
 export default function AddProduct({

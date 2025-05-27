@@ -1,4 +1,4 @@
-import InnerDebt from "@/Global/Models/InnerDebt";
+import InnerDebt from "@/Models/InnerDebt";
 
 export default interface IProvider {
   providerId: number;

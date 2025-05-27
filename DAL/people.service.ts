@@ -1,5 +1,5 @@
 import { SQLiteRunResult } from "expo-sqlite";
-import SqlBuilder from "../Helpers/SqlBuilder";
+import SqlBuilder from "../Global/Helpers/SqlBuilder";
 import Person from "../Models/Person";
 import AbstractManager from "./AbstractManager";
 

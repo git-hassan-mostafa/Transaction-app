@@ -1,7 +1,7 @@
 import { FlatList, useWindowDimensions, View } from "react-native";
 import styles from "./Home.style";
 import useHomeService from "./Home.service";
-import CardComponent from "@/Components/Reusables/CardComponent/CardComponent";
+import CardComponent from "@/Global/Reusable Components/CardComponent/CardComponent";
 import FlatListHeader from "@/Components/FlatListHeader/FlatListHeader";
 import pages from "@/Global/Constants/Pages";
 

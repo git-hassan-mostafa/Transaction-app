@@ -1,10 +1,10 @@
 import { ScrollView } from "react-native";
 import { View, Text, TextInput, Button, TouchableOpacity } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-import CustomDropDown from "@/Components/Reusables/CustomDropDownComponent/CustomDropDownComponent";
-import IInnerDebtsItemsListProps from "@/Global/ViewModels/InnerDebts/IInnerDebtsItemsListProps";
+import CustomDropDown from "@/Global/Reusable Components/CustomDropDownComponent/CustomDropDownComponent";
+import IInnerDebtsItemsListProps from "@/ViewModels/InnerDebts/IInnerDebtsItemsListProps";
 import styles from "./InternalDebtProductsList.style";
-import { ThemedText } from "@/Components/Reusables/HelperComponents/ThemedText";
+import { ThemedText } from "@/Global/Reusable Components/HelperComponents/ThemedText";
 import MaterialIcon from "react-native-vector-icons/MaterialCommunityIcons";
 import { DataTable } from "react-native-paper";
 import globalStyles from "@/Global/Styles/global.style";

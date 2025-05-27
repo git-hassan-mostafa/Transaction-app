@@ -1,6 +1,6 @@
 import CustomerService from "../CustomerService";
 import DALFactory from "../../DAL/DALFactory";
-import HelpersFactory from "../../Helpers/HelpersFactory";
+import HelpersFactory from "../../Global/Helpers/HelpersFactory";
 
 export default class BLLFactory {
   static CustomerService() {

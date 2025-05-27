@@ -1,14 +1,14 @@
 import { useEffect, useState } from "react";
-import Item from "@/Global/Models/Item";
+import Item from "@/Models/Item";
 import IDropDownItem from "@/Global/Types/IDropDownItem";
 import Mapper from "@/Global/Helpers/MapService";
-import IItem from "@/Global/ViewModels/Items/IItem";
-import IEditProductProps from "@/Global/ViewModels/Items/IItemFormProps";
+import IItem from "@/ViewModels/Items/IItem";
+import IEditProductProps from "@/ViewModels/Items/IItemFormProps";
 import { IValidationErrorType } from "@/Global/Types/IValidationErrorType";
 import useGlobalContext from "@/Global/Context/ContextProvider";
 import i18n from "@/Global/I18n/I18n";
-import ProviderManager from "@/Global/DAL/provider.service";
-import ItemManager from "@/Global/DAL/items.service";
+import ProviderManager from "@/DAL/provider.service";
+import ItemManager from "@/DAL/items.service";
 
 export default function useEditProductService({
   id,

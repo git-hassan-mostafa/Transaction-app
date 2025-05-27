@@ -7,7 +7,7 @@ import {
 import { useEffect, useState } from "react";
 import { useSQLiteContext } from "expo-sqlite";
 import { SnackBarOptions } from "../Types/IContextApiType";
-import CreateTablesManager from "../DAL/CreateTablesManager";
+import CreateTablesManager from "../../DAL/CreateTablesManager";
 
 export function useContextService() {
   const db = useSQLiteContext();

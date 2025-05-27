@@ -2,13 +2,13 @@ import { FlatList, View } from "react-native";
 import useProvidersService from "./Providers.service";
 import styles from "./Providers.style";
 import React from "react";
-import AccordionComponent from "@/Components/Reusables/AccordionComponent/AccordionComponent";
+import AccordionComponent from "@/Global/Reusable Components/AccordionComponent/AccordionComponent";
 import Constants from "@/Global/Constants/Constants";
 import AddProvider from "@/Components/Provider/Add/AddProvider";
-import CustomModal from "@/Components/Reusables/CustomModalComponent/CustomModalComponent";
+import CustomModal from "@/Global/Reusable Components/CustomModalComponent/CustomModalComponent";
 import { FAB } from "react-native-paper";
 import { EditProvider } from "@/Components/Provider/Edit/EditProvider";
-import IProvider from "@/Global/ViewModels/Providers/IProvider";
+import IProvider from "@/ViewModels/Providers/IProvider";
 import pageStyle from "@/Global/Styles/pages.global.style";
 import i18n from "@/Global/I18n/I18n";
 

@@ -1,18 +1,18 @@
 import useGlobalContext from "@/Global/Context/ContextProvider";
 import { useEffect, useState } from "react";
-import InnerDebt from "@/Global/Models/InnerDebt";
+import InnerDebt from "@/Models/InnerDebt";
 import IDropDownItem from "@/Global/Types/IDropDownItem";
-import { IAddInnerDebtServiceProps } from "@/Global/ViewModels/InnerDebts/IAddInnerDebtsProps";
-import IInnerDebt from "@/Global/ViewModels/InnerDebts/IInerDebts";
+import { IAddInnerDebtServiceProps } from "@/ViewModels/InnerDebts/IAddInnerDebtsProps";
+import IInnerDebt from "@/ViewModels/InnerDebts/IInerDebts";
 import Mapper from "@/Global/Helpers/MapService";
-import { ICustomer_IInnerDebt } from "@/Global/ViewModels/RelationModels/ICustomer_IInnerDebt";
-import InnerDebtItem from "@/Global/Models/InnerDebtItem";
+import { ICustomer_IInnerDebt } from "@/ViewModels/RelationModels/ICustomer_IInnerDebt";
+import InnerDebtItem from "@/Models/InnerDebtItem";
 import { IValidationErrorType } from "@/Global/Types/IValidationErrorType";
-import ICustomer from "@/Global/ViewModels/Customers/ICustomer";
+import ICustomer from "@/ViewModels/Customers/ICustomer";
 import i18n from "@/Global/I18n/I18n";
-import InnerDebtsManager from "@/Global/DAL/innerDebts.service";
-import InnerDebtItemsManager from "@/Global/DAL/innerDebtItems.service";
-import CustomerManager from "@/Global/DAL/customers.service";
+import InnerDebtsManager from "@/DAL/innerDebts.service";
+import InnerDebtItemsManager from "@/DAL/innerDebtItems.service";
+import CustomerManager from "@/DAL/customers.service";
 
 export default function useAddInternalDebtService({
   innerDebtsItemsListService,

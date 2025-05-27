@@ -2,14 +2,14 @@ import { FlatList, View } from "react-native";
 import useInnerDebtsService from "./InternalDebts.service";
 import styles from "./InternalDebts.style";
 import React from "react";
-import AccordionComponent from "@/Components/Reusables/AccordionComponent/AccordionComponent";
+import AccordionComponent from "@/Global/Reusable Components/AccordionComponent/AccordionComponent";
 import Constants from "@/Global/Constants/Constants";
-import CustomModal from "@/Components/Reusables/CustomModalComponent/CustomModalComponent";
+import CustomModal from "@/Global/Reusable Components/CustomModalComponent/CustomModalComponent";
 import { FAB } from "react-native-paper";
 import EditInternalDebt from "@/Components/InternalDebt/Edit/EditInternalDebt";
 import AddInternalDebt from "@/Components/InternalDebt/Add/AddInternalDebt";
-import IInnerDebt from "@/Global/ViewModels/InnerDebts/IInerDebts";
-import { ICustomer_IInnerDebt } from "@/Global/ViewModels/RelationModels/ICustomer_IInnerDebt";
+import IInnerDebt from "@/ViewModels/InnerDebts/IInerDebts";
+import { ICustomer_IInnerDebt } from "@/ViewModels/RelationModels/ICustomer_IInnerDebt";
 import pageStyle from "@/Global/Styles/pages.global.style";
 import i18n from "@/Global/I18n/I18n";
 

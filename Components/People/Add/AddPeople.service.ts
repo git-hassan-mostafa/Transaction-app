@@ -1,11 +1,11 @@
-import Person from "@/Global/Models/Person";
+import Person from "@/Models/Person";
 import { useState } from "react";
 import useGlobalContext from "@/Global/Context/ContextProvider";
-import IAddPeopleProps from "@/Global/ViewModels/People/IAddPersonProps";
-import IPerson from "@/Global/ViewModels/People/IPerson";
+import IAddPeopleProps from "@/ViewModels/People/IAddPersonProps";
+import IPerson from "@/ViewModels/People/IPerson";
 import { IValidationErrorType } from "@/Global/Types/IValidationErrorType";
 import i18n from "@/Global/I18n/I18n";
-import { PeopleManager } from "@/Global/DAL/people.service";
+import { PeopleManager } from "@/DAL/people.service";
 
 export default function useAddPeopleService({
   addToPeopleList,

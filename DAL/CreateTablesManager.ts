@@ -1,5 +1,5 @@
 import { SQLiteDatabase, useSQLiteContext } from "expo-sqlite";
-import SqlTableCreator from "../Helpers/SqlTableCreator";
+import SqlTableCreator from "../Global/Helpers/SqlTableCreator";
 
 export default class CreateTablesManager {
   constructor() {}

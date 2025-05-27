@@ -1,11 +1,11 @@
 import { SQLiteRunResult } from "expo-sqlite";
 import CustomerManager from "../DAL/customers.service";
-import Mapper from "../Helpers/MapService";
+import Mapper from "../Global/Helpers/MapService";
 import ICustomer from "../ViewModels/Customers/ICustomer";
 import { ICustomer_IInerDebt_IInnerDebtItem_IItem } from "../ViewModels/RelationModels/ICustomer_IInerDebt_IInnerDebtItem_IItem";
 import Customer from "../Models/Customer";
 import { Alert } from "react-native";
-import i18n from "../I18n/I18n";
+import i18n from "../Global/I18n/I18n";
 
 export default class CustomerService {
   constructor(

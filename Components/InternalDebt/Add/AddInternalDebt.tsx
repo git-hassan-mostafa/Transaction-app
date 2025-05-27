@@ -3,15 +3,15 @@ import { View, TextInput, StyleProp, TextStyle } from "react-native";
 import Constants from "@/Global/Constants/Constants";
 import { TouchableOpacity } from "react-native";
 import { Button } from "react-native-paper";
-import { ThemedText } from "../../Reusables/HelperComponents/ThemedText";
+import { ThemedText } from "../../../Global/Reusable Components/HelperComponents/ThemedText";
 import styles from "./AddInternalDebt.style";
 import useAddInternalDebtService from "./AddInternalDebt.service";
-import CustomDropDown from "@/Components/Reusables/CustomDropDownComponent/CustomDropDownComponent";
-import { IAddInnerDebtProps as IAddInternalDebtProps } from "@/Global/ViewModels/InnerDebts/IAddInnerDebtsProps";
-import TabComponent from "@/Components/Reusables/TabComponent/TabComponent";
+import CustomDropDown from "@/Global/Reusable Components/CustomDropDownComponent/CustomDropDownComponent";
+import { IAddInnerDebtProps as IAddInternalDebtProps } from "@/ViewModels/InnerDebts/IAddInnerDebtsProps";
+import TabComponent from "@/Global/Reusable Components/TabComponent/TabComponent";
 import AddInternalDebtsProductsList from "./AddInternalDebtProductsList/AddInternalDebtProductsList";
 import useAddInternalDebtProductsList from "./AddInternalDebtProductsList/AddInternalDebtProductsList.service";
-import ValidationMessage from "@/Components/Reusables/HelperComponents/ValidationMessage";
+import ValidationMessage from "@/Global/Reusable Components/HelperComponents/ValidationMessage";
 import i18n from "@/Global/I18n/I18n";
 
 export default function AddInternalDebt(props: IAddInternalDebtProps) {

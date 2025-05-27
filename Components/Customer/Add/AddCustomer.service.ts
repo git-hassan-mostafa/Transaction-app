@@ -1,10 +1,10 @@
 import useGlobalContext from "@/Global/Context/ContextProvider";
 import { useState } from "react";
-import IAddCustomerProps from "@/Global/ViewModels/Customers/IAddCustomerProps";
-import ICustomer from "@/Global/ViewModels/Customers/ICustomer";
+import IAddCustomerProps from "@/ViewModels/Customers/IAddCustomerProps";
+import ICustomer from "@/ViewModels/Customers/ICustomer";
 import { IValidationErrorType } from "@/Global/Types/IValidationErrorType";
 import i18n from "@/Global/I18n/I18n";
-import BLLFactory from "@/Global/BLL/Factory/BLLFactory";
+import BLLFactory from "@/BLL/Factory/BLLFactory";
 
 export default function useAddCustomerService(props: IAddCustomerProps) {
   // services

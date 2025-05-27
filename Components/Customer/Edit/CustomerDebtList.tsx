@@ -1,8 +1,8 @@
 import { ScrollView, View } from "react-native";
 import styles from "./EditCustomer.style";
-import { ThemedText } from "@/Components/Reusables/HelperComponents/ThemedText";
+import { ThemedText } from "@/Global/Reusable Components/HelperComponents/ThemedText";
 import useEditCustomerService from "./EditCustomer.service";
-import ICustomerFormProps from "@/Global/ViewModels/Customers/ICustomerFormProps";
+import ICustomerFormProps from "@/ViewModels/Customers/ICustomerFormProps";
 import { DataTable } from "react-native-paper";
 import useDataTable from "@/Global/Hooks/useDataTable";
 import globalStyles from "@/Global/Styles/global.style";

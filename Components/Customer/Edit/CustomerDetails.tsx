@@ -1,7 +1,7 @@
 import { StyleProp, TextInput, TextStyle, View } from "react-native";
 import styles from "./EditCustomer.style";
-import { ThemedText } from "@/Components/Reusables/HelperComponents/ThemedText";
-import ICustomerDetailsProps from "@/Global/ViewModels/Customers/ICustomerDetailsProps";
+import { ThemedText } from "@/Global/Reusable Components/HelperComponents/ThemedText";
+import ICustomerDetailsProps from "@/ViewModels/Customers/ICustomerDetailsProps";
 import i18n from "@/Global/I18n/I18n";
 import Icon from "react-native-vector-icons/Entypo";
 import Constants from "@/Global/Constants/Constants";

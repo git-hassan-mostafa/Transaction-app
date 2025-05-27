@@ -2,13 +2,13 @@ import { FlatList, View } from "react-native";
 import usePeopleService from "./People.service";
 import styles from "./People.style";
 import React from "react";
-import AccordionComponent from "@/Components/Reusables/AccordionComponent/AccordionComponent";
+import AccordionComponent from "@/Global/Reusable Components/AccordionComponent/AccordionComponent";
 import Constants from "@/Global/Constants/Constants";
 import { FAB } from "react-native-paper";
 import EditPeople from "@/Components/People/Edit/EditPeople";
-import CustomModal from "@/Components/Reusables/CustomModalComponent/CustomModalComponent";
+import CustomModal from "@/Global/Reusable Components/CustomModalComponent/CustomModalComponent";
 import AddPeople from "@/Components/People/Add/AddPeople";
-import IPerson from "@/Global/ViewModels/People/IPerson";
+import IPerson from "@/ViewModels/People/IPerson";
 import pageStyle from "@/Global/Styles/pages.global.style";
 import i18n from "@/Global/I18n/I18n";
 

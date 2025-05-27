@@ -1,8 +1,8 @@
 import { StyleProp, TextInput, TextStyle, View } from "react-native";
 import useEditPeopleService from "./EditPeople.service";
 import styles from "./EditPeople.style";
-import { ThemedText } from "../../Reusables/HelperComponents/ThemedText";
-import IPeopleFormProps from "@/Global/ViewModels/People/IPersonFormProps";
+import { ThemedText } from "../../../Global/Reusable Components/HelperComponents/ThemedText";
+import IPeopleFormProps from "@/ViewModels/People/IPersonFormProps";
 import i18n from "@/Global/I18n/I18n";
 
 export default function EditPeople(props: IPeopleFormProps) {

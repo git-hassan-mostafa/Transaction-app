@@ -1,5 +1,5 @@
 import AbstractManager from "./AbstractManager";
-import SqlBuilder from "../Helpers/SqlBuilder";
+import SqlBuilder from "../Global/Helpers/SqlBuilder";
 import InnerDebtItem from "../Models/InnerDebtItem";
 import InnerDebtItem_InnerDebt_Item from "../Models/RelationModels/InnerDebtItem_InnerDebt_Item";
 

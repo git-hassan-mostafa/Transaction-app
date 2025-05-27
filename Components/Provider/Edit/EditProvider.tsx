@@ -2,8 +2,8 @@ import styles from "./EditProvider.style";
 import React from "react";
 import { View, TextInput, StyleProp, TextStyle } from "react-native";
 import useEditProviderService from "./EditProvider.service";
-import { ThemedText } from "../../Reusables/HelperComponents/ThemedText";
-import { IProviderFormProps } from "@/Global/ViewModels/Providers/IProviderFormProps";
+import { ThemedText } from "../../../Global/Reusable Components/HelperComponents/ThemedText";
+import { IProviderFormProps } from "@/ViewModels/Providers/IProviderFormProps";
 import i18n from "@/Global/I18n/I18n";
 export function EditProvider({
   id,

@@ -5,9 +5,9 @@ import styles from "./AddProvider.style";
 import Constants from "@/Global/Constants/Constants";
 import { TouchableOpacity } from "react-native";
 import { Button } from "react-native-paper";
-import { ThemedText } from "../../Reusables/HelperComponents/ThemedText";
-import IAddProviderProps from "@/Global/ViewModels/Providers/IAddProviderProps";
-import ValidationMessage from "@/Components/Reusables/HelperComponents/ValidationMessage";
+import { ThemedText } from "../../../Global/Reusable Components/HelperComponents/ThemedText";
+import IAddProviderProps from "@/ViewModels/Providers/IAddProviderProps";
+import ValidationMessage from "@/Global/Reusable Components/HelperComponents/ValidationMessage";
 import i18n from "@/Global/I18n/I18n";
 
 export default function AddProvider({

@@ -1,12 +1,12 @@
-import InnerDebtItemsManager from "@/Global/DAL/innerDebtItems.service";
-import ItemManager from "@/Global/DAL/items.service";
+import InnerDebtItemsManager from "@/DAL/innerDebtItems.service";
+import ItemManager from "@/DAL/items.service";
 import Mapper from "@/Global/Helpers/MapService";
 import i18n from "@/Global/I18n/I18n";
-import InnerDebtItem_InnerDebt_Item from "@/Global/Models/RelationModels/InnerDebtItem_InnerDebt_Item";
+import InnerDebtItem_InnerDebt_Item from "@/Models/RelationModels/InnerDebtItem_InnerDebt_Item";
 import IDropDownItem from "@/Global/Types/IDropDownItem";
-import IInnerDebtsProductsListProps from "@/Global/ViewModels/InnerDebts/IInnerDebtsItemsListProps";
-import IItem from "@/Global/ViewModels/Items/IItem";
-import IInnerDebtItem_IInnerDebt_IItem from "@/Global/ViewModels/RelationModels/IInnerDebtItem_IInnerDebt_IItem";
+import IInnerDebtsProductsListProps from "@/ViewModels/InnerDebts/IInnerDebtsItemsListProps";
+import IItem from "@/ViewModels/Items/IItem";
+import IInnerDebtItem_IInnerDebt_IItem from "@/ViewModels/RelationModels/IInnerDebtItem_IInnerDebt_IItem";
 import { useEffect, useState } from "react";
 import { Alert } from "react-native";
 
