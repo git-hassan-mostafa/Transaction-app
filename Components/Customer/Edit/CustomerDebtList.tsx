@@ -9,14 +9,8 @@ import globalStyles from "@/Global/Styles/global.style";
 import i18n from "@/Global/I18n/I18n";
 import { dateOptions } from "@/Global/Constants/DateOptions";
 
-export default function CustomerDebtList({
-  id,
-  updateFromCustomersList,
-}: ICustomerFormProps) {
-  const { borrowList } = useEditCustomerService({
-    id,
-    updateFromCustomersList,
-  });
+export default function CustomerDebtList(props: ICustomerFormProps) {
+  const { borrowList } = useEditCustomerService(props);
 
   const { from, to, Pagination } = useDataTable(borrowList);
 
@@ -26,42 +20,42 @@ export default function CustomerDebtList({
         <DataTable>
           <DataTable.Header>
             <DataTable.Title style={globalStyles.column}>
-              <ThemedText type="medium">{i18n.t("product-name")}</ThemedText>
+              <ThemedText>{i18n.t("product-name")}</ThemedText>
             </DataTable.Title>
             <DataTable.Title style={globalStyles.column}>
-              <ThemedText type="medium">{i18n.t("product-price")}</ThemedText>
+              <ThemedText>{i18n.t("product-price")}</ThemedText>
+            </DataTable.Title>
+
+            <DataTable.Title style={globalStyles.column} numeric>
+              <ThemedText>{i18n.t("quantity")}</ThemedText>
             </DataTable.Title>
             <DataTable.Title style={globalStyles.column} numeric>
-              <ThemedText type="medium">{i18n.t("price")}</ThemedText>
-            </DataTable.Title>
-            <DataTable.Title style={globalStyles.column} numeric>
-              <ThemedText type="medium">{i18n.t("quantity")}</ThemedText>
+              <ThemedText>{i18n.t("price")}</ThemedText>
             </DataTable.Title>
             <DataTable.Title style={globalStyles.dateColumn}>
-              <ThemedText type="medium">{i18n.t("date")}</ThemedText>
+              <ThemedText>{i18n.t("date")}</ThemedText>
             </DataTable.Title>
           </DataTable.Header>
 
           {borrowList.slice(from, to).map((item) => (
             <DataTable.Row key={item.innerDebtItemId}>
               <DataTable.Cell style={globalStyles.column}>
-                <ThemedText type="small">{item.itemName}</ThemedText>
+                <ThemedText>{item.itemName}</ThemedText>
               </DataTable.Cell>
               <DataTable.Cell style={globalStyles.column}>
-                <ThemedText type="small">${item.itemPrice}</ThemedText>
+                <ThemedText>${item.itemPrice}</ThemedText>
+              </DataTable.Cell>
+
+              <DataTable.Cell style={globalStyles.column} numeric>
+                <ThemedText>{item.innerDebtItemQuantity}</ThemedText>
               </DataTable.Cell>
               <DataTable.Cell style={globalStyles.column} numeric>
-                <ThemedText type="small">
+                <ThemedText>
                   ${item.innerDebtItemTotalPrice.toFixed(2)}
                 </ThemedText>
               </DataTable.Cell>
-              <DataTable.Cell style={globalStyles.column} numeric>
-                <ThemedText type="small">
-                  {item.innerDebtItemQuantity}
-                </ThemedText>
-              </DataTable.Cell>
               <DataTable.Cell style={globalStyles.dateColumn} numeric>
-                <ThemedText type="small">
+                <ThemedText>
                   {new Date(item.innerDebtDate ?? "")?.toLocaleDateString(
                     i18n.locale,
                     dateOptions

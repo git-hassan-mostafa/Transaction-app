@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import IEditPeopleProps from "@/Global/ViewModels/People/IPersonFormProps";
-import { PeopleManager } from "@/Global/Services/people.service";
 import Mapper from "@/Global/Helpers/MapService";
 import IPerson from "@/Global/ViewModels/People/IPerson";
+import { PeopleManager } from "@/Global/DAL/people.service";
 
 export default function useEditPeopleService(props: IEditPeopleProps) {
   //services

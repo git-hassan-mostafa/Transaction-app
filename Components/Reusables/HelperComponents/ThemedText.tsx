@@ -3,33 +3,30 @@ import { Text, type TextProps, StyleSheet } from "react-native";
 
 export type ThemedTextProps = TextProps & {
   color?: string;
-  type?:
-    | "small"
-    | "medium"
-    | "default"
-    | "title"
-    | "defaultSemiBold"
-    | "subtitle"
-    | "link";
+  weight?: 400 | 600 | 700 | 800;
+  fontSize?: number;
+  isLineHeight?: boolean;
 };
 
 export function ThemedText({
   color,
+  weight = 400,
+  fontSize = 14,
   style,
-  type = "default",
+  isLineHeight = false,
   ...rest
 }: ThemedTextProps) {
+  const lineHeightStyle = isLineHeight ? { lineHeight: fontSize + 5 } : {};
   return (
     <Text
       style={[
-        type == "small" ? styles.small : undefined,
-        type === "medium" ? styles.medium : undefined,
-        type === "default" ? styles.default : undefined,
-        type === "title" ? styles.title : undefined,
-        type === "defaultSemiBold" ? styles.defaultSemiBold : undefined,
-        type === "subtitle" ? styles.subtitle : undefined,
-        type === "link" ? styles.link : undefined,
+        weight == 400 ? styles.f400 : undefined,
+        weight === 600 ? styles.f600 : undefined,
+        weight === 700 ? styles.f700 : undefined,
+        weight === 800 ? styles.f800 : undefined,
+        lineHeightStyle,
         { color },
+        { fontSize },
         style,
       ]}
       {...rest}
@@ -38,37 +35,16 @@ export function ThemedText({
 }
 
 const styles = StyleSheet.create({
-  small: {
-    fontSize: 11,
+  f400: {
     fontFamily: Constants.fontFamily.font400Regular,
   },
-  medium: {
-    fontSize: 12,
+  f600: {
     fontFamily: Constants.fontFamily.font600SemiBold,
   },
-  default: {
-    fontSize: 14,
-    fontFamily: Constants.fontFamily.font600SemiBold,
+  f700: {
+    fontFamily: Constants.fontFamily.font700Bold,
   },
-  defaultSemiBold: {
-    fontSize: 16,
-    fontFamily: Constants.fontFamily.font600SemiBold,
-  },
-  defaultBold: {
-    fontSize: 24,
+  f800: {
     fontFamily: Constants.fontFamily.font800ExtraBold,
-  },
-  title: {
-    fontSize: 32,
-    fontFamily: Constants.fontFamily.font400Regular,
-  },
-  subtitle: {
-    fontSize: 20,
-    fontFamily: Constants.fontFamily.font400Regular,
-  },
-  link: {
-    fontSize: 16,
-    color: "#0a7ea4",
-    fontFamily: Constants.fontFamily.font400Regular,
   },
 });

@@ -10,14 +10,8 @@ import IAddCustomerProps from "@/Global/ViewModels/Customers/IAddCustomerProps";
 import ValidationMessage from "@/Components/Reusables/HelperComponents/ValidationMessage";
 import i18n from "@/Global/I18n/I18n";
 
-export default function AddCustomer({
-  toggleModal,
-  addToCustomersList,
-}: IAddCustomerProps) {
-  const service = useAddCustomerService({
-    toggleModal,
-    addToCustomersList,
-  });
+export default function AddCustomer(props: IAddCustomerProps) {
+  const service = useAddCustomerService(props);
 
   return (
     <View style={styles.container}>

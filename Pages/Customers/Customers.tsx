@@ -1,7 +1,6 @@
 import { View, FlatList } from "react-native";
 import useCustomersService from "./Customers.service";
 import styles from "./Customers.style";
-import AccordionComponent from "@/Components/Reusables/AccordionComponent/AccordionComponent";
 import { EditCustomer } from "@/Components/Customer/Edit/EditCustomer";
 import Constants from "@/Global/Constants/Constants";
 import { FAB } from "react-native-paper";
@@ -11,6 +10,7 @@ import CustomModal from "@/Components/Reusables/CustomModalComponent/CustomModal
 import ICustomer from "@/Global/ViewModels/Customers/ICustomer";
 import pageStyle from "@/Global/Styles/pages.global.style";
 import i18n from "@/Global/I18n/I18n";
+import ListItem from "@/Components/Reusables/ListItem/ListItem";
 
 export default function Customers() {
   const service = useCustomersService();
@@ -23,23 +23,31 @@ export default function Customers() {
         numColumns={1}
         keyExtractor={(item) => item.customerId?.toString() as string}
         renderItem={({ item }: { item: ICustomer }) => (
-          <AccordionComponent
-            key={item.customerId}
-            headerColor={Constants.colors.customers}
-            iconColor={Constants.colors.lightGray}
-            headerText={item.customerName as string}
-            id={item.customerId as number}
-            handleDelete={service.handleDeleteCustomer}
-          >
-            <EditCustomer
-              id={item.customerId as number}
-              updateFromCustomersList={service.updateFromCustomersList}
-            />
-          </AccordionComponent>
+          <ListItem
+            sign={{ visible: true, color: Constants.colors.customers }}
+            color={Constants.colors.customers}
+            title={item.customerName}
+            subTitle={{
+              text: "$" + item.customerBorrowedPrice?.toString(),
+              color: Constants.colors.red,
+            }}
+            onDelete={() => service.handleDeleteCustomer(item.customerId)}
+            onEdit={() => service.onEdit(item.customerId)}
+          />
         )}
-        ItemSeparatorComponent={() => <View style={{ height: 5 }} />}
+        ItemSeparatorComponent={() => <View style={{ height: 10 }} />}
         contentContainerStyle={{ paddingBottom: 120 }}
       />
+      <CustomModal
+        title={i18n.t("edit-customer")}
+        isVisible={service.editModalOptions.visible}
+        onClose={() => service.toggleEditModal(-1)}
+      >
+        <EditCustomer
+          id={service.editModalOptions.id}
+          updateFromCustomersList={service.updateFromCustomersList}
+        />
+      </CustomModal>
       <CustomModal
         title={i18n.t("add-customer")}
         isVisible={service.modalVisible}

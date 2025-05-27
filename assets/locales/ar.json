@@ -28,6 +28,7 @@
 
   "// Customers Page": "",
   "add-customer": "إضافة زبون",
+  "edit-customer":"تعديل الزبون",
   "customer-name": "اسم الزبون",
   "enter-customer-name": "أدخل اسم الزبون",
   "delete-customer": "حذف الزبون",

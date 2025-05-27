@@ -1,9 +1,6 @@
 import useGlobalContext from "@/Global/Context/ContextProvider";
 import { useEffect, useState } from "react";
 import InnerDebt from "@/Global/Models/InnerDebt";
-import InnerDebtsManager from "@/Global/Services/innerDebts.service";
-import InnerDebtItemsManager from "@/Global/Services/innerDebtItems.service";
-import CustomerManager from "@/Global/Services/customers.service";
 import IDropDownItem from "@/Global/Types/IDropDownItem";
 import { IAddInnerDebtServiceProps } from "@/Global/ViewModels/InnerDebts/IAddInnerDebtsProps";
 import IInnerDebt from "@/Global/ViewModels/InnerDebts/IInerDebts";
@@ -13,6 +10,9 @@ import InnerDebtItem from "@/Global/Models/InnerDebtItem";
 import { IValidationErrorType } from "@/Global/Types/IValidationErrorType";
 import ICustomer from "@/Global/ViewModels/Customers/ICustomer";
 import i18n from "@/Global/I18n/I18n";
+import InnerDebtsManager from "@/Global/DAL/innerDebts.service";
+import InnerDebtItemsManager from "@/Global/DAL/innerDebtItems.service";
+import CustomerManager from "@/Global/DAL/customers.service";
 
 export default function useAddInternalDebtService({
   innerDebtsItemsListService,

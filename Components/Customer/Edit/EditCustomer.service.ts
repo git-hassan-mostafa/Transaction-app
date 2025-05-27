@@ -1,22 +1,21 @@
 import { useEffect, useState } from "react";
-import Customer from "@/Global/Models/Customer";
-import CustomerManager from "@/Global/Services/customers.service";
 import ICustomerFormProps from "@/Global/ViewModels/Customers/ICustomerFormProps";
 import ICustomer from "@/Global/ViewModels/Customers/ICustomer";
-import Mapper from "@/Global/Helpers/MapService";
 import { ICustomer_IInerDebt_IInnerDebtItem_IItem } from "@/Global/ViewModels/RelationModels/ICustomer_IInerDebt_IInnerDebtItem_IItem";
 import ICustomerDetailsProps from "@/Global/ViewModels/Customers/ICustomerDetailsProps";
+import BLLFactory from "@/Global/BLL/Factory/BLLFactory";
 
 export default function useEditCustomerService({
   id,
   updateFromCustomersList,
 }: ICustomerFormProps): ICustomerDetailsProps {
   //services
-  const customerManager = new CustomerManager();
-  const mapper = new Mapper();
+  const customerService = BLLFactory.CustomerService();
 
   // states
-  const [customer, setCustomer] = useState<ICustomer>({} as ICustomer);
+  const [customer, setCustomer] = useState<ICustomer>({
+    customerId: id,
+  } as ICustomer);
   const [borrowList, setBorrowList] = useState<
     ICustomer_IInerDebt_IInnerDebtItem_IItem[]
   >([]);
@@ -30,35 +29,20 @@ export default function useEditCustomerService({
   }
 
   async function getCustomer() {
-    const customerDB = await customerManager.getCustomer(id);
-    if (!customerDB) return;
-    const customer = mapper.mapToICustomer(customerDB);
-    setCustomer(customer);
-    return customer;
+    const mappedCustomer = await customerService.getCustomer(id);
+    setCustomer(mappedCustomer);
   }
 
   async function getBorrowList() {
-    const borrowListDB = await customerManager.getCustomerBorrowList(id);
-    const mappedBorrowList = borrowListDB?.map((b) => {
-      const result = mapper.mapTo_IICustomer_IInerDebt_IInnerDebtItem_IItem(b);
-      result.innerDebtItemTotalPrice =
-        Number(result.itemPrice) * result.innerDebtItemQuantity;
-      return result;
-    });
-    setBorrowList(
-      mappedBorrowList as ICustomer_IInerDebt_IInnerDebtItem_IItem[]
-    );
-    setCustomerBorrowedPrice(
-      mappedBorrowList as ICustomer_IInerDebt_IInnerDebtItem_IItem[]
-    );
+    const borrowedList = await customerService.getCustomerBorrowList(id);
+    setBorrowList(borrowedList);
+    setCustomerBorrowedPrice(borrowedList);
   }
 
   function setCustomerBorrowedPrice(
     borrowedList: ICustomer_IInerDebt_IInnerDebtItem_IItem[]
   ) {
-    const sum = borrowedList.reduce((sum, item) => {
-      return sum + item.innerDebtItemTotalPrice;
-    }, 0);
+    const sum = customerService.getCustomerBorrowedPrice(borrowedList);
     setCustomer((prev) => {
       return { ...prev, customerBorrowedPrice: sum };
     });
@@ -95,17 +79,8 @@ export default function useEditCustomerService({
   }
 
   async function updateCustomer() {
-    validateCustomerFields(customer);
-    const updatedCustomer: Customer = mapper.mapToCustomer(customer);
-    await customerManager.updateCustomer(updatedCustomer);
-    updateFromCustomersList(customer);
-  }
-
-  function validateCustomerFields(customer: ICustomer) {
-    customer.customerId = id;
-    customer.customerName = customer.customerName.trim();
-    customer.customerPhoneNumber = customer.customerPhoneNumber.trim();
-    customer.customerNotes = customer.customerNotes?.trim();
+    const updatedCustomer = await customerService.updateCustomer(customer);
+    updateFromCustomersList(updatedCustomer);
   }
 
   const formatNumber = (number: number | undefined) => {

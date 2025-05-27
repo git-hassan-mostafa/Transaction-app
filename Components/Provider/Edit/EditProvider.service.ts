@@ -2,8 +2,8 @@ import { useEffect, useState } from "react";
 import { OuterDebt } from "@/Global/Models/OuterDebt";
 import { IProviderFormProps } from "@/Global/ViewModels/Providers/IProviderFormProps";
 import IProvider from "@/Global/ViewModels/Providers/IProvider";
-import ProviderManager from "@/Global/Services/provider.service";
 import Mapper from "@/Global/Helpers/MapService";
+import ProviderManager from "@/Global/DAL/provider.service";
 
 export default function useEditProviderService({
   id,

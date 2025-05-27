@@ -3,7 +3,7 @@ import useCardComponentService from "./CardComponent.service";
 import styles from "./CardComponent.style";
 import Icon from "react-native-vector-icons/FontAwesome6";
 import { ThemedText } from "../HelperComponents/ThemedText";
-import ICardType from "@/Global/Types/ICardType";
+import ICardType from "@/Global/Types/IPageType";
 
 export default function CardComponent(props: ICardType) {
   const cardcomponentService = useCardComponentService();
@@ -24,9 +24,7 @@ export default function CardComponent(props: ICardType) {
             style={[styles.icon, { color: props.color }]}
           />
         </View>
-        <ThemedText type="defaultSemiBold" style={styles.title}>
-          {props.title}
-        </ThemedText>
+        <ThemedText style={styles.title}>{props.title}</ThemedText>
       </View>
     </TouchableOpacity>
   );

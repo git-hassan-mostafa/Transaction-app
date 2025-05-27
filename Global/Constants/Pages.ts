@@ -1,8 +1,8 @@
 import i18n from "../I18n/I18n";
-import CardType from "../Types/ICardType";
+import IPageType from "../Types/IPageType";
 import Constants from "./Constants";
 
-const pages: CardType[] = [
+const pages: IPageType[] = [
   {
     route: "index",
     title: i18n.t("home"),

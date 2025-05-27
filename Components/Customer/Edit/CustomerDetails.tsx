@@ -3,38 +3,51 @@ import styles from "./EditCustomer.style";
 import { ThemedText } from "@/Components/Reusables/HelperComponents/ThemedText";
 import ICustomerDetailsProps from "@/Global/ViewModels/Customers/ICustomerDetailsProps";
 import i18n from "@/Global/I18n/I18n";
+import Icon from "react-native-vector-icons/Entypo";
+import Constants from "@/Global/Constants/Constants";
 
 export default function CustomerDetails(props: ICustomerDetailsProps) {
   return (
     <View>
       <View style={styles.pricesRow}>
         <View style={styles.pricesContainer}>
-          <ThemedText style={styles.payedPrice} type="medium">
-            {i18n.t("payed-price")}
-          </ThemedText>
-          <ThemedText style={[styles.price, styles.payedPrice]}>
+          <Icon
+            size={16}
+            color={Constants.colors.darkGreen}
+            name="arrow-with-circle-up"
+          />
+          <ThemedText fontSize={14} style={[styles.price, styles.payedPrice]}>
             ${props.formatNumber(props.customer.customerPayedPrice)}
           </ThemedText>
         </View>
         <View style={styles.pricesContainer}>
-          <ThemedText style={styles.remainingPrice} type="medium">
-            {i18n.t("remaining-price")}
+          {/* <Icon
+            size={16}
+            name="select-arrows"
+            color={Constants.colors.darkGray}
+          /> */}
+          <ThemedText
+            fontSize={14}
+            style={[styles.price, styles.totalDebtPrice]}
+          >
+            ${props.formatNumber(props.customer.customerBorrowedPrice)}
           </ThemedText>
-          <ThemedText style={[styles.price, styles.remainingPrice]}>
+        </View>
+        <View style={styles.pricesContainer}>
+          <Icon
+            size={16}
+            color={Constants.colors.red}
+            name="arrow-with-circle-down"
+          />
+          <ThemedText
+            fontSize={14}
+            style={[styles.price, styles.remainingPrice]}
+          >
             $
             {props.formatNumber(
               props.customer.customerBorrowedPrice -
                 props.customer.customerPayedPrice
             )}
-          </ThemedText>
-        </View>
-        <View style={styles.pricesContainer}>
-          {/* <Icon style={styles.priceIcon} name="cash-remove" /> */}
-          <ThemedText style={styles.totalDebtPrice} type="medium">
-            {i18n.t("total-debt")}
-          </ThemedText>
-          <ThemedText style={[styles.price, styles.totalDebtPrice]}>
-            ${props.formatNumber(props.customer.customerBorrowedPrice)}
           </ThemedText>
         </View>
       </View>

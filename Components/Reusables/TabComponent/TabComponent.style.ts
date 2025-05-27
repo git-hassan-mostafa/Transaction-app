@@ -2,9 +2,12 @@ import { StyleSheet } from "react-native";
 
 const styles = StyleSheet.create({
   tabContainer: {
-    flexDirection: "row",
     borderBottomWidth: 1,
     borderBottomColor: "#ccc",
+  },
+  tabsScrollContainer: {
+    flexDirection: "row",
+    minWidth: "100%",
   },
   tab: {
     flex: 1,

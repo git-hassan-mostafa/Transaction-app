@@ -29,13 +29,15 @@ const CustomModal: React.FC<IModalProps> = ({
         <View style={styles.modalContainer}>
           {/* Header */}
           <View style={styles.header}>
-            <ThemedText style={styles.title}>{title}</ThemedText>
+            <ThemedText fontSize={16} weight={700}>
+              {title}
+            </ThemedText>
             <TouchableOpacity onPress={onClose}>
               <Icon name="close" size={24} color="#000" />
             </TouchableOpacity>
           </View>
           {/* Content */}
-          <ScrollView style={[styles.content, { maxHeight: height * 0.6 }]}>
+          <ScrollView style={[styles.content, { maxHeight: height * 0.7 }]}>
             {children}
           </ScrollView>
         </View>

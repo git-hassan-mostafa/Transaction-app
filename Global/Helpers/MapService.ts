@@ -21,9 +21,9 @@ export default class Mapper {
   mapToCustomer(customer: ICustomer): Customer {
     return {
       CustomerId: customer.customerId as number,
-      Name: customer.customerName as string,
-      PhoneNumber: customer.customerPhoneNumber as string,
-      Notes: customer.customerNotes as string,
+      Name: customer?.customerName?.trim(),
+      PhoneNumber: customer?.customerPhoneNumber?.trim(),
+      Notes: customer?.customerNotes?.trim(),
     };
   }
 

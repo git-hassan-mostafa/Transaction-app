@@ -54,6 +54,7 @@ export default class CustomerManager extends AbstractManager {
       return result as SQLiteRunResult;
     } catch (error) {
       console.log("error updateCustomer", error);
+      return null;
     }
   }
 
@@ -64,6 +65,25 @@ export default class CustomerManager extends AbstractManager {
       return result;
     } catch (error) {
       console.log("error deleteCustomer", error);
+      return null;
+    }
+  }
+
+  async getCustomersBorrowList() {
+    try {
+      const sqlBuilder = new SqlBuilder<Customer_InnerDebt_InnerDebtItem_Item>(
+        this.db,
+        this.table
+      );
+      const result = await sqlBuilder
+        .select()
+        .rightJoin("InnerDebts")
+        .rightJoin("InnerDebtItems", "InnerDebts")
+        .leftJoin("Items", "InnerDebtItems")
+        .executeAsync();
+      return result as Customer_InnerDebt_InnerDebtItem_Item[];
+    } catch (error) {
+      console.error("error ", error);
     }
   }
 

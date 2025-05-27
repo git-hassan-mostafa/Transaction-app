@@ -24,10 +24,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
     marginBottom: 15,
-  },
-  title: {
-    fontSize: 18,
-    fontFamily: Constants.fontFamily.font800ExtraBold,
+    paddingLeft: 20,
   },
   content: {
     backgroundColor: Constants.colors.lightGray,

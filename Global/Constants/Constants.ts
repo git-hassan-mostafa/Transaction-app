@@ -12,10 +12,11 @@ const Constants = {
 
     ///////////////////////
 
+    green: "#66BB6A",
     darkGreen: "#047000",
     gray: "#ccc",
-    darkGray: "#626363",
-    lightGray: "#f2f2f2",
+    darkGray: "#636363",
+    lightGray: "#F0F0F0",
     yellow: "#f0f716",
     black: "black",
     red: "#c2281d",

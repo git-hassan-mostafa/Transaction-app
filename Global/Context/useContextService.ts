@@ -5,9 +5,9 @@ import {
   useFonts,
 } from "@expo-google-fonts/noto-kufi-arabic";
 import { useEffect, useState } from "react";
-import CreateTablesManager from "../Services/CreateTablesManager";
 import { useSQLiteContext } from "expo-sqlite";
 import { SnackBarOptions } from "../Types/IContextApiType";
+import CreateTablesManager from "../DAL/CreateTablesManager";
 
 export function useContextService() {
   const db = useSQLiteContext();

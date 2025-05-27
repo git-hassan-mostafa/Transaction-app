@@ -15,7 +15,7 @@ export default function LayoutPage() {
         <Stack
           screenOptions={{
             contentStyle: {
-              backgroundColor: Constants.colors.white,
+              backgroundColor: Constants.colors.lightGray,
             },
           }}
         >
@@ -28,20 +28,12 @@ export default function LayoutPage() {
                 headerTitleStyle: {
                   fontFamily: Constants.fontFamily.font600SemiBold,
                   fontSize: 18,
-                  color:
-                    p.route == "index"
-                      ? Constants.colors.black
-                      : Constants.colors.white,
+                  color: Constants.colors.black,
                 },
-                headerStyle: {
-                  backgroundColor: p.color,
-                },
-                statusBarBackgroundColor: p.color,
+                statusBarBackgroundColor: Constants.colors.white,
+                statusBarStyle: "dark",
                 headerTitleAlign: p.route === "index" ? "center" : undefined,
-                headerTintColor:
-                  p.route == "index"
-                    ? Constants.colors.black
-                    : Constants.colors.white,
+                headerTintColor: Constants.colors.black,
               }}
             />
           ))}

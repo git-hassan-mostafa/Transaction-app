@@ -1,11 +1,11 @@
 import useGlobalContext from "@/Global/Context/ContextProvider";
 import Mapper from "@/Global/Helpers/MapService";
-import InnerDebtsManager from "@/Global/Services/innerDebts.service";
 import { ICustomer_IInnerDebt } from "@/Global/ViewModels/RelationModels/ICustomer_IInnerDebt";
 import { useEffect, useState } from "react";
 import { Alert } from "react-native";
 import i18n from "@/Global/I18n/I18n";
 import SortList from "@/Global/Helpers/SortList";
+import InnerDebtsManager from "@/Global/DAL/innerDebts.service";
 
 export default function useInnerDebtsService() {
   //services

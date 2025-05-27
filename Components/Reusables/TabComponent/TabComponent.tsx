@@ -15,26 +15,29 @@ export default function TabComponent({
 
   return (
     <View>
-      <ScrollView
-        horizontal
-        style={styles.tabContainer}
-        contentContainerStyle={{ width: "100%" }}
-      >
-        {titles.map((title, index) => (
-          <TouchableOpacity
-            key={index}
-            style={[
-              styles.tab,
-              service.activeTab === index && styles.activeTab,
-            ]}
-            onPress={() => service.setActiveTab(index)}
-          >
-            <ThemedText type="default" style={styles.tabText}>
-              {title}
-            </ThemedText>
-          </TouchableOpacity>
-        ))}
-      </ScrollView>
+      <View style={styles.tabContainer}>
+        <ScrollView
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          contentContainerStyle={styles.tabsScrollContainer}
+          bounces={false}
+        >
+          {titles.map((title, index) => (
+            <TouchableOpacity
+              key={index}
+              style={[
+                styles.tab,
+                service.activeTab === index && styles.activeTab,
+              ]}
+              onPress={() => service.setActiveTab(index)}
+            >
+              <ThemedText weight={700} style={styles.tabText}>
+                {title}
+              </ThemedText>
+            </TouchableOpacity>
+          ))}
+        </ScrollView>
+      </View>
       <View style={styles.contentContainer}>{children[service.activeTab]}</View>
     </View>
   );

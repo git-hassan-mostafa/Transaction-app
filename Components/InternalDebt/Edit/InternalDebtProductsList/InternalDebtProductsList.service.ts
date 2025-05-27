@@ -1,8 +1,6 @@
 import useGlobalContext from "@/Global/Context/ContextProvider";
 import Mapper from "@/Global/Helpers/MapService";
 import InnerDebtItem_InnerDebt_Item from "@/Global/Models/RelationModels/InnerDebtItem_InnerDebt_Item";
-import InnerDebtItemsManager from "@/Global/Services/innerDebtItems.service";
-import ItemManager from "@/Global/Services/items.service";
 import IDropDownItem from "@/Global/Types/IDropDownItem";
 import IItem from "@/Global/ViewModels/Items/IItem";
 import IInnerDebtItem_IInnerDebt_IItem from "@/Global/ViewModels/RelationModels/IInnerDebtItem_IInnerDebt_IItem";
@@ -11,6 +9,8 @@ import { useEffect, useState } from "react";
 import { Alert } from "react-native";
 import InnerDebtItem from "@/Global/Models/InnerDebtItem";
 import IInternalDebtProductsListProps from "@/Global/ViewModels/InnerDebts/IInnerDebtsItemsListProps";
+import ItemManager from "@/Global/DAL/items.service";
+import InnerDebtItemsManager from "@/Global/DAL/innerDebtItems.service";
 
 export default function useInternalDebtProductsListService(
   innerDebtId: number
@@ -95,7 +95,6 @@ export default function useInternalDebtProductsListService(
       const itemsResult = await innerDebtItemsManager.addInnerDebtItem(
         innerDebtItemToAdd
       );
-      console.log("itemsResult", itemsResult);
       if (!itemsResult) {
         return toggleSnackBar({
           visible: true,
@@ -113,7 +112,6 @@ export default function useInternalDebtProductsListService(
   }
 
   function handleDeleteItem(id: number) {
-    console.log("delete", id);
     Alert.alert(
       i18n.t("remove-product"),
       i18n.t("are-you-sureyou-want-to-remove-this-product"),

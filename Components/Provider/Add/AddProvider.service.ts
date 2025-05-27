@@ -3,9 +3,9 @@ import { useState } from "react";
 import Provider from "@/Global/Models/Provider";
 import IAddProviderProps from "@/Global/ViewModels/Providers/IAddProviderProps";
 import IProvider from "@/Global/ViewModels/Providers/IProvider";
-import ProviderManager from "@/Global/Services/provider.service";
 import { IValidationErrorType } from "@/Global/Types/IValidationErrorType";
 import i18n from "@/Global/I18n/I18n";
+import ProviderManager from "@/Global/DAL/provider.service";
 
 export default function useAddProviderService({
   toggleModal,

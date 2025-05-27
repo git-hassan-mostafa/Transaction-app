@@ -1,8 +1,8 @@
 import useGlobalContext from "@/Global/Context/ContextProvider";
+import ItemManager from "@/Global/DAL/items.service";
 import Mapper from "@/Global/Helpers/MapService";
 import SortList from "@/Global/Helpers/SortList";
 import i18n from "@/Global/I18n/I18n";
-import ItemManager from "@/Global/Services/items.service";
 import IItem from "@/Global/ViewModels/Items/IItem";
 import { useEffect, useState } from "react";
 import { Alert } from "react-native";

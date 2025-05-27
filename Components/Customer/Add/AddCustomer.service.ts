@@ -1,19 +1,14 @@
 import useGlobalContext from "@/Global/Context/ContextProvider";
 import { useState } from "react";
-import Customer from "@/Global/Models/Customer";
 import IAddCustomerProps from "@/Global/ViewModels/Customers/IAddCustomerProps";
 import ICustomer from "@/Global/ViewModels/Customers/ICustomer";
-import CustomerManager from "@/Global/Services/customers.service";
 import { IValidationErrorType } from "@/Global/Types/IValidationErrorType";
-import { Alert } from "react-native";
 import i18n from "@/Global/I18n/I18n";
+import BLLFactory from "@/Global/BLL/Factory/BLLFactory";
 
-export default function useAddCustomerService({
-  toggleModal,
-  addToCustomersList,
-}: IAddCustomerProps) {
+export default function useAddCustomerService(props: IAddCustomerProps) {
   // services
-  const customerManager = new CustomerManager();
+  const customerService = BLLFactory.CustomerService();
 
   // states
   const [customer, setCustomer] = useState<ICustomer>({} as ICustomer);
@@ -58,21 +53,10 @@ export default function useAddCustomerService({
       });
       return;
     }
-    const newCustomer: Customer = {
-      Name: customer?.customerName.trim(),
-      PhoneNumber: customer.customerPhoneNumber.trim(),
-      Notes: customer.customerNotes,
-    };
-    const result = await customerManager.addCustomer(newCustomer);
-    if (!result || !result.lastInsertRowId) {
-      return Alert.alert(
-        i18n.t("error"),
-        i18n.t("failed-to-add-customer,please-try-again")
-      );
-    }
-    customer.customerId = result?.lastInsertRowId;
-    addToCustomersList(customer);
-    toggleModal();
+    const result = await customerService.addCustomer(customer);
+    if (!result) return;
+    props.addToCustomersList(customer);
+    props.toggleModal();
     toggleSnackBar({
       text: i18n.t("customer-added-successfully"),
       type: "success",

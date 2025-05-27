@@ -1,4 +1,4 @@
-export default interface CardType {
+export default interface IPageType {
   title: string;
   route: string;
   color: string;

@@ -1,21 +1,23 @@
 import useGlobalContext from "@/Global/Context/ContextProvider";
-import Mapper from "@/Global/Helpers/MapService";
+import BLLFactory from "@/Global/BLL/Factory/BLLFactory";
 import sortList from "@/Global/Helpers/SortList";
 import i18n from "@/Global/I18n/I18n";
-import CustomerManager from "@/Global/Services/customers.service";
+import IEditModalType from "@/Global/Types/IEditModalType";
 import ICustomer from "@/Global/ViewModels/Customers/ICustomer";
 import { useEffect, useState } from "react";
 import { Alert } from "react-native";
 
 export default function useCustomersService() {
   //services
-  const customerManager = new CustomerManager();
-  const mapper = new Mapper();
+  const customerService = BLLFactory.CustomerService();
 
   //states
   const [customers, setCustomers] = useState<ICustomer[]>([]);
   const [modalVisible, setModalVisible] = useState(false);
-
+  const [editModalOptions, setEditModalOptions] = useState<IEditModalType>({
+    visible: false,
+    id: -1,
+  });
   //context
   const { toggleSnackBar } = useGlobalContext();
 
@@ -25,12 +27,13 @@ export default function useCustomersService() {
     getAllCustomers();
   }, []);
 
-  function addToCustomersList(value: ICustomer) {
-    setCustomers((prev) => [...prev, value]);
+  async function getAllCustomers() {
+    const mappedCustomers = await customerService.getAllCustomers();
+    setCustomers(mappedCustomers);
   }
 
-  function deleteFromCustomerList(id: number) {
-    setCustomers((prev) => prev.filter((c) => c.customerId !== id));
+  function addToCustomersList(value: ICustomer) {
+    setCustomers((prev) => [...prev, value]);
   }
 
   function updateFromCustomersList(value: ICustomer) {
@@ -42,14 +45,16 @@ export default function useCustomersService() {
       )
     );
   }
-  async function getAllCustomers() {
-    const customers = await customerManager.getAllCustomers();
-    const mappedCustomers = customers?.map((c) => mapper.mapToICustomer(c));
-    setCustomers(mappedCustomers as ICustomer[]);
+
+  function deleteFromCustomerList(id: number) {
+    setCustomers((prev) => prev.filter((c) => c.customerId !== id));
+  }
+
+  async function onEdit(id: number) {
+    toggleEditModal(id);
   }
 
   async function handleDeleteCustomer(id: number) {
-    const customer = customers.find((c) => c.customerId === id);
     Alert.alert(
       i18n.t("delete-customer"),
       i18n.t("are-you-sure-you-want-to-delete-this-customer?"),
@@ -64,7 +69,7 @@ export default function useCustomersService() {
   }
 
   async function deleteCustomer(id: number) {
-    const result = await customerManager.deleteCustomer(id);
+    const result = await customerService.deleteCustomer(id);
     if ((result?.changes || 0) > 0) {
       deleteFromCustomerList(id);
       toggleSnackBar({
@@ -85,6 +90,10 @@ export default function useCustomersService() {
     setModalVisible((prev) => !prev);
   }
 
+  function toggleEditModal(id: number) {
+    setEditModalOptions((prev) => ({ visible: !prev.visible, id }));
+  }
+
   function sortCustomers() {
     sortList(customers, (e) => e.customerName);
   }
@@ -92,10 +101,13 @@ export default function useCustomersService() {
   return {
     customers,
     modalVisible,
+    editModalOptions,
     toggleModal,
+    toggleEditModal,
     addToCustomersList,
     deleteFromCustomerList,
     updateFromCustomersList,
     handleDeleteCustomer,
+    onEdit,
   };
 }

@@ -2,13 +2,13 @@ import useGlobalContext from "@/Global/Context/ContextProvider";
 import { useEffect, useState } from "react";
 import Item from "@/Global/Models/Item";
 import IDropDownItem from "@/Global/Types/IDropDownItem";
-import ProviderManager from "@/Global/Services/provider.service";
-import ItemManager from "@/Global/Services/items.service";
 import IAddProductProps from "@/Global/ViewModels/Items/IAddItemProps";
 import IItem from "@/Global/ViewModels/Items/IItem";
 import { IValidationErrorType } from "@/Global/Types/IValidationErrorType";
 import Mapper from "@/Global/Helpers/MapService";
 import i18n from "@/Global/I18n/I18n";
+import ProviderManager from "@/Global/DAL/provider.service";
+import ItemManager from "@/Global/DAL/items.service";
 
 export default function useAddProductService({
   toggleModal,

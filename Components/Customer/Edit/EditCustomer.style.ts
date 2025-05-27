@@ -56,7 +56,6 @@ const styles = StyleSheet.create({
     fontSize: 30,
   },
   price: {
-    fontSize: 16,
     fontWeight: "bold",
   },
   input: baseInputStyle,

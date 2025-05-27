@@ -4,12 +4,12 @@ import InnerDebt from "@/Global/Models/InnerDebt";
 import { IInnerDebtsFormServiceProps } from "@/Global/ViewModels/InnerDebts/IInerDebtsFormProps";
 import IInnerDebt from "@/Global/ViewModels/InnerDebts/IInerDebts";
 import IDropDownItem from "@/Global/Types/IDropDownItem";
-import InnerDebtsManager from "@/Global/Services/innerDebts.service";
-import CustomerManager from "@/Global/Services/customers.service";
 import Mapper from "@/Global/Helpers/MapService";
 import { ICustomer_IInnerDebt } from "@/Global/ViewModels/RelationModels/ICustomer_IInnerDebt";
 import ICustomer from "@/Global/ViewModels/Customers/ICustomer";
 import i18n from "@/Global/I18n/I18n";
+import CustomerManager from "@/Global/DAL/customers.service";
+import InnerDebtsManager from "@/Global/DAL/innerDebts.service";
 
 export default function useEditInternalDebtService({
   id,

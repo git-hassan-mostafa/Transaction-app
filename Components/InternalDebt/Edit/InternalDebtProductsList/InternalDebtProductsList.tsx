@@ -22,13 +22,13 @@ export default function InternalDebtProductsList(
         <DataTable>
           <DataTable.Header>
             <DataTable.Title style={globalStyles.column}>
-              <ThemedText type="medium">{i18n.t("product-name")}</ThemedText>
+              <ThemedText>{i18n.t("product-name")}</ThemedText>
             </DataTable.Title>
             <DataTable.Title style={globalStyles.column} numeric>
-              <ThemedText type="medium">{i18n.t("quantity")}</ThemedText>
+              <ThemedText>{i18n.t("quantity")}</ThemedText>
             </DataTable.Title>
             <DataTable.Title style={globalStyles.column} numeric>
-              <ThemedText type="medium">{i18n.t("total-price")}</ThemedText>
+              <ThemedText>{i18n.t("total-price")}</ThemedText>
             </DataTable.Title>
             <DataTable.Title style={globalStyles.iconColumn}>
               <View />
@@ -38,7 +38,7 @@ export default function InternalDebtProductsList(
           {props.innerDebtsItems.slice(from, to).map((item) => (
             <DataTable.Row key={item.innerDebtItemId}>
               <DataTable.Cell style={globalStyles.column}>
-                <ThemedText type="small">{item.itemName}</ThemedText>
+                <ThemedText>{item.itemName}</ThemedText>
               </DataTable.Cell>
               <DataTable.Cell style={globalStyles.column} numeric>
                 {item.innerDebtItemQuantity}
