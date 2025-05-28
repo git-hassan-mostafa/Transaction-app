@@ -4,11 +4,11 @@ import IAddCustomerProps from "@/ViewModels/Customers/IAddCustomerProps";
 import ICustomer from "@/ViewModels/Customers/ICustomer";
 import { IValidationErrorType } from "@/Global/Types/IValidationErrorType";
 import i18n from "@/Global/I18n/I18n";
-import BLLFactory from "@/Factories/BLLFactory";
+import useService from "@/Global/Context/ServiceProvider";
 
 export default function useAddCustomerService(props: IAddCustomerProps) {
   // services
-  const customerManager = BLLFactory.CustomerManager();
+  const { customerManager } = useService();
 
   // states
   const [customer, setCustomer] = useState<ICustomer>({} as ICustomer);

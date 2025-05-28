@@ -3,14 +3,14 @@ import ICustomerFormProps from "@/ViewModels/Customers/ICustomerFormProps";
 import ICustomer from "@/ViewModels/Customers/ICustomer";
 import { ICustomer_IInerDebt_IInnerDebtItem_IItem } from "@/ViewModels/RelationModels/ICustomer_IInerDebt_IInnerDebtItem_IItem";
 import ICustomerDetailsProps from "@/ViewModels/Customers/ICustomerDetailsProps";
-import BLLFactory from "@/Factories/BLLFactory";
+import useService from "@/Global/Context/ServiceProvider";
 
 export default function useEditCustomerService({
   id,
   updateFromCustomersList,
 }: ICustomerFormProps): ICustomerDetailsProps {
   //services
-  const customerManager = BLLFactory.CustomerManager();
+  const { customerManager } = useService();
 
   // states
   const [customer, setCustomer] = useState<ICustomer>({

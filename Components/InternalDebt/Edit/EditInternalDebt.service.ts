@@ -4,14 +4,13 @@ import { IInnerDebtsFormServiceProps } from "@/ViewModels/InnerDebts/IInerDebtsF
 import IInnerDebt from "@/ViewModels/InnerDebts/IInerDebts";
 import IDropDownItem from "@/Global/Types/IDropDownItem";
 import i18n from "@/Global/I18n/I18n";
-import BLLFactory from "@/Factories/BLLFactory";
+import useService from "@/Global/Context/ServiceProvider";
 
 export default function useEditInternalDebtService(
   props: IInnerDebtsFormServiceProps
 ) {
   //services
-  const internalDebtsManager = BLLFactory.InternalDebtManager();
-  const customerManager = BLLFactory.CustomerManager();
+  const { internalDebtManager, customerManager } = useService();
 
   //states
   const [internalDebt, setInnerDebt] = useState<IInnerDebt>({} as IInnerDebt);
@@ -34,17 +33,17 @@ export default function useEditInternalDebtService(
   async function getAllCustomers() {
     const mappedCustomers = await customerManager.getAllCustomers();
     const dropDownCustomers =
-      internalDebtsManager.dropDownCutomers(mappedCustomers);
+      internalDebtManager.dropDownCutomers(mappedCustomers);
     setCustomersDropDown(dropDownCustomers);
   }
 
   async function getInnerDebt() {
-    const internalDebtDB = await internalDebtsManager.getInternalDebt(props.id);
+    const internalDebtDB = await internalDebtManager.getInternalDebt(props.id);
     setInnerDebt(internalDebtDB);
   }
 
   function setTotoalPriceSum() {
-    const totalPrice = internalDebtsManager.getTotalPricesSum(
+    const totalPrice = internalDebtManager.getTotalPricesSum(
       props.internalDebtsItemsListService.innerDebtsItems
     );
     setInnerDebt((prev) => ({ ...prev, innerDebtTotalPrice: totalPrice }));
@@ -83,7 +82,7 @@ export default function useEditInternalDebtService(
   }
 
   async function updateCustomer(customerId: number) {
-    const result = await internalDebtsManager.updateInnerDebtCustomer(
+    const result = await internalDebtManager.updateInnerDebtCustomer(
       internalDebt,
       customerId
     );
@@ -98,7 +97,7 @@ export default function useEditInternalDebtService(
 
   async function updateInnerDebt() {
     if (!validateInnerDebtFields(internalDebt)) return;
-    const result = await internalDebtsManager.updateInternalDebt(internalDebt);
+    const result = await internalDebtManager.updateInternalDebt(internalDebt);
     if (result?.success) props.updateFromInnerDebtsList(result.data);
   }
 

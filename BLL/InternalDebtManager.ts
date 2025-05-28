@@ -19,7 +19,9 @@ export default class InternalDebtManager {
     private internalDebtsItemsDataAccess: InternalDebtsItemsDataAccess,
     private customerDataAccess: CustomerDataAccess,
     private mapper: Mapper
-  ) {}
+  ) {
+    console.log("internal debt manager created");
+  }
 
   async getAllInternalDebts(): Promise<ICustomer_IInnerDebt[]> {
     const innerDebtsDB = await this.internalDebtsDataAccess.getAllInnerDebts();

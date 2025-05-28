@@ -5,12 +5,11 @@ import IItem from "@/ViewModels/Items/IItem";
 import IInnerDebtItem_IInnerDebt_IItem from "@/ViewModels/RelationModels/IInnerDebtItem_IInnerDebt_IItem";
 import { useEffect, useState } from "react";
 import { Alert } from "react-native";
-import BLLFactory from "@/Factories/BLLFactory";
+import useService from "@/Global/Context/ServiceProvider";
 
 export default function useAddInternalDebtProductsList(): IInnerDebtsProductsListProps {
   //managers
-  const internalDebtsManager = BLLFactory.InternalDebtManager();
-  const itemManager = BLLFactory.ItemManager();
+  const { internalDebtManager, itemManager } = useService();
 
   //states
   const [items, setItems] = useState<IItem[]>([]);
@@ -95,7 +94,7 @@ export default function useAddInternalDebtProductsList(): IInnerDebtsProductsLis
   }
 
   async function refreshInnerDebtsItems(innerDebtId: number) {
-    const itemsDB = await internalDebtsManager.getInternalDebtsItems(
+    const itemsDB = await internalDebtManager.getInternalDebtsItems(
       innerDebtId
     );
     setInnerDebtsItems(itemsDB);

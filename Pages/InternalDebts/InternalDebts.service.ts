@@ -4,11 +4,11 @@ import { useEffect, useState } from "react";
 import { Alert } from "react-native";
 import i18n from "@/Global/I18n/I18n";
 import SortList from "@/Global/Helpers/Functions/SortList";
-import BLLFactory from "@/Factories/BLLFactory";
+import useService from "@/Global/Context/ServiceProvider";
 
 export default function useInnerDebtsService() {
   //services
-  const InternalDebtManager = BLLFactory.InternalDebtManager();
+  const { internalDebtManager } = useService();
 
   //states
   const [innerDebts, setInnerDebts] = useState<ICustomer_IInnerDebt[]>([]);
@@ -43,7 +43,7 @@ export default function useInnerDebtsService() {
   }
 
   async function getAllInternalerDebts() {
-    const internalDebtsDB = await InternalDebtManager.getAllInternalDebts();
+    const internalDebtsDB = await internalDebtManager.getAllInternalDebts();
     setInnerDebts(internalDebtsDB);
   }
 
@@ -62,7 +62,7 @@ export default function useInnerDebtsService() {
   }
 
   async function deleteInnerDebt(id: number) {
-    const result = await InternalDebtManager.deleteInternalDebt(id);
+    const result = await internalDebtManager.deleteInternalDebt(id);
     if (!result.success) {
       toggleSnackBar({ visible: true, type: "error", text: result.message });
     }

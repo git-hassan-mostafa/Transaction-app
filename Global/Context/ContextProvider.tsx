@@ -1,8 +1,8 @@
 import React, { createContext, useContext } from "react";
-import ContextProps from "../Types/IContextApiType";
+import IContextProps from "../Types/IContextProps";
 import { useContextService } from "./useContextService";
 
-const Context = createContext<ContextProps>({} as ContextProps);
+const Context = createContext<IContextProps>({} as IContextProps);
 
 export default function useGlobalContext() {
   return useContext(Context);
@@ -14,13 +14,5 @@ export const ContextProvider = ({
   children: React.ReactNode;
 }) => {
   const props = useContextService();
-  return (
-    <Context.Provider
-      value={{
-        ...props,
-      }}
-    >
-      {children}
-    </Context.Provider>
-  );
+  return <Context.Provider value={props}>{children}</Context.Provider>;
 };

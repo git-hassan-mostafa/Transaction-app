@@ -7,7 +7,7 @@ import { ICustomer_IInnerDebt } from "@/ViewModels/RelationModels/ICustomer_IInn
 import { IValidationErrorType } from "@/Global/Types/IValidationErrorType";
 import ICustomer from "@/ViewModels/Customers/ICustomer";
 import i18n from "@/Global/I18n/I18n";
-import BLLFactory from "@/Factories/BLLFactory";
+import useService from "@/Global/Context/ServiceProvider";
 
 export default function useAddInternalDebtService({
   innerDebtsItemsListService,
@@ -15,8 +15,7 @@ export default function useAddInternalDebtService({
   addToInnerDebtsList,
 }: IAddInnerDebtServiceProps) {
   //services
-  const internalDebtsManager = BLLFactory.InternalDebtManager();
-  const customerManager = BLLFactory.CustomerManager();
+  const { internalDebtManager, customerManager } = useService();
 
   //states
   const [innerDebt, setInnerDebt] = useState<IInnerDebt>({} as IInnerDebt);
@@ -43,7 +42,7 @@ export default function useAddInternalDebtService({
   async function getAllCustomers() {
     const mappedCustomers = await customerManager.getAllCustomers();
     const dropDownCustomers =
-      internalDebtsManager.dropDownCutomers(mappedCustomers);
+      internalDebtManager.dropDownCutomers(mappedCustomers);
     setCustomers(mappedCustomers);
     setCustomersDropDown(dropDownCustomers);
   }
@@ -51,7 +50,7 @@ export default function useAddInternalDebtService({
   function setTotoalPriceSum() {
     const internalDebtsItems = innerDebtsItemsListService.innerDebtsItems;
     const totalPrice =
-      internalDebtsManager.getTotalPricesSum(internalDebtsItems);
+      internalDebtManager.getTotalPricesSum(internalDebtsItems);
     setInnerDebt((prev) => ({ ...prev, innerDebtTotalPrice: totalPrice }));
   }
 
@@ -84,7 +83,7 @@ export default function useAddInternalDebtService({
     const customer = customers.filter(
       (c) => c.customerId === innerDebt.innerDebt_CustomerId
     )[0];
-    const result = await internalDebtsManager.addInternalDebt(
+    const result = await internalDebtManager.addInternalDebt(
       innerDebt,
       innerDebtsItemsListService.innerDebtsItems
     );

@@ -1,5 +1,4 @@
 import useGlobalContext from "@/Global/Context/ContextProvider";
-import InnerDebtItem_InnerDebt_Item from "@/Models/RelationModels/InnerDebtItem_InnerDebt_Item";
 import IDropDownItem from "@/Global/Types/IDropDownItem";
 import IItem from "@/ViewModels/Items/IItem";
 import IInnerDebtItem_IInnerDebt_IItem from "@/ViewModels/RelationModels/IInnerDebtItem_IInnerDebt_IItem";
@@ -7,14 +6,13 @@ import i18n from "@/Global/I18n/I18n";
 import { useEffect, useState } from "react";
 import { Alert } from "react-native";
 import IInternalDebtProductsListProps from "@/ViewModels/InnerDebts/IInnerDebtsItemsListProps";
-import BLLFactory from "@/Factories/BLLFactory";
+import useService from "@/Global/Context/ServiceProvider";
 
 export default function useInternalDebtProductsListService(
   innerDebtId: number
 ): IInternalDebtProductsListProps {
   //managers
-  const internalDebtsManager = BLLFactory.InternalDebtManager();
-  const itemsManager = BLLFactory.ItemManager();
+  const { internalDebtManager, itemManager } = useService();
 
   //states
   const [items, setItems] = useState<IItem[]>([]);
@@ -36,15 +34,15 @@ export default function useInternalDebtProductsListService(
   }, []);
 
   async function getAllInnerDebtsItems() {
-    const innerDebtsItemsDB = await internalDebtsManager.getInternalDebtsItems(
+    const innerDebtsItemsDB = await internalDebtManager.getInternalDebtsItems(
       innerDebtId
     );
     setInnerDebtsItems(innerDebtsItemsDB);
   }
 
   async function getAllItems() {
-    const itemsDB = await itemsManager.getAllItems();
-    const dropDownItems = itemsManager.getDropDownItems(itemsDB);
+    const itemsDB = await itemManager.getAllItems();
+    const dropDownItems = itemManager.getDropDownItems(itemsDB);
     setItems(itemsDB);
     setDropDownItems(dropDownItems);
   }
@@ -73,7 +71,7 @@ export default function useInternalDebtProductsListService(
       (Number(currentItem?.itemPrice) || 0);
 
     if (!handleExistingItem()) {
-      const result = await internalDebtsManager.addInternalDebtItem(
+      const result = await internalDebtManager.addInternalDebtItem(
         newInnerDebtsItem
       );
       if (!result.success) {
@@ -107,7 +105,7 @@ export default function useInternalDebtProductsListService(
   }
 
   async function deleteInnerDebtItem(id: number) {
-    const result = await internalDebtsManager.deleteInternalDebtItem(id);
+    const result = await internalDebtManager.deleteInternalDebtItem(id);
     if (result?.success) {
       return setInnerDebtsItems((prev) =>
         prev.filter((i) => i.innerDebtItemId !== id)

@@ -6,10 +6,11 @@ import IEditModalType from "@/Global/Types/IEditModalType";
 import ICustomer from "@/ViewModels/Customers/ICustomer";
 import { useEffect, useState } from "react";
 import { Alert } from "react-native";
+import useService from "@/Global/Context/ServiceProvider";
 
 export default function useCustomersService() {
   //services
-  const customerManager = BLLFactory.CustomerManager();
+  const { customerManager } = useService();
 
   //states
   const [customers, setCustomers] = useState<ICustomer[]>([]);
