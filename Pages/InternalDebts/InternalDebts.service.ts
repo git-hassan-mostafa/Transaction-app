@@ -1,16 +1,14 @@
 import useGlobalContext from "@/Global/Context/ContextProvider";
-import Mapper from "@/Global/Helpers/MapService";
 import { ICustomer_IInnerDebt } from "@/ViewModels/RelationModels/ICustomer_IInnerDebt";
 import { useEffect, useState } from "react";
 import { Alert } from "react-native";
 import i18n from "@/Global/I18n/I18n";
-import SortList from "@/Global/Helpers/SortList";
-import InnerDebtsManager from "@/DAL/innerDebts.service";
+import SortList from "@/Global/Helpers/Functions/SortList";
+import BLLFactory from "@/Factories/BLLFactory";
 
 export default function useInnerDebtsService() {
   //services
-  const innerDebtsManager = new InnerDebtsManager();
-  const mapper = new Mapper();
+  const InternalDebtManager = BLLFactory.InternalDebtManager();
 
   //states
   const [innerDebts, setInnerDebts] = useState<ICustomer_IInnerDebt[]>([]);
@@ -23,7 +21,7 @@ export default function useInnerDebtsService() {
   sortInternalDebts();
 
   useEffect(() => {
-    getAllInnerDebts();
+    getAllInternalerDebts();
   }, []);
 
   async function addToInnerDebtsList(debt: ICustomer_IInnerDebt) {
@@ -35,22 +33,18 @@ export default function useInnerDebtsService() {
   }
 
   async function updateFromInnerDebtsList(value: ICustomer_IInnerDebt) {
-    const debt = value;
     setInnerDebts((prev) =>
       prev.map((innerDebt) =>
         innerDebt.innerDebtId === value.innerDebtId
-          ? { ...innerDebt, ...debt }
+          ? { ...innerDebt, ...value }
           : innerDebt
       )
     );
   }
 
-  async function getAllInnerDebts() {
-    const innerDebtsDB = await innerDebtsManager.getAllInnerDebts();
-    const innerDebts = innerDebtsDB?.map((c) => {
-      return mapper.mapToICustomer_IInnerDebt(c);
-    });
-    setInnerDebts(innerDebts as ICustomer_IInnerDebt[]);
+  async function getAllInternalerDebts() {
+    const internalDebtsDB = await InternalDebtManager.getAllInternalDebts();
+    setInnerDebts(internalDebtsDB);
   }
 
   async function handleDeleteInnerDebt(id: number) {
@@ -68,20 +62,12 @@ export default function useInnerDebtsService() {
   }
 
   async function deleteInnerDebt(id: number) {
-    const result = await innerDebtsManager.deleteInnerDebt(id);
-    if ((result?.changes || 0) > 0) {
-      deleteFromInnerDebtsList(id);
-      toggleSnackBar({
-        text: i18n.t("internal-debt-deleted-successfully"),
-        type: "success",
-        visible: true,
-      });
-    } else
-      toggleSnackBar({
-        text: i18n.t("error-deleting-internal-debt"),
-        type: "error",
-        visible: true,
-      });
+    const result = await InternalDebtManager.deleteInternalDebt(id);
+    if (!result.success) {
+      toggleSnackBar({ visible: true, type: "error", text: result.message });
+    }
+    deleteFromInnerDebtsList(id);
+    toggleSnackBar({ visible: true, type: "success", text: result.message });
   }
 
   function toggleModal() {

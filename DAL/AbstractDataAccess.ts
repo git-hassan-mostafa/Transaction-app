@@ -1,6 +1,6 @@
 import { SQLiteDatabase, useSQLiteContext } from "expo-sqlite";
 
-export default abstract class AbstractManager {
+export default abstract class AbstractDataAccess {
   protected db: SQLiteDatabase;
   protected static isFirstTimeCreated: boolean = true;
 

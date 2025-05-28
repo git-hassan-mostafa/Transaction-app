@@ -1,11 +1,11 @@
-import AbstractManager from "./AbstractManager";
+import AbstractDataAccess from "./AbstractDataAccess";
 import SqlBuilder from "../Global/Helpers/SqlBuilder";
 import InnerDebt from "../Models/InnerDebt";
 import { SQLiteRunResult } from "expo-sqlite";
 import Provider from "../Models/Provider";
 import { OuterDebt } from "../Models/OuterDebt";
 
-export default class ProviderManager extends AbstractManager {
+export default class ProviderManager extends AbstractDataAccess {
   table = "providers";
   constructor() {
     super();

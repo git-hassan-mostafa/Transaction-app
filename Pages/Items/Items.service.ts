@@ -1,7 +1,7 @@
 import useGlobalContext from "@/Global/Context/ContextProvider";
-import ItemManager from "@/DAL/items.service";
+import ItemsDataAccess from "@/DAL/ItemsDataAccess";
 import Mapper from "@/Global/Helpers/MapService";
-import SortList from "@/Global/Helpers/SortList";
+import SortList from "@/Global/Helpers/Functions/SortList";
 import i18n from "@/Global/I18n/I18n";
 import IItem from "@/ViewModels/Items/IItem";
 import { useEffect, useState } from "react";
@@ -9,7 +9,7 @@ import { Alert } from "react-native";
 
 export default function useItemsService() {
   //services
-  const itemManager = new ItemManager();
+  const itemManager = new ItemsDataAccess();
   const mapper = new Mapper();
 
   //states

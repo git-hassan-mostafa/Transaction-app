@@ -23,14 +23,14 @@ export default function InnerDebts() {
         data={service.innerDebts}
         numColumns={1}
         keyExtractor={(item) => item.innerDebtId?.toString() as string}
-        renderItem={({ item }: { item: IInnerDebt }) => (
+        renderItem={({ item }: { item: ICustomer_IInnerDebt }) => (
           <AccordionComponent
             key={item.innerDebtId}
             id={item.innerDebtId as number}
             handleDelete={service.handleDeleteInnerDebt}
             headerColor={Constants.colors.internalDebts}
             iconColor={Constants.colors.lightGray}
-            headerText={`@${(item as ICustomer_IInnerDebt).customerName}`}
+            headerText={`@${item.customerName}`}
           >
             <EditInternalDebt
               id={item.innerDebtId as number}

@@ -8,7 +8,7 @@ import { IValidationErrorType } from "@/Global/Types/IValidationErrorType";
 import Mapper from "@/Global/Helpers/MapService";
 import i18n from "@/Global/I18n/I18n";
 import ProviderManager from "@/DAL/provider.service";
-import ItemManager from "@/DAL/items.service";
+import ItemsDataAccess from "@/DAL/ItemsDataAccess";
 
 export default function useAddProductService({
   toggleModal,
@@ -16,7 +16,7 @@ export default function useAddProductService({
 }: IAddProductProps) {
   // services
   const providerManager = new ProviderManager();
-  const itemManager = new ItemManager();
+  const itemManager = new ItemsDataAccess();
   const map = new Mapper();
 
   //states

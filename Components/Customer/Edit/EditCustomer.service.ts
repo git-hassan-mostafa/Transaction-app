@@ -3,14 +3,14 @@ import ICustomerFormProps from "@/ViewModels/Customers/ICustomerFormProps";
 import ICustomer from "@/ViewModels/Customers/ICustomer";
 import { ICustomer_IInerDebt_IInnerDebtItem_IItem } from "@/ViewModels/RelationModels/ICustomer_IInerDebt_IInnerDebtItem_IItem";
 import ICustomerDetailsProps from "@/ViewModels/Customers/ICustomerDetailsProps";
-import BLLFactory from "@/BLL/Factory/BLLFactory";
+import BLLFactory from "@/Factories/BLLFactory";
 
 export default function useEditCustomerService({
   id,
   updateFromCustomersList,
 }: ICustomerFormProps): ICustomerDetailsProps {
   //services
-  const customerService = BLLFactory.CustomerService();
+  const customerManager = BLLFactory.CustomerManager();
 
   // states
   const [customer, setCustomer] = useState<ICustomer>({
@@ -29,12 +29,12 @@ export default function useEditCustomerService({
   }
 
   async function getCustomer() {
-    const mappedCustomer = await customerService.getCustomer(id);
+    const mappedCustomer = await customerManager.getCustomer(id);
     setCustomer(mappedCustomer);
   }
 
   async function getBorrowList() {
-    const borrowedList = await customerService.getCustomerBorrowList(id);
+    const borrowedList = await customerManager.getCustomerBorrowList(id);
     setBorrowList(borrowedList);
     setCustomerBorrowedPrice(borrowedList);
   }
@@ -42,7 +42,7 @@ export default function useEditCustomerService({
   function setCustomerBorrowedPrice(
     borrowedList: ICustomer_IInerDebt_IInnerDebtItem_IItem[]
   ) {
-    const sum = customerService.getCustomerBorrowedPrice(borrowedList);
+    const sum = customerManager.getCustomerBorrowedPrice(borrowedList);
     setCustomer((prev) => {
       return { ...prev, customerBorrowedPrice: sum };
     });
@@ -79,14 +79,9 @@ export default function useEditCustomerService({
   }
 
   async function updateCustomer() {
-    const updatedCustomer = await customerService.updateCustomer(customer);
+    const updatedCustomer = await customerManager.updateCustomer(customer);
     updateFromCustomersList(updatedCustomer);
   }
-
-  const formatNumber = (number: number | undefined) => {
-    if (!number) return "0";
-    return number > 999 ? "999+" : `${number}`;
-  };
 
   return {
     customer,
@@ -97,6 +92,5 @@ export default function useEditCustomerService({
     updateCustomerName,
     updateCustomerPhoneNumber,
     updateCustomerNotes,
-    formatNumber,
   };
 }

@@ -1,9 +1,9 @@
 import { SQLiteRunResult } from "expo-sqlite";
 import SqlBuilder from "../Global/Helpers/SqlBuilder";
 import Person from "../Models/Person";
-import AbstractManager from "./AbstractManager";
+import AbstractDataAccess from "./AbstractDataAccess";
 
-export class PeopleManager extends AbstractManager {
+export class PeopleManager extends AbstractDataAccess {
   table = "people";
   constructor() {
     super();

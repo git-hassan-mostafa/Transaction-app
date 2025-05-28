@@ -1,20 +1,17 @@
-import InnerDebtItemsManager from "@/DAL/innerDebtItems.service";
-import ItemManager from "@/DAL/items.service";
-import Mapper from "@/Global/Helpers/MapService";
 import i18n from "@/Global/I18n/I18n";
-import InnerDebtItem_InnerDebt_Item from "@/Models/RelationModels/InnerDebtItem_InnerDebt_Item";
 import IDropDownItem from "@/Global/Types/IDropDownItem";
 import IInnerDebtsProductsListProps from "@/ViewModels/InnerDebts/IInnerDebtsItemsListProps";
 import IItem from "@/ViewModels/Items/IItem";
 import IInnerDebtItem_IInnerDebt_IItem from "@/ViewModels/RelationModels/IInnerDebtItem_IInnerDebt_IItem";
 import { useEffect, useState } from "react";
 import { Alert } from "react-native";
+import BLLFactory from "@/Factories/BLLFactory";
 
 export default function useAddInternalDebtProductsList(): IInnerDebtsProductsListProps {
   //managers
-  const itemManager = new ItemManager();
-  const innerDebtItemsManager = new InnerDebtItemsManager();
-  const mapper = new Mapper();
+  const internalDebtsManager = BLLFactory.InternalDebtManager();
+  const itemManager = BLLFactory.ItemManager();
+
   //states
   const [items, setItems] = useState<IItem[]>([]);
   const [dropDownItems, setDropDownItems] = useState<IDropDownItem[]>([]);
@@ -31,11 +28,9 @@ export default function useAddInternalDebtProductsList(): IInnerDebtsProductsLis
 
   async function getAllItems() {
     const itemsDB = await itemManager.getAllItems();
-    const items = itemsDB?.map((i) => mapper.mapToIItem(i)) || [];
-    setItems(items as IItem[]);
-    setDropDownItems(
-      items.map((i) => ({ value: i.itemId, label: i.itemName }))
-    );
+    const dropDownItems = itemManager.getDropDownItems(itemsDB);
+    setItems(itemsDB);
+    setDropDownItems(dropDownItems);
   }
 
   function setNewItemQuantity(value: string) {
@@ -100,18 +95,10 @@ export default function useAddInternalDebtProductsList(): IInnerDebtsProductsLis
   }
 
   async function refreshInnerDebtsItems(innerDebtId: number) {
-    const innerDebtsItemsDB = await innerDebtItemsManager.getInnerDebtItems(
+    const itemsDB = await internalDebtsManager.getInternalDebtsItems(
       innerDebtId
     );
-    const mappedItems = (
-      innerDebtsItemsDB as InnerDebtItem_InnerDebt_Item[]
-    ).map((item) => {
-      var i = mapper.mapTo_IInnerDebtItem_IInnerDebt_IItem(item);
-      i.innerDebtItemTotalPrice =
-        i.innerDebtItemQuantity * (Number(i?.itemPrice) || 0);
-      return i;
-    });
-    setInnerDebtsItems(mappedItems);
+    setInnerDebtsItems(itemsDB);
   }
 
   return {

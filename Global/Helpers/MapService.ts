@@ -99,7 +99,7 @@ export default class Mapper {
   mapToInnerDebt(innerDebt: IInnerDebt): InnerDebt {
     return {
       InnerDebtId: innerDebt.innerDebtId,
-      Date: innerDebt.innerDebtDate,
+      Date: innerDebt.innerDebtDate || new Date().toISOString(),
       InnerDebt_PersonId: innerDebt.innerDebt_PersonId,
       InnerDebt_CustomerId: innerDebt.innerDebt_CustomerId,
       Notes: innerDebt.innerDebtNotes,

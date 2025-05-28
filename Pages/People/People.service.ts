@@ -1,7 +1,7 @@
 import useGlobalContext from "@/Global/Context/ContextProvider";
 import { PeopleManager } from "@/DAL/people.service";
 import Mapper from "@/Global/Helpers/MapService";
-import SortList from "@/Global/Helpers/SortList";
+import SortList from "@/Global/Helpers/Functions/SortList";
 import i18n from "@/Global/I18n/I18n";
 import IPerson from "@/ViewModels/People/IPerson";
 import { useEffect, useState } from "react";

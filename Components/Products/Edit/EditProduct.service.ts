@@ -8,7 +8,7 @@ import { IValidationErrorType } from "@/Global/Types/IValidationErrorType";
 import useGlobalContext from "@/Global/Context/ContextProvider";
 import i18n from "@/Global/I18n/I18n";
 import ProviderManager from "@/DAL/provider.service";
-import ItemManager from "@/DAL/items.service";
+import ItemsDataAccess from "@/DAL/ItemsDataAccess";
 
 export default function useEditProductService({
   id,
@@ -16,7 +16,7 @@ export default function useEditProductService({
 }: IEditProductProps) {
   //services
   const providerManager = new ProviderManager();
-  const itemManager = new ItemManager();
+  const itemManager = new ItemsDataAccess();
   const mapper = new Mapper();
 
   const [item, setItem] = useState<IItem>({} as IItem);

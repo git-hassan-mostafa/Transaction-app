@@ -1,12 +1,8 @@
+import ISnackBarOptions from "./ISnackBarOptions";
+
 export default interface ContextProps {
   fontsLoaded: boolean;
-  snackBarOptions: SnackBarOptions;
-  toggleSnackBar: (value: SnackBarOptions) => void;
+  snackBarOptions: ISnackBarOptions;
+  toggleSnackBar: (value: ISnackBarOptions) => void;
   onDismissSnackBar: () => void;
-}
-
-export interface SnackBarOptions {
-  visible: boolean;
-  text?: string;
-  type?: "info" | "error" | "warning" | "success";
 }

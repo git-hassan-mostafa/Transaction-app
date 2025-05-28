@@ -10,5 +10,4 @@ export default interface ICustomerDetailsProps {
   updateCustomerName: () => Promise<void>;
   updateCustomerPhoneNumber: () => Promise<void>;
   updateCustomerNotes: () => Promise<void>;
-  formatNumber: (number: number | undefined) => string;
 }

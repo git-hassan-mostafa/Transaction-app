@@ -4,11 +4,11 @@ import IAddCustomerProps from "@/ViewModels/Customers/IAddCustomerProps";
 import ICustomer from "@/ViewModels/Customers/ICustomer";
 import { IValidationErrorType } from "@/Global/Types/IValidationErrorType";
 import i18n from "@/Global/I18n/I18n";
-import BLLFactory from "@/BLL/Factory/BLLFactory";
+import BLLFactory from "@/Factories/BLLFactory";
 
 export default function useAddCustomerService(props: IAddCustomerProps) {
   // services
-  const customerService = BLLFactory.CustomerService();
+  const customerManager = BLLFactory.CustomerManager();
 
   // states
   const [customer, setCustomer] = useState<ICustomer>({} as ICustomer);
@@ -53,7 +53,7 @@ export default function useAddCustomerService(props: IAddCustomerProps) {
       });
       return;
     }
-    const result = await customerService.addCustomer(customer);
+    const result = await customerManager.addCustomer(customer);
     if (!result) return;
     props.addToCustomersList(customer);
     props.toggleModal();

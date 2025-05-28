@@ -5,6 +5,7 @@ import ICustomerDetailsProps from "@/ViewModels/Customers/ICustomerDetailsProps"
 import i18n from "@/Global/I18n/I18n";
 import Icon from "react-native-vector-icons/Entypo";
 import Constants from "@/Global/Constants/Constants";
+import formatBigNumber from "@/Global/Helpers/Functions/FormatBigNumber";
 
 export default function CustomerDetails(props: ICustomerDetailsProps) {
   return (
@@ -17,7 +18,7 @@ export default function CustomerDetails(props: ICustomerDetailsProps) {
             name="arrow-with-circle-up"
           />
           <ThemedText fontSize={14} style={[styles.price, styles.payedPrice]}>
-            ${props.formatNumber(props.customer.customerPayedPrice)}
+            ${formatBigNumber(props.customer.customerPayedPrice)}
           </ThemedText>
         </View>
         <View style={styles.pricesContainer}>
@@ -30,7 +31,7 @@ export default function CustomerDetails(props: ICustomerDetailsProps) {
             fontSize={14}
             style={[styles.price, styles.totalDebtPrice]}
           >
-            ${props.formatNumber(props.customer.customerBorrowedPrice)}
+            ${formatBigNumber(props.customer.customerBorrowedPrice)}
           </ThemedText>
         </View>
         <View style={styles.pricesContainer}>
@@ -44,7 +45,7 @@ export default function CustomerDetails(props: ICustomerDetailsProps) {
             style={[styles.price, styles.remainingPrice]}
           >
             $
-            {props.formatNumber(
+            {formatBigNumber(
               props.customer.customerBorrowedPrice -
                 props.customer.customerPayedPrice
             )}

@@ -1,4 +1,4 @@
-import Mapper from "./MapService";
+import Mapper from "@/Global/Helpers/MapService";
 
 export default class HelpersFactory {
   static Mapper() {

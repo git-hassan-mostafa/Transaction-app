@@ -1,5 +1,4 @@
 import useGlobalContext from "@/Global/Context/ContextProvider";
-import Mapper from "@/Global/Helpers/MapService";
 import InnerDebtItem_InnerDebt_Item from "@/Models/RelationModels/InnerDebtItem_InnerDebt_Item";
 import IDropDownItem from "@/Global/Types/IDropDownItem";
 import IItem from "@/ViewModels/Items/IItem";
@@ -7,18 +6,15 @@ import IInnerDebtItem_IInnerDebt_IItem from "@/ViewModels/RelationModels/IInnerD
 import i18n from "@/Global/I18n/I18n";
 import { useEffect, useState } from "react";
 import { Alert } from "react-native";
-import InnerDebtItem from "@/Models/InnerDebtItem";
 import IInternalDebtProductsListProps from "@/ViewModels/InnerDebts/IInnerDebtsItemsListProps";
-import ItemManager from "@/DAL/items.service";
-import InnerDebtItemsManager from "@/DAL/innerDebtItems.service";
+import BLLFactory from "@/Factories/BLLFactory";
 
 export default function useInternalDebtProductsListService(
   innerDebtId: number
 ): IInternalDebtProductsListProps {
   //managers
-  const itemManager = new ItemManager();
-  const innerDebtItemsManager = new InnerDebtItemsManager();
-  const mapper = new Mapper();
+  const internalDebtsManager = BLLFactory.InternalDebtManager();
+  const itemsManager = BLLFactory.ItemManager();
 
   //states
   const [items, setItems] = useState<IItem[]>([]);
@@ -40,27 +36,17 @@ export default function useInternalDebtProductsListService(
   }, []);
 
   async function getAllInnerDebtsItems() {
-    const innerDebtsItemsDB = await innerDebtItemsManager.getInnerDebtItems(
+    const innerDebtsItemsDB = await internalDebtsManager.getInternalDebtsItems(
       innerDebtId
     );
-    const mappedItems = (
-      innerDebtsItemsDB as InnerDebtItem_InnerDebt_Item[]
-    ).map((item) => {
-      var i = mapper.mapTo_IInnerDebtItem_IInnerDebt_IItem(item);
-      i.innerDebtItemTotalPrice =
-        i.innerDebtItemQuantity * (Number(i?.itemPrice) || 0);
-      return i;
-    });
-    setInnerDebtsItems(mappedItems);
+    setInnerDebtsItems(innerDebtsItemsDB);
   }
 
   async function getAllItems() {
-    const itemsDB = await itemManager.getAllItems();
-    const items = itemsDB?.map((i) => mapper.mapToIItem(i)) || [];
-    setItems(items as IItem[]);
-    setDropDownItems(
-      items.map((i) => ({ value: i.itemId, label: i.itemName }))
-    );
+    const itemsDB = await itemsManager.getAllItems();
+    const dropDownItems = itemsManager.getDropDownItems(itemsDB);
+    setItems(itemsDB);
+    setDropDownItems(dropDownItems);
   }
 
   function setNewItemQuantity(value: string) {
@@ -87,23 +73,18 @@ export default function useInternalDebtProductsListService(
       (Number(currentItem?.itemPrice) || 0);
 
     if (!handleExistingItem()) {
-      const innerDebtItemToAdd: Partial<InnerDebtItem> = {
-        InnerDebtItemQuantity: newInnerDebtsItem.innerDebtItemQuantity,
-        InnerDebtItem_InnerDebtId: newInnerDebtsItem.innerDebtItem_InnerDebtId,
-        InnerDebtItem_ItemId: newInnerDebtsItem.innerDebtItem_ItemId,
-      };
-      const itemsResult = await innerDebtItemsManager.addInnerDebtItem(
-        innerDebtItemToAdd
+      const result = await internalDebtsManager.addInternalDebtItem(
+        newInnerDebtsItem
       );
-      if (!itemsResult) {
+      if (!result.success) {
         return toggleSnackBar({
           visible: true,
-          text: i18n.t("failed-adding-products"),
+          text: result.message,
           type: "error",
         });
       }
-      if (itemsResult.lastInsertRowId) {
-        newInnerDebtsItem.innerDebtItemId = itemsResult.lastInsertRowId;
+      if (result.data) {
+        newInnerDebtsItem.innerDebtItemId = result.data;
         setInnerDebtsItems((prev) => [...prev, newInnerDebtsItem]);
       }
     }
@@ -126,15 +107,15 @@ export default function useInternalDebtProductsListService(
   }
 
   async function deleteInnerDebtItem(id: number) {
-    const result = await innerDebtItemsManager.deleteInnerDebtItem(id);
-    if ((result?.changes || 0) > 0) {
+    const result = await internalDebtsManager.deleteInternalDebtItem(id);
+    if (result?.success) {
       return setInnerDebtsItems((prev) =>
         prev.filter((i) => i.innerDebtItemId !== id)
       );
     }
     return toggleSnackBar({
       visible: true,
-      text: i18n.t("failed-deleting-product"),
+      text: result.message,
       type: "error",
     });
   }

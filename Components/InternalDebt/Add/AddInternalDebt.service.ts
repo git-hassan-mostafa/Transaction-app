@@ -1,18 +1,13 @@
 import useGlobalContext from "@/Global/Context/ContextProvider";
 import { useEffect, useState } from "react";
-import InnerDebt from "@/Models/InnerDebt";
 import IDropDownItem from "@/Global/Types/IDropDownItem";
 import { IAddInnerDebtServiceProps } from "@/ViewModels/InnerDebts/IAddInnerDebtsProps";
 import IInnerDebt from "@/ViewModels/InnerDebts/IInerDebts";
-import Mapper from "@/Global/Helpers/MapService";
 import { ICustomer_IInnerDebt } from "@/ViewModels/RelationModels/ICustomer_IInnerDebt";
-import InnerDebtItem from "@/Models/InnerDebtItem";
 import { IValidationErrorType } from "@/Global/Types/IValidationErrorType";
 import ICustomer from "@/ViewModels/Customers/ICustomer";
 import i18n from "@/Global/I18n/I18n";
-import InnerDebtsManager from "@/DAL/innerDebts.service";
-import InnerDebtItemsManager from "@/DAL/innerDebtItems.service";
-import CustomerManager from "@/DAL/customers.service";
+import BLLFactory from "@/Factories/BLLFactory";
 
 export default function useAddInternalDebtService({
   innerDebtsItemsListService,
@@ -20,10 +15,8 @@ export default function useAddInternalDebtService({
   addToInnerDebtsList,
 }: IAddInnerDebtServiceProps) {
   //services
-  const innerDebtsManager = new InnerDebtsManager();
-  const innerDebtItemsManager = new InnerDebtItemsManager();
-  const customerManager = new CustomerManager();
-  const mapper = new Mapper();
+  const internalDebtsManager = BLLFactory.InternalDebtManager();
+  const customerManager = BLLFactory.CustomerManager();
 
   //states
   const [innerDebt, setInnerDebt] = useState<IInnerDebt>({} as IInnerDebt);
@@ -48,28 +41,17 @@ export default function useAddInternalDebtService({
   }, [innerDebtsItemsListService.innerDebtsItems]);
 
   async function getAllCustomers() {
-    const customers = await customerManager.getAllCustomers();
-    const mappedCustomers = customers?.map((c) => {
-      return mapper.mapToICustomer(c);
-    }) as ICustomer[];
-
-    const sortedCustomers = [
-      { label: "", value: undefined },
-      ...(customers?.map((c) => {
-        return { label: c.Name, value: c.CustomerId };
-      }) as IDropDownItem[]),
-    ];
+    const mappedCustomers = await customerManager.getAllCustomers();
+    const dropDownCustomers =
+      internalDebtsManager.dropDownCutomers(mappedCustomers);
     setCustomers(mappedCustomers);
-    setCustomersDropDown(sortedCustomers);
+    setCustomersDropDown(dropDownCustomers);
   }
 
   function setTotoalPriceSum() {
-    const totalPrice = innerDebtsItemsListService.innerDebtsItems.reduce(
-      (sum, item) => {
-        return sum + item.innerDebtItemTotalPrice;
-      },
-      0
-    );
+    const internalDebtsItems = innerDebtsItemsListService.innerDebtsItems;
+    const totalPrice =
+      internalDebtsManager.getTotalPricesSum(internalDebtsItems);
     setInnerDebt((prev) => ({ ...prev, innerDebtTotalPrice: totalPrice }));
   }
 
@@ -99,66 +81,35 @@ export default function useAddInternalDebtService({
 
   async function addInnerDebt() {
     if (!validateInnerDebtFields()) return;
-
-    const newInnerDebt: InnerDebt = {
-      InnerDebt_CustomerId: innerDebt.innerDebt_CustomerId,
-      Notes: innerDebt.innerDebtNotes,
-      Date: new Date().toISOString(),
-    };
-    const customer = await customerManager.getCustomer(
-      innerDebt.innerDebt_CustomerId
+    const customer = customers.filter(
+      (c) => c.customerId === innerDebt.innerDebt_CustomerId
+    )[0];
+    const result = await internalDebtsManager.addInternalDebt(
+      innerDebt,
+      innerDebtsItemsListService.innerDebtsItems
     );
-    const mappedCustomer = mapper.mapToICustomer(customer || {});
 
-    var insertedId = -1;
-    //check if inner debt already exists
-    if (!innerDebt.innerDebtId) {
-      const result = await innerDebtsManager.addInnerDebt(newInnerDebt);
-      if (!result || !result.lastInsertRowId)
-        return toggleSnackBar({
-          text: i18n.t("failed-to-add-internal-debt"),
-          visible: true,
-        });
-      insertedId = result.lastInsertRowId;
-      setInnerDebt((prev) => {
-        return { ...prev, innerDebtId: result.lastInsertRowId };
-      });
-      innerDebt.innerDebtId = result.lastInsertRowId;
-    }
-    // Save inner debt items
-    const innerDebtItems: InnerDebtItem[] =
-      innerDebtsItemsListService.innerDebtsItems.map((item): InnerDebtItem => {
-        return {
-          InnerDebtItemQuantity: item.innerDebtItemQuantity,
-          InnerDebtItem_ItemId: item.innerDebtItem_ItemId,
-          InnerDebtItem_InnerDebtId: innerDebt.innerDebtId,
-        };
-      });
-
-    const itemsResult = await innerDebtItemsManager.addInnerDebtItems(
-      innerDebtItems
-    );
-    if (!itemsResult) {
-      await innerDebtsManager.deleteInnerDebt(innerDebt.innerDebtId);
+    if (!result.success && result.message) {
       return toggleSnackBar({
-        text: i18n.t("failed-to-add-inner-debt-products"),
         visible: true,
+        text: result.message,
+        type: "error",
       });
     }
-
-    insertedId > 0 &&
-      (await innerDebtsItemsListService.refreshInnerDebtsItems?.(insertedId));
-    const customerInnerDebt: ICustomer_IInnerDebt = {
-      ...innerDebt,
-      ...mappedCustomer,
-    };
-    addToInnerDebtsList(customerInnerDebt);
-    toggleModal();
-    toggleSnackBar({
-      text: i18n.t("internal-debt-added-successfully"),
-      visible: true,
-      type: "success",
-    });
+    if (result.data > 0) {
+      await innerDebtsItemsListService.refreshInnerDebtsItems?.(result.data);
+      const customerInnerDebt: ICustomer_IInnerDebt = {
+        ...innerDebt,
+        ...customer,
+      };
+      addToInnerDebtsList(customerInnerDebt);
+      toggleModal();
+      toggleSnackBar({
+        text: result.message,
+        visible: true,
+        type: "success",
+      });
+    }
   }
 
   function validateInnerDebtFields() {

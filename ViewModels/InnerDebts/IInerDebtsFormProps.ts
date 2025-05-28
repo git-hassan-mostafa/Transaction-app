@@ -7,5 +7,5 @@ export interface IInnerDebtFormProps {
 }
 
 export interface IInnerDebtsFormServiceProps extends IInnerDebtFormProps {
-  innerDebtsItemsListService: IInnerDebtsItemsListProps;
+  internalDebtsItemsListService: IInnerDebtsItemsListProps;
 }

@@ -1,6 +1,6 @@
 import useGlobalContext from "@/Global/Context/ContextProvider";
-import BLLFactory from "@/BLL/Factory/BLLFactory";
-import sortList from "@/Global/Helpers/SortList";
+import BLLFactory from "@/Factories/BLLFactory";
+import sortList from "@/Global/Helpers/Functions/SortList";
 import i18n from "@/Global/I18n/I18n";
 import IEditModalType from "@/Global/Types/IEditModalType";
 import ICustomer from "@/ViewModels/Customers/ICustomer";
@@ -9,7 +9,7 @@ import { Alert } from "react-native";
 
 export default function useCustomersService() {
   //services
-  const customerService = BLLFactory.CustomerService();
+  const customerManager = BLLFactory.CustomerManager();
 
   //states
   const [customers, setCustomers] = useState<ICustomer[]>([]);
@@ -28,7 +28,7 @@ export default function useCustomersService() {
   }, []);
 
   async function getAllCustomers() {
-    const mappedCustomers = await customerService.getAllCustomers();
+    const mappedCustomers = await customerManager.getAllCustomersCalculated();
     setCustomers(mappedCustomers);
   }
 
@@ -69,7 +69,7 @@ export default function useCustomersService() {
   }
 
   async function deleteCustomer(id: number) {
-    const result = await customerService.deleteCustomer(id);
+    const result = await customerManager.deleteCustomer(id);
     if ((result?.changes || 0) > 0) {
       deleteFromCustomerList(id);
       toggleSnackBar({

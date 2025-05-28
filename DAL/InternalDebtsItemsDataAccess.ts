@@ -1,9 +1,9 @@
-import AbstractManager from "./AbstractManager";
+import AbstractDataAccess from "./AbstractDataAccess";
 import SqlBuilder from "../Global/Helpers/SqlBuilder";
 import InnerDebtItem from "../Models/InnerDebtItem";
 import InnerDebtItem_InnerDebt_Item from "../Models/RelationModels/InnerDebtItem_InnerDebt_Item";
 
-export default class InnerDebtItemsManager extends AbstractManager {
+export default class InternalDebtsItemsDataAccess extends AbstractDataAccess {
   table = "InnerDebtItems";
   constructor() {
     super();
@@ -51,6 +51,7 @@ export default class InnerDebtItemsManager extends AbstractManager {
       return result;
     } catch (error) {
       console.log("error addInnerDebtItems", error);
+      return null;
     }
   }
 
@@ -71,6 +72,7 @@ export default class InnerDebtItemsManager extends AbstractManager {
       return result;
     } catch (error) {
       console.log("error deleteInnerDebtItem", error);
+      return null;
     }
   }
 }

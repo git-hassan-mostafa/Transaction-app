@@ -1,7 +1,7 @@
 import useGlobalContext from "@/Global/Context/ContextProvider";
 import ProviderManager from "@/DAL/provider.service";
 import Mapper from "@/Global/Helpers/MapService";
-import SortList from "@/Global/Helpers/SortList";
+import SortList from "@/Global/Helpers/Functions/SortList";
 import i18n from "@/Global/I18n/I18n";
 import IProvider from "@/ViewModels/Providers/IProvider";
 import { useEffect, useState } from "react";
@@ -77,6 +77,7 @@ export default function useProvidersService() {
       toggleSnackBar({
         visible: true,
         text: i18n.t("error-deleting-provider"),
+        type: "error",
       });
   }
 

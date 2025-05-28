@@ -1,35 +1,26 @@
 import { useEffect, useState } from "react";
 import useGlobalContext from "@/Global/Context/ContextProvider";
-import InnerDebt from "@/Models/InnerDebt";
 import { IInnerDebtsFormServiceProps } from "@/ViewModels/InnerDebts/IInerDebtsFormProps";
 import IInnerDebt from "@/ViewModels/InnerDebts/IInerDebts";
 import IDropDownItem from "@/Global/Types/IDropDownItem";
-import Mapper from "@/Global/Helpers/MapService";
-import { ICustomer_IInnerDebt } from "@/ViewModels/RelationModels/ICustomer_IInnerDebt";
-import ICustomer from "@/ViewModels/Customers/ICustomer";
 import i18n from "@/Global/I18n/I18n";
-import CustomerManager from "@/DAL/customers.service";
-import InnerDebtsManager from "@/DAL/innerDebts.service";
+import BLLFactory from "@/Factories/BLLFactory";
 
-export default function useEditInternalDebtService({
-  id,
-  updateFromInnerDebtsList,
-  innerDebtsItemsListService,
-}: IInnerDebtsFormServiceProps) {
+export default function useEditInternalDebtService(
+  props: IInnerDebtsFormServiceProps
+) {
   //services
-  const innerDebtsManager = new InnerDebtsManager();
-  const customerManager = new CustomerManager();
-  const mapper = new Mapper();
+  const internalDebtsManager = BLLFactory.InternalDebtManager();
+  const customerManager = BLLFactory.CustomerManager();
 
   //states
-  const [innerDebt, setInnerDebt] = useState<IInnerDebt>({} as IInnerDebt);
+  const [internalDebt, setInnerDebt] = useState<IInnerDebt>({} as IInnerDebt);
   const [customersDropDown, setCustomersDropDown] = useState<IDropDownItem[]>(
     []
   );
-  const [customers, setCustomers] = useState<ICustomer[]>([]);
 
   //context
-  const { toggleSnackBar } = useGlobalContext();
+  const context = useGlobalContext();
 
   useEffect(() => {
     getInnerDebt();
@@ -38,38 +29,23 @@ export default function useEditInternalDebtService({
 
   useEffect(() => {
     setTotoalPriceSum();
-  }, [innerDebtsItemsListService.innerDebtsItems]);
+  }, [props.internalDebtsItemsListService.innerDebtsItems]);
 
   async function getAllCustomers() {
-    const customers = await customerManager.getAllCustomers();
-    const mappedCustomers = customers?.map((c) => {
-      return mapper.mapToICustomer(c);
-    }) as ICustomer[];
-
-    const sortedCustomers = [
-      { label: "", value: undefined },
-      ...(customers?.map((c) => {
-        return { label: c.Name, value: c.CustomerId };
-      }) as IDropDownItem[]),
-    ];
-    setCustomers(mappedCustomers);
-    setCustomersDropDown(sortedCustomers);
+    const mappedCustomers = await customerManager.getAllCustomers();
+    const dropDownCustomers =
+      internalDebtsManager.dropDownCutomers(mappedCustomers);
+    setCustomersDropDown(dropDownCustomers);
   }
 
   async function getInnerDebt() {
-    const innerDebtDB = await innerDebtsManager.getInnerDebt(id);
-    if (!innerDebtDB) return;
-    const innerDebt = mapper.mapToIInnerDebt(innerDebtDB);
-    setInnerDebt(innerDebt);
-    return innerDebtDB;
+    const internalDebtDB = await internalDebtsManager.getInternalDebt(props.id);
+    setInnerDebt(internalDebtDB);
   }
 
   function setTotoalPriceSum() {
-    const totalPrice = innerDebtsItemsListService.innerDebtsItems.reduce(
-      (sum, item) => {
-        return sum + item.innerDebtItemTotalPrice;
-      },
-      0
+    const totalPrice = internalDebtsManager.getTotalPricesSum(
+      props.internalDebtsItemsListService.innerDebtsItems
     );
     setInnerDebt((prev) => ({ ...prev, innerDebtTotalPrice: totalPrice }));
   }
@@ -107,17 +83,12 @@ export default function useEditInternalDebtService({
   }
 
   async function updateCustomer(customerId: number) {
-    const result = await innerDebtsManager.updateInnerDebtCustomer(
-      innerDebt.innerDebtId,
+    const result = await internalDebtsManager.updateInnerDebtCustomer(
+      internalDebt,
       customerId
     );
-    const customer = customers.find((c) => c.customerId === customerId);
-    const customerInnerDebt: ICustomer_IInnerDebt = {
-      ...innerDebt,
-      ...(customer as ICustomer),
-    };
     if (result) {
-      updateFromInnerDebtsList(customerInnerDebt);
+      props.updateFromInnerDebtsList(result.data);
     }
   }
 
@@ -126,30 +97,23 @@ export default function useEditInternalDebtService({
   }
 
   async function updateInnerDebt() {
-    validateInnerDebtFields(innerDebt);
-    const customer = customers.find(
-      (c) => c.customerId === innerDebt.innerDebt_CustomerId
-    );
-    const customerInnerDebt: ICustomer_IInnerDebt = {
-      ...innerDebt,
-      ...(customer as ICustomer),
-    };
-    const updatedInnerDebt: InnerDebt = mapper.mapToInnerDebt(innerDebt);
-    const result = await innerDebtsManager.updateInnerDebt(updatedInnerDebt);
-    if ((result?.changes || 0) > 0) updateFromInnerDebtsList(customerInnerDebt);
+    if (!validateInnerDebtFields(internalDebt)) return;
+    const result = await internalDebtsManager.updateInternalDebt(internalDebt);
+    if (result?.success) props.updateFromInnerDebtsList(result.data);
   }
 
   function validateInnerDebtFields(innerDebt: IInnerDebt) {
-    innerDebt.innerDebtId = id;
+    innerDebt.innerDebtId = props.id;
     if (!innerDebt.innerDebt_CustomerId) {
-      toggleSnackBar({
+      context.toggleSnackBar({
         text: i18n.t("please-select-a-customer"),
         visible: true,
+        type: "error",
       });
       return false;
     }
-    if (!innerDebtsItemsListService.innerDebtsItems.length) {
-      toggleSnackBar({
+    if (!props.internalDebtsItemsListService.innerDebtsItems.length) {
+      context.toggleSnackBar({
         visible: true,
         text: i18n.t("please-add-at-least-one-product"),
         type: "error",
@@ -157,7 +121,7 @@ export default function useEditInternalDebtService({
       return false;
     }
     if (innerDebt.innerDebtPricePaid > innerDebt.innerDebtTotalPrice) {
-      toggleSnackBar({
+      context.toggleSnackBar({
         visible: true,
         text: i18n.t("paid-price-cannot-be-greater-than-total-price"),
         type: "error",
@@ -168,7 +132,7 @@ export default function useEditInternalDebtService({
   }
 
   return {
-    innerDebt,
+    internalDebt,
     customersDropDown,
     setTotalPrice,
     setPricePaid,

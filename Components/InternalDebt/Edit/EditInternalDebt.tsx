@@ -11,30 +11,15 @@ import useInnerDebtsItemsListFormComponentService from "./InternalDebtProductsLi
 import i18n from "@/Global/I18n/I18n";
 import { dateOptionsWithDay } from "@/Global/Constants/DateOptions";
 
-export default function EditInternalDebt({
-  id,
-  updateFromInnerDebtsList,
-}: IInnerDebtFormProps) {
-  const innerDebtsItemsListFormService =
-    useInnerDebtsItemsListFormComponentService(id);
+export default function EditInternalDebt(props: IInnerDebtFormProps) {
+  const internalDebtsItemsListService =
+    useInnerDebtsItemsListFormComponentService(props.id);
 
-  const {
-    innerDebt,
-    setTotalPrice,
-    setPricePaid,
-    setCustomer,
-    setNotes,
-    updateTotalPrice,
-    updatePricePaid,
-    updateCustomer,
-    updateNotes,
-    customersDropDown,
-  } = useEditInternalDebtService({
-    id,
-    updateFromInnerDebtsList,
-    innerDebtsItemsListService: innerDebtsItemsListFormService,
+  const service = useEditInternalDebtService({
+    ...props,
+    internalDebtsItemsListService,
   });
-  const date = new Date(innerDebt.innerDebtDate);
+  const date = new Date(service.internalDebt.innerDebtDate);
   return (
     <View style={styles.container}>
       <TabComponent titles={[i18n.t("details"), i18n.t("products-list")]}>
@@ -49,12 +34,12 @@ export default function EditInternalDebt({
               {i18n.t("select-customer")}
             </ThemedText>
             <CustomDropDown
-              value={innerDebt.innerDebt_CustomerId as number}
+              value={service.internalDebt.innerDebt_CustomerId as number}
               setValue={(value) => {
-                setCustomer(value as number);
-                updateCustomer(value as number);
+                service.setCustomer(value as number);
+                service.updateCustomer(value as number);
               }}
-              data={customersDropDown}
+              data={service.customersDropDown}
             />
           </View>
           <View style={styles.row}>
@@ -66,10 +51,10 @@ export default function EditInternalDebt({
               style={styles.input as StyleProp<TextStyle>}
               placeholder={i18n.t("enter-total-price")}
               placeholderTextColor="#999"
-              value={innerDebt.innerDebtTotalPrice?.toString()}
+              value={service.internalDebt.innerDebtTotalPrice?.toString()}
               keyboardType="numeric"
-              onChangeText={(text) => setTotalPrice(text)}
-              onEndEditing={updateTotalPrice}
+              onChangeText={(text) => service.setTotalPrice(text)}
+              onEndEditing={service.updateTotalPrice}
             />
           </View>
           <View style={styles.row}>
@@ -81,10 +66,10 @@ export default function EditInternalDebt({
               style={styles.input as StyleProp<TextStyle>}
               placeholder={i18n.t("enter-paid-price")}
               placeholderTextColor="#999"
-              value={innerDebt.innerDebtPricePaid?.toString()}
+              value={service.internalDebt.innerDebtPricePaid?.toString()}
               keyboardType="numeric"
-              onChangeText={(text) => setPricePaid(text)}
-              onEndEditing={updatePricePaid}
+              onChangeText={(text) => service.setPricePaid(text)}
+              onEndEditing={service.updatePricePaid}
             />
           </View>
 
@@ -96,13 +81,13 @@ export default function EditInternalDebt({
               }
               placeholder={i18n.t("enter-notes")}
               placeholderTextColor="#999"
-              value={innerDebt.innerDebtNotes}
-              onChangeText={setNotes}
-              onEndEditing={updateNotes}
+              value={service.internalDebt.innerDebtNotes}
+              onChangeText={service.setNotes}
+              onEndEditing={service.updateNotes}
             />
           </View>
         </View>
-        <InternalDebtProductsList {...innerDebtsItemsListFormService} />
+        <InternalDebtProductsList {...internalDebtsItemsListService} />
       </TabComponent>
     </View>
   );

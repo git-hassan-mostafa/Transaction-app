@@ -1,11 +1,11 @@
-import AbstractManager from "./AbstractManager";
+import AbstractDataAccess from "./AbstractDataAccess";
 import Customer from "../Models/Customer";
 import SqlBuilder from "../Global/Helpers/SqlBuilder";
 import InnerDebt from "../Models/InnerDebt";
 import { SQLiteRunResult } from "expo-sqlite";
 import Customer_InnerDebt_InnerDebtItem_Item from "../Models/RelationModels/Customer_InnerDebt_InnerDebtItem_Item";
 
-export default class CustomerManager extends AbstractManager {
+export default class CustomerDataAccess extends AbstractDataAccess {
   table = "customers";
   constructor() {
     super();
@@ -31,6 +31,7 @@ export default class CustomerManager extends AbstractManager {
       return customer;
     } catch (error) {
       console.log("error getCustomer", error);
+      return null;
     }
   }
 
