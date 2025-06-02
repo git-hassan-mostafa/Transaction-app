@@ -79,8 +79,9 @@ export default function useEditCustomerService({
   }
 
   async function updateCustomer() {
-    const updatedCustomer = await customerManager.updateCustomer(customer);
-    updateFromCustomersList(updatedCustomer);
+    const result = await customerManager.updateCustomer(customer);
+    if (!result.success) return;
+    updateFromCustomersList(customer);
   }
 
   return {

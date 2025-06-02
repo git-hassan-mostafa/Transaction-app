@@ -7,18 +7,12 @@ import { ThemedText } from "../../../Global/Reusable Components/HelperComponents
 import styles from "./AddProduct.style";
 import useAddProductService from "./AddProduct.service";
 import CustomDropDown from "@/Global/Reusable Components/CustomDropDownComponent/CustomDropDownComponent";
-import IAddItemProps from "@/ViewModels/Items/IAddItemProps";
+import IAddItemProps from "@/ViewModels/Products/IAddProductProps";
 import ValidationMessage from "@/Global/Reusable Components/HelperComponents/ValidationMessage";
 import i18n from "@/Global/I18n/I18n";
 
-export default function AddProduct({
-  toggleModal,
-  addToItemsList,
-}: IAddItemProps) {
-  const service = useAddProductService({
-    toggleModal,
-    addToItemsList,
-  });
+export default function AddProduct(props: IAddItemProps) {
+  const service = useAddProductService(props);
 
   return (
     <View style={styles.container}>
@@ -28,8 +22,8 @@ export default function AddProduct({
           style={styles.textInput as StyleProp<TextStyle>}
           placeholder={i18n.t("please-enter-product-name") + "..."}
           placeholderTextColor="#999"
-          value={service.item.itemName}
-          onChangeText={service.setItemName}
+          value={service.product.productName}
+          onChangeText={service.setProductName}
         />
       </View>
 
@@ -39,9 +33,9 @@ export default function AddProduct({
           style={styles.input as StyleProp<TextStyle>}
           placeholder={"00.00"}
           placeholderTextColor="#999"
-          value={service.item.itemPrice?.toString()}
+          value={service.product.productPrice?.toString()}
           keyboardType="numeric"
-          onChangeText={(text) => service.setItemPrice(text)}
+          onChangeText={(text) => service.setProductPrice(text)}
         />
       </View>
       <View style={styles.row}>
@@ -52,15 +46,15 @@ export default function AddProduct({
           style={styles.input as StyleProp<TextStyle>}
           placeholder={"0"}
           placeholderTextColor="#999"
-          value={service.item.itemQuantity?.toString()}
+          value={service.product.productQuantity?.toString()}
           keyboardType="numeric"
-          onChangeText={(text) => service.setItemQuantity(text)}
+          onChangeText={(text) => service.setProductQuantity(text)}
         />
       </View>
       <View style={styles.row}>
         <ThemedText style={styles.label}>{i18n.t("provider")}</ThemedText>
         <CustomDropDown
-          value={service.item.item_ProviderId}
+          value={service.product.product_ProviderId}
           setValue={(value) => service.setProvider(value as number)}
           data={service.providers}
         />
@@ -71,8 +65,8 @@ export default function AddProduct({
           style={[styles.textInput, styles.textArea] as StyleProp<TextStyle>}
           placeholder={i18n.t("enter-notes") + "..."}
           placeholderTextColor="#999"
-          value={service.item.itemNotes}
-          onChangeText={service.setcustomerNotes}
+          value={service.product.productNotes}
+          onChangeText={service.setProductNotes}
         />
       </View>
       <View style={styles.row}>
@@ -83,7 +77,7 @@ export default function AddProduct({
           buttonColor={Constants.colors.products}
           textColor={Constants.colors.lightGray}
           labelStyle={styles.saveButton}
-          onPress={service.addItem}
+          onPress={service.addProduct}
         >
           <ThemedText style={styles.saveText}>{i18n.t("save")}</ThemedText>
         </Button>

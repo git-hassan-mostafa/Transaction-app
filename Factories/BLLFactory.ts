@@ -1,8 +1,10 @@
 import CustomerManager from "../BLL/CustomerManager";
 import DALFactory from "@/Factories/DALFactory";
 import InternalDebtManager from "../BLL/InternalDebtManager";
-import ItemManager from "../BLL/ItemManager";
+import ProductManager from "../BLL/ProductManager";
 import HelpersFactory from "./HelpersFactory";
+import { PeopleManager } from "@/BLL/PeopleManager";
+import ProviderManager from "@/BLL/ProviderManager";
 
 export default class BLLFactory {
   static CustomerManager() {
@@ -12,9 +14,10 @@ export default class BLLFactory {
     );
   }
 
-  static ItemManager() {
-    return new ItemManager(
+  static ProductManager() {
+    return new ProductManager(
       DALFactory.ItemsDataAccess(),
+      DALFactory.ProviderDataAccess(),
       HelpersFactory.Mapper()
     );
   }
@@ -23,6 +26,20 @@ export default class BLLFactory {
       DALFactory.InternalDebtsDataAccess(),
       DALFactory.InternalDebtsItemsDataAccess(),
       DALFactory.CustomerDataAccess(),
+      HelpersFactory.Mapper()
+    );
+  }
+
+  static PeopleManager() {
+    return new PeopleManager(
+      DALFactory.PeopleDataAccess(),
+      HelpersFactory.Mapper()
+    );
+  }
+
+  static ProviderManager() {
+    return new ProviderManager(
+      DALFactory.ProviderDataAccess(),
       HelpersFactory.Mapper()
     );
   }

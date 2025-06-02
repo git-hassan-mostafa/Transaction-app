@@ -24,7 +24,7 @@ export default class SqlBuilder<T extends Record<string, any>> {
 
   async insert(value: Partial<T>) {
     try {
-      if (!value) return false;
+      if (!value) return null;
       var query = `insert into ${this.tableName} (${Object.keys(value).join(
         " , "
       )})

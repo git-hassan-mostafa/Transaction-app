@@ -14,7 +14,9 @@ export const ServiceProvider = ({
   const props: IServiceProviderProps = {
     customerManager: BLLFactory.CustomerManager(),
     internalDebtManager: BLLFactory.InternalDebtManager(),
-    itemManager: BLLFactory.ItemManager(),
+    productManager: BLLFactory.ProductManager(),
+    peopleManager: BLLFactory.PeopleManager(),
+    providerManager: BLLFactory.ProviderManager(),
   };
 
   return <Context.Provider value={props}>{children}</Context.Provider>;

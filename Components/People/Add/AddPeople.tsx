@@ -14,11 +14,8 @@ import IAddPeopleProps from "@/ViewModels/People/IAddPersonProps";
 import ValidationMessage from "@/Global/Reusable Components/HelperComponents/ValidationMessage";
 import i18n from "@/Global/I18n/I18n";
 
-export default function AddPeople({
-  addToPeopleList,
-  toggleModal,
-}: IAddPeopleProps) {
-  const service = useAddPeopleService({ addToPeopleList, toggleModal });
+export default function AddPeople(props: IAddPeopleProps) {
+  const service = useAddPeopleService(props);
   return (
     <View style={styles.container}>
       <View style={styles.row}>

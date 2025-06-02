@@ -30,7 +30,7 @@ export function useContextService() {
   function toggleSnackBar(value: ISnackBarOptions) {
     setSnackBarOptions(value);
     setTimeout(() => {
-      setSnackBarOptions({ visible: false, text: "", type: "error" });
+      setSnackBarOptions({ visible: false, text: "", type: value.type });
     }, 3000);
   }
 

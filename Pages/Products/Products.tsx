@@ -1,6 +1,6 @@
 import { FlatList, View } from "react-native";
-import useItemsService from "./Items.service";
-import styles from "./Items.style";
+import useProductsService from "./Products.service";
+import styles from "./Products.style";
 import React from "react";
 import Item from "@/Models/Item";
 import AccordionComponent from "@/Global/Reusable Components/AccordionComponent/AccordionComponent";
@@ -9,12 +9,12 @@ import { EditProduct } from "@/Components/Products/Edit/EditProduct";
 import CustomModal from "@/Global/Reusable Components/CustomModalComponent/CustomModalComponent";
 import AddProduct from "@/Components/Products/Add/AddProduct";
 import { FAB } from "react-native-paper";
-import IItem from "@/ViewModels/Items/IItem";
+import IProduct from "@/ViewModels/Products/IProduct";
 import pageStyle from "@/Global/Styles/pages.global.style";
 import i18n from "@/Global/I18n/I18n";
 
-export default function Items() {
-  const service = useItemsService();
+export default function Products() {
+  const service = useProductsService();
 
   return (
     <React.Fragment>
@@ -22,18 +22,18 @@ export default function Items() {
         style={pageStyle.flatList}
         data={service.items}
         numColumns={1}
-        keyExtractor={(item) => item.itemId?.toString() as string}
-        renderItem={({ item }: { item: IItem }) => (
+        keyExtractor={(item) => item.productId?.toString() as string}
+        renderItem={({ item }: { item: IProduct }) => (
           <AccordionComponent
-            key={item.itemId}
-            id={item.itemId as number}
+            key={item.productId}
+            id={item.productId as number}
             handleDelete={service.handleDeleteItem}
             headerColor={Constants.colors.products}
             iconColor={Constants.colors.lightGray}
-            headerText={item.itemName as string}
+            headerText={item.productName as string}
           >
             <EditProduct
-              id={item.itemId as number}
+              id={item.productId as number}
               updateFromProductsList={service.updateFromProductsList}
             />
           </AccordionComponent>
@@ -47,7 +47,7 @@ export default function Items() {
         onClose={service.toggleModal}
       >
         <AddProduct
-          addToItemsList={service.addToItemsList}
+          addToProductsList={service.addToProductsList}
           toggleModal={service.toggleModal}
         />
       </CustomModal>

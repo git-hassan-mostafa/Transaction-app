@@ -16,6 +16,7 @@ export default class ItemsDataAccess extends AbstractDataAccess {
       return items as Item[];
     } catch (error) {
       console.log("error getAllItems", error);
+      return null;
     }
   }
 
@@ -26,6 +27,7 @@ export default class ItemsDataAccess extends AbstractDataAccess {
       return item;
     } catch (error) {
       console.log("error getItem", error);
+      return null;
     }
   }
 
@@ -36,6 +38,7 @@ export default class ItemsDataAccess extends AbstractDataAccess {
       return result;
     } catch (error) {
       console.log("error addItem", error);
+      return null;
     }
   }
 

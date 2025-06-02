@@ -1,5 +1,5 @@
-import ItemsPage from "@/Pages/Items/Items";
+import Products from "@/Pages/Products/Products";
 
 export default function Items() {
-  return <ItemsPage />;
+  return <Products />;
 }

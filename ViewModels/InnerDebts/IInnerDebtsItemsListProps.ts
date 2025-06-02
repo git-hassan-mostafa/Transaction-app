@@ -1,9 +1,9 @@
 import IDropDownItem from "@/Global/Types/IDropDownItem";
 import IInnerDebtItem_IInnerDebt_IItem from "../RelationModels/IInnerDebtItem_IInnerDebt_IItem";
-import IItem from "../Items/IItem";
+import IProduct from "../Products/IProduct";
 
 export default interface IInnerDebtsItemsListProps {
-  items: IItem[];
+  items: IProduct[];
   dropDownItems: IDropDownItem[];
   innerDebtsItems: IInnerDebtItem_IInnerDebt_IItem[];
   newInnerDebtsItem: IInnerDebtItem_IInnerDebt_IItem;

@@ -25,9 +25,8 @@ export default class InternalDebtManager {
 
   async getAllInternalDebts(): Promise<ICustomer_IInnerDebt[]> {
     const innerDebtsDB = await this.internalDebtsDataAccess.getAllInnerDebts();
-    const innerDebts = innerDebtsDB?.map((c) => {
-      return this.mapper.mapToICustomer_IInnerDebt(c);
-    });
+    if (!innerDebtsDB) return [];
+    const innerDebts = this.mapper.mapToICustomer_IInnerDebtAll(innerDebtsDB);
     return innerDebts || [];
   }
 
@@ -47,7 +46,7 @@ export default class InternalDebtManager {
       (item) => {
         var i = this.mapper.mapTo_IInnerDebtItem_IInnerDebt_IItem(item);
         i.innerDebtItemTotalPrice =
-          i.innerDebtItemQuantity * (Number(i?.itemPrice) || 0);
+          i.innerDebtItemQuantity * (Number(i?.productPrice) || 0);
         return i;
       }
     );

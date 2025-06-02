@@ -37,7 +37,7 @@
   "error-deleting-customer": "حصل خطأ أثناء حذف الزبون",
   "please-enter-customer-name": "يرجى إدخال اسم الزبون",
   "please-enter-phone-number": "يرجى إدخال رقم الهاتف",
-  "failed-to-add-customer,please-try-again": "فشل في إضافة الزبون، يرجى المحاولة مرة أخرى",
+  "failed-to-add-customer": "فشل في إضافة الزبون",
   "customer-added-successfully": "تم إضافة الزبون بنجاح",
   "select-customer": "اختر الزبون",
   "customers-debts": "ديون الزبائن",

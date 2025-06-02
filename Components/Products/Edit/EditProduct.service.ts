@@ -1,25 +1,18 @@
 import { useEffect, useState } from "react";
-import Item from "@/Models/Item";
 import IDropDownItem from "@/Global/Types/IDropDownItem";
-import Mapper from "@/Global/Helpers/MapService";
-import IItem from "@/ViewModels/Items/IItem";
-import IEditProductProps from "@/ViewModels/Items/IItemFormProps";
+import IProduct from "@/ViewModels/Products/IProduct";
+import IEditProductProps from "@/ViewModels/Products/IProductFormProps";
 import { IValidationErrorType } from "@/Global/Types/IValidationErrorType";
 import useGlobalContext from "@/Global/Context/ContextProvider";
 import i18n from "@/Global/I18n/I18n";
-import ProviderManager from "@/DAL/provider.service";
-import ItemsDataAccess from "@/DAL/ItemsDataAccess";
+import ProviderDataAccess from "@/DAL/ProviderDataAccess";
+import useService from "@/Global/Context/ServiceProvider";
 
-export default function useEditProductService({
-  id,
-  updateFromProductsList,
-}: IEditProductProps) {
+export default function useEditProductService(props: IEditProductProps) {
   //services
-  const providerManager = new ProviderManager();
-  const itemManager = new ItemsDataAccess();
-  const mapper = new Mapper();
+  const { productManager } = useService();
 
-  const [item, setItem] = useState<IItem>({} as IItem);
+  const [product, setProduct] = useState<IProduct>({} as IProduct);
   const [providers, setProviders] = useState<IDropDownItem[]>([]);
   const [validation, setValidation] = useState<IValidationErrorType>({
     visible: false,
@@ -27,95 +20,93 @@ export default function useEditProductService({
   });
 
   //context
-  const { toggleSnackBar } = useGlobalContext();
+  const context = useGlobalContext();
+
   useEffect(() => {
-    getItem();
+    getProduct();
     getAllProviders();
   }, []);
 
   async function getAllProviders() {
-    const providers = await providerManager.getAllProviders();
+    const providers = await productManager.getAllProviders();
     const sortedProviders = [
       { label: "", value: undefined },
       ...(providers?.map((p) => {
-        return { label: p.Name, value: p.ProviderId };
+        return { label: p.providerName, value: p.providerId };
       }) as IDropDownItem[]),
     ];
     setProviders(sortedProviders);
   }
 
-  async function getItem() {
-    const itemDB = await itemManager.getItem(id);
-    if (!itemDB) return;
-    const item = mapper.mapToIItem(itemDB);
-    setItem(item);
-    return item;
+  async function getProduct() {
+    const productDB = await productManager.getProduct(props.id);
+    if (!productDB) return;
+    setProduct(productDB);
   }
 
-  function setItemName(value: string) {
-    setItem((prev) => {
-      return { ...prev, itemName: value };
+  function setProductName(value: string) {
+    setProduct((prev) => {
+      return { ...prev, productName: value };
     });
   }
 
-  function setItemQuantity(value: string) {
-    setItem((prev) => {
-      return { ...prev, itemQuantity: Number(value).toString() };
+  function setProductQuantity(value: string) {
+    setProduct((prev) => {
+      return { ...prev, productQuantity: Number(value).toString() };
     });
   }
 
-  function setItemPrice(value: string) {
-    setItem((prev) => {
-      return { ...prev, itemPrice: value };
+  function setProductPrice(value: string) {
+    setProduct((prev) => {
+      return { ...prev, productPrice: value };
     });
   }
 
   function setProvider(providerId: number) {
-    setItem((prev) => {
-      return { ...prev, item_ProviderId: providerId };
+    setProduct((prev) => {
+      return { ...prev, product_ProviderId: providerId };
     });
   }
 
-  function setItemNotes(value: string) {
-    setItem((prev) => {
-      return { ...prev, itemNotes: value };
+  function setProductNotes(value: string) {
+    setProduct((prev) => {
+      return { ...prev, productNotes: value };
     });
   }
 
-  async function updateItem() {
+  async function updateProduct() {
     if (!validateProduct()) return;
-    const updatedItem: Item = mapper.mapToItem(item);
-    const result = await itemManager.updateItem(updatedItem);
-    if (!result?.changes)
-      return toggleSnackBar({
+    const result = await productManager.updateProduct(product);
+    if (!result.success)
+      return context.toggleSnackBar({
         visible: true,
-        text: i18n.t("error-updating-product"),
+        text: result.message,
         type: "error",
       });
-    updateFromProductsList(item);
-    toggleSnackBar({
+    props.updateFromProductsList(product);
+    context.toggleSnackBar({
       visible: true,
-      text: i18n.t("product-updated-successfully"),
+      text: result.message,
       type: "success",
     });
   }
 
   function validateProduct() {
-    if (!item.itemName) {
+    if (!product.productName) {
       setValidation({
         visible: true,
         text: i18n.t("please-enter-product-name"),
       });
       return false;
     }
-    if (!item.itemPrice) {
+    if (!product.productPrice) {
       setValidation({
         visible: true,
         text: i18n.t("please-enter-product-price"),
       });
       return false;
     }
-    if (!item.itemQuantity || Number(item.itemQuantity) < 1) {
+    if (!product.productQuantity || Number(product.productQuantity) < 1) {
       setValidation({
         visible: true,
         text: i18n.t("please-enter-product-quantity"),
@@ -126,14 +117,14 @@ export default function useEditProductService({
   }
 
   return {
-    item,
+    product,
     validation,
     providers,
-    updateItem,
-    setItemName,
-    setItemPrice,
-    setItemQuantity,
+    updateProduct,
+    setProductName,
+    setProductPrice,
+    setProductQuantity,
     setProvider,
-    setItemNotes,
+    setProductNotes,
   };
 }

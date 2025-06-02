@@ -1,6 +1,6 @@
 import useGlobalContext from "@/Global/Context/ContextProvider";
 import IDropDownItem from "@/Global/Types/IDropDownItem";
-import IItem from "@/ViewModels/Items/IItem";
+import IProduct from "@/ViewModels/Products/IProduct";
 import IInnerDebtItem_IInnerDebt_IItem from "@/ViewModels/RelationModels/IInnerDebtItem_IInnerDebt_IItem";
 import i18n from "@/Global/I18n/I18n";
 import { useEffect, useState } from "react";
@@ -12,10 +12,10 @@ export default function useInternalDebtProductsListService(
   innerDebtId: number
 ): IInternalDebtProductsListProps {
   //managers
-  const { internalDebtManager, itemManager } = useService();
+  const { internalDebtManager, productManager: itemManager } = useService();
 
   //states
-  const [items, setItems] = useState<IItem[]>([]);
+  const [items, setItems] = useState<IProduct[]>([]);
   const [dropDownItems, setDropDownItems] = useState<IDropDownItem[]>([]);
   const [innerDebtsItems, setInnerDebtsItems] = useState<
     IInnerDebtItem_IInnerDebt_IItem[]
@@ -41,7 +41,7 @@ export default function useInternalDebtProductsListService(
   }
 
   async function getAllItems() {
-    const itemsDB = await itemManager.getAllItems();
+    const itemsDB = await itemManager.getAllProducts();
     const dropDownItems = itemManager.getDropDownItems(itemsDB);
     setItems(itemsDB);
     setDropDownItems(dropDownItems);
@@ -52,9 +52,9 @@ export default function useInternalDebtProductsListService(
   }
 
   function setInnerDebtsItem(id: number) {
-    const currentItem = items.find((i) => i.itemId === id);
+    const currentItem = items.find((i) => i.productId === id);
     newInnerDebtsItem.innerDebtItem_ItemId = id;
-    newInnerDebtsItem.itemName = currentItem?.itemName || "";
+    newInnerDebtsItem.productName = currentItem?.productName || "";
   }
 
   function toggleAddItem(value: boolean) {
@@ -63,12 +63,12 @@ export default function useInternalDebtProductsListService(
 
   async function handleAddItem() {
     const currentItem = items.find(
-      (i) => i.itemId === newInnerDebtsItem.innerDebtItem_ItemId
+      (i) => i.productId === newInnerDebtsItem.innerDebtItem_ItemId
     );
     newInnerDebtsItem.innerDebtItem_InnerDebtId = innerDebtId;
     newInnerDebtsItem.innerDebtItemTotalPrice =
       newInnerDebtsItem.innerDebtItemQuantity *
-      (Number(currentItem?.itemPrice) || 0);
+      (Number(currentItem?.productPrice) || 0);
 
     if (!handleExistingItem()) {
       const result = await internalDebtManager.addInternalDebtItem(
@@ -120,15 +120,15 @@ export default function useInternalDebtProductsListService(
 
   function handleExistingItem() {
     const currentItem = items.find(
-      (i) => i.itemId === newInnerDebtsItem.innerDebtItem_ItemId
+      (i) => i.productId === newInnerDebtsItem.innerDebtItem_ItemId
     );
     const itemAlreadyExists = innerDebtsItems.some(
-      (i) => i.innerDebtItem_ItemId === currentItem?.itemId
+      (i) => i.innerDebtItem_ItemId === currentItem?.productId
     );
     if (itemAlreadyExists) {
       setInnerDebtsItems((prev) => {
         const existingItem = prev.find(
-          (i) => i.innerDebtItem_ItemId === currentItem?.itemId
+          (i) => i.innerDebtItem_ItemId === currentItem?.productId
         );
         if (!existingItem) return prev;
         existingItem.innerDebtItemQuantity +=
@@ -136,7 +136,7 @@ export default function useInternalDebtProductsListService(
         existingItem.innerDebtItemTotalPrice =
           existingItem.innerDebtItemTotalPrice +
           newInnerDebtsItem.innerDebtItemQuantity *
-            (Number(currentItem?.itemPrice) || 0);
+            (Number(currentItem?.productPrice) || 0);
         return prev;
       });
       Alert.alert(

@@ -10,7 +10,7 @@ import InnerDebtItem_InnerDebt_Item from "../../Models/RelationModels/InnerDebtI
 import ICustomer from "../../ViewModels/Customers/ICustomer";
 import IInnerDebt from "../../ViewModels/InnerDebts/IInerDebts";
 import IInnerDebtItem from "../../ViewModels/InnerDebts/IInnerDebtItem";
-import IItem from "../../ViewModels/Items/IItem";
+import IProduct from "../../ViewModels/Products/IProduct";
 import IPerson from "../../ViewModels/People/IPerson";
 import IProvider from "../../ViewModels/Providers/IProvider";
 import { ICustomer_IInerDebt_IInnerDebtItem_IItem } from "../../ViewModels/RelationModels/ICustomer_IInerDebt_IInnerDebtItem_IItem";
@@ -27,6 +27,10 @@ export default class Mapper {
     };
   }
 
+  mapToCustomerAll(customers: ICustomer[]): Customer[] {
+    return customers.map((c) => this.mapToCustomer(c));
+  }
+
   mapToICustomer(customer: Customer): ICustomer {
     return {
       customerId: customer.CustomerId as number,
@@ -38,34 +42,50 @@ export default class Mapper {
     };
   }
 
-  mapToItem(item: IItem): Item {
+  mapToICustomerAll(customers: Customer[]): ICustomer[] {
+    return customers.map((c) => this.mapToICustomer(c));
+  }
+
+  mapToProduct(item: IProduct): Item {
     return {
-      ItemId: item.itemId,
-      Name: item.itemName,
-      Quantity: Number(item.itemQuantity),
-      Price: Number(item.itemPrice),
-      Item_ProviderId: item.item_ProviderId,
-      Notes: item.itemNotes,
+      ItemId: item.productId,
+      Name: item.productName,
+      Quantity: Number(item.productQuantity),
+      Price: Number(item.productPrice),
+      Item_ProviderId: item.product_ProviderId,
+      Notes: item.productNotes,
     };
   }
 
-  mapToIItem(item: Item): IItem {
+  mapToProductAll(products: IProduct[]): Item[] {
+    return products.map((p) => this.mapToProduct(p));
+  }
+
+  mapToIProduct(item: Item): IProduct {
     return {
-      itemId: item.ItemId as number,
-      itemName: item.Name as string,
-      itemQuantity: item.Quantity?.toString() as string,
-      itemPrice: item.Price?.toString() as string,
-      item_ProviderId: item.Item_ProviderId as number,
-      itemNotes: item.Notes as string,
+      productId: item.ItemId as number,
+      productName: item.Name as string,
+      productQuantity: item.Quantity?.toString() as string,
+      productPrice: item.Price?.toString() as string,
+      product_ProviderId: item.Item_ProviderId as number,
+      productNotes: item.Notes as string,
     };
+  }
+
+  mapToIProductAll(products: Item[]): IProduct[] {
+    return products.map((p) => this.mapToIProduct(p));
   }
 
   mapToPerson(person: IPerson): Person {
     return {
       PersonId: person.id,
-      Name: person.personName,
-      PhoneNumber: person.personPhoneNumber,
+      Name: person.personName?.trim(),
+      PhoneNumber: person.personPhoneNumber?.trim(),
     };
+  }
+
+  mapToPersonAll(people: IPerson[]): Person[] {
+    return people.map((p) => this.mapToPerson(p));
   }
 
   mapToIPerson(person: Person): IPerson {
@@ -74,6 +94,10 @@ export default class Mapper {
       personName: person.Name as string,
       personPhoneNumber: person.PhoneNumber as string,
     };
+  }
+
+  mapToIPersonAll(people: Person[]): IPerson[] {
+    return people.map((p) => this.mapToIPerson(p));
   }
 
   mapToProvider(provider: IProvider): Provider {
@@ -85,6 +109,10 @@ export default class Mapper {
     };
   }
 
+  mapToProviderAll(providers: IProvider[]): Provider[] {
+    return providers.map((provider) => this.mapToProvider(provider));
+  }
+
   mapToIProvider(provider: Provider): IProvider {
     return {
       providerId: provider.ProviderId as number,
@@ -94,6 +122,10 @@ export default class Mapper {
       providerPhoneNumber: provider.PhoneNumber as string,
       providerNotes: provider.Notes as string,
     };
+  }
+
+  mapToIProviderAll(providers: Provider[]): IProvider[] {
+    return providers.map((provider) => this.mapToIProvider(provider));
   }
 
   mapToInnerDebt(innerDebt: IInnerDebt): InnerDebt {
@@ -148,6 +180,12 @@ export default class Mapper {
     };
   }
 
+  mapTo_Customer_InnerDebtAll(
+    iCustomer_IInnerDebts: ICustomer_IInnerDebt[]
+  ): Customer_InnerDebt[] {
+    return iCustomer_IInnerDebts.map((ic) => this.mapTo_Customer_InnerDebt(ic));
+  }
+
   mapToICustomer_IInnerDebt(
     Customer_InnerDebt: Customer_InnerDebt
   ): ICustomer_IInnerDebt {
@@ -157,12 +195,18 @@ export default class Mapper {
     };
   }
 
+  mapToICustomer_IInnerDebtAll(
+    customer_InnerDebts: Customer_InnerDebt[]
+  ): ICustomer_IInnerDebt[] {
+    return customer_InnerDebts.map((c) => this.mapToICustomer_IInnerDebt(c));
+  }
+
   mapTo_IInnerDebtItem_IInnerDebt_IItem(
     InnerDebtItem_InnerDebt_Item: InnerDebtItem_InnerDebt_Item
   ): IInnerDebtItem_IInnerDebt_IItem {
     return {
       ...this.mapToIInnerDebt(InnerDebtItem_InnerDebt_Item),
-      ...this.mapToIItem(InnerDebtItem_InnerDebt_Item),
+      ...this.mapToIProduct(InnerDebtItem_InnerDebt_Item),
       ...this.mapToIInnerDebtItem(InnerDebtItem_InnerDebt_Item),
     };
   }
@@ -174,7 +218,7 @@ export default class Mapper {
       ...this.mapToICustomer(Customer_InnerDebt_InnerDebtItem_Item),
       ...this.mapToIInnerDebt(Customer_InnerDebt_InnerDebtItem_Item),
       ...this.mapToIInnerDebtItem(Customer_InnerDebt_InnerDebtItem_Item),
-      ...this.mapToIItem(Customer_InnerDebt_InnerDebtItem_Item),
+      ...this.mapToIProduct(Customer_InnerDebt_InnerDebtItem_Item),
     };
   }
 }

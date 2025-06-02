@@ -18,6 +18,7 @@ export default class CustomerDataAccess extends AbstractDataAccess {
       return customers as Customer[];
     } catch (error) {
       console.log("error getAllCustomers", error);
+      return null;
     }
   }
 
@@ -42,6 +43,7 @@ export default class CustomerDataAccess extends AbstractDataAccess {
       return result;
     } catch (error) {
       console.log("error addCustomer", error);
+      return null;
     }
   }
 

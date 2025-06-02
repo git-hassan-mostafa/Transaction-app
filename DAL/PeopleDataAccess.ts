@@ -3,7 +3,7 @@ import SqlBuilder from "../Global/Helpers/SqlBuilder";
 import Person from "../Models/Person";
 import AbstractDataAccess from "./AbstractDataAccess";
 
-export class PeopleManager extends AbstractDataAccess {
+export class PeopleDataAccess extends AbstractDataAccess {
   table = "people";
   constructor() {
     super();
@@ -13,9 +13,11 @@ export class PeopleManager extends AbstractDataAccess {
     try {
       const sqlBuilder = new SqlBuilder<Person>(this.db, this.table);
       const people = await sqlBuilder.select().executeAsync();
+      if (!people) return null;
       return people as Person[];
     } catch (error) {
       console.log("error getAllPeople ", error);
+      return null;
     }
   }
 
@@ -39,6 +41,7 @@ export class PeopleManager extends AbstractDataAccess {
       return result;
     } catch (error) {
       console.log("error addPerson ", error);
+      return null;
     }
   }
 
@@ -62,6 +65,7 @@ export class PeopleManager extends AbstractDataAccess {
       return result;
     } catch (error) {
       console.log("error deletePerson ", error);
+      return null;
     }
   }
 }

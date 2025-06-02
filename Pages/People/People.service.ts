@@ -1,23 +1,23 @@
 import useGlobalContext from "@/Global/Context/ContextProvider";
-import { PeopleManager } from "@/DAL/people.service";
+import { PeopleDataAccess } from "@/DAL/PeopleDataAccess";
 import Mapper from "@/Global/Helpers/MapService";
 import SortList from "@/Global/Helpers/Functions/SortList";
 import i18n from "@/Global/I18n/I18n";
 import IPerson from "@/ViewModels/People/IPerson";
 import { useEffect, useState } from "react";
 import { Alert } from "react-native";
+import useService from "@/Global/Context/ServiceProvider";
 
 export default function usePeopleService() {
   //services
-  const peopleManager = new PeopleManager();
-  const mapper = new Mapper();
+  const { peopleManager } = useService();
 
   //states
   const [people, setPeople] = useState<IPerson[]>([]);
   const [modalVisible, setModalVisible] = useState(false);
 
   // context
-  const { toggleSnackBar } = useGlobalContext();
+  const context = useGlobalContext();
 
   //constructor
   sortPeople();
@@ -31,8 +31,8 @@ export default function usePeopleService() {
 
   async function getAllPeople() {
     const peopleDB = await peopleManager.getAllPeople();
-    const people = peopleDB?.map((c) => mapper.mapToIPerson(c) as IPerson);
-    setPeople(people as IPerson[]);
+    if (!peopleDB) return;
+    setPeople(peopleDB);
   }
 
   function addToPeopleList(value: IPerson) {
@@ -67,19 +67,18 @@ export default function usePeopleService() {
 
   async function deletePerson(id: number) {
     const result = await peopleManager.deletePerson(id);
-    if ((result?.changes || 0) > 0) {
-      deleteFromPeopleList(id);
-      toggleSnackBar({
-        text: i18n.t("person-deleted-successfully"),
-        type: "success",
-        visible: true,
-      });
-    } else
-      toggleSnackBar({
-        text: i18n.t("error-deleting-person"),
+    if (!result.success)
+      return context.toggleSnackBar({
+        text: result.message,
         visible: true,
         type: "error",
       });
+    deleteFromPeopleList(id);
+    context.toggleSnackBar({
+      text: result.message,
+      type: "success",
+      visible: true,
+    });
   }
 
   function sortPeople() {

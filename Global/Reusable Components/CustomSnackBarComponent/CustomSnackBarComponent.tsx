@@ -1,14 +1,13 @@
-import Constants from "@/Global/Constants/Constants";
 import { ThemedText } from "../HelperComponents/ThemedText";
 import useCustomSnackBarComponentService from "./CustomSnackBarComponent.service";
 import { Snackbar } from "react-native-paper";
 
 export default function CustomSnackBarComponent() {
-  const { options, onDismissSnackBar, backgroundColor } =
+  const { snackBarOptions, onDismissSnackBar, backgroundColor } =
     useCustomSnackBarComponentService();
   return (
     <Snackbar
-      visible={options.visible}
+      visible={snackBarOptions.visible}
       onDismiss={onDismissSnackBar}
       action={{
         label: "",
@@ -18,7 +17,7 @@ export default function CustomSnackBarComponent() {
       }}
       style={{ backgroundColor, bottom: 30 }}
     >
-      <ThemedText color="white">{options.text || ""}</ThemedText>
+      <ThemedText color="white">{snackBarOptions.text || ""}</ThemedText>
     </Snackbar>
   );
 }

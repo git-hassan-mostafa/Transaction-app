@@ -1,27 +1,19 @@
 import useGlobalContext from "@/Global/Context/ContextProvider";
 import { useEffect, useState } from "react";
-import Item from "@/Models/Item";
 import IDropDownItem from "@/Global/Types/IDropDownItem";
-import IAddProductProps from "@/ViewModels/Items/IAddItemProps";
-import IItem from "@/ViewModels/Items/IItem";
+import IAddProductProps from "@/ViewModels/Products/IAddProductProps";
+import IProduct from "@/ViewModels/Products/IProduct";
 import { IValidationErrorType } from "@/Global/Types/IValidationErrorType";
-import Mapper from "@/Global/Helpers/MapService";
 import i18n from "@/Global/I18n/I18n";
-import ProviderManager from "@/DAL/provider.service";
-import ItemsDataAccess from "@/DAL/ItemsDataAccess";
+import useService from "@/Global/Context/ServiceProvider";
 
-export default function useAddProductService({
-  toggleModal,
-  addToItemsList,
-}: IAddProductProps) {
+export default function useAddProductService(props: IAddProductProps) {
   // services
-  const providerManager = new ProviderManager();
-  const itemManager = new ItemsDataAccess();
-  const map = new Mapper();
+  const { productManager } = useService();
 
   //states
-  const [itemState, setItemState] = useState<IItem>({} as IItem);
-  var item: IItem = itemState;
+  const [productState, setProductState] = useState<IProduct>({} as IProduct);
+  var product: IProduct = productState;
   const [providers, setProviders] = useState<IDropDownItem[]>([]);
   const [validation, setValidation] = useState<IValidationErrorType>({
     visible: false,
@@ -29,79 +21,78 @@ export default function useAddProductService({
   });
 
   // context
-  const { toggleSnackBar } = useGlobalContext();
+  const context = useGlobalContext();
 
   useEffect(() => {
     getAllProviders();
   }, []);
 
   async function getAllProviders() {
-    const providers = await providerManager.getAllProviders();
+    const providers = await productManager.getAllProviders();
     setProviders([
       { label: "", value: undefined },
       ...(providers?.map((p) => {
-        return { label: p.Name, value: p.ProviderId };
+        return { label: p.providerName, value: p.providerId };
       }) as IDropDownItem[]),
     ]);
   }
 
-  function setItemName(value: string) {
-    item = { ...item, itemName: value };
+  function setProductName(value: string) {
+    product = { ...product, productName: value };
   }
 
-  function setItemQuantity(value: string) {
-    item.itemQuantity = value;
+  function setProductQuantity(value: string) {
+    product.productQuantity = value;
   }
 
-  function setItemPrice(value: string) {
-    item.itemPrice = Number(value).toString();
+  function setProductPrice(value: string) {
+    product.productPrice = Number(value).toString();
   }
 
   function setProvider(providerId: number) {
-    item.item_ProviderId = providerId;
+    product.product_ProviderId = providerId;
   }
 
-  function setcustomerNotes(value: string) {
-    item.itemNotes = value;
+  function setProductNotes(value: string) {
+    product.productNotes = value;
   }
 
-  async function addItem() {
-    setItemState(item);
+  async function addProduct() {
+    setProductState(product);
     if (!validateProduct()) return;
-    const newItem: Item = map.mapToItem(item);
-    const result = await itemManager.addItem(newItem);
-    if (!result || !result.lastInsertRowId)
-      return toggleSnackBar({
+    const result = await productManager.addProduct(product);
+    if (!result.success)
+      return context.toggleSnackBar({
         visible: true,
-        text: i18n.t("error-adding-product"),
+        text: result.message,
         type: "error",
       });
-    item.itemId = result?.lastInsertRowId;
-    addToItemsList(item);
-    toggleModal();
-    toggleSnackBar({
+    product.productId = result?.data;
+    props.addToProductsList(product);
+    props.toggleModal();
+    context.toggleSnackBar({
       visible: true,
-      text: i18n.t("product-added-successfully"),
+      text: result.message,
       type: "success",
     });
   }
 
   function validateProduct() {
-    if (!item.itemName) {
+    if (!product.productName) {
       setValidation({
         visible: true,
         text: i18n.t("please-enter-product-name"),
       });
       return false;
     }
-    if (!item.itemPrice) {
+    if (!product.productPrice) {
       setValidation({
         visible: true,
         text: i18n.t("please-enter-product-price"),
       });
       return false;
     }
-    if (!item.itemQuantity) {
+    if (!product.productQuantity) {
       setValidation({
         visible: true,
         text: i18n.t("please-enter-product-quantity"),
@@ -112,14 +103,14 @@ export default function useAddProductService({
   }
 
   return {
-    item,
+    product,
     providers,
     validation,
-    setItemName,
-    setItemQuantity,
-    setItemPrice,
+    setProductName,
+    setProductQuantity,
+    setProductPrice,
     setProvider,
-    setcustomerNotes,
-    addItem,
+    setProductNotes,
+    addProduct,
   };
 }

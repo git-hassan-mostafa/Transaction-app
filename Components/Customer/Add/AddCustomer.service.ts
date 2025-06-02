@@ -39,31 +39,40 @@ export default function useAddCustomerService(props: IAddCustomerProps) {
   }
 
   async function addCustomer() {
+    if (!validateCustomer()) return;
+    const result = await customerManager.addCustomer(customer);
+    if (!result.success)
+      return toggleSnackBar({
+        text: result.message,
+        type: "error",
+        visible: true,
+      });
+    props.addToCustomersList(customer);
+    props.toggleModal();
+    toggleSnackBar({
+      text: result.message,
+      type: "success",
+      visible: true,
+    });
+  }
+
+  function validateCustomer() {
     if (!customer.customerName) {
       setValidation({
         visible: true,
         text: i18n.t("please-enter-customer-name"),
       });
-      return;
+      return false;
     }
     if (!customer.customerPhoneNumber) {
       setValidation({
         visible: true,
         text: i18n.t("please-enter-phone-number"),
       });
-      return;
+      return false;
     }
-    const result = await customerManager.addCustomer(customer);
-    if (!result) return;
-    props.addToCustomersList(customer);
-    props.toggleModal();
-    toggleSnackBar({
-      text: i18n.t("customer-added-successfully"),
-      type: "success",
-      visible: true,
-    });
+    return true;
   }
-
   return {
     customer,
     validation,

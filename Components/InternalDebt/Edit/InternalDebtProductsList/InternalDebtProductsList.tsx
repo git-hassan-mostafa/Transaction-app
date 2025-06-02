@@ -38,7 +38,7 @@ export default function InternalDebtProductsList(
           {props.innerDebtsItems.slice(from, to).map((item) => (
             <DataTable.Row key={item.innerDebtItemId}>
               <DataTable.Cell style={globalStyles.column}>
-                <ThemedText>{item.itemName}</ThemedText>
+                <ThemedText>{item.productName}</ThemedText>
               </DataTable.Cell>
               <DataTable.Cell style={globalStyles.column} numeric>
                 {item.innerDebtItemQuantity}

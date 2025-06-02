@@ -1,18 +1,15 @@
-import Person from "@/Models/Person";
 import { useState } from "react";
 import useGlobalContext from "@/Global/Context/ContextProvider";
 import IAddPeopleProps from "@/ViewModels/People/IAddPersonProps";
 import IPerson from "@/ViewModels/People/IPerson";
 import { IValidationErrorType } from "@/Global/Types/IValidationErrorType";
 import i18n from "@/Global/I18n/I18n";
-import { PeopleManager } from "@/DAL/people.service";
+import useService from "@/Global/Context/ServiceProvider";
 
-export default function useAddPeopleService({
-  addToPeopleList,
-  toggleModal,
-}: IAddPeopleProps) {
+export default function useAddPeopleService(props: IAddPeopleProps) {
   //services
-  const peopleManager = new PeopleManager();
+
+  const { peopleManager } = useService();
 
   //states
   const [person, setPerson] = useState<IPerson>({} as IPerson);
@@ -22,7 +19,7 @@ export default function useAddPeopleService({
   });
 
   // context
-  const { toggleSnackBar } = useGlobalContext();
+  const context = useGlobalContext();
 
   function setPersonName(value: string) {
     setPerson((prev) => {
@@ -37,40 +34,40 @@ export default function useAddPeopleService({
   }
 
   async function addPerson() {
+    if (!validatePerson()) return;
+    const result = await peopleManager.addPerson(person);
+    if (!result.success)
+      return context.toggleSnackBar({
+        visible: true,
+        text: result.message,
+        type: "error",
+      });
+    person.id = result.data;
+    props.addToPeopleList(person);
+    props.toggleModal();
+    context.toggleSnackBar({
+      visible: true,
+      text: result.message,
+      type: "success",
+    });
+  }
+
+  function validatePerson() {
     if (!person.personName) {
       setValidation({
         visible: true,
         text: i18n.t("please-enter-the-name"),
       });
-      return;
+      return false;
     }
     if (!person.personPhoneNumber) {
       setValidation({
         visible: true,
         text: i18n.t("please-enter-the-phone-number"),
       });
-      return;
+      return false;
     }
-    const newPerson: Person = {
-      Name: person?.personName.trim(),
-      PhoneNumber: person.personPhoneNumber.trim(),
-    };
-    const result = await peopleManager.addPerson(newPerson);
-    if (!result || !result.lastInsertRowId)
-      return toggleSnackBar({
-        visible: true,
-        text: i18n.t("error-adding-person"),
-        type: "error",
-      });
-    person.id = result?.lastInsertRowId;
-    addToPeopleList(person);
-    toggleModal();
-    toggleSnackBar({
-      visible: true,
-      text: i18n.t("person-added-successfully"),
-      type: "success",
-    });
+    return true;
   }
-
   return { person, validation, setPersonName, setPersonPhoneNumber, addPerson };
 }

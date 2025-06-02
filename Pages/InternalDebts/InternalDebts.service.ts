@@ -64,7 +64,11 @@ export default function useInnerDebtsService() {
   async function deleteInnerDebt(id: number) {
     const result = await internalDebtManager.deleteInternalDebt(id);
     if (!result.success) {
-      toggleSnackBar({ visible: true, type: "error", text: result.message });
+      return toggleSnackBar({
+        visible: true,
+        type: "error",
+        text: result.message,
+      });
     }
     deleteFromInnerDebtsList(id);
     toggleSnackBar({ visible: true, type: "success", text: result.message });

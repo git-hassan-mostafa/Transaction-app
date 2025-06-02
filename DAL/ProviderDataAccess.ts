@@ -1,11 +1,9 @@
 import AbstractDataAccess from "./AbstractDataAccess";
 import SqlBuilder from "../Global/Helpers/SqlBuilder";
-import InnerDebt from "../Models/InnerDebt";
 import { SQLiteRunResult } from "expo-sqlite";
 import Provider from "../Models/Provider";
-import { OuterDebt } from "../Models/OuterDebt";
 
-export default class ProviderManager extends AbstractDataAccess {
+export default class ProviderDataAccess extends AbstractDataAccess {
   table = "providers";
   constructor() {
     super();
@@ -18,6 +16,7 @@ export default class ProviderManager extends AbstractDataAccess {
       return providers as Provider[];
     } catch (error) {
       console.log("error getAllProviders ", error);
+      return null;
     }
   }
 
@@ -31,6 +30,7 @@ export default class ProviderManager extends AbstractDataAccess {
       return provider;
     } catch (error) {
       console.log("error getProvider ", error);
+      return null;
     }
   }
 
@@ -41,6 +41,7 @@ export default class ProviderManager extends AbstractDataAccess {
       return result;
     } catch (error) {
       console.log("error addProvider ", error);
+      return null;
     }
   }
 
@@ -54,6 +55,7 @@ export default class ProviderManager extends AbstractDataAccess {
       return result as SQLiteRunResult;
     } catch (error) {
       console.log("error updateProvider ", error);
+      return null;
     }
   }
 
@@ -64,6 +66,7 @@ export default class ProviderManager extends AbstractDataAccess {
       return result;
     } catch (error) {
       console.log("error deleteProvider ", error);
+      return null;
     }
   }
 }

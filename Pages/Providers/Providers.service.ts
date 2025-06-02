@@ -1,16 +1,14 @@
 import useGlobalContext from "@/Global/Context/ContextProvider";
-import ProviderManager from "@/DAL/provider.service";
-import Mapper from "@/Global/Helpers/MapService";
 import SortList from "@/Global/Helpers/Functions/SortList";
 import i18n from "@/Global/I18n/I18n";
 import IProvider from "@/ViewModels/Providers/IProvider";
 import { useEffect, useState } from "react";
 import { Alert } from "react-native";
+import useService from "@/Global/Context/ServiceProvider";
 
 export default function useProvidersService() {
   //services
-  const providerManager = new ProviderManager();
-  const mapper = new Mapper();
+  const { providerManager } = useService();
 
   //states
   const [providers, setProviders] = useState<IProvider[]>([]);
@@ -44,10 +42,7 @@ export default function useProvidersService() {
   }
   async function getAllProviders() {
     const providersDB = await providerManager.getAllProviders();
-    const providers = providersDB?.map((provider) =>
-      mapper.mapToIProvider(provider)
-    );
-    setProviders(providers as IProvider[]);
+    setProviders(providersDB as IProvider[]);
   }
 
   async function handleDeleteProvider(id: number) {
@@ -56,29 +51,29 @@ export default function useProvidersService() {
       i18n.t("are-you-sure-you-want-to-delete-this-provider"),
       [
         {
-          text: i18n.t("Cancel"),
+          text: i18n.t("cancel"),
           style: "cancel",
         },
-        { text: i18n.t("Confirm"), onPress: () => deleteProvider(id) },
+        { text: i18n.t("confirm"), onPress: () => deleteProvider(id) },
       ]
     );
   }
 
   async function deleteProvider(id: number) {
     const result = await providerManager.deleteProvider(id);
-    if ((result?.changes || 0) > 0) {
-      deleteFromProvidersList(id);
-      toggleSnackBar({
+    if (!result.success) {
+      return toggleSnackBar({
         visible: true,
-        text: i18n.t("provider-deleted-successfully"),
-        type: "success",
-      });
-    } else
-      toggleSnackBar({
-        visible: true,
-        text: i18n.t("error-deleting-provider"),
+        text: result.message,
         type: "error",
       });
+    }
+    deleteFromProvidersList(id);
+    toggleSnackBar({
+      visible: true,
+      text: result.message,
+      type: "success",
+    });
   }
 
   function toggleModal() {

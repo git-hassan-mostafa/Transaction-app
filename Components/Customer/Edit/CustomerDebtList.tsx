@@ -40,10 +40,10 @@ export default function CustomerDebtList(props: ICustomerFormProps) {
           {borrowList.slice(from, to).map((item) => (
             <DataTable.Row key={item.innerDebtItemId}>
               <DataTable.Cell style={globalStyles.column}>
-                <ThemedText>{item.itemName}</ThemedText>
+                <ThemedText>{item.productName}</ThemedText>
               </DataTable.Cell>
               <DataTable.Cell style={globalStyles.column}>
-                <ThemedText>${item.itemPrice}</ThemedText>
+                <ThemedText>${item.productPrice}</ThemedText>
               </DataTable.Cell>
 
               <DataTable.Cell style={globalStyles.column} numeric>

@@ -37,7 +37,7 @@
   "error-deleting-customer": "Error deleting customer",
   "please-enter-customer-name": "Please enter customer name",
   "please-enter-phone-number": "Please enter phone number",
-  "failed-to-add-customer,please-try-again": "Failed to add customer, please try again",
+  "failed-to-add-customer": "Failed to add customer",
   "customer-added-successfully": "Customer added successfully",
   "select-customer": "Select Customer",
   "customers-debts": "Customers Debts",

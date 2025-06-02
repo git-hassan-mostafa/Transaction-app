@@ -20,7 +20,7 @@ export default function useCustomersService() {
     id: -1,
   });
   //context
-  const { toggleSnackBar } = useGlobalContext();
+  const context = useGlobalContext();
 
   //constructor
   sortCustomers();
@@ -71,18 +71,16 @@ export default function useCustomersService() {
 
   async function deleteCustomer(id: number) {
     const result = await customerManager.deleteCustomer(id);
-    if ((result?.changes || 0) > 0) {
-      deleteFromCustomerList(id);
-      toggleSnackBar({
-        text: i18n.t("customer-deleted-successfully"),
-        type: "success",
+    if (!result.success)
+      return context.toggleSnackBar({
+        text: result.message,
+        type: "error",
         visible: true,
       });
-      return;
-    }
-    toggleSnackBar({
-      text: i18n.t("error-deleting-customer"),
-      type: "error",
+    deleteFromCustomerList(id);
+    context.toggleSnackBar({
+      text: result.message,
+      type: "success",
       visible: true,
     });
   }

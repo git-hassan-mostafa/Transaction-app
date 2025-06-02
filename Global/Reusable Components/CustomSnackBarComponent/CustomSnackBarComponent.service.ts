@@ -17,7 +17,11 @@ export default function useCustomSnackBarComponentService() {
       break;
     case "success":
       backgroundColor = Constants.colors.darkGreen;
+      break;
+    case "none":
+      backgroundColor = Constants.colors.white;
+      break;
   }
 
-  return { options: snackBarOptions, onDismissSnackBar, backgroundColor };
+  return { snackBarOptions, onDismissSnackBar, backgroundColor };
 }

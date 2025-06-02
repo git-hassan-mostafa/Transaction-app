@@ -1,13 +1,11 @@
 import { useEffect, useState } from "react";
 import IEditPeopleProps from "@/ViewModels/People/IPersonFormProps";
-import Mapper from "@/Global/Helpers/MapService";
 import IPerson from "@/ViewModels/People/IPerson";
-import { PeopleManager } from "@/DAL/people.service";
+import useService from "@/Global/Context/ServiceProvider";
 
 export default function useEditPeopleService(props: IEditPeopleProps) {
   //services
-  const peopleManager = new PeopleManager();
-  const mapper = new Mapper();
+  const { peopleManager } = useService();
 
   //states
   const [person, setPerson] = useState<IPerson>({} as IPerson);
@@ -19,9 +17,7 @@ export default function useEditPeopleService(props: IEditPeopleProps) {
   async function getPerson() {
     const personDB = await peopleManager.getPerson(props.id);
     if (!personDB) return;
-    const person = mapper.mapToIPerson(personDB);
-    setPerson(person);
-    return personDB;
+    setPerson(personDB);
   }
 
   function setPersonName(value: string) {
@@ -45,12 +41,8 @@ export default function useEditPeopleService(props: IEditPeopleProps) {
   }
 
   async function updatePerson() {
-    person.id = props.id;
-    person.personName = person.personName?.trim();
-    person.personPhoneNumber = person.personPhoneNumber?.trim();
-    const personDB = mapper.mapToPerson(person);
-    const result = await peopleManager.updatePerson(personDB);
-    if ((result?.changes || 0) > 0) props.updateFromPeopleList(person);
+    const result = await peopleManager.updatePerson(person);
+    if (result.success) props.updateFromPeopleList(person);
   }
 
   return {

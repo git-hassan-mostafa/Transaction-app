@@ -10,17 +10,14 @@ import { ThemedText } from "../../../Global/Reusable Components/HelperComponents
 import useEditProductService from "./EditProduct.service";
 import styles from "./EditProduct.style";
 import CustomDropDown from "@/Global/Reusable Components/CustomDropDownComponent/CustomDropDownComponent";
-import IEditProductProps from "@/ViewModels/Items/IItemFormProps";
+import IEditProductProps from "@/ViewModels/Products/IProductFormProps";
 import ValidationMessage from "@/Global/Reusable Components/HelperComponents/ValidationMessage";
 import { Button } from "react-native-paper";
 import Constants from "@/Global/Constants/Constants";
 import i18n from "@/Global/I18n/I18n";
 
-export function EditProduct({ id, updateFromProductsList }: IEditProductProps) {
-  const service = useEditProductService({
-    id,
-    updateFromProductsList,
-  });
+export function EditProduct(props: IEditProductProps) {
+  const service = useEditProductService(props);
 
   return (
     <View style={styles.container}>
@@ -38,8 +35,8 @@ export function EditProduct({ id, updateFromProductsList }: IEditProductProps) {
           style={styles.textInput as StyleProp<TextStyle>}
           placeholder={i18n.t("please-enter-product-name") + "..."}
           placeholderTextColor="#999"
-          value={service.item.itemName}
-          onChangeText={service.setItemName}
+          value={service.product.productName}
+          onChangeText={service.setProductName}
         />
       </View>
 
@@ -49,9 +46,9 @@ export function EditProduct({ id, updateFromProductsList }: IEditProductProps) {
           style={styles.input as StyleProp<TextStyle>}
           placeholder={"00.00"}
           placeholderTextColor="#999"
-          value={service.item.itemPrice?.toString()}
+          value={service.product.productPrice?.toString()}
           keyboardType="decimal-pad"
-          onChangeText={service.setItemPrice}
+          onChangeText={service.setProductPrice}
         />
       </View>
       <View style={styles.row}>
@@ -62,15 +59,15 @@ export function EditProduct({ id, updateFromProductsList }: IEditProductProps) {
           style={styles.input as StyleProp<TextStyle>}
           placeholder={"0"}
           placeholderTextColor="#999"
-          value={service.item.itemQuantity?.toString()}
+          value={service.product.productQuantity?.toString()}
           keyboardType="numeric"
-          onChangeText={service.setItemQuantity}
+          onChangeText={service.setProductQuantity}
         />
       </View>
       <View style={styles.row}>
         <ThemedText style={styles.label}>{i18n.t("provider")}</ThemedText>
         <CustomDropDown
-          value={service.item.item_ProviderId}
+          value={service.product.product_ProviderId}
           setValue={(value) => service.setProvider(value as number)}
           data={service.providers}
         />
@@ -81,8 +78,8 @@ export function EditProduct({ id, updateFromProductsList }: IEditProductProps) {
           style={[styles.textInput, styles.textArea] as StyleProp<TextStyle>}
           placeholder={i18n.t("enter-notes") + "..."}
           placeholderTextColor="#999"
-          value={service.item.itemNotes}
-          onChangeText={service.setItemNotes}
+          value={service.product.productNotes}
+          onChangeText={service.setProductNotes}
         />
       </View>
       <View style={styles.row}>
@@ -94,7 +91,7 @@ export function EditProduct({ id, updateFromProductsList }: IEditProductProps) {
           textColor={Constants.colors.lightGray}
           labelStyle={styles.saveButton}
           // style={{ width: 100 }}
-          onPress={service.updateItem}
+          onPress={service.updateProduct}
         >
           <ThemedText style={styles.saveText}>{i18n.t("save")}</ThemedText>
         </Button>
