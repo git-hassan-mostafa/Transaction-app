@@ -44,6 +44,7 @@ export default function Customers() {
         onClose={() => service.toggleEditModal(-1)}
       >
         <EditCustomer
+          toggleModal={() => service.toggleEditModal(-1)}
           id={service.editModalOptions.id}
           updateFromCustomersList={service.updateFromCustomersList}
         />

@@ -42,6 +42,8 @@
   "select-customer": "اختر الزبون",
   "customers-debts": "ديون الزبائن",
   "please-select-a-customer": "يرجى اختيار زبون",
+  "error-updating-customer":"خطأ في حذف الزبون",
+  "customer-updated-successfully":"تم حذف الزبون بنجاح",
 
   "// Products Page": "",
   "add-product": "إضافة منتج",

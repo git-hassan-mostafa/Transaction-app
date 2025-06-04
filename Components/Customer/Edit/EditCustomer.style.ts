@@ -36,6 +36,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     width: "100%",
     justifyContent: "space-between",
+    paddingVertical: 7,
   },
   pricesContainer: {
     gap: 5,
@@ -44,19 +45,23 @@ const styles = StyleSheet.create({
     borderRadius: 10,
   },
   totalDebtPrice: {
-    color: Constants.colors.darkGray,
+    backgroundColor: Constants.colors.darkGray,
   },
   payedPrice: {
-    color: Constants.colors.darkGreen,
+    backgroundColor: Constants.colors.darkGreen,
   },
   remainingPrice: {
-    color: Constants.colors.red,
+    backgroundColor: Constants.colors.red,
   },
   priceIcon: {
     fontSize: 30,
   },
   price: {
-    fontWeight: "bold",
+    textAlign: "center",
+    width: 70,
+    color: Constants.colors.white,
+    paddingVertical: 2,
+    borderRadius: 5,
   },
   input: baseInputStyle,
   textInput: {
@@ -67,6 +72,15 @@ const styles = StyleSheet.create({
     textAlignVertical: "top",
   },
   dataTableContainer: { minHeight: 400 },
+  saveButton: {
+    backgroundColor: Constants.colors.customers,
+    borderRadius: 10,
+    paddingVertical: 2,
+  },
+  saveText: {
+    color: Constants.colors.lightGray,
+    textAlign: "center",
+  },
 });
 
 export default styles;

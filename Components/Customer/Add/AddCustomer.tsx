@@ -59,7 +59,9 @@ export default function AddCustomer(props: IAddCustomerProps) {
           labelStyle={styles.saveButton}
           onPress={service.addCustomer}
         >
-          <ThemedText style={styles.saveText}>{i18n.t("save")}</ThemedText>
+          <ThemedText weight={400} style={styles.saveText}>
+            {i18n.t("save")}
+          </ThemedText>
         </Button>
       </TouchableOpacity>
     </View>

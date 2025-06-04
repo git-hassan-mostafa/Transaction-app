@@ -81,7 +81,6 @@ export default class CustomerManager {
   getCustomerBorrowedPrice(
     borrowedList: ICustomer_IInerDebt_IInnerDebtItem_IItem[]
   ): number {
-    console.log(borrowedList);
     const sum = borrowedList.reduce((sum, item) => {
       return sum + item.innerDebtItemTotalPrice;
     }, 0);
@@ -108,14 +107,21 @@ export default class CustomerManager {
   }
 
   async updateCustomer(customer: ICustomer): Promise<IResultType<number>> {
-    this.validateCustomerFields(customer);
     const updatedCustomer: Customer = this.mapper.mapToCustomer(customer);
     const result = await this.customerDataAccess.updateCustomer(
       updatedCustomer
     );
     if (!result || !result.changes)
-      return { success: false, data: 0, message: "" };
-    return { success: true, data: result.changes, message: "" };
+      return {
+        success: false,
+        data: 0,
+        message: i18n.t("error-updating-customer"),
+      };
+    return {
+      success: true,
+      data: result.changes,
+      message: i18n.t("customer-updated-successfully"),
+    };
   }
 
   async deleteCustomer(id: number): Promise<IResultType<number>> {
@@ -131,11 +137,5 @@ export default class CustomerManager {
       data: result.changes,
       message: i18n.t("customer-deleted-successfully"),
     };
-  }
-
-  validateCustomerFields(customer: ICustomer): void {
-    customer.customerName = customer.customerName.trim();
-    customer.customerPhoneNumber = customer.customerPhoneNumber.trim();
-    customer.customerNotes = customer.customerNotes?.trim();
   }
 }

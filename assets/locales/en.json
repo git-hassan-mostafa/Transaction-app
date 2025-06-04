@@ -42,6 +42,8 @@
   "select-customer": "Select Customer",
   "customers-debts": "Customers Debts",
   "please-select-a-customer": "Please select a customer",
+  "error-updating-customer":"Error updating customer",
+  "customer-updated-successfully":"Customer updated successfully",
 
 
   "// Products Page": "",

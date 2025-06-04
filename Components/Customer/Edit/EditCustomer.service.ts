@@ -1,24 +1,32 @@
 import { useEffect, useState } from "react";
-import ICustomerFormProps from "@/ViewModels/Customers/ICustomerFormProps";
+import IEditCustomerProps from "@/ViewModels/Customers/IEditCustomerProps";
 import ICustomer from "@/ViewModels/Customers/ICustomer";
 import { ICustomer_IInerDebt_IInnerDebtItem_IItem } from "@/ViewModels/RelationModels/ICustomer_IInerDebt_IInnerDebtItem_IItem";
 import ICustomerDetailsProps from "@/ViewModels/Customers/ICustomerDetailsProps";
 import useService from "@/Global/Context/ServiceProvider";
+import useGlobalContext from "@/Global/Context/ContextProvider";
+import { IValidationErrorType } from "@/Global/Types/IValidationErrorType";
+import i18n from "@/Global/I18n/I18n";
 
-export default function useEditCustomerService({
-  id,
-  updateFromCustomersList,
-}: ICustomerFormProps): ICustomerDetailsProps {
+export default function useEditCustomerService(
+  props: IEditCustomerProps
+): ICustomerDetailsProps {
   //services
   const { customerManager } = useService();
 
   // states
   const [customer, setCustomer] = useState<ICustomer>({
-    customerId: id,
+    customerId: props.id,
   } as ICustomer);
   const [borrowList, setBorrowList] = useState<
     ICustomer_IInerDebt_IInnerDebtItem_IItem[]
   >([]);
+  const [validation, setValidation] = useState<IValidationErrorType>({
+    visible: false,
+    text: "",
+  });
+  //context
+  const context = useGlobalContext();
 
   useEffect(() => {
     getAllData();
@@ -29,12 +37,12 @@ export default function useEditCustomerService({
   }
 
   async function getCustomer() {
-    const mappedCustomer = await customerManager.getCustomer(id);
+    const mappedCustomer = await customerManager.getCustomer(props.id);
     setCustomer(mappedCustomer);
   }
 
   async function getBorrowList() {
-    const borrowedList = await customerManager.getCustomerBorrowList(id);
+    const borrowedList = await customerManager.getCustomerBorrowList(props.id);
     setBorrowList(borrowedList);
     setCustomerBorrowedPrice(borrowedList);
   }
@@ -66,32 +74,49 @@ export default function useEditCustomerService({
     });
   }
 
-  async function updateCustomerName() {
-    await updateCustomer();
-  }
-
-  async function updateCustomerPhoneNumber() {
-    await updateCustomer();
-  }
-
-  async function updateCustomerNotes() {
-    await updateCustomer();
-  }
-
   async function updateCustomer() {
+    if (!validateCustomer()) return;
     const result = await customerManager.updateCustomer(customer);
-    if (!result.success) return;
-    updateFromCustomersList(customer);
+    if (!result.success)
+      return context.toggleSnackBar({
+        visible: true,
+        text: result.message,
+        type: "error",
+      });
+    props.toggleModal();
+    context.toggleSnackBar({
+      visible: true,
+      text: result.message,
+      type: "success",
+    });
+    props.updateFromCustomersList(customer);
+  }
+
+  function validateCustomer() {
+    if (!customer.customerName) {
+      setValidation({
+        visible: true,
+        text: i18n.t("please-enter-customer-name"),
+      });
+      return false;
+    }
+    if (!customer.customerPhoneNumber) {
+      setValidation({
+        visible: true,
+        text: i18n.t("please-enter-phone-number"),
+      });
+      return false;
+    }
+    return true;
   }
 
   return {
     customer,
     borrowList,
+    validation,
     setCustomerName,
     setCustomerPhoneNumber,
     setCustomerNotes,
-    updateCustomerName,
-    updateCustomerPhoneNumber,
-    updateCustomerNotes,
+    updateCustomer,
   };
 }

@@ -34,7 +34,6 @@ const styles = StyleSheet.create({
     paddingVertical: 5,
   },
   saveText: {
-    fontFamily: Constants.fontFamily.font400Regular,
     color: Constants.colors.lightGray,
     textAlign: "center",
   },

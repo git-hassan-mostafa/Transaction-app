@@ -90,10 +90,11 @@ export function EditProduct(props: IEditProductProps) {
           buttonColor={Constants.colors.products}
           textColor={Constants.colors.lightGray}
           labelStyle={styles.saveButton}
-          // style={{ width: 100 }}
           onPress={service.updateProduct}
         >
-          <ThemedText style={styles.saveText}>{i18n.t("save")}</ThemedText>
+          <ThemedText weight={400} style={styles.saveText}>
+            {i18n.t("save")}
+          </ThemedText>
         </Button>
       </TouchableOpacity>
     </View>

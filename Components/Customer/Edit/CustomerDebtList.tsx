@@ -2,14 +2,14 @@ import { ScrollView, View } from "react-native";
 import styles from "./EditCustomer.style";
 import { ThemedText } from "@/Global/Reusable Components/HelperComponents/ThemedText";
 import useEditCustomerService from "./EditCustomer.service";
-import ICustomerFormProps from "@/ViewModels/Customers/ICustomerFormProps";
+import IEditCustomerProps from "@/ViewModels/Customers/IEditCustomerProps";
 import { DataTable } from "react-native-paper";
 import useDataTable from "@/Global/Hooks/useDataTable";
 import globalStyles from "@/Global/Styles/global.style";
 import i18n from "@/Global/I18n/I18n";
 import { dateOptions } from "@/Global/Constants/DateOptions";
 
-export default function CustomerDebtList(props: ICustomerFormProps) {
+export default function CustomerDebtList(props: IEditCustomerProps) {
   const { borrowList } = useEditCustomerService(props);
 
   const { from, to, Pagination } = useDataTable(borrowList);

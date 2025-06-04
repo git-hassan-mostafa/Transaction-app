@@ -31,10 +31,9 @@ const styles = StyleSheet.create({
   saveButton: {
     backgroundColor: Constants.colors.customers,
     borderRadius: 10,
-    paddingTop: 5,
+    paddingVertical: 2,
   },
   saveText: {
-    fontFamily: Constants.fontFamily.font400Regular,
     color: Constants.colors.lightGray,
     textAlign: "center",
   },

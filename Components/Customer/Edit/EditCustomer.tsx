@@ -2,27 +2,22 @@ import styles from "./EditCustomer.style";
 import React from "react";
 import { View } from "react-native";
 import useEditCustomerService from "./EditCustomer.service";
-import ICustomerFormProps from "@/ViewModels/Customers/ICustomerFormProps";
+import IEditCustomerProps from "@/ViewModels/Customers/IEditCustomerProps";
 import TabComponent from "@/Global/Reusable Components/TabComponent/TabComponent";
 import CustomerDebtList from "./CustomerDebtList";
 import i18n from "@/Global/I18n/I18n";
 import CustomerDetails from "./CustomerDetails";
-export function EditCustomer({
-  id,
-  updateFromCustomersList,
-}: ICustomerFormProps) {
-  const service = useEditCustomerService({
-    id,
-    updateFromCustomersList,
-  });
+export function EditCustomer(props: IEditCustomerProps) {
+  const service = useEditCustomerService(props);
 
   return (
     <View style={styles.container}>
       <TabComponent titles={[i18n.t("details"), i18n.t("borrowed-list")]}>
         <CustomerDetails {...service} />
         <CustomerDebtList
-          id={id}
-          updateFromCustomersList={updateFromCustomersList}
+          id={props.id}
+          toggleModal={props.toggleModal}
+          updateFromCustomersList={props.updateFromCustomersList}
         />
       </TabComponent>
     </View>

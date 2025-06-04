@@ -1,56 +1,48 @@
-import { StyleProp, TextInput, TextStyle, View } from "react-native";
+import {
+  StyleProp,
+  TextInput,
+  TextStyle,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import styles from "./EditCustomer.style";
 import { ThemedText } from "@/Global/Reusable Components/HelperComponents/ThemedText";
 import ICustomerDetailsProps from "@/ViewModels/Customers/ICustomerDetailsProps";
 import i18n from "@/Global/I18n/I18n";
-import Icon from "react-native-vector-icons/Entypo";
 import Constants from "@/Global/Constants/Constants";
 import formatBigNumber from "@/Global/Helpers/Functions/FormatBigNumber";
+import { Button } from "react-native-paper";
+import ValidationMessage from "@/Global/Reusable Components/HelperComponents/ValidationMessage";
 
 export default function CustomerDetails(props: ICustomerDetailsProps) {
   return (
     <View>
       <View style={styles.pricesRow}>
-        <View style={styles.pricesContainer}>
-          <Icon
-            size={16}
-            color={Constants.colors.darkGreen}
-            name="arrow-with-circle-up"
-          />
-          <ThemedText fontSize={14} style={[styles.price, styles.payedPrice]}>
-            ${formatBigNumber(props.customer.customerPayedPrice)}
-          </ThemedText>
-        </View>
-        <View style={styles.pricesContainer}>
-          {/* <Icon
-            size={16}
-            name="select-arrows"
-            color={Constants.colors.darkGray}
-          /> */}
-          <ThemedText
-            fontSize={14}
-            style={[styles.price, styles.totalDebtPrice]}
-          >
-            ${formatBigNumber(props.customer.customerBorrowedPrice)}
-          </ThemedText>
-        </View>
-        <View style={styles.pricesContainer}>
-          <Icon
-            size={16}
-            color={Constants.colors.red}
-            name="arrow-with-circle-down"
-          />
-          <ThemedText
-            fontSize={14}
-            style={[styles.price, styles.remainingPrice]}
-          >
-            $
-            {formatBigNumber(
-              props.customer.customerBorrowedPrice -
-                props.customer.customerPayedPrice
-            )}
-          </ThemedText>
-        </View>
+        <ThemedText
+          weight={600}
+          fontSize={12}
+          style={[styles.price, styles.payedPrice]}
+        >
+          ${formatBigNumber(props.customer.customerPayedPrice)}
+        </ThemedText>
+        <ThemedText
+          weight={600}
+          fontSize={12}
+          style={[styles.price, styles.totalDebtPrice]}
+        >
+          ${formatBigNumber(props.customer.customerBorrowedPrice)}
+        </ThemedText>
+        <ThemedText
+          weight={600}
+          fontSize={12}
+          style={[styles.price, styles.remainingPrice]}
+        >
+          $
+          {formatBigNumber(
+            props.customer.customerBorrowedPrice -
+              props.customer.customerPayedPrice
+          )}
+        </ThemedText>
       </View>
       <View style={styles.row}>
         <ThemedText style={styles.label}>{i18n.t("customer-name")}</ThemedText>
@@ -60,7 +52,6 @@ export default function CustomerDetails(props: ICustomerDetailsProps) {
           placeholderTextColor="#999"
           value={props.customer.customerName}
           onChangeText={props.setCustomerName}
-          onEndEditing={props.updateCustomerName}
         />
       </View>
 
@@ -74,7 +65,6 @@ export default function CustomerDetails(props: ICustomerDetailsProps) {
           keyboardType="phone-pad"
           textContentType="telephoneNumber"
           onChangeText={props.setCustomerPhoneNumber}
-          onEndEditing={props.updateCustomerPhoneNumber}
         />
       </View>
       <View style={styles.row}>
@@ -85,11 +75,24 @@ export default function CustomerDetails(props: ICustomerDetailsProps) {
           placeholderTextColor="#999"
           value={props.customer.customerNotes}
           onChangeText={props.setCustomerNotes}
-          onEndEditing={props.updateCustomerNotes}
-          onBlur={props.updateCustomerNotes}
           multiline
         />
       </View>
+      <View style={styles.row}>
+        <ValidationMessage validation={props.validation} />
+      </View>
+      <TouchableOpacity>
+        <Button
+          buttonColor={Constants.colors.customers}
+          textColor={Constants.colors.lightGray}
+          labelStyle={styles.saveButton}
+          onPress={props.updateCustomer}
+        >
+          <ThemedText weight={400} style={styles.saveText}>
+            {i18n.t("save")}
+          </ThemedText>
+        </Button>
+      </TouchableOpacity>
     </View>
   );
 }

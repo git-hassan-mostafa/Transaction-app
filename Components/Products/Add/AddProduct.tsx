@@ -79,7 +79,9 @@ export default function AddProduct(props: IAddItemProps) {
           labelStyle={styles.saveButton}
           onPress={service.addProduct}
         >
-          <ThemedText style={styles.saveText}>{i18n.t("save")}</ThemedText>
+          <ThemedText weight={400} style={styles.saveText}>
+            {i18n.t("save")}
+          </ThemedText>
         </Button>
       </TouchableOpacity>
     </View>
