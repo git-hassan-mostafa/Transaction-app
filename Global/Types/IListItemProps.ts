@@ -4,6 +4,10 @@ export default interface IListItemProps {
     text: string;
     color: string;
   };
+  subTitle2?: {
+    text: string;
+    color: string;
+  };
   color: string;
   sign?: {
     visible: boolean;

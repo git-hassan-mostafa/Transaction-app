@@ -13,10 +13,13 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     padding: 20,
   },
+  content: {
+    marginTop: 5,
+  },
   debtDate: {
     flexDirection: "row",
     alignItems: "center",
-    marginBottom: 15,
+    marginBottom: 5,
     width: "100%",
     justifyContent: "flex-end",
   },
@@ -26,10 +29,6 @@ const styles = StyleSheet.create({
   label: {
     fontSize: 16,
     fontFamily: Constants.fontFamily.font400Regular,
-  },
-  date: {
-    fontSize: 16,
-    fontFamily: Constants.fontFamily.font600SemiBold,
   },
   input: baseInputStyle,
   textInput: {

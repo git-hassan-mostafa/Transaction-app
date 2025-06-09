@@ -9,6 +9,24 @@ export default class InternalDebtsItemsDataAccess extends AbstractDataAccess {
     super();
   }
 
+  async getAllInnerDebtItems() {
+    try {
+      const sqlBuilder = new SqlBuilder<InnerDebtItem_InnerDebt_Item>(
+        this.db,
+        this.table
+      );
+      const items = await sqlBuilder
+        .select()
+        .leftJoin("InnerDebts")
+        .leftJoin("Items")
+        .executeAsync();
+      return items;
+    } catch (error) {
+      console.log("error getInnerDebtItems", error);
+      return null;
+    }
+  }
+
   async getInnerDebtItems(innerDebtId: number) {
     try {
       const sqlBuilder = new SqlBuilder<InnerDebtItem_InnerDebt_Item>(
@@ -24,6 +42,7 @@ export default class InternalDebtsItemsDataAccess extends AbstractDataAccess {
       return items;
     } catch (error) {
       console.log("error getInnerDebtItems", error);
+      return null;
     }
   }
 
@@ -41,6 +60,7 @@ export default class InternalDebtsItemsDataAccess extends AbstractDataAccess {
       return items;
     } catch (error) {
       console.log("error getAllInnerDebtsItemsList", error);
+      return null;
     }
   }
 
@@ -62,13 +82,14 @@ export default class InternalDebtsItemsDataAccess extends AbstractDataAccess {
       return result;
     } catch (error) {
       console.log("error addInnerDebtItems", error);
+      return null;
     }
   }
 
-  async deleteInnerDebtItem(innerDebtItemId: number) {
+  async deleteInnerDebtItems(innerDebtItemIds: number[]) {
     try {
       const sqlBuilder = new SqlBuilder<InnerDebtItem>(this.db, this.table);
-      const result = await sqlBuilder.delete(innerDebtItemId);
+      const result = await sqlBuilder.deleteAll(innerDebtItemIds);
       return result;
     } catch (error) {
       console.log("error deleteInnerDebtItem", error);

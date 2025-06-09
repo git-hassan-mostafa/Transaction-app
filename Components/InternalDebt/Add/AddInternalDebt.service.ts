@@ -8,12 +8,11 @@ import { IValidationErrorType } from "@/Global/Types/IValidationErrorType";
 import ICustomer from "@/ViewModels/Customers/ICustomer";
 import i18n from "@/Global/I18n/I18n";
 import useService from "@/Global/Context/ServiceProvider";
+import { dateOptions } from "@/Global/Constants/DateOptions";
 
-export default function useAddInternalDebtService({
-  innerDebtsItemsListService,
-  toggleModal,
-  addToInnerDebtsList,
-}: IAddInnerDebtServiceProps) {
+export default function useAddInternalDebtService(
+  props: IAddInnerDebtServiceProps
+) {
   //services
   const { internalDebtManager, customerManager } = useService();
 
@@ -37,7 +36,7 @@ export default function useAddInternalDebtService({
 
   useEffect(() => {
     setTotoalPriceSum();
-  }, [innerDebtsItemsListService.innerDebtsItems]);
+  }, [props.innerDebtsItemsListService.innerDebtsItems]);
 
   async function getAllCustomers() {
     const mappedCustomers = await customerManager.getAllCustomers();
@@ -48,7 +47,7 @@ export default function useAddInternalDebtService({
   }
 
   function setTotoalPriceSum() {
-    const internalDebtsItems = innerDebtsItemsListService.innerDebtsItems;
+    const internalDebtsItems = props.innerDebtsItemsListService.innerDebtsItems;
     const totalPrice =
       internalDebtManager.getTotalPricesSum(internalDebtsItems);
     setInnerDebt((prev) => ({ ...prev, innerDebtTotalPrice: totalPrice }));
@@ -85,7 +84,7 @@ export default function useAddInternalDebtService({
     )[0];
     const result = await internalDebtManager.addInternalDebt(
       innerDebt,
-      innerDebtsItemsListService.innerDebtsItems
+      props.innerDebtsItemsListService.innerDebtsItems
     );
 
     if (!result.success && result.message) {
@@ -96,13 +95,16 @@ export default function useAddInternalDebtService({
       });
     }
     if (result.data > 0) {
-      await innerDebtsItemsListService.refreshInnerDebtsItems?.(result.data);
+      // await props.innerDebtsItemsListService.refreshInnerDebtsItems?.(
+      //   result.data
+      // );
+      innerDebt.innerDebtDate = new Date().toISOString();
       const customerInnerDebt: ICustomer_IInnerDebt = {
         ...innerDebt,
         ...customer,
       };
-      addToInnerDebtsList(customerInnerDebt);
-      toggleModal();
+      props.addToInnerDebtsList(customerInnerDebt);
+      props.toggleModal();
       toggleSnackBar({
         text: result.message,
         visible: true,
@@ -119,7 +121,7 @@ export default function useAddInternalDebtService({
       });
       return false;
     }
-    if (!innerDebtsItemsListService.innerDebtsItems.length) {
+    if (!props.innerDebtsItemsListService.innerDebtsItems.length) {
       setValidation({
         text: i18n.t("please-add-at-least-one-product"),
         visible: true,

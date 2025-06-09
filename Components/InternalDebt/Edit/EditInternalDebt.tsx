@@ -1,17 +1,31 @@
 import React from "react";
-import { View, TextInput, StyleProp, TextStyle } from "react-native";
+import {
+  View,
+  TextInput,
+  StyleProp,
+  TextStyle,
+  TouchableOpacity,
+} from "react-native";
 import { ThemedText } from "../../../Global/Reusable Components/HelperComponents/ThemedText";
 import useEditInternalDebtService from "./EditInternalDebt.service";
 import styles from "./EditInternalDebt.style";
 import CustomDropDown from "@/Global/Reusable Components/CustomDropDownComponent/CustomDropDownComponent";
-import { IInnerDebtFormProps } from "@/ViewModels/InnerDebts/IInerDebtsFormProps";
+import { IEditInnerDebtProps } from "@/ViewModels/InnerDebts/IInerDebtsFormProps";
 import InternalDebtProductsList from "./InternalDebtProductsList/InternalDebtProductsList";
 import TabComponent from "@/Global/Reusable Components/TabComponent/TabComponent";
 import useInnerDebtsItemsListFormComponentService from "./InternalDebtProductsList/InternalDebtProductsList.service";
 import i18n from "@/Global/I18n/I18n";
 import { dateOptionsWithDay } from "@/Global/Constants/DateOptions";
+import { Button } from "react-native-paper";
+import ValidationMessage from "@/Global/Reusable Components/HelperComponents/ValidationMessage";
+import Constants from "@/Global/Constants/Constants";
+import formStyle from "@/Global/Styles/form.style";
+import {
+  fromatLocaleDate,
+  fromatLocaleDateWithDay,
+} from "@/Global/Helpers/Functions/FormatDate";
 
-export default function EditInternalDebt(props: IInnerDebtFormProps) {
+export default function EditInternalDebt(props: IEditInnerDebtProps) {
   const internalDebtsItemsListService =
     useInnerDebtsItemsListFormComponentService(props.id);
 
@@ -19,14 +33,17 @@ export default function EditInternalDebt(props: IInnerDebtFormProps) {
     ...props,
     internalDebtsItemsListService,
   });
-  const date = new Date(service.internalDebt.innerDebtDate);
   return (
     <View style={styles.container}>
       <TabComponent titles={[i18n.t("details"), i18n.t("products-list")]}>
-        <View>
+        <View style={styles.content}>
           <View style={styles.debtDate}>
-            <ThemedText style={styles.date}>
-              {date?.toLocaleDateString(i18n.locale, dateOptionsWithDay)}
+            <ThemedText
+              fontSize={12}
+              weight={600}
+              color={Constants.colors.darkGray}
+            >
+              {fromatLocaleDateWithDay(service.internalDebt.innerDebtDate)}
             </ThemedText>
           </View>
           <View style={styles.row}>
@@ -37,7 +54,6 @@ export default function EditInternalDebt(props: IInnerDebtFormProps) {
               value={service.internalDebt.innerDebt_CustomerId as number}
               setValue={(value) => {
                 service.setCustomer(value as number);
-                service.updateCustomer(value as number);
               }}
               data={service.customersDropDown}
             />
@@ -54,7 +70,6 @@ export default function EditInternalDebt(props: IInnerDebtFormProps) {
               value={service.internalDebt.innerDebtTotalPrice?.toString()}
               keyboardType="numeric"
               onChangeText={(text) => service.setTotalPrice(text)}
-              onEndEditing={service.updateTotalPrice}
             />
           </View>
           <View style={styles.row}>
@@ -69,7 +84,6 @@ export default function EditInternalDebt(props: IInnerDebtFormProps) {
               value={service.internalDebt.innerDebtPricePaid?.toString()}
               keyboardType="numeric"
               onChangeText={(text) => service.setPricePaid(text)}
-              onEndEditing={service.updatePricePaid}
             />
           </View>
 
@@ -83,9 +97,23 @@ export default function EditInternalDebt(props: IInnerDebtFormProps) {
               placeholderTextColor="#999"
               value={service.internalDebt.innerDebtNotes}
               onChangeText={service.setNotes}
-              onEndEditing={service.updateNotes}
             />
           </View>
+          <View style={styles.row}>
+            <ValidationMessage validation={service.validation} />
+          </View>
+          <TouchableOpacity>
+            <Button
+              buttonColor={Constants.colors.internalDebts}
+              textColor={Constants.colors.lightGray}
+              labelStyle={formStyle.saveButton}
+              onPress={service.updateInnerDebt}
+            >
+              <ThemedText style={formStyle.saveText}>
+                {i18n.t("save")}
+              </ThemedText>
+            </Button>
+          </TouchableOpacity>
         </View>
         <InternalDebtProductsList {...internalDebtsItemsListService} />
       </TabComponent>

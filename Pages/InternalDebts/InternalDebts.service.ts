@@ -5,6 +5,8 @@ import { Alert } from "react-native";
 import i18n from "@/Global/I18n/I18n";
 import SortList from "@/Global/Helpers/Functions/SortList";
 import useService from "@/Global/Context/ServiceProvider";
+import IEditModalType from "@/Global/Types/IEditModalType";
+import IInnerDebtItem_IInnerDebt_IItem from "@/ViewModels/RelationModels/IInnerDebtItem_IInnerDebt_IItem";
 
 export default function useInnerDebtsService() {
   //services
@@ -12,24 +14,45 @@ export default function useInnerDebtsService() {
 
   //states
   const [innerDebts, setInnerDebts] = useState<ICustomer_IInnerDebt[]>([]);
-  const [modalVisible, setModalVisible] = useState(false);
+  const [internalDebtsItems, setInternalDebtsItems] = useState<
+    IInnerDebtItem_IInnerDebt_IItem[]
+  >([]);
 
+  const [modalVisible, setModalVisible] = useState(false);
+  const [editModalOptions, setEditModalOptions] = useState<IEditModalType>({
+    visible: false,
+    id: -1,
+  });
   // context
-  const { toggleSnackBar } = useGlobalContext();
+  const context = useGlobalContext();
 
   //constructor
   sortInternalDebts();
-
   useEffect(() => {
-    getAllInternalerDebts();
+    constructor();
   }, []);
 
-  async function addToInnerDebtsList(debt: ICustomer_IInnerDebt) {
-    setInnerDebts((prev) => [...prev, debt]);
+  useEffect(() => {
+    setInternalDebtsTotoalPriceSum();
+  }, [internalDebtsItems]);
+
+  async function constructor() {
+    await getAllInternalerDebts();
+    await getAllInternalDebtsItems();
   }
 
-  function deleteFromInnerDebtsList(id: number) {
-    setInnerDebts((prev) => prev.filter((c) => c.innerDebtId !== id));
+  async function getAllInternalerDebts() {
+    const internalDebtsDB = await internalDebtManager.getAllInternalDebts();
+    setInnerDebts(internalDebtsDB);
+  }
+
+  async function getAllInternalDebtsItems() {
+    const internalDebtsItemsDB =
+      await internalDebtManager.getAllInternalDebtsItems();
+    setInternalDebtsItems(internalDebtsItemsDB);
+  }
+  async function addToInnerDebtsList(debt: ICustomer_IInnerDebt) {
+    setInnerDebts((prev) => [...prev, debt]);
   }
 
   async function updateFromInnerDebtsList(value: ICustomer_IInnerDebt) {
@@ -40,11 +63,6 @@ export default function useInnerDebtsService() {
           : innerDebt
       )
     );
-  }
-
-  async function getAllInternalerDebts() {
-    const internalDebtsDB = await internalDebtManager.getAllInternalDebts();
-    setInnerDebts(internalDebtsDB);
   }
 
   async function handleDeleteInnerDebt(id: number) {
@@ -64,18 +82,46 @@ export default function useInnerDebtsService() {
   async function deleteInnerDebt(id: number) {
     const result = await internalDebtManager.deleteInternalDebt(id);
     if (!result.success) {
-      return toggleSnackBar({
+      return context.toggleSnackBar({
         visible: true,
         type: "error",
         text: result.message,
       });
     }
     deleteFromInnerDebtsList(id);
-    toggleSnackBar({ visible: true, type: "success", text: result.message });
+    context.toggleSnackBar({
+      visible: true,
+      type: "success",
+      text: result.message,
+    });
+  }
+
+  function deleteFromInnerDebtsList(id: number) {
+    setInnerDebts((prev) => prev.filter((c) => c.innerDebtId !== id));
+  }
+
+  function setInternalDebtsTotoalPriceSum() {
+    setInnerDebts((prev) => {
+      return prev.map((debt) => {
+        const items = internalDebtsItems.filter(
+          (item) => item.innerDebtId === debt.innerDebtId
+        );
+        const totalPrice = internalDebtManager.getTotalPricesSum(items);
+        return { ...debt, innerDebtTotalPrice: totalPrice };
+      });
+    });
+  }
+
+  async function onEdit(id: number) {
+    toggleEditModal(id);
   }
 
   function toggleModal() {
     setModalVisible((prev) => !prev);
+  }
+
+  function toggleEditModal(id: number) {
+    setEditModalOptions((prev) => ({ visible: !prev.visible, id }));
   }
 
   function sortInternalDebts() {
@@ -85,10 +131,13 @@ export default function useInnerDebtsService() {
   return {
     innerDebts,
     modalVisible,
+    editModalOptions,
+    toggleEditModal,
     toggleModal,
     addToInnerDebtsList,
     deleteFromInnerDebtsList,
     updateFromInnerDebtsList,
     handleDeleteInnerDebt,
+    onEdit,
   };
 }

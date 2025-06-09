@@ -5,6 +5,7 @@ import IInnerDebt from "@/ViewModels/InnerDebts/IInerDebts";
 import IDropDownItem from "@/Global/Types/IDropDownItem";
 import i18n from "@/Global/I18n/I18n";
 import useService from "@/Global/Context/ServiceProvider";
+import { IValidationErrorType } from "@/Global/Types/IValidationErrorType";
 
 export default function useEditInternalDebtService(
   props: IInnerDebtsFormServiceProps
@@ -17,6 +18,10 @@ export default function useEditInternalDebtService(
   const [customersDropDown, setCustomersDropDown] = useState<IDropDownItem[]>(
     []
   );
+  const [validation, setValidation] = useState<IValidationErrorType>({
+    visible: false,
+    text: "",
+  });
 
   //context
   const context = useGlobalContext();
@@ -73,57 +78,48 @@ export default function useEditInternalDebtService(
     });
   }
 
-  async function updateTotalPrice() {
-    updateInnerDebt();
-  }
-
-  async function updatePricePaid() {
-    updateInnerDebt();
-  }
-
-  async function updateCustomer(customerId: number) {
-    const result = await internalDebtManager.updateInnerDebtCustomer(
-      internalDebt,
-      customerId
-    );
-    if (result) {
-      props.updateFromInnerDebtsList(result.data);
-    }
-  }
-
-  async function updateNotes() {
-    updateInnerDebt();
-  }
-
   async function updateInnerDebt() {
     if (!validateInnerDebtFields(internalDebt)) return;
-    const result = await internalDebtManager.updateInternalDebt(internalDebt);
-    if (result?.success) props.updateFromInnerDebtsList(result.data);
+    const result = await internalDebtManager.updateInternalDebt(
+      internalDebt,
+      props.internalDebtsItemsListService.innerDebtsItems
+    );
+    if (!result.success && result.message) {
+      return context.toggleSnackBar({
+        visible: true,
+        text: result.message,
+        type: "error",
+      });
+    }
+    props.toggleModal();
+    props.updateFromInnerDebtsList(result.data);
+    context.toggleSnackBar({
+      text: result.message,
+      visible: true,
+      type: "success",
+    });
   }
 
   function validateInnerDebtFields(innerDebt: IInnerDebt) {
     innerDebt.innerDebtId = props.id;
     if (!innerDebt.innerDebt_CustomerId) {
-      context.toggleSnackBar({
+      setValidation({
         text: i18n.t("please-select-a-customer"),
         visible: true,
-        type: "error",
       });
       return false;
     }
     if (!props.internalDebtsItemsListService.innerDebtsItems.length) {
-      context.toggleSnackBar({
+      setValidation({
         visible: true,
         text: i18n.t("please-add-at-least-one-product"),
-        type: "error",
       });
       return false;
     }
     if (innerDebt.innerDebtPricePaid > innerDebt.innerDebtTotalPrice) {
-      context.toggleSnackBar({
+      setValidation({
         visible: true,
         text: i18n.t("paid-price-cannot-be-greater-than-total-price"),
-        type: "error",
       });
       return false;
     }
@@ -133,13 +129,11 @@ export default function useEditInternalDebtService(
   return {
     internalDebt,
     customersDropDown,
+    validation,
     setTotalPrice,
     setPricePaid,
     setCustomer,
     setNotes,
-    updateTotalPrice,
-    updatePricePaid,
-    updateCustomer,
-    updateNotes,
+    updateInnerDebt,
   };
 }

@@ -12,7 +12,7 @@ export default function useInternalDebtProductsListService(
   innerDebtId: number
 ): IInternalDebtProductsListProps {
   //managers
-  const { internalDebtManager, productManager: itemManager } = useService();
+  const { internalDebtManager, productManager } = useService();
 
   //states
   const [items, setItems] = useState<IProduct[]>([]);
@@ -24,9 +24,6 @@ export default function useInternalDebtProductsListService(
   const [showAddItem, setShowAddItem] = useState(false);
   var newInnerDebtsItem: IInnerDebtItem_IInnerDebt_IItem =
     {} as IInnerDebtItem_IInnerDebt_IItem;
-
-  //context
-  const { toggleSnackBar } = useGlobalContext();
 
   useEffect(() => {
     getAllItems();
@@ -41,8 +38,8 @@ export default function useInternalDebtProductsListService(
   }
 
   async function getAllItems() {
-    const itemsDB = await itemManager.getAllProducts();
-    const dropDownItems = itemManager.getDropDownItems(itemsDB);
+    const itemsDB = await productManager.getAllProducts();
+    const dropDownItems = productManager.getDropDownItems(itemsDB);
     setItems(itemsDB);
     setDropDownItems(dropDownItems);
   }
@@ -65,26 +62,15 @@ export default function useInternalDebtProductsListService(
     const currentItem = items.find(
       (i) => i.productId === newInnerDebtsItem.innerDebtItem_ItemId
     );
+    newInnerDebtsItem.isNew = true;
+    newInnerDebtsItem.innerDebtItemId = Date.now();
     newInnerDebtsItem.innerDebtItem_InnerDebtId = innerDebtId;
     newInnerDebtsItem.innerDebtItemTotalPrice =
       newInnerDebtsItem.innerDebtItemQuantity *
       (Number(currentItem?.productPrice) || 0);
 
     if (!handleExistingItem()) {
-      const result = await internalDebtManager.addInternalDebtItem(
-        newInnerDebtsItem
-      );
-      if (!result.success) {
-        return toggleSnackBar({
-          visible: true,
-          text: result.message,
-          type: "error",
-        });
-      }
-      if (result.data) {
-        newInnerDebtsItem.innerDebtItemId = result.data;
-        setInnerDebtsItems((prev) => [...prev, newInnerDebtsItem]);
-      }
+      setInnerDebtsItems((prev) => [...prev, newInnerDebtsItem]);
     }
 
     setShowAddItem(false);
@@ -105,17 +91,9 @@ export default function useInternalDebtProductsListService(
   }
 
   async function deleteInnerDebtItem(id: number) {
-    const result = await internalDebtManager.deleteInternalDebtItem(id);
-    if (result?.success) {
-      return setInnerDebtsItems((prev) =>
-        prev.filter((i) => i.innerDebtItemId !== id)
-      );
-    }
-    return toggleSnackBar({
-      visible: true,
-      text: result.message,
-      type: "error",
-    });
+    return setInnerDebtsItems((prev) =>
+      prev.filter((i) => i.innerDebtItemId !== id)
+    );
   }
 
   function handleExistingItem() {

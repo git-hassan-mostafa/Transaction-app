@@ -8,14 +8,15 @@ import { useEffect, useState } from "react";
 import { useSQLiteContext } from "expo-sqlite";
 import CreateTablesManager from "../../DAL/CreateTablesManager";
 import ISnackBarOptions from "../Types/ISnackBarOptions";
+import IContextProps from "../Types/IContextProps";
+import IInnerDebtItem_IInnerDebt_IItem from "@/ViewModels/RelationModels/IInnerDebtItem_IInnerDebt_IItem";
+import useService from "./ServiceProvider";
 
-export function useContextService() {
+export function useContextService(): IContextProps {
   const db = useSQLiteContext();
+  const { internalDebtManager } = useService();
 
-  useEffect(() => {
-    createSqlTables();
-  }, []);
-
+  //states
   const [fontsLoaded] = useFonts({
     NotoKufiArabic_400Regular,
     NotoKufiArabic_600SemiBold,
@@ -27,6 +28,17 @@ export function useContextService() {
     type: "info",
   });
 
+  useEffect(() => {
+    constructor();
+  }, []);
+
+  async function constructor() {
+    try {
+      await createSqlTables();
+    } catch (error) {
+      console.error("Error in useContextService constructor:", error);
+    }
+  }
   function toggleSnackBar(value: ISnackBarOptions) {
     setSnackBarOptions(value);
     setTimeout(() => {
@@ -42,8 +54,8 @@ export function useContextService() {
     });
   }
 
-  function createSqlTables() {
-    new CreateTablesManager().init(db);
+  async function createSqlTables() {
+    await new CreateTablesManager().init(db);
   }
 
   return {

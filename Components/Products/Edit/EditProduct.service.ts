@@ -84,6 +84,7 @@ export default function useEditProductService(props: IEditProductProps) {
         type: "error",
       });
     props.updateFromProductsList(product);
+    props.toggleModal();
     context.toggleSnackBar({
       visible: true,
       text: result.message,

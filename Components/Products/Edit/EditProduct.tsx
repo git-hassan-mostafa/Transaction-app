@@ -21,14 +21,6 @@ export function EditProduct(props: IEditProductProps) {
 
   return (
     <View style={styles.container}>
-      <View
-        style={{
-          width: "100%",
-          flexDirection: "row",
-          justifyContent: "flex-end",
-          marginBottom: 20,
-        }}
-      ></View>
       <View style={styles.row}>
         <ThemedText style={styles.label}>{i18n.t("product-name")}</ThemedText>
         <TextInput

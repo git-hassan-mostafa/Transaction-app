@@ -37,6 +37,21 @@ export default class InternalDebtManager {
     return internalDebt;
   }
 
+  async getAllInternalDebtsItems(): Promise<IInnerDebtItem_IInnerDebt_IItem[]> {
+    const innerDebtsItemsDB =
+      await this.internalDebtsItemsDataAccess.getAllInnerDebtItems();
+    if (!innerDebtsItemsDB) return [];
+    const items = (innerDebtsItemsDB as InnerDebtItem_InnerDebt_Item[]).map(
+      (item) => {
+        var i = this.mapper.mapTo_IInnerDebtItem_IInnerDebt_IItem(item);
+        i.innerDebtItemTotalPrice =
+          i.innerDebtItemQuantity * (Number(i?.productPrice) || 0);
+        return i;
+      }
+    );
+    return items;
+  }
+
   async getInternalDebtsItems(
     innerDebtId: number
   ): Promise<IInnerDebtItem_IInnerDebt_IItem[]> {
@@ -135,25 +150,82 @@ export default class InternalDebtManager {
   }
 
   async updateInternalDebt(
-    internalDebt: IInnerDebt
+    internalDebt: IInnerDebt,
+    internalDebtsItems: IInnerDebtItem_IInnerDebt_IItem[]
   ): Promise<IResultType<ICustomer_IInnerDebt>> {
+    const internalDebtsItemsToAdd: InnerDebtItem[] = internalDebtsItems
+      .filter((item) => item.isNew)
+      .map((item): InnerDebtItem => {
+        return {
+          InnerDebtItemQuantity: item.innerDebtItemQuantity,
+          InnerDebtItem_ItemId: item.innerDebtItem_ItemId,
+          InnerDebtItem_InnerDebtId: internalDebt.innerDebtId,
+        };
+      });
+    const existingInternalDebtItems = await this.getInternalDebtsItems(
+      internalDebt.innerDebtId
+    );
+    const internalDebtsItemsToDelete = existingInternalDebtItems.filter(
+      (item) =>
+        !internalDebtsItems.some(
+          (i) => i.innerDebtItemId === item.innerDebtItemId
+        )
+    );
+    const IdsToDelete = internalDebtsItemsToDelete.map(
+      (i) => i.innerDebtItemId
+    );
+    if (IdsToDelete.length !== 0) {
+      const deleteResult = await this.deleteInternalDebtItems(IdsToDelete);
+      if (!deleteResult.success) {
+        return {
+          success: false,
+          data: {} as ICustomer_IInnerDebt,
+          message: deleteResult.message,
+        };
+      }
+    }
+    if (internalDebtsItemsToAdd.length !== 0) {
+      const itemsResult =
+        await this.internalDebtsItemsDataAccess.addInnerDebtItems(
+          internalDebtsItemsToAdd
+        );
+      if (!itemsResult || !itemsResult.lastInsertRowId) {
+        return {
+          success: false,
+          data: {} as ICustomer_IInnerDebt,
+          message: i18n.t("failed-adding-products"),
+        };
+      }
+    }
     const customerDB = await this.customerDataAccess.getCustomer(
       internalDebt.innerDebt_CustomerId
     );
     if (!customerDB)
-      return { success: false, data: {} as ICustomer_IInnerDebt, message: "" };
+      return {
+        success: false,
+        data: {} as ICustomer_IInnerDebt,
+        message: i18n.t("customer-not-found"),
+      };
     const customer = this.mapper.mapToICustomer(customerDB);
     const internalDebtDB: InnerDebt = this.mapper.mapToInnerDebt(internalDebt);
     const result = await this.internalDebtsDataAccess.updateInnerDebt(
       internalDebtDB
     );
     if (!result || !result.changes)
-      return { success: false, data: {} as ICustomer_IInnerDebt, message: "" };
+      return {
+        success: false,
+        data: {} as ICustomer_IInnerDebt,
+        message: i18n.t("failed-updating-internal-debt"),
+      };
     const customerInnerDebt: ICustomer_IInnerDebt = {
       ...internalDebt,
       ...customer,
     };
-    return { success: true, data: customerInnerDebt, message: "" };
+    return {
+      success: true,
+      data: customerInnerDebt,
+      message: i18n.t("internal-debt-updated-successfully"),
+    };
   }
 
   async updateInnerDebtCustomer(
@@ -192,15 +264,15 @@ export default class InternalDebtManager {
     };
   }
 
-  async deleteInternalDebtItem(id: number): Promise<IResultType<number>> {
-    const result = await this.internalDebtsItemsDataAccess.deleteInnerDebtItem(
-      id
+  async deleteInternalDebtItems(ids: number[]): Promise<IResultType<number>> {
+    const result = await this.internalDebtsItemsDataAccess.deleteInnerDebtItems(
+      ids
     );
     if (!result?.changes) {
       return {
         success: false,
         data: 0,
-        message: i18n.t("failed-deleting-product"),
+        message: i18n.t("failed-deleting-products"),
       };
     }
     return {

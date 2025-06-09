@@ -12,6 +12,8 @@ import IInnerDebt from "@/ViewModels/InnerDebts/IInerDebts";
 import { ICustomer_IInnerDebt } from "@/ViewModels/RelationModels/ICustomer_IInnerDebt";
 import pageStyle from "@/Global/Styles/pages.global.style";
 import i18n from "@/Global/I18n/I18n";
+import ListItem from "@/Global/Reusable Components/ListItem/ListItem";
+import { fromatLocaleDate } from "@/Global/Helpers/Functions/FormatDate";
 
 export default function InnerDebts() {
   const service = useInnerDebtsService();
@@ -24,25 +26,38 @@ export default function InnerDebts() {
         numColumns={1}
         keyExtractor={(item) => item.innerDebtId?.toString() as string}
         renderItem={({ item }: { item: ICustomer_IInnerDebt }) => (
-          <AccordionComponent
-            key={item.innerDebtId}
-            id={item.innerDebtId as number}
-            handleDelete={service.handleDeleteInnerDebt}
-            headerColor={Constants.colors.internalDebts}
-            iconColor={Constants.colors.lightGray}
-            headerText={`@${item.customerName}`}
-          >
-            <EditInternalDebt
-              id={item.innerDebtId as number}
-              updateFromInnerDebtsList={service.updateFromInnerDebtsList}
-            />
-          </AccordionComponent>
+          <ListItem
+            title={"@" + item.customerName}
+            subTitle={{
+              text: "$" + item.innerDebtTotalPrice?.toString(),
+              color: Constants.colors.red,
+            }}
+            subTitle2={{
+              text: fromatLocaleDate(item.innerDebtDate),
+              color: Constants.colors.darkGray,
+            }}
+            sign={{ color: Constants.colors.green, visible: true }}
+            color={Constants.colors.internalDebts}
+            onEdit={() => service.onEdit(item.innerDebtId)}
+            onDelete={() => service.handleDeleteInnerDebt(item.innerDebtId)}
+          />
         )}
         ItemSeparatorComponent={() => <View style={{ height: 5 }} />}
         contentContainerStyle={{ paddingBottom: 120 }}
       />
       <CustomModal
-        title={i18n.t("add-debt")}
+        title={i18n.t("edit-internal-debt")}
+        isVisible={service.editModalOptions.visible}
+        onClose={() => service.toggleEditModal(-1)}
+      >
+        <EditInternalDebt
+          toggleModal={() => service.toggleEditModal(-1)}
+          id={service.editModalOptions.id}
+          updateFromInnerDebtsList={service.updateFromInnerDebtsList}
+        />
+      </CustomModal>
+      <CustomModal
+        title={i18n.t("add-internal-debt")}
         isVisible={service.modalVisible}
         onClose={service.toggleModal}
       >

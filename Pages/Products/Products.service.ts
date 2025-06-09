@@ -5,6 +5,7 @@ import IProduct from "@/ViewModels/Products/IProduct";
 import { useEffect, useState } from "react";
 import { Alert } from "react-native";
 import useService from "@/Global/Context/ServiceProvider";
+import IEditModalType from "@/Global/Types/IEditModalType";
 
 export default function useProductsService() {
   //services
@@ -13,12 +14,16 @@ export default function useProductsService() {
   //states
   const [products, setProducts] = useState<IProduct[]>([]);
   const [modalVisible, setModalVisible] = useState(false);
+  const [editModalOptions, setEditModalOptions] = useState<IEditModalType>({
+    visible: false,
+    id: -1,
+  });
 
   // context
   const { toggleSnackBar } = useGlobalContext();
 
   //constructor
-  sortItems();
+  sortProducts();
   useEffect(() => {
     getAllProducts();
   }, []);
@@ -38,6 +43,11 @@ export default function useProductsService() {
       )
     );
   }
+
+  async function onEdit(id: number) {
+    toggleEditModal(id);
+  }
+
   async function getAllProducts() {
     const productsDB = await productManager.getAllProducts();
     setProducts(productsDB);
@@ -77,17 +87,24 @@ export default function useProductsService() {
     setModalVisible((prev) => !prev);
   }
 
-  function sortItems() {
+  function toggleEditModal(id: number) {
+    setEditModalOptions((prev) => ({ visible: !prev.visible, id }));
+  }
+
+  function sortProducts() {
     SortList(products, (e) => e.productName);
   }
 
   return {
-    items: products,
+    products,
     modalVisible,
+    editModalOptions,
     toggleModal,
     addToProductsList,
     deleteFromProductsList,
     updateFromProductsList,
     handleDeleteItem,
+    toggleEditModal,
+    onEdit,
   };
 }

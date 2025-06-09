@@ -99,6 +99,23 @@ export default class SqlBuilder<T extends Record<string, any>> {
     }
   }
 
+  async deleteAll(ids: number[]) {
+    try {
+      if (!ids || ids.length === 0) return null;
+
+      const tableId = this.getTableId(this.tableName);
+      this.deleteQuery = this.deleteQuery.replace("{0}", this.tableName);
+      const whereQuery = `where ${tableId} in (${ids.join(",")})`;
+      this.deleteQuery = this.deleteQuery.replace("{1}", whereQuery);
+
+      const result = await this.db.runAsync(this.deleteQuery);
+      return result;
+    } catch (error) {
+      console.log("an error occurred in deleteAll", error);
+      return null;
+    }
+  }
+
   update(value: T) {
     if (!value) return this;
     this.type = "update";

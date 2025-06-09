@@ -168,6 +168,7 @@ export default class Mapper {
       innerDebtItem_ItemId: innerDebtsItem.InnerDebtItem_ItemId as number,
       innerDebtItemTotalPrice: 0,
       innerDebtItemPricePaid: 0,
+      isNew: false,
     };
   }
 

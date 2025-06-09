@@ -28,11 +28,20 @@ export default function ListItem(props: IListItemProps) {
               </ThemedText>
               <ThemedText
                 isLineHeight
-                fontSize={14}
+                fontSize={12}
                 style={[styles.subtitle, { color: props.subTitle.color }]}
               >
                 {props.subTitle.text}
               </ThemedText>
+              {props.subTitle2 && (
+                <ThemedText
+                  isLineHeight
+                  fontSize={12}
+                  style={[styles.subtitle, { color: props.subTitle2.color }]}
+                >
+                  {props.subTitle2.text}
+                </ThemedText>
+              )}
             </View>
           </View>
           <View style={styles.actions}>

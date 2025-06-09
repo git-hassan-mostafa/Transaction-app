@@ -5,4 +5,5 @@ export default interface IInnerDebtItem {
   innerDebtItemPricePaid: number;
   innerDebtItem_InnerDebtId: number;
   innerDebtItem_ItemId: number;
+  isNew: boolean;
 }
