@@ -1,28 +1,22 @@
 import styles from "./EditProvider.style";
 import React from "react";
-import { View, TextInput, StyleProp, TextStyle } from "react-native";
+import {
+  View,
+  TextInput,
+  StyleProp,
+  TextStyle,
+  TouchableOpacity,
+} from "react-native";
 import useEditProviderService from "./EditProvider.service";
 import { ThemedText } from "../../../Global/Reusable Components/HelperComponents/ThemedText";
 import { IProviderFormProps } from "@/ViewModels/Providers/IProviderFormProps";
 import i18n from "@/Global/I18n/I18n";
-export function EditProvider({
-  id,
-  updateFromProvidersList,
-  deleteFromProvidersList,
-}: IProviderFormProps) {
-  const {
-    provider,
-    setProviderName,
-    setProviderPhoneNumber,
-    updateProviderName,
-    updateProviderPhonember,
-    setProviderNotes,
-    updateProviderNotes,
-  } = useEditProviderService({
-    id,
-    updateFromProvidersList,
-    deleteFromProvidersList,
-  });
+import ValidationMessage from "@/Global/Reusable Components/HelperComponents/ValidationMessage";
+import { Button } from "react-native-paper";
+import Constants from "@/Global/Constants/Constants";
+import formStyle from "@/Global/Styles/form.style";
+export function EditProvider(props: IProviderFormProps) {
+  const service = useEditProviderService(props);
 
   return (
     <View style={styles.container}>
@@ -32,9 +26,8 @@ export function EditProvider({
           style={styles.textInput as StyleProp<TextStyle>}
           placeholder={i18n.t("please-enter-provider-name") + "..."}
           placeholderTextColor="#999"
-          value={provider.providerName}
-          onChangeText={setProviderName}
-          onEndEditing={updateProviderName}
+          value={service.provider.providerName}
+          onChangeText={service.setProviderName}
         />
       </View>
 
@@ -44,11 +37,10 @@ export function EditProvider({
           style={styles.input as StyleProp<TextStyle>}
           placeholder={i18n.t("enter-phone-number")}
           placeholderTextColor="#999"
-          value={provider.providerPhoneNumber}
+          value={service.provider.providerPhoneNumber}
           keyboardType="phone-pad"
           textContentType="telephoneNumber"
-          onChangeText={setProviderPhoneNumber}
-          onEndEditing={updateProviderPhonember}
+          onChangeText={service.setProviderPhoneNumber}
         />
       </View>
       <View style={styles.row}>
@@ -57,10 +49,22 @@ export function EditProvider({
           style={[styles.textInput, styles.textArea] as StyleProp<TextStyle>}
           placeholder={i18n.t("enter-notes")}
           placeholderTextColor="#999"
-          value={provider.providerNotes}
-          onChangeText={setProviderNotes}
-          onEndEditing={updateProviderNotes}
+          value={service.provider.providerNotes}
+          onChangeText={service.setProviderNotes}
         />
+        <View style={styles.row}>
+          <ValidationMessage validation={service.validation} />
+        </View>
+        <TouchableOpacity>
+          <Button
+            buttonColor={Constants.colors.providers}
+            textColor={Constants.colors.lightGray}
+            labelStyle={formStyle.saveButton}
+            onPress={service.updateProvider}
+          >
+            <ThemedText style={formStyle.saveText}>{i18n.t("save")}</ThemedText>
+          </Button>
+        </TouchableOpacity>
       </View>
     </View>
   );

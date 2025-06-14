@@ -27,12 +27,15 @@ export default class ProviderManager {
   async addProvider(provider: IProvider): Promise<IResultType<number>> {
     const newProvider = this.mapper.mapToProvider(provider);
     const result = await this.providerDataAccess.addProvider(newProvider);
+    provider.providerBorrowedPrice = 0;
+    provider.providerPayedPrice = 0;
     if (!result || !result.lastInsertRowId)
       return {
         success: false,
         message: i18n.t("error-adding-provider"),
         data: -1,
       };
+    provider.providerId = result?.lastInsertRowId;
     return {
       success: true,
       message: i18n.t("provider-added-successfully"),
@@ -44,8 +47,16 @@ export default class ProviderManager {
     const updateProvider = this.mapper.mapToProvider(provider);
     const result = await this.providerDataAccess.updateProvider(updateProvider);
     if (!result || !result.changes)
-      return { success: false, message: "", data: 0 };
-    return { success: true, message: "", data: result.changes };
+      return {
+        success: false,
+        message: i18n.t("error-updating-provider"),
+        data: 0,
+      };
+    return {
+      success: true,
+      message: i18n.t("provider-updated-successfully"),
+      data: result.changes,
+    };
   }
 
   async deleteProvider(id: number): Promise<IResultType<number>> {

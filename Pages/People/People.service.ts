@@ -7,6 +7,7 @@ import IPerson from "@/ViewModels/People/IPerson";
 import { useEffect, useState } from "react";
 import { Alert } from "react-native";
 import useService from "@/Global/Context/ServiceProvider";
+import IEditModalType from "@/Global/Types/IEditModalType";
 
 export default function usePeopleService() {
   //services
@@ -15,7 +16,10 @@ export default function usePeopleService() {
   //states
   const [people, setPeople] = useState<IPerson[]>([]);
   const [modalVisible, setModalVisible] = useState(false);
-
+  const [editModalOptions, setEditModalOptions] = useState<IEditModalType>({
+    visible: false,
+    id: -1,
+  });
   // context
   const context = useGlobalContext();
 
@@ -25,8 +29,8 @@ export default function usePeopleService() {
     getAllPeople();
   }, []);
 
-  function toggleModal() {
-    setModalVisible((prev) => !prev);
+  function sortPeople() {
+    SortList(people, (e) => e.personName);
   }
 
   async function getAllPeople() {
@@ -60,7 +64,7 @@ export default function usePeopleService() {
           text: i18n.t("cancel"),
           style: "cancel",
         },
-        { text: i18n.t("Confirm"), onPress: () => deletePerson(id) },
+        { text: i18n.t("confirm"), onPress: () => deletePerson(id) },
       ]
     );
   }
@@ -81,16 +85,28 @@ export default function usePeopleService() {
     });
   }
 
-  function sortPeople() {
-    SortList(people, (e) => e.personName);
+  async function onEdit(id: number) {
+    toggleEditModal(id);
   }
+
+  function toggleEditModal(id: number = -1) {
+    setEditModalOptions((prev) => ({ visible: !prev.visible, id }));
+  }
+
+  function toggleAddModal() {
+    setModalVisible((prev) => !prev);
+  }
+
   return {
     people,
     modalVisible,
-    toggleModal,
+    editModalOptions,
+    toggleAddModal,
     addToPeopleList,
     deleteFromPeopleList,
     updateFromPeopleList,
     handleDeletePerson,
+    onEdit,
+    toggleEditModal,
   };
 }

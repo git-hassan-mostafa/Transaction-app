@@ -2,6 +2,9 @@ import { useEffect, useState } from "react";
 import IEditPeopleProps from "@/ViewModels/People/IPersonFormProps";
 import IPerson from "@/ViewModels/People/IPerson";
 import useService from "@/Global/Context/ServiceProvider";
+import { IValidationErrorType } from "@/Global/Types/IValidationErrorType";
+import i18n from "@/Global/I18n/I18n";
+import useGlobalContext from "@/Global/Context/ContextProvider";
 
 export default function useEditPeopleService(props: IEditPeopleProps) {
   //services
@@ -9,6 +12,13 @@ export default function useEditPeopleService(props: IEditPeopleProps) {
 
   //states
   const [person, setPerson] = useState<IPerson>({} as IPerson);
+  const [validation, setValidation] = useState<IValidationErrorType>({
+    visible: false,
+    text: "",
+  });
+
+  //context
+  const context = useGlobalContext();
 
   useEffect(() => {
     getPerson();
@@ -32,24 +42,47 @@ export default function useEditPeopleService(props: IEditPeopleProps) {
     });
   }
 
-  async function updatePersonName() {
-    updatePerson();
-  }
-
-  async function updatePersonPhoneNumber() {
-    updatePerson();
-  }
-
   async function updatePerson() {
+    if (!validatePerson) return;
     const result = await peopleManager.updatePerson(person);
-    if (result.success) props.updateFromPeopleList(person);
+    if (!result.success)
+      return context.toggleSnackBar({
+        visible: true,
+        text: result.message,
+        type: "error",
+      });
+    context.toggleSnackBar({
+      visible: true,
+      text: result.message,
+      type: "success",
+    });
+    props.toggleModal();
+    props.updateFromPeopleList(person);
+  }
+
+  function validatePerson() {
+    if (!person.personName) {
+      setValidation({
+        visible: true,
+        text: i18n.t("please-enter-the-name"),
+      });
+      return false;
+    }
+    if (!person.personPhoneNumber) {
+      setValidation({
+        visible: true,
+        text: i18n.t("please-enter-the-phone-number"),
+      });
+      return false;
+    }
+    return true;
   }
 
   return {
     person,
+    validation,
     setPersonName,
-    updatePersonName,
     setPersonPhoneNumber,
-    updatePersonPhoneNumber,
+    updatePerson,
   };
 }

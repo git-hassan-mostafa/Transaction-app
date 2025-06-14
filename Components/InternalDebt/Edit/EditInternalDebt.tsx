@@ -15,7 +15,6 @@ import InternalDebtProductsList from "./InternalDebtProductsList/InternalDebtPro
 import TabComponent from "@/Global/Reusable Components/TabComponent/TabComponent";
 import useInnerDebtsItemsListFormComponentService from "./InternalDebtProductsList/InternalDebtProductsList.service";
 import i18n from "@/Global/I18n/I18n";
-import { dateOptionsWithDay } from "@/Global/Constants/DateOptions";
 import { Button } from "react-native-paper";
 import ValidationMessage from "@/Global/Reusable Components/HelperComponents/ValidationMessage";
 import Constants from "@/Global/Constants/Constants";

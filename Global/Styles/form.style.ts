@@ -3,7 +3,6 @@ import Constants from "../Constants/Constants";
 
 const formStyle = StyleSheet.create({
   saveButton: {
-    backgroundColor: Constants.colors.internalDebts,
     borderRadius: 10,
     paddingTop: 5,
   },

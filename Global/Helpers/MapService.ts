@@ -118,7 +118,7 @@ export default class Mapper {
       providerId: provider.ProviderId as number,
       providerName: provider.Name as string,
       providerBorrowedPrice: 0,
-      providerayedPrice: 0,
+      providerPayedPrice: 0,
       providerPhoneNumber: provider.PhoneNumber as string,
       providerNotes: provider.Notes as string,
     };

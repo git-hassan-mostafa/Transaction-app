@@ -21,7 +21,7 @@ export default function useAddProviderService({
   });
 
   // context
-  const { toggleSnackBar } = useGlobalContext();
+  const context = useGlobalContext();
 
   function setProviderName(value: string) {
     setProvider((prev) => {
@@ -42,18 +42,18 @@ export default function useAddProviderService({
   }
 
   async function addProvider() {
+    if (!validateProvider()) return;
+
     try {
-      if (!validateProvider()) return;
       const result = await providerManager.addProvider(provider);
       if (!result.success)
-        return toggleSnackBar({
+        return context.toggleSnackBar({
           visible: true,
           text: result.message,
           type: "error",
         });
-      provider.providerId = result?.data;
       addToProvidersList(provider);
-      toggleSnackBar({
+      context.toggleSnackBar({
         visible: true,
         text: result.message,
         type: "success",

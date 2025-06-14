@@ -99,9 +99,10 @@ export default class CustomerManager {
     }
     customer.customerId = result?.lastInsertRowId || -1;
     customer.customerBorrowedPrice = 0;
+    customer.customerPayedPrice = 0;
     return {
-      success: false,
-      data: -1,
+      success: true,
+      data: result.lastInsertRowId,
       message: i18n.t("customer-added-successfully"),
     };
   }

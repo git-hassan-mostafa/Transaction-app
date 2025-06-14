@@ -1,9 +1,19 @@
-import { StyleProp, TextInput, TextStyle, View } from "react-native";
+import {
+  StyleProp,
+  TextInput,
+  TextStyle,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import useEditPeopleService from "./EditPeople.service";
 import styles from "./EditPeople.style";
 import { ThemedText } from "../../../Global/Reusable Components/HelperComponents/ThemedText";
 import IPeopleFormProps from "@/ViewModels/People/IPersonFormProps";
 import i18n from "@/Global/I18n/I18n";
+import { Button } from "react-native-paper";
+import ValidationMessage from "@/Global/Reusable Components/HelperComponents/ValidationMessage";
+import Constants from "@/Global/Constants/Constants";
+import formStyle from "@/Global/Styles/form.style";
 
 export default function EditPeople(props: IPeopleFormProps) {
   const service = useEditPeopleService(props);
@@ -17,7 +27,6 @@ export default function EditPeople(props: IPeopleFormProps) {
           placeholderTextColor="#999"
           value={service.person.personName}
           onChangeText={service.setPersonName}
-          onEndEditing={service.updatePersonName}
         />
       </View>
 
@@ -31,8 +40,20 @@ export default function EditPeople(props: IPeopleFormProps) {
           keyboardType="phone-pad"
           textContentType="telephoneNumber"
           onChangeText={service.setPersonPhoneNumber}
-          onEndEditing={service.updatePersonPhoneNumber}
         />
+        <View style={styles.row}>
+          <ValidationMessage validation={service.validation} />
+        </View>
+        <TouchableOpacity>
+          <Button
+            buttonColor={Constants.colors.people}
+            textColor={Constants.colors.lightGray}
+            labelStyle={formStyle.saveButton}
+            onPress={service.updatePerson}
+          >
+            <ThemedText style={formStyle.saveText}>{i18n.t("save")}</ThemedText>
+          </Button>
+        </TouchableOpacity>
       </View>
     </View>
   );

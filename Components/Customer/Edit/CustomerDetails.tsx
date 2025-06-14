@@ -23,14 +23,14 @@ export default function CustomerDetails(props: ICustomerDetailsProps) {
           fontSize={12}
           style={[styles.price, styles.payedPrice]}
         >
-          ${formatBigNumber(props.customer.customerPayedPrice)}
+          ${props.customer.customerPayedPrice}
         </ThemedText>
         <ThemedText
           weight={600}
           fontSize={12}
           style={[styles.price, styles.totalDebtPrice]}
         >
-          ${formatBigNumber(props.customer.customerBorrowedPrice)}
+          ${props.customer.customerBorrowedPrice}
         </ThemedText>
         <ThemedText
           weight={600}
@@ -38,10 +38,8 @@ export default function CustomerDetails(props: ICustomerDetailsProps) {
           style={[styles.price, styles.remainingPrice]}
         >
           $
-          {formatBigNumber(
-            props.customer.customerBorrowedPrice -
-              props.customer.customerPayedPrice
-          )}
+          {props.customer.customerBorrowedPrice -
+            props.customer.customerPayedPrice}
         </ThemedText>
       </View>
       <View style={styles.row}>

@@ -5,6 +5,7 @@ import IProvider from "@/ViewModels/Providers/IProvider";
 import { useEffect, useState } from "react";
 import { Alert } from "react-native";
 import useService from "@/Global/Context/ServiceProvider";
+import IEditModalType from "@/Global/Types/IEditModalType";
 
 export default function useProvidersService() {
   //services
@@ -13,6 +14,10 @@ export default function useProvidersService() {
   //states
   const [providers, setProviders] = useState<IProvider[]>([]);
   const [modalVisible, setModalVisible] = useState(false);
+  const [editModalOptions, setEditModalOptions] = useState<IEditModalType>({
+    visible: false,
+    id: -1,
+  });
 
   // context
   const { toggleSnackBar } = useGlobalContext();
@@ -76,8 +81,16 @@ export default function useProvidersService() {
     });
   }
 
-  function toggleModal() {
+  async function onEdit(id: number) {
+    toggleEditModal(id);
+  }
+
+  function toggleAddModal() {
     setModalVisible((prev) => !prev);
+  }
+
+  function toggleEditModal(id: number = -1) {
+    setEditModalOptions((prev) => ({ visible: !prev.visible, id }));
   }
 
   function sortProviders() {
@@ -87,10 +100,13 @@ export default function useProvidersService() {
   return {
     providers,
     modalVisible,
-    toggleModal,
+    editModalOptions,
+    toggleAddModal,
     addToProvidersList,
     deleteFromProvidersList,
     updateFromProvidersList,
     handleDeleteProvider,
+    onEdit,
+    toggleEditModal,
   };
 }

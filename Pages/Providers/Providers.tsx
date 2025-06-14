@@ -11,6 +11,7 @@ import { EditProvider } from "@/Components/Provider/Edit/EditProvider";
 import IProvider from "@/ViewModels/Providers/IProvider";
 import pageStyle from "@/Global/Styles/pages.global.style";
 import i18n from "@/Global/I18n/I18n";
+import ListItem from "@/Global/Reusable Components/ListItem/ListItem";
 
 export default function Providers() {
   const service = useProvidersService();
@@ -23,36 +24,44 @@ export default function Providers() {
         numColumns={1}
         keyExtractor={(item) => item.providerId?.toString() as string}
         renderItem={({ item }: { item: IProvider }) => (
-          <AccordionComponent
-            key={item.providerId}
-            headerColor={Constants.colors.providers}
-            iconColor={Constants.colors.lightGray}
-            headerText={item.providerName as string}
-            id={item.providerId as number}
-            handleDelete={service.handleDeleteProvider}
-          >
-            <EditProvider
-              id={item.providerId as number}
-              deleteFromProvidersList={service.deleteFromProvidersList}
-              updateFromProvidersList={service.updateFromProvidersList}
-            />
-          </AccordionComponent>
+          <ListItem
+            // sign={{ visible: true, color: Constants.colors.products }}
+            color={Constants.colors.providers}
+            title={item.providerName}
+            subTitle={{
+              text: "$" + item.providerBorrowedPrice?.toString(),
+              color: Constants.colors.green,
+            }}
+            onDelete={() => service.handleDeleteProvider(item.providerId)}
+            onEdit={() => service.onEdit(item.providerId)}
+          />
         )}
         ItemSeparatorComponent={() => <View style={{ height: 5 }} />}
         contentContainerStyle={{ paddingBottom: 120 }}
       />
       <CustomModal
+        title={i18n.t("edit-provider")}
+        isVisible={service.editModalOptions.visible}
+        onClose={service.toggleEditModal}
+      >
+        <EditProvider
+          toggleModal={service.toggleEditModal}
+          id={service.editModalOptions.id}
+          updateFromProvidersList={service.updateFromProvidersList}
+        />
+      </CustomModal>
+      <CustomModal
         title={i18n.t("add-provider")}
         isVisible={service.modalVisible}
-        onClose={service.toggleModal}
+        onClose={service.toggleAddModal}
       >
         <AddProvider
           addToProvidersList={service.addToProvidersList}
-          toggleModal={service.toggleModal}
+          toggleModal={service.toggleAddModal}
         />
       </CustomModal>
       <FAB
-        onPress={service.toggleModal}
+        onPress={service.toggleAddModal}
         color={Constants.colors.lightGray}
         style={[styles.fab, pageStyle.fab]}
         icon="plus"

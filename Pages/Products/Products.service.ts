@@ -20,13 +20,17 @@ export default function useProductsService() {
   });
 
   // context
-  const { toggleSnackBar } = useGlobalContext();
+  const context = useGlobalContext();
 
   //constructor
   sortProducts();
   useEffect(() => {
     getAllProducts();
   }, []);
+
+  function sortProducts() {
+    SortList(products, (e) => e.productName);
+  }
 
   function addToProductsList(value: IProduct) {
     setProducts((prev) => [...prev, value]);
@@ -42,10 +46,6 @@ export default function useProductsService() {
         item.productId === value.productId ? { ...item, ...value } : item
       )
     );
-  }
-
-  async function onEdit(id: number) {
-    toggleEditModal(id);
   }
 
   async function getAllProducts() {
@@ -70,17 +70,21 @@ export default function useProductsService() {
   async function deleteItem(id: number) {
     const result = await productManager.deleteProduct(id);
     if (!result.success)
-      return toggleSnackBar({
+      return context.toggleSnackBar({
         text: result.message,
         type: "error",
         visible: true,
       });
     deleteFromProductsList(id);
-    toggleSnackBar({
+    context.toggleSnackBar({
       text: result.message,
       type: "success",
       visible: true,
     });
+  }
+
+  async function onEdit(id: number) {
+    toggleEditModal(id);
   }
 
   function toggleModal() {
@@ -89,10 +93,6 @@ export default function useProductsService() {
 
   function toggleEditModal(id: number) {
     setEditModalOptions((prev) => ({ visible: !prev.visible, id }));
-  }
-
-  function sortProducts() {
-    SortList(products, (e) => e.productName);
   }
 
   return {

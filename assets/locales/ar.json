@@ -97,6 +97,7 @@
   "internal-debt-updated-successfully": "تم تحديث الدين الداخلي بنجاح",
 
   "// Providers": "",
+  "edit-provider":"تعديل المورد",
   "providers-debts": "ديون الموردين",
   "provider": "المورد",
   "provider-name":"اسم المورد",
@@ -108,10 +109,13 @@
   "are-you-sure-you-want-to-delete-this-provider":"هل أنت متأد من حذف هذا المورد",
   "provider-deleted-successfully":"تم حذف المورد بنجاح",
   "error-deleting-provider":"خطأ في حذف المورد",
+  "error-updating-provider":"خطأ في تعديل المورد",
+  "provider-updated-successfully":"تم تعديل المورد بنجاح",
 
 
   "// People": "",
   "add-person": "إضافة شخص",
+  "edit-person": "تعديل الشخص",
   "please-enter-the-name": "يرجى إدخال الاسم",
   "please-enter-the-phone-number": "يرجى إدخال رقم الهاتف",
   "error-adding-person": "خطأ في إضافة الشخص",
@@ -122,6 +126,8 @@
   "are-you-sure-you-want-to-delete-this-person":"هل أنت متأكد من حذف هذا الشخص",
   "person-deleted-successfully":"تم حذف الشخص بنجاح",
   "error-deleting-person":"خطأ في حذف الشخص",
+  "error-updating-person":"خطأ في تعديل الشخص",
+  "person-updated-successfully":"تم تعديل الشخص بنجاح",
 
   "// Settings":"",
   "settings":"الخيارات"

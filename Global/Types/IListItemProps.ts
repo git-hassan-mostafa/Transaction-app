@@ -1,11 +1,13 @@
+import { ReactNode } from "react";
+
 export default interface IListItemProps {
-  title: string;
+  title: ReactNode;
   subTitle: {
-    text: string;
+    text: ReactNode;
     color: string;
   };
   subTitle2?: {
-    text: string;
+    text: ReactNode;
     color: string;
   };
   color: string;

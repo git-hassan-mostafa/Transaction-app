@@ -98,6 +98,7 @@
   "internal-debt-updated-successfully": "Internal debt updated successfully",
 
   "// Providers": "",
+  "edit-provider":"Edit provider",
   "providers-debts": "Providers Debts",
   "provider": "Provider",
   "provider-name":"Provider name",
@@ -109,9 +110,12 @@
   "are-you-sure-you-want-to-delete-this-provider":"Are you sure you want to delete this provider",
   "provider-deleted-successfully":"Provider deleted successfully",
   "error-deleting-provider":"Error deleting provider",
+  "error-updating-provider":"Error updating provider",
+  "provider-updated-successfully":"Provider updated successfully",
 
   "// People": "",
   "add-person": "Add Person",
+  "edit-person": "Edit Person",
   "please-enter-the-name": "Please enter the name",
   "please-enter-the-phone-number": "Please enter the phone number",
   "error-adding-person": "Error adding person",
@@ -122,6 +126,8 @@
   "are-you-sure-you-want-to-delete-this-person":"Are you sure you want to delete this person?",
   "person-deleted-successfully":"Person deleted successfully",
   "error-deleting-person":"Error deleting person",
+  "error-updating-person":"Error updating person",
+  "person-updated-successfully":"Person updated successfully",
 
   "// Settings":"",
   "settings":"Settings"

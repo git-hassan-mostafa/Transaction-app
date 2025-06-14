@@ -44,8 +44,16 @@ export class PeopleManager {
     const personDB = this.mapper.mapToPerson(person);
     const result = await this.peopleDataAccess.updatePerson(personDB);
     if (!result || !result.changes)
-      return { success: false, data: 0, message: "" };
-    return { success: true, data: result.changes, message: "" };
+      return {
+        success: false,
+        data: 0,
+        message: i18n.t("error-updating-person"),
+      };
+    return {
+      success: true,
+      data: result.changes,
+      message: i18n.t("person-updated-successfully"),
+    };
   }
 
   async deletePerson(id: number): Promise<IResultType<number>> {
@@ -54,12 +62,12 @@ export class PeopleManager {
       return {
         success: false,
         data: 0,
-        message: i18n.t("person-deleted-successfully"),
+        message: i18n.t("error-deleting-person"),
       };
     return {
       success: true,
       data: result.changes,
-      message: i18n.t("error-deleting-person"),
+      message: i18n.t("person-deleted-successfully"),
     };
   }
 }
