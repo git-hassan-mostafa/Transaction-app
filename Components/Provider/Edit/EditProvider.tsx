@@ -1,4 +1,3 @@
-import styles from "./EditProvider.style";
 import React from "react";
 import {
   View,
@@ -19,11 +18,13 @@ export function EditProvider(props: IProviderFormProps) {
   const service = useEditProviderService(props);
 
   return (
-    <View style={styles.container}>
-      <View style={styles.row}>
-        <ThemedText style={styles.label}>{i18n.t("provider-name")}</ThemedText>
+    <View style={formStyle.container}>
+      <View style={formStyle.row}>
+        <ThemedText style={formStyle.label}>
+          {i18n.t("provider-name")}
+        </ThemedText>
         <TextInput
-          style={styles.textInput as StyleProp<TextStyle>}
+          style={formStyle.input}
           placeholder={i18n.t("please-enter-provider-name") + "..."}
           placeholderTextColor="#999"
           value={service.provider.providerName}
@@ -31,10 +32,12 @@ export function EditProvider(props: IProviderFormProps) {
         />
       </View>
 
-      <View style={styles.row}>
-        <ThemedText style={styles.label}>{i18n.t("phone-number")}</ThemedText>
+      <View style={formStyle.row}>
+        <ThemedText style={formStyle.label}>
+          {i18n.t("phone-number")}
+        </ThemedText>
         <TextInput
-          style={styles.input as StyleProp<TextStyle>}
+          style={formStyle.input}
           placeholder={i18n.t("enter-phone-number")}
           placeholderTextColor="#999"
           value={service.provider.providerPhoneNumber}
@@ -43,16 +46,16 @@ export function EditProvider(props: IProviderFormProps) {
           onChangeText={service.setProviderPhoneNumber}
         />
       </View>
-      <View style={styles.row}>
-        <ThemedText style={styles.label}>{i18n.t("notes")}</ThemedText>
+      <View style={formStyle.row}>
+        <ThemedText style={formStyle.label}>{i18n.t("notes")}</ThemedText>
         <TextInput
-          style={[styles.textInput, styles.textArea] as StyleProp<TextStyle>}
+          style={[formStyle.input, formStyle.textArea] as StyleProp<TextStyle>}
           placeholder={i18n.t("enter-notes")}
           placeholderTextColor="#999"
           value={service.provider.providerNotes}
           onChangeText={service.setProviderNotes}
         />
-        <View style={styles.row}>
+        <View style={formStyle.row}>
           <ValidationMessage validation={service.validation} />
         </View>
         <TouchableOpacity>

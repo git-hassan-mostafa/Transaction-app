@@ -6,7 +6,6 @@ import {
   View,
 } from "react-native";
 import useEditPeopleService from "./EditPeople.service";
-import styles from "./EditPeople.style";
 import { ThemedText } from "../../../Global/Reusable Components/HelperComponents/ThemedText";
 import IPeopleFormProps from "@/ViewModels/People/IPersonFormProps";
 import i18n from "@/Global/I18n/I18n";
@@ -18,11 +17,11 @@ import formStyle from "@/Global/Styles/form.style";
 export default function EditPeople(props: IPeopleFormProps) {
   const service = useEditPeopleService(props);
   return (
-    <View style={styles.container}>
-      <View style={styles.row}>
-        <ThemedText style={styles.label}>{i18n.t("person-name")}</ThemedText>
+    <View style={formStyle.container}>
+      <View style={formStyle.row}>
+        <ThemedText style={formStyle.label}>{i18n.t("person-name")}</ThemedText>
         <TextInput
-          style={styles.textInput as StyleProp<TextStyle>}
+          style={formStyle.input}
           placeholder={i18n.t("please-enter-the-name")}
           placeholderTextColor="#999"
           value={service.person.personName}
@@ -30,10 +29,12 @@ export default function EditPeople(props: IPeopleFormProps) {
         />
       </View>
 
-      <View style={styles.row}>
-        <ThemedText style={styles.label}>{i18n.t("person-phone")}</ThemedText>
+      <View style={formStyle.row}>
+        <ThemedText style={formStyle.label}>
+          {i18n.t("person-phone")}
+        </ThemedText>
         <TextInput
-          style={styles.input as StyleProp<TextStyle>}
+          style={formStyle.input as StyleProp<TextStyle>}
           placeholder={i18n.t("please-enter-the-phone-number")}
           placeholderTextColor="#999"
           value={service.person.personPhoneNumber}
@@ -41,7 +42,7 @@ export default function EditPeople(props: IPeopleFormProps) {
           textContentType="telephoneNumber"
           onChangeText={service.setPersonPhoneNumber}
         />
-        <View style={styles.row}>
+        <View style={formStyle.row}>
           <ValidationMessage validation={service.validation} />
         </View>
         <TouchableOpacity>

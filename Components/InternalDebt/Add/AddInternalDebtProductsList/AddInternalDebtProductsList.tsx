@@ -1,5 +1,5 @@
 import { ScrollView } from "react-native";
-import { View, Text, TextInput, Button, TouchableOpacity } from "react-native";
+import { View, TextInput, TouchableOpacity } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import CustomDropDown from "@/Global/Reusable Components/CustomDropDownComponent/CustomDropDownComponent";
 import IInnerDebtsItemsListProps from "@/ViewModels/InnerDebts/IInnerDebtsItemsListProps";

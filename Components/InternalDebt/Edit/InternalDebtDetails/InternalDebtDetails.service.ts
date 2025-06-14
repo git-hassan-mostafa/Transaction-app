@@ -6,10 +6,11 @@ import IDropDownItem from "@/Global/Types/IDropDownItem";
 import i18n from "@/Global/I18n/I18n";
 import useService from "@/Global/Context/ServiceProvider";
 import { IValidationErrorType } from "@/Global/Types/IValidationErrorType";
+import IInternalDebtDetailsService from "@/ViewModels/InnerDebts/IInternalDebtDetailsService";
 
-export default function useEditInternalDebtService(
+export default function useInternalDebtDetailsService(
   props: IInnerDebtsFormServiceProps
-) {
+): IInternalDebtDetailsService {
   //services
   const { internalDebtManager, customerManager } = useService();
 

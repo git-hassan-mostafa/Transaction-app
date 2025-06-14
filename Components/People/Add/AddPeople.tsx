@@ -13,15 +13,16 @@ import { ThemedText } from "@/Global/Reusable Components/HelperComponents/Themed
 import IAddPeopleProps from "@/ViewModels/People/IAddPersonProps";
 import ValidationMessage from "@/Global/Reusable Components/HelperComponents/ValidationMessage";
 import i18n from "@/Global/I18n/I18n";
+import formStyle from "@/Global/Styles/form.style";
 
 export default function AddPeople(props: IAddPeopleProps) {
   const service = useAddPeopleService(props);
   return (
-    <View style={styles.container}>
-      <View style={styles.row}>
-        <ThemedText style={styles.label}>{i18n.t("person-name")}</ThemedText>
+    <View style={formStyle.container}>
+      <View style={formStyle.row}>
+        <ThemedText style={formStyle.label}>{i18n.t("person-name")}</ThemedText>
         <TextInput
-          style={styles.textInput as StyleProp<TextStyle>}
+          style={formStyle.input}
           placeholder={i18n.t("please-enter-the-name")}
           placeholderTextColor="#999"
           value={service.person.personName}
@@ -29,10 +30,12 @@ export default function AddPeople(props: IAddPeopleProps) {
         />
       </View>
 
-      <View style={styles.row}>
-        <ThemedText style={styles.label}>{i18n.t("person-phone")}</ThemedText>
+      <View style={formStyle.row}>
+        <ThemedText style={formStyle.label}>
+          {i18n.t("person-phone")}
+        </ThemedText>
         <TextInput
-          style={styles.input as StyleProp<TextStyle>}
+          style={formStyle.input as StyleProp<TextStyle>}
           placeholder={i18n.t("please-enter-the-phone-number")}
           placeholderTextColor="#999"
           value={service.person.personPhoneNumber}
@@ -41,17 +44,17 @@ export default function AddPeople(props: IAddPeopleProps) {
           onChangeText={service.setPersonPhoneNumber}
         />
       </View>
-      <View style={styles.row}>
+      <View style={formStyle.row}>
         <ValidationMessage validation={service.validation} />
       </View>
       <TouchableOpacity>
         <Button
           buttonColor={Constants.colors.people}
           textColor={Constants.colors.lightGray}
-          labelStyle={styles.saveButton}
+          labelStyle={formStyle.saveButton}
           onPress={service.addPerson}
         >
-          <ThemedText style={styles.saveText}>{i18n.t("save")}</ThemedText>
+          <ThemedText style={formStyle.saveText}>{i18n.t("save")}</ThemedText>
         </Button>
       </TouchableOpacity>
     </View>
