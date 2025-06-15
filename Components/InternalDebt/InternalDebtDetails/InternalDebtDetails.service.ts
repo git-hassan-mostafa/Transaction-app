@@ -7,6 +7,7 @@ import i18n from "@/Global/I18n/I18n";
 import useService from "@/Global/Context/ServiceProvider";
 import { IValidationErrorType } from "@/Global/Types/IValidationErrorType";
 import IInternalDebtDetailsService from "@/ViewModels/InnerDebts/IInternalDebtDetailsService";
+import { ICustomer_IInnerDebt } from "@/ViewModels/RelationModels/ICustomer_IInnerDebt";
 
 export default function useInternalDebtDetailsService(
   props: IInnerDebtsFormServiceProps
@@ -15,7 +16,9 @@ export default function useInternalDebtDetailsService(
   const { internalDebtManager, customerManager } = useService();
 
   //states
-  const [internalDebt, setInnerDebt] = useState<IInnerDebt>({} as IInnerDebt);
+  const [internalDebt, setInnerDebt] = useState<IInnerDebt>({
+    innerDebtId: props.id,
+  } as IInnerDebt);
   const [customersDropDown, setCustomersDropDown] = useState<IDropDownItem[]>(
     []
   );
@@ -28,13 +31,16 @@ export default function useInternalDebtDetailsService(
   const context = useGlobalContext();
 
   useEffect(() => {
-    getInnerDebt();
-    getAllCustomers();
+    fetchAllData();
   }, []);
 
   useEffect(() => {
-    setTotoalPriceSum();
+    setPricesSum();
   }, [props.internalDebtsItemsListService.innerDebtsItems]);
+
+  async function fetchAllData() {
+    await Promise.all([getInnerDebt(), getAllCustomers()]);
+  }
 
   async function getAllCustomers() {
     const mappedCustomers = await customerManager.getAllCustomers();
@@ -44,15 +50,22 @@ export default function useInternalDebtDetailsService(
   }
 
   async function getInnerDebt() {
+    if (!props.id) return;
     const internalDebtDB = await internalDebtManager.getInternalDebt(props.id);
     setInnerDebt(internalDebtDB);
   }
 
-  function setTotoalPriceSum() {
+  function setPricesSum() {
     const totalPrice = internalDebtManager.getTotalPricesSum(
       props.internalDebtsItemsListService.innerDebtsItems
     );
-    setInnerDebt((prev) => ({ ...prev, innerDebtTotalPrice: totalPrice }));
+    const pricePaid = internalDebtManager.getPricePaidSum();
+
+    setInnerDebt((prev) => ({
+      ...prev,
+      innerDebtTotalPrice: totalPrice,
+      innerDebtPricePaid: pricePaid,
+    }));
   }
 
   function setTotalPrice(value: string) {
@@ -79,8 +92,41 @@ export default function useInternalDebtDetailsService(
     });
   }
 
+  async function save() {
+    if (props.id) updateInnerDebt();
+    else addInnerDebt();
+  }
+
+  async function addInnerDebt() {
+    if (!validateInnerDebtFields()) return;
+    const result = await internalDebtManager.addInternalDebt(
+      internalDebt,
+      props.internalDebtsItemsListService.innerDebtsItems
+    );
+
+    if (!result.success && result.message) {
+      return context.toggleSnackBar({
+        visible: true,
+        text: result.message,
+        type: "error",
+      });
+    }
+    if (result.success) {
+      // await props.innerDebtsItemsListService.refreshInnerDebtsItems?.(
+      //   result.data
+      // );
+      props.addToInnerDebtsList(result.data);
+      props.toggleModal();
+      context.toggleSnackBar({
+        text: result.message,
+        visible: true,
+        type: "success",
+      });
+    }
+  }
+
   async function updateInnerDebt() {
-    if (!validateInnerDebtFields(internalDebt)) return;
+    if (!validateInnerDebtFields()) return;
     const result = await internalDebtManager.updateInternalDebt(
       internalDebt,
       props.internalDebtsItemsListService.innerDebtsItems
@@ -101,9 +147,8 @@ export default function useInternalDebtDetailsService(
     });
   }
 
-  function validateInnerDebtFields(innerDebt: IInnerDebt) {
-    innerDebt.innerDebtId = props.id;
-    if (!innerDebt.innerDebt_CustomerId) {
+  function validateInnerDebtFields() {
+    if (!internalDebt.innerDebt_CustomerId) {
       setValidation({
         text: i18n.t("please-select-a-customer"),
         visible: true,
@@ -117,7 +162,7 @@ export default function useInternalDebtDetailsService(
       });
       return false;
     }
-    if (innerDebt.innerDebtPricePaid > innerDebt.innerDebtTotalPrice) {
+    if (internalDebt.innerDebtPricePaid > internalDebt.innerDebtTotalPrice) {
       setValidation({
         visible: true,
         text: i18n.t("paid-price-cannot-be-greater-than-total-price"),
@@ -135,6 +180,6 @@ export default function useInternalDebtDetailsService(
     setPricePaid,
     setCustomer,
     setNotes,
-    updateInnerDebt,
+    save,
   };
 }

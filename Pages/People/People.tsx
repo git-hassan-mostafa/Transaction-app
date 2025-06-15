@@ -5,12 +5,11 @@ import React from "react";
 import Constants from "@/Global/Constants/Constants";
 import { FAB } from "react-native-paper";
 import CustomModal from "@/Global/Reusable Components/CustomModalComponent/CustomModalComponent";
-import AddPeople from "@/Components/People/Add/AddPeople";
 import IPerson from "@/ViewModels/People/IPerson";
 import pageStyle from "@/Global/Styles/pages.global.style";
 import i18n from "@/Global/I18n/I18n";
 import ListItem from "@/Global/Reusable Components/ListItem/ListItem";
-import EditPeople from "@/Components/People/Edit/EditPeople";
+import PeopleForm from "@/Components/People/PeopleForm";
 
 export default function People() {
   const service = usePeopleService();
@@ -38,28 +37,21 @@ export default function People() {
         contentContainerStyle={{ paddingBottom: 120 }}
       />
       <CustomModal
-        title={i18n.t("edit-person")}
-        isVisible={service.editModalOptions.visible}
-        onClose={service.toggleEditModal}
+        title={
+          service.modalOptions.id ? i18n.t("edit-person") : i18n.t("add-person")
+        }
+        isVisible={service.modalOptions.visible}
+        onClose={service.toggleModal}
       >
-        <EditPeople
-          toggleModal={service.toggleEditModal}
-          id={service.editModalOptions.id}
+        <PeopleForm
+          toggleModal={service.toggleModal}
+          id={service.modalOptions.id}
           updateFromPeopleList={service.updateFromPeopleList}
-        />
-      </CustomModal>
-      <CustomModal
-        title={i18n.t("add-person")}
-        isVisible={service.modalVisible}
-        onClose={service.toggleAddModal}
-      >
-        <AddPeople
           addToPeopleList={service.addToPeopleList}
-          toggleModal={service.toggleAddModal}
         />
       </CustomModal>
       <FAB
-        onPress={service.toggleAddModal}
+        onPress={() => service.toggleModal()}
         color={Constants.colors.lightGray}
         style={[styles.fab, pageStyle.fab]}
         icon="plus"

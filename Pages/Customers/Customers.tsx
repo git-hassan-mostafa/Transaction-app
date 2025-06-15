@@ -1,11 +1,10 @@
 import { View, FlatList } from "react-native";
 import useCustomersService from "./Customers.service";
 import styles from "./Customers.style";
-import { EditCustomer } from "@/Components/Customer/Edit/EditCustomer";
+import { CustomerForm } from "@/Components/Customer/CustomerForm";
 import Constants from "@/Global/Constants/Constants";
 import { FAB } from "react-native-paper";
 import React from "react";
-import AddCustomer from "@/Components/Customer/Add/AddCustomer";
 import CustomModal from "@/Global/Reusable Components/CustomModalComponent/CustomModalComponent";
 import ICustomer from "@/ViewModels/Customers/ICustomer";
 import pageStyle from "@/Global/Styles/pages.global.style";
@@ -39,28 +38,23 @@ export default function Customers() {
         contentContainerStyle={{ paddingBottom: 120 }}
       />
       <CustomModal
-        title={i18n.t("edit-customer")}
-        isVisible={service.editModalOptions.visible}
-        onClose={() => service.toggleEditModal(-1)}
-      >
-        <EditCustomer
-          toggleModal={() => service.toggleEditModal(-1)}
-          id={service.editModalOptions.id}
-          updateFromCustomersList={service.updateFromCustomersList}
-        />
-      </CustomModal>
-      <CustomModal
-        title={i18n.t("add-customer")}
-        isVisible={service.modalVisible}
+        title={
+          service.modalOptions.id
+            ? i18n.t("edit-customer")
+            : i18n.t("add-customer")
+        }
+        isVisible={service.modalOptions.visible}
         onClose={service.toggleModal}
       >
-        <AddCustomer
-          addToCustomersList={service.addToCustomersList}
+        <CustomerForm
           toggleModal={service.toggleModal}
+          id={service.modalOptions.id}
+          updateFromCustomersList={service.updateFromCustomersList}
+          addToCustomersList={service.addToCustomersList}
         />
       </CustomModal>
       <FAB
-        onPress={service.toggleModal}
+        onPress={() => service.toggleModal()}
         color={Constants.colors.lightGray}
         style={[pageStyle.fab, styles.fab]}
         icon="plus"

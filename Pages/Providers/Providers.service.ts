@@ -5,7 +5,7 @@ import IProvider from "@/ViewModels/Providers/IProvider";
 import { useEffect, useState } from "react";
 import { Alert } from "react-native";
 import useService from "@/Global/Context/ServiceProvider";
-import IEditModalType from "@/Global/Types/IEditModalType";
+import IFormModalType from "@/Global/Types/IEditModalType";
 
 export default function useProvidersService() {
   //services
@@ -13,8 +13,7 @@ export default function useProvidersService() {
 
   //states
   const [providers, setProviders] = useState<IProvider[]>([]);
-  const [modalVisible, setModalVisible] = useState(false);
-  const [editModalOptions, setEditModalOptions] = useState<IEditModalType>({
+  const [modalOptions, setModalOptions] = useState<IFormModalType>({
     visible: false,
     id: -1,
   });
@@ -82,15 +81,11 @@ export default function useProvidersService() {
   }
 
   async function onEdit(id: number) {
-    toggleEditModal(id);
+    toggleModal(id);
   }
 
-  function toggleAddModal() {
-    setModalVisible((prev) => !prev);
-  }
-
-  function toggleEditModal(id: number = -1) {
-    setEditModalOptions((prev) => ({ visible: !prev.visible, id }));
+  function toggleModal(id: number | undefined = undefined) {
+    setModalOptions((prev) => ({ visible: !prev.visible, id }));
   }
 
   function sortProviders() {
@@ -99,14 +94,12 @@ export default function useProvidersService() {
 
   return {
     providers,
-    modalVisible,
-    editModalOptions,
-    toggleAddModal,
+    modalOptions,
     addToProvidersList,
     deleteFromProvidersList,
     updateFromProvidersList,
     handleDeleteProvider,
     onEdit,
-    toggleEditModal,
+    toggleModal,
   };
 }

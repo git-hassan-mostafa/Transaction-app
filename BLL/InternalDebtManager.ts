@@ -74,10 +74,14 @@ export default class InternalDebtManager {
     }, 0);
   }
 
+  getPricePaidSum() {
+    return 0;
+  }
+
   async addInternalDebt(
     innerDebt: IInnerDebt,
     internalDebtsItems: IInnerDebtItem_IInnerDebt_IItem[]
-  ): Promise<IResultType<number>> {
+  ): Promise<IResultType<ICustomer_IInnerDebt>> {
     const newInnerDebt = this.mapper.mapToInnerDebt(innerDebt);
 
     //check if inner debt already exists
@@ -89,9 +93,10 @@ export default class InternalDebtManager {
         return {
           success: false,
           message: i18n.t("failed-to-add-internal-debt"),
-          data: -1,
+          data: {} as ICustomer_IInnerDebt,
         };
       innerDebt.innerDebtId = result.lastInsertRowId;
+      innerDebt.innerDebtDate = new Date().toISOString();
       const internalDebtsItemsDB: InnerDebtItem[] = internalDebtsItems.map(
         (item): InnerDebtItem => {
           return {
@@ -112,16 +117,29 @@ export default class InternalDebtManager {
         return {
           success: false,
           message: i18n.t("failed-to-add-inner-debt-products"),
-          data: -1,
+          data: {} as ICustomer_IInnerDebt,
         };
       }
+      const customerDB = await this.customerDataAccess.getCustomer(
+        innerDebt.innerDebt_CustomerId
+      );
+      if (!customerDB)
+        return {
+          success: false,
+          data: {} as ICustomer_IInnerDebt,
+          message: i18n.t("customer-not-found"),
+        };
+      const customer = this.mapper.mapToICustomer(customerDB);
       return {
         success: true,
         message: i18n.t("internal-debt-added-successfully"),
-        data: result.lastInsertRowId,
+        data: {
+          ...innerDebt,
+          ...customer,
+        },
       };
     }
-    return { success: false, message: "", data: -1 };
+    return { success: false, message: "", data: {} as ICustomer_IInnerDebt };
   }
 
   async addInternalDebtItem(
@@ -197,6 +215,17 @@ export default class InternalDebtManager {
         };
       }
     }
+    const internalDebtDB: InnerDebt = this.mapper.mapToInnerDebt(internalDebt);
+    const result = await this.internalDebtsDataAccess.updateInnerDebt(
+      internalDebtDB
+    );
+    if (!result || !result.changes) {
+      return {
+        success: false,
+        data: {} as ICustomer_IInnerDebt,
+        message: i18n.t("failed-updating-internal-debt"),
+      };
+    }
     const customerDB = await this.customerDataAccess.getCustomer(
       internalDebt.innerDebt_CustomerId
     );
@@ -207,16 +236,6 @@ export default class InternalDebtManager {
         message: i18n.t("customer-not-found"),
       };
     const customer = this.mapper.mapToICustomer(customerDB);
-    const internalDebtDB: InnerDebt = this.mapper.mapToInnerDebt(internalDebt);
-    const result = await this.internalDebtsDataAccess.updateInnerDebt(
-      internalDebtDB
-    );
-    if (!result || !result.changes)
-      return {
-        success: false,
-        data: {} as ICustomer_IInnerDebt,
-        message: i18n.t("failed-updating-internal-debt"),
-      };
     const customerInnerDebt: ICustomer_IInnerDebt = {
       ...internalDebt,
       ...customer,

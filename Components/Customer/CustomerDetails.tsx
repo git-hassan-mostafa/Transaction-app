@@ -5,7 +5,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import styles from "./EditCustomer.style";
+import styles from "./CustomerForm.style";
 import { ThemedText } from "@/Global/Reusable Components/HelperComponents/ThemedText";
 import ICustomerDetailsProps from "@/ViewModels/Customers/ICustomerDetailsProps";
 import i18n from "@/Global/I18n/I18n";
@@ -17,31 +17,33 @@ import formStyle from "@/Global/Styles/form.style";
 export default function CustomerDetails(props: ICustomerDetailsProps) {
   return (
     <View>
-      <View style={styles.pricesRow}>
-        <ThemedText
-          weight={600}
-          fontSize={12}
-          style={[styles.price, styles.payedPrice]}
-        >
-          ${props.customer.customerPayedPrice}
-        </ThemedText>
-        <ThemedText
-          weight={600}
-          fontSize={12}
-          style={[styles.price, styles.totalDebtPrice]}
-        >
-          ${props.customer.customerBorrowedPrice}
-        </ThemedText>
-        <ThemedText
-          weight={600}
-          fontSize={12}
-          style={[styles.price, styles.remainingPrice]}
-        >
-          $
-          {props.customer.customerBorrowedPrice -
-            props.customer.customerPayedPrice}
-        </ThemedText>
-      </View>
+      {props.customer.customerId > 0 && (
+        <View style={styles.pricesRow}>
+          <ThemedText
+            weight={600}
+            fontSize={12}
+            style={[styles.price, styles.payedPrice]}
+          >
+            ${props.customer.customerPayedPrice}
+          </ThemedText>
+          <ThemedText
+            weight={600}
+            fontSize={12}
+            style={[styles.price, styles.totalDebtPrice]}
+          >
+            ${props.customer.customerBorrowedPrice}
+          </ThemedText>
+          <ThemedText
+            weight={600}
+            fontSize={12}
+            style={[styles.price, styles.remainingPrice]}
+          >
+            $
+            {props.customer.customerBorrowedPrice -
+              props.customer.customerPayedPrice}
+          </ThemedText>
+        </View>
+      )}
       <View style={formStyle.row}>
         <ThemedText style={formStyle.label}>
           {i18n.t("customer-name")}
@@ -88,7 +90,7 @@ export default function CustomerDetails(props: ICustomerDetailsProps) {
           buttonColor={Constants.colors.customers}
           textColor={Constants.colors.lightGray}
           labelStyle={formStyle.saveButton}
-          onPress={props.updateCustomer}
+          onPress={props.save}
         >
           <ThemedText weight={400} style={formStyle.saveText}>
             {i18n.t("save")}

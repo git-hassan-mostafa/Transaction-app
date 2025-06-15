@@ -5,8 +5,8 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import useEditPeopleService from "./EditPeople.service";
-import { ThemedText } from "../../../Global/Reusable Components/HelperComponents/ThemedText";
+import usePeopleFormService from "./PeopleForm.service";
+import { ThemedText } from "../../Global/Reusable Components/HelperComponents/ThemedText";
 import IPeopleFormProps from "@/ViewModels/People/IPersonFormProps";
 import i18n from "@/Global/I18n/I18n";
 import { Button } from "react-native-paper";
@@ -14,8 +14,8 @@ import ValidationMessage from "@/Global/Reusable Components/HelperComponents/Val
 import Constants from "@/Global/Constants/Constants";
 import formStyle from "@/Global/Styles/form.style";
 
-export default function EditPeople(props: IPeopleFormProps) {
-  const service = useEditPeopleService(props);
+export default function PeopleForm(props: IPeopleFormProps) {
+  const service = usePeopleFormService(props);
   return (
     <View style={formStyle.container}>
       <View style={formStyle.row}>
@@ -50,7 +50,7 @@ export default function EditPeople(props: IPeopleFormProps) {
             buttonColor={Constants.colors.people}
             textColor={Constants.colors.lightGray}
             labelStyle={formStyle.saveButton}
-            onPress={service.updatePerson}
+            onPress={service.save}
           >
             <ThemedText style={formStyle.saveText}>{i18n.t("save")}</ThemedText>
           </Button>

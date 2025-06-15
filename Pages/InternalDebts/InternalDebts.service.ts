@@ -5,7 +5,7 @@ import { Alert } from "react-native";
 import i18n from "@/Global/I18n/I18n";
 import SortList from "@/Global/Helpers/Functions/SortList";
 import useService from "@/Global/Context/ServiceProvider";
-import IEditModalType from "@/Global/Types/IEditModalType";
+import IFormModalType from "@/Global/Types/IEditModalType";
 import IInnerDebtItem_IInnerDebt_IItem from "@/ViewModels/RelationModels/IInnerDebtItem_IInnerDebt_IItem";
 
 export default function useInnerDebtsService() {
@@ -18,8 +18,7 @@ export default function useInnerDebtsService() {
     IInnerDebtItem_IInnerDebt_IItem[]
   >([]);
 
-  const [modalVisible, setModalVisible] = useState(false);
-  const [editModalOptions, setEditModalOptions] = useState<IEditModalType>({
+  const [modalOptions, setModalOptions] = useState<IFormModalType>({
     visible: false,
     id: -1,
   });
@@ -113,15 +112,11 @@ export default function useInnerDebtsService() {
   }
 
   async function onEdit(id: number) {
-    toggleEditModal(id);
+    toggleModal(id);
   }
 
-  function toggleModal() {
-    setModalVisible((prev) => !prev);
-  }
-
-  function toggleEditModal(id: number) {
-    setEditModalOptions((prev) => ({ visible: !prev.visible, id }));
+  function toggleModal(id: number | undefined = undefined) {
+    setModalOptions((prev) => ({ visible: !prev.visible, id }));
   }
 
   function sortInternalDebts() {
@@ -130,9 +125,7 @@ export default function useInnerDebtsService() {
 
   return {
     innerDebts,
-    modalVisible,
-    editModalOptions,
-    toggleEditModal,
+    modalOptions,
     toggleModal,
     addToInnerDebtsList,
     deleteFromInnerDebtsList,

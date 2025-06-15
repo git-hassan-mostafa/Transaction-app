@@ -10,5 +10,5 @@ export default interface IInternalDebtDetailsService {
   setPricePaid: (value: string) => void;
   setCustomer: (value: number) => void;
   setNotes: (value: string) => void;
-  updateInnerDebt: () => Promise<void>;
+  save: () => Promise<void>;
 }

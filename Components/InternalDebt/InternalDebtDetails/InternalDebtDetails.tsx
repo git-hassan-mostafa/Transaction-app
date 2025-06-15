@@ -1,6 +1,6 @@
 import React from "react";
 import { View, TextInput, TouchableOpacity } from "react-native";
-import { ThemedText } from "../../../../Global/Reusable Components/HelperComponents/ThemedText";
+import { ThemedText } from "../../../Global/Reusable Components/HelperComponents/ThemedText";
 import styles from "./InternalDebtDetails.style";
 import CustomDropDown from "@/Global/Reusable Components/CustomDropDownComponent/CustomDropDownComponent";
 import i18n from "@/Global/I18n/I18n";
@@ -16,15 +16,18 @@ export default function InternalDebtDetails(
 ) {
   return (
     <View style={styles.content}>
-      <View style={styles.debtDate}>
-        <ThemedText
-          fontSize={12}
-          weight={600}
-          color={Constants.colors.darkGray}
-        >
-          {fromatLocaleDateWithDay(service.internalDebt.innerDebtDate)}
-        </ThemedText>
-      </View>
+      {service.internalDebt.innerDebtId && (
+        <View style={styles.debtDate}>
+          <ThemedText
+            fontSize={12}
+            weight={600}
+            color={Constants.colors.darkGray}
+          >
+            {fromatLocaleDateWithDay(service.internalDebt.innerDebtDate)}
+          </ThemedText>
+        </View>
+      )}
+
       <View style={formStyle.row}>
         <ThemedText style={formStyle.label}>
           {i18n.t("select-customer")}
@@ -80,7 +83,7 @@ export default function InternalDebtDetails(
           buttonColor={Constants.colors.internalDebts}
           textColor={Constants.colors.lightGray}
           labelStyle={formStyle.saveButton}
-          onPress={service.updateInnerDebt}
+          onPress={service.save}
         >
           <ThemedText style={formStyle.saveText}>{i18n.t("save")}</ThemedText>
         </Button>

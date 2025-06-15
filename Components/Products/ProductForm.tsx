@@ -3,16 +3,16 @@ import { View, TextInput, StyleProp, TextStyle } from "react-native";
 import Constants from "@/Global/Constants/Constants";
 import { TouchableOpacity } from "react-native";
 import { Button } from "react-native-paper";
-import { ThemedText } from "../../../Global/Reusable Components/HelperComponents/ThemedText";
-import useAddProductService from "./AddProduct.service";
+import { ThemedText } from "../../Global/Reusable Components/HelperComponents/ThemedText";
+import useProductFormService from "./ProductForm.service";
 import CustomDropDown from "@/Global/Reusable Components/CustomDropDownComponent/CustomDropDownComponent";
-import IAddItemProps from "@/ViewModels/Products/IAddProductProps";
 import ValidationMessage from "@/Global/Reusable Components/HelperComponents/ValidationMessage";
 import i18n from "@/Global/I18n/I18n";
 import formStyle from "@/Global/Styles/form.style";
+import IProductFormProps from "@/ViewModels/Products/IProductFormProps";
 
-export default function AddProduct(props: IAddItemProps) {
-  const service = useAddProductService(props);
+export default function ProductForm(props: IProductFormProps) {
+  const service = useProductFormService(props);
 
   return (
     <View style={formStyle.container}>
@@ -81,7 +81,7 @@ export default function AddProduct(props: IAddItemProps) {
           buttonColor={Constants.colors.products}
           textColor={Constants.colors.lightGray}
           labelStyle={formStyle.saveButton}
-          onPress={service.addProduct}
+          onPress={service.save}
         >
           <ThemedText weight={400} style={formStyle.saveText}>
             {i18n.t("save")}

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import IEditCustomerProps from "@/ViewModels/Customers/IEditCustomerProps";
+import ICustomerFormProps from "@/ViewModels/Customers/ICustomerFormProps";
 import ICustomer from "@/ViewModels/Customers/ICustomer";
 import { ICustomer_IInerDebt_IInnerDebtItem_IItem } from "@/ViewModels/RelationModels/ICustomer_IInerDebt_IInnerDebtItem_IItem";
 import ICustomerDetailsProps from "@/ViewModels/Customers/ICustomerDetailsProps";
@@ -8,8 +8,8 @@ import useGlobalContext from "@/Global/Context/ContextProvider";
 import { IValidationErrorType } from "@/Global/Types/IValidationErrorType";
 import i18n from "@/Global/I18n/I18n";
 
-export default function useEditCustomerService(
-  props: IEditCustomerProps
+export default function useCustomerFormService(
+  props: ICustomerFormProps
 ): ICustomerDetailsProps {
   //services
   const { customerManager } = useService();
@@ -25,23 +25,26 @@ export default function useEditCustomerService(
     visible: false,
     text: "",
   });
+
   //context
   const context = useGlobalContext();
 
   useEffect(() => {
-    getAllData();
+    if (props.id) fetchAllData();
   }, []);
 
-  async function getAllData() {
-    await Promise.all([getCustomer(), getBorrowList()]);
+  async function fetchAllData() {
+    await Promise.all([fetchCustomer(), fetchBorrowList()]);
   }
 
-  async function getCustomer() {
-    const mappedCustomer = await customerManager.getCustomer(props.id);
-    setCustomer(mappedCustomer);
+  async function fetchCustomer() {
+    if (!props.id) return;
+    const customerDB = await customerManager.getCustomer(props.id);
+    setCustomer(customerDB);
   }
 
-  async function getBorrowList() {
+  async function fetchBorrowList() {
+    if (!props.id) return;
     const borrowedList = await customerManager.getCustomerBorrowList(props.id);
     setBorrowList(borrowedList);
     setCustomerBorrowedPrice(borrowedList);
@@ -71,6 +74,29 @@ export default function useEditCustomerService(
   function setCustomerNotes(value: string) {
     setCustomer((prev) => {
       return { ...prev, customerNotes: value };
+    });
+  }
+
+  async function save() {
+    if (props.id) updateCustomer();
+    else addCustomer();
+  }
+
+  async function addCustomer() {
+    if (!validateCustomer()) return;
+    const result = await customerManager.addCustomer(customer);
+    if (!result.success)
+      return context.toggleSnackBar({
+        text: result.message,
+        type: "error",
+        visible: true,
+      });
+    props.addToCustomersList(customer);
+    props.toggleModal();
+    context.toggleSnackBar({
+      text: result.message,
+      type: "success",
+      visible: true,
     });
   }
 
@@ -117,6 +143,6 @@ export default function useEditCustomerService(
     setCustomerName,
     setCustomerPhoneNumber,
     setCustomerNotes,
-    updateCustomer,
+    save,
   };
 }

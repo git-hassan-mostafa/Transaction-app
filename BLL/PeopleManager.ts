@@ -27,7 +27,7 @@ export class PeopleManager {
   async addPerson(person: IPerson): Promise<IResultType<number>> {
     const newPerson = this.mapper.mapToPerson(person);
     const result = await this.peopleDataAccess.addPerson(newPerson);
-    if (!result)
+    if (!result || !result.lastInsertRowId)
       return {
         success: true,
         data: -1,

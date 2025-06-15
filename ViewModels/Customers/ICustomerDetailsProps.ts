@@ -9,5 +9,5 @@ export default interface ICustomerDetailsProps {
   setCustomerName: (value: string) => void;
   setCustomerPhoneNumber: (value: string) => void;
   setCustomerNotes: (value: string) => void;
-  updateCustomer: () => Promise<void>;
+  save: () => Promise<void>;
 }

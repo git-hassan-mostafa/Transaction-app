@@ -1,15 +1,12 @@
-import useGlobalContext from "@/Global/Context/ContextProvider";
-import { useState } from "react";
-import IAddProviderProps from "@/ViewModels/Providers/IAddProviderProps";
+import { useEffect, useState } from "react";
+import { IProviderFormProps } from "@/ViewModels/Providers/IProviderFormProps";
 import IProvider from "@/ViewModels/Providers/IProvider";
+import useService from "@/Global/Context/ServiceProvider";
 import { IValidationErrorType } from "@/Global/Types/IValidationErrorType";
 import i18n from "@/Global/I18n/I18n";
-import useService from "@/Global/Context/ServiceProvider";
+import useGlobalContext from "@/Global/Context/ContextProvider";
 
-export default function useAddProviderService({
-  toggleModal,
-  addToProvidersList,
-}: IAddProviderProps) {
+export default function useEditProviderService(props: IProviderFormProps) {
   //services
   const { providerManager } = useService();
 
@@ -20,8 +17,19 @@ export default function useAddProviderService({
     text: "",
   });
 
-  // context
+  //context
   const context = useGlobalContext();
+
+  useEffect(() => {
+    getProvider();
+  }, []);
+
+  async function getProvider() {
+    if (!props.id) return;
+    const providersDB = await providerManager.getProvider(props.id);
+    if (!providersDB) return;
+    setProvider(providersDB);
+  }
 
   function setProviderName(value: string) {
     setProvider((prev) => {
@@ -41,6 +49,11 @@ export default function useAddProviderService({
     });
   }
 
+  async function save() {
+    if (props.id) updateProvider();
+    else addProvider();
+  }
+
   async function addProvider() {
     if (!validateProvider()) return;
 
@@ -52,7 +65,7 @@ export default function useAddProviderService({
           text: result.message,
           type: "error",
         });
-      addToProvidersList(provider);
+      props.addToProvidersList(provider);
       context.toggleSnackBar({
         visible: true,
         text: result.message,
@@ -61,8 +74,26 @@ export default function useAddProviderService({
     } catch (error) {
       console.log(error);
     } finally {
-      toggleModal();
+      props.toggleModal();
     }
+  }
+
+  async function updateProvider() {
+    if (!validateProvider) return;
+    const result = await providerManager.updateProvider(provider);
+    if (!result.success)
+      return context.toggleSnackBar({
+        text: result.message,
+        visible: true,
+        type: "error",
+      });
+    props.toggleModal();
+    context.toggleSnackBar({
+      text: result.message,
+      visible: true,
+      type: "success",
+    });
+    props.updateFromProvidersList(provider);
   }
 
   function validateProvider() {
@@ -86,9 +117,9 @@ export default function useAddProviderService({
   return {
     provider,
     validation,
+    save,
     setProviderName,
     setProviderPhoneNumber,
     setProviderNotes,
-    addProvider,
   };
 }

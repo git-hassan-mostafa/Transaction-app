@@ -1,4 +1,4 @@
-export default interface IEditModalType {
-  id: number;
+export default interface IFormModalType {
+  id: number | undefined;
   visible: boolean;
 }

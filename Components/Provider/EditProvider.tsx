@@ -1,17 +1,21 @@
 import React from "react";
-import { View, TextInput, StyleProp, TextStyle } from "react-native";
-import useAddProviderService from "./AddProvider.service";
-import Constants from "@/Global/Constants/Constants";
-import { TouchableOpacity } from "react-native";
-import { Button } from "react-native-paper";
-import { ThemedText } from "../../../Global/Reusable Components/HelperComponents/ThemedText";
-import IAddProviderProps from "@/ViewModels/Providers/IAddProviderProps";
-import ValidationMessage from "@/Global/Reusable Components/HelperComponents/ValidationMessage";
+import {
+  View,
+  TextInput,
+  StyleProp,
+  TextStyle,
+  TouchableOpacity,
+} from "react-native";
+import useEditProviderService from "./EditProvider.service";
+import { ThemedText } from "../../Global/Reusable Components/HelperComponents/ThemedText";
+import { IProviderFormProps } from "@/ViewModels/Providers/IProviderFormProps";
 import i18n from "@/Global/I18n/I18n";
+import ValidationMessage from "@/Global/Reusable Components/HelperComponents/ValidationMessage";
+import { Button } from "react-native-paper";
+import Constants from "@/Global/Constants/Constants";
 import formStyle from "@/Global/Styles/form.style";
-
-export default function AddProvider(props: IAddProviderProps) {
-  const service = useAddProviderService(props);
+export function EditProvider(props: IProviderFormProps) {
+  const service = useEditProviderService(props);
 
   return (
     <View style={formStyle.container}>
@@ -42,7 +46,6 @@ export default function AddProvider(props: IAddProviderProps) {
           onChangeText={service.setProviderPhoneNumber}
         />
       </View>
-
       <View style={formStyle.row}>
         <ThemedText style={formStyle.label}>{i18n.t("notes")}</ThemedText>
         <TextInput
@@ -52,20 +55,20 @@ export default function AddProvider(props: IAddProviderProps) {
           value={service.provider.providerNotes}
           onChangeText={service.setProviderNotes}
         />
+        <View style={formStyle.row}>
+          <ValidationMessage validation={service.validation} />
+        </View>
+        <TouchableOpacity>
+          <Button
+            buttonColor={Constants.colors.providers}
+            textColor={Constants.colors.lightGray}
+            labelStyle={formStyle.saveButton}
+            onPress={service.save}
+          >
+            <ThemedText style={formStyle.saveText}>{i18n.t("save")}</ThemedText>
+          </Button>
+        </TouchableOpacity>
       </View>
-      <View style={formStyle.row}>
-        <ValidationMessage validation={service.validation} />
-      </View>
-      <TouchableOpacity>
-        <Button
-          buttonColor={Constants.colors.providers}
-          textColor={Constants.colors.lightGray}
-          labelStyle={formStyle.saveButton}
-          onPress={service.addProvider}
-        >
-          <ThemedText style={formStyle.saveText}>{i18n.t("save")}</ThemedText>
-        </Button>
-      </TouchableOpacity>
     </View>
   );
 }

@@ -7,7 +7,7 @@ import IPerson from "@/ViewModels/People/IPerson";
 import { useEffect, useState } from "react";
 import { Alert } from "react-native";
 import useService from "@/Global/Context/ServiceProvider";
-import IEditModalType from "@/Global/Types/IEditModalType";
+import IFormModalType from "@/Global/Types/IEditModalType";
 
 export default function usePeopleService() {
   //services
@@ -15,8 +15,7 @@ export default function usePeopleService() {
 
   //states
   const [people, setPeople] = useState<IPerson[]>([]);
-  const [modalVisible, setModalVisible] = useState(false);
-  const [editModalOptions, setEditModalOptions] = useState<IEditModalType>({
+  const [modalOptions, setModalOptions] = useState<IFormModalType>({
     visible: false,
     id: -1,
   });
@@ -86,27 +85,21 @@ export default function usePeopleService() {
   }
 
   async function onEdit(id: number) {
-    toggleEditModal(id);
+    toggleModal(id);
   }
 
-  function toggleEditModal(id: number = -1) {
-    setEditModalOptions((prev) => ({ visible: !prev.visible, id }));
-  }
-
-  function toggleAddModal() {
-    setModalVisible((prev) => !prev);
+  function toggleModal(id: number | undefined = undefined) {
+    setModalOptions((prev) => ({ visible: !prev.visible, id }));
   }
 
   return {
     people,
-    modalVisible,
-    editModalOptions,
-    toggleAddModal,
+    modalOptions,
     addToPeopleList,
     deleteFromPeopleList,
     updateFromPeopleList,
     handleDeletePerson,
     onEdit,
-    toggleEditModal,
+    toggleModal,
   };
 }

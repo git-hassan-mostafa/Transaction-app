@@ -1,8 +1,7 @@
 import useGlobalContext from "@/Global/Context/ContextProvider";
-import BLLFactory from "@/Factories/BLLFactory";
 import sortList from "@/Global/Helpers/Functions/SortList";
 import i18n from "@/Global/I18n/I18n";
-import IEditModalType from "@/Global/Types/IEditModalType";
+import IFormModalType from "@/Global/Types/IEditModalType";
 import ICustomer from "@/ViewModels/Customers/ICustomer";
 import { useEffect, useState } from "react";
 import { Alert } from "react-native";
@@ -14,8 +13,7 @@ export default function useCustomersService() {
 
   //states
   const [customers, setCustomers] = useState<ICustomer[]>([]);
-  const [modalVisible, setModalVisible] = useState(false);
-  const [editModalOptions, setEditModalOptions] = useState<IEditModalType>({
+  const [modalOptions, setModalOptions] = useState<IFormModalType>({
     visible: false,
     id: -1,
   });
@@ -52,7 +50,7 @@ export default function useCustomersService() {
   }
 
   async function onEdit(id: number) {
-    toggleEditModal(id);
+    toggleModal(id);
   }
 
   async function handleDeleteCustomer(id: number) {
@@ -85,12 +83,8 @@ export default function useCustomersService() {
     });
   }
 
-  function toggleModal() {
-    setModalVisible((prev) => !prev);
-  }
-
-  function toggleEditModal(id: number) {
-    setEditModalOptions((prev) => ({ visible: !prev.visible, id }));
+  function toggleModal(id: number | undefined = undefined) {
+    setModalOptions((prev) => ({ visible: !prev.visible, id }));
   }
 
   function sortCustomers() {
@@ -99,10 +93,8 @@ export default function useCustomersService() {
 
   return {
     customers,
-    modalVisible,
-    editModalOptions,
+    modalOptions,
     toggleModal,
-    toggleEditModal,
     addToCustomersList,
     deleteFromCustomerList,
     updateFromCustomersList,

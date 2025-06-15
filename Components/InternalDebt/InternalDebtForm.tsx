@@ -1,5 +1,5 @@
 import TabComponent from "@/Global/Reusable Components/TabComponent/TabComponent";
-import { IEditInnerDebtProps } from "@/ViewModels/InnerDebts/IInerDebtsFormProps";
+import { IInnerDebtFormProps } from "@/ViewModels/InnerDebts/IInerDebtsFormProps";
 import { View } from "react-native";
 import i18n from "@/Global/I18n/I18n";
 import useInternalDebtProductsListService from "./InternalDebtProductsList/InternalDebtProductsList.service";
@@ -8,7 +8,7 @@ import formStyle from "@/Global/Styles/form.style";
 import InternalDebtProductsList from "./InternalDebtProductsList/InternalDebtProductsList";
 import InternalDebtDetails from "./InternalDebtDetails/InternalDebtDetails";
 
-export default function EditInternalDebt(props: IEditInnerDebtProps) {
+export default function InternalDebtForm(props: IInnerDebtFormProps) {
   const internalDebtsItemsListService = useInternalDebtProductsListService(
     props.id
   );

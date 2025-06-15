@@ -1,15 +1,18 @@
-import i18n from "@/Global/I18n/I18n";
+import useGlobalContext from "@/Global/Context/ContextProvider";
 import IDropDownItem from "@/Global/Types/IDropDownItem";
-import IInnerDebtsProductsListProps from "@/ViewModels/InnerDebts/IInnerDebtsItemsListProps";
 import IProduct from "@/ViewModels/Products/IProduct";
 import IInnerDebtItem_IInnerDebt_IItem from "@/ViewModels/RelationModels/IInnerDebtItem_IInnerDebt_IItem";
+import i18n from "@/Global/I18n/I18n";
 import { useEffect, useState } from "react";
 import { Alert } from "react-native";
+import IInternalDebtProductsListProps from "@/ViewModels/InnerDebts/IInnerDebtsItemsListProps";
 import useService from "@/Global/Context/ServiceProvider";
 
-export default function useAddInternalDebtProductsList(): IInnerDebtsProductsListProps {
+export default function useInternalDebtProductsListService(
+  innerDebtId: number | undefined
+): IInternalDebtProductsListProps {
   //managers
-  const { internalDebtManager, productManager: itemManager } = useService();
+  const { internalDebtManager, productManager } = useService();
 
   //states
   const [items, setItems] = useState<IProduct[]>([]);
@@ -17,17 +20,27 @@ export default function useAddInternalDebtProductsList(): IInnerDebtsProductsLis
   const [innerDebtsItems, setInnerDebtsItems] = useState<
     IInnerDebtItem_IInnerDebt_IItem[]
   >([]);
+
   const [showAddItem, setShowAddItem] = useState(false);
   var newInnerDebtsItem: IInnerDebtItem_IInnerDebt_IItem =
     {} as IInnerDebtItem_IInnerDebt_IItem;
 
   useEffect(() => {
     getAllItems();
+    getAllInnerDebtsItems();
   }, []);
 
+  async function getAllInnerDebtsItems() {
+    if (!innerDebtId) return;
+    const innerDebtsItemsDB = await internalDebtManager.getInternalDebtsItems(
+      innerDebtId
+    );
+    setInnerDebtsItems(innerDebtsItemsDB);
+  }
+
   async function getAllItems() {
-    const itemsDB = await itemManager.getAllProducts();
-    const dropDownItems = itemManager.getDropDownItems(itemsDB);
+    const itemsDB = await productManager.getAllProducts();
+    const dropDownItems = productManager.getDropDownItems(itemsDB);
     setItems(itemsDB);
     setDropDownItems(dropDownItems);
   }
@@ -46,22 +59,44 @@ export default function useAddInternalDebtProductsList(): IInnerDebtsProductsLis
     setShowAddItem(value);
   }
 
-  function handleAddItem() {
+  async function handleAddItem() {
     const currentItem = items.find(
       (i) => i.productId === newInnerDebtsItem.innerDebtItem_ItemId
     );
+    newInnerDebtsItem.isNew = true;
     newInnerDebtsItem.innerDebtItemId = Date.now();
+    if (innerDebtId) {
+      newInnerDebtsItem.innerDebtItem_InnerDebtId = innerDebtId;
+    }
     newInnerDebtsItem.innerDebtItemTotalPrice =
       newInnerDebtsItem.innerDebtItemQuantity *
       (Number(currentItem?.productPrice) || 0);
 
-    if (!handleExistingItem())
+    if (!handleExistingItem()) {
       setInnerDebtsItems((prev) => [...prev, newInnerDebtsItem]);
+    }
+
     setShowAddItem(false);
   }
 
   function handleDeleteItem(id: number) {
-    setInnerDebtsItems((prev) => prev.filter((i) => i.innerDebtItemId !== id));
+    Alert.alert(
+      i18n.t("remove-product"),
+      i18n.t("are-you-sureyou-want-to-remove-this-product"),
+      [
+        {
+          text: i18n.t("cancel"),
+          style: "cancel",
+        },
+        { text: i18n.t("confirm"), onPress: () => deleteInnerDebtItem(id) },
+      ]
+    );
+  }
+
+  async function deleteInnerDebtItem(id: number) {
+    return setInnerDebtsItems((prev) =>
+      prev.filter((i) => i.innerDebtItemId !== id)
+    );
   }
 
   function handleExistingItem() {
@@ -76,14 +111,21 @@ export default function useAddInternalDebtProductsList(): IInnerDebtsProductsLis
         const existingItem = prev.find(
           (i) => i.innerDebtItem_ItemId === currentItem?.productId
         );
-        if (!existingItem) return prev;
-        existingItem.innerDebtItemQuantity +=
+        const newItem = existingItem;
+        if (!newItem) return prev;
+        newItem.innerDebtItemQuantity +=
           newInnerDebtsItem.innerDebtItemQuantity;
-        existingItem.innerDebtItemTotalPrice =
-          existingItem.innerDebtItemTotalPrice +
+        newItem.innerDebtItemTotalPrice =
+          newItem.innerDebtItemTotalPrice +
           newInnerDebtsItem.innerDebtItemQuantity *
             (Number(currentItem?.productPrice) || 0);
-        return prev;
+        const result = [
+          ...prev.filter(
+            (i) => i.innerDebtItem_ItemId !== currentItem?.productId
+          ),
+          newItem,
+        ];
+        return result;
       });
       Alert.alert(
         i18n.t("warning"),
@@ -93,24 +135,16 @@ export default function useAddInternalDebtProductsList(): IInnerDebtsProductsLis
     return itemAlreadyExists;
   }
 
-  async function refreshInnerDebtsItems(innerDebtId: number) {
-    const itemsDB = await internalDebtManager.getInternalDebtsItems(
-      innerDebtId
-    );
-    setInnerDebtsItems(itemsDB);
-  }
-
   return {
     items,
     dropDownItems,
     innerDebtsItems,
     newInnerDebtsItem,
-    showAddItem,
     setInnerDebtsItem,
     setNewItemQuantity,
+    showAddItem,
     handleAddItem,
     toggleAddItem,
     handleDeleteItem,
-    refreshInnerDebtsItems,
   };
 }

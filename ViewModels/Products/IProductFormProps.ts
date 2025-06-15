@@ -1,7 +1,8 @@
 import IProduct from "./IProduct";
 
-export default interface IItemFormProps {
-  id: number;
+export default interface IProductFormProps {
+  id: number | undefined;
   toggleModal: () => void;
   updateFromProductsList: (item: IProduct) => void;
+  addToProductsList: (item: IProduct) => void;
 }

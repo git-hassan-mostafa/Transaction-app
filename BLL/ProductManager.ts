@@ -32,7 +32,7 @@ export default class ProductManager {
   async addProduct(product: IProduct): Promise<IResultType<number>> {
     const newProduct: Item = this.mapper.mapToProduct(product);
     const result = await this.productDataAccess.addItem(newProduct);
-    if (!result || !result.changes)
+    if (!result || !result.lastInsertRowId)
       return {
         success: false,
         data: -1,

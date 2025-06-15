@@ -1,17 +1,17 @@
+import useGlobalContext from "@/Global/Context/ContextProvider";
 import { useEffect, useState } from "react";
 import IDropDownItem from "@/Global/Types/IDropDownItem";
 import IProduct from "@/ViewModels/Products/IProduct";
-import IEditProductProps from "@/ViewModels/Products/IProductFormProps";
 import { IValidationErrorType } from "@/Global/Types/IValidationErrorType";
-import useGlobalContext from "@/Global/Context/ContextProvider";
 import i18n from "@/Global/I18n/I18n";
-import ProviderDataAccess from "@/DAL/ProviderDataAccess";
 import useService from "@/Global/Context/ServiceProvider";
+import IProductFormProps from "@/ViewModels/Products/IProductFormProps";
 
-export default function useEditProductService(props: IEditProductProps) {
-  //services
+export default function useProductFormService(props: IProductFormProps) {
+  // services
   const { productManager } = useService();
 
+  //states
   const [product, setProduct] = useState<IProduct>({} as IProduct);
   const [providers, setProviders] = useState<IDropDownItem[]>([]);
   const [validation, setValidation] = useState<IValidationErrorType>({
@@ -19,29 +19,32 @@ export default function useEditProductService(props: IEditProductProps) {
     text: "",
   });
 
-  //context
+  // context
   const context = useGlobalContext();
 
   useEffect(() => {
-    getProduct();
-    getAllProviders();
+    fetchData();
   }, []);
+
+  async function fetchData() {
+    await Promise.all([getProduct(), getAllProviders()]);
+  }
+
+  async function getProduct() {
+    if (!props.id) return;
+    const productDB = await productManager.getProduct(props.id);
+    if (!productDB) return;
+    setProduct(productDB);
+  }
 
   async function getAllProviders() {
     const providers = await productManager.getAllProviders();
-    const sortedProviders = [
+    setProviders([
       { label: "", value: undefined },
       ...(providers?.map((p) => {
         return { label: p.providerName, value: p.providerId };
       }) as IDropDownItem[]),
-    ];
-    setProviders(sortedProviders);
-  }
-
-  async function getProduct() {
-    const productDB = await productManager.getProduct(props.id);
-    if (!productDB) return;
-    setProduct(productDB);
+    ]);
   }
 
   function setProductName(value: string) {
@@ -71,6 +74,31 @@ export default function useEditProductService(props: IEditProductProps) {
   function setProductNotes(value: string) {
     setProduct((prev) => {
       return { ...prev, productNotes: value };
+    });
+  }
+
+  function save() {
+    setProduct(product);
+    if (props.id) updateProduct();
+    else addProduct();
+  }
+
+  async function addProduct() {
+    if (!validateProduct()) return;
+    const result = await productManager.addProduct(product);
+    if (!result.success)
+      return context.toggleSnackBar({
+        visible: true,
+        text: result.message,
+        type: "error",
+      });
+    product.productId = result?.data;
+    props.addToProductsList(product);
+    props.toggleModal();
+    context.toggleSnackBar({
+      visible: true,
+      text: result.message,
+      type: "success",
     });
   }
 
@@ -107,7 +135,7 @@ export default function useEditProductService(props: IEditProductProps) {
       });
       return false;
     }
-    if (!product.productQuantity || Number(product.productQuantity) < 1) {
+    if (!product.productQuantity) {
       setValidation({
         visible: true,
         text: i18n.t("please-enter-product-quantity"),
@@ -119,13 +147,13 @@ export default function useEditProductService(props: IEditProductProps) {
 
   return {
     product,
-    validation,
     providers,
-    updateProduct,
+    validation,
     setProductName,
-    setProductPrice,
     setProductQuantity,
+    setProductPrice,
     setProvider,
     setProductNotes,
+    save,
   };
 }

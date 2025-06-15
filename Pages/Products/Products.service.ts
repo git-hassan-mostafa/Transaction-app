@@ -5,7 +5,7 @@ import IProduct from "@/ViewModels/Products/IProduct";
 import { useEffect, useState } from "react";
 import { Alert } from "react-native";
 import useService from "@/Global/Context/ServiceProvider";
-import IEditModalType from "@/Global/Types/IEditModalType";
+import IFormModalType from "@/Global/Types/IEditModalType";
 
 export default function useProductsService() {
   //services
@@ -13,8 +13,7 @@ export default function useProductsService() {
 
   //states
   const [products, setProducts] = useState<IProduct[]>([]);
-  const [modalVisible, setModalVisible] = useState(false);
-  const [editModalOptions, setEditModalOptions] = useState<IEditModalType>({
+  const [modalOptions, setModalOptions] = useState<IFormModalType>({
     visible: false,
     id: -1,
   });
@@ -84,27 +83,21 @@ export default function useProductsService() {
   }
 
   async function onEdit(id: number) {
-    toggleEditModal(id);
+    toggleModal(id);
   }
 
-  function toggleModal() {
-    setModalVisible((prev) => !prev);
-  }
-
-  function toggleEditModal(id: number) {
-    setEditModalOptions((prev) => ({ visible: !prev.visible, id }));
+  function toggleModal(id: number | undefined = undefined) {
+    setModalOptions((prev) => ({ visible: !prev.visible, id }));
   }
 
   return {
     products,
-    modalVisible,
-    editModalOptions,
+    modalOptions,
     toggleModal,
     addToProductsList,
     deleteFromProductsList,
     updateFromProductsList,
     handleDeleteItem,
-    toggleEditModal,
     onEdit,
   };
 }

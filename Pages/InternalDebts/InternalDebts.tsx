@@ -5,14 +5,12 @@ import React from "react";
 import Constants from "@/Global/Constants/Constants";
 import CustomModal from "@/Global/Reusable Components/CustomModalComponent/CustomModalComponent";
 import { FAB } from "react-native-paper";
-import InternalDebtDetails from "@/Components/InternalDebt/Edit/InternalDebtDetails/InternalDebtDetails";
-import AddInternalDebt from "@/Components/InternalDebt/Add/AddInternalDebt";
 import { ICustomer_IInnerDebt } from "@/ViewModels/RelationModels/ICustomer_IInnerDebt";
 import pageStyle from "@/Global/Styles/pages.global.style";
 import i18n from "@/Global/I18n/I18n";
 import ListItem from "@/Global/Reusable Components/ListItem/ListItem";
 import { fromatLocaleDate } from "@/Global/Helpers/Functions/FormatDate";
-import EditInternalDebt from "@/Components/InternalDebt/Edit/EditInternalDebt";
+import InternalDebtForm from "@/Components/InternalDebt/InternalDebtForm";
 
 export default function InnerDebts() {
   const service = useInnerDebtsService();
@@ -45,28 +43,23 @@ export default function InnerDebts() {
         contentContainerStyle={{ paddingBottom: 120 }}
       />
       <CustomModal
-        title={i18n.t("edit-internal-debt")}
-        isVisible={service.editModalOptions.visible}
-        onClose={() => service.toggleEditModal(-1)}
+        title={
+          service.modalOptions.id
+            ? i18n.t("edit-internal-debt")
+            : i18n.t("add-internal-debt")
+        }
+        isVisible={service.modalOptions.visible}
+        onClose={() => service.toggleModal()}
       >
-        <EditInternalDebt
-          toggleModal={() => service.toggleEditModal(-1)}
-          id={service.editModalOptions.id}
+        <InternalDebtForm
+          toggleModal={() => service.toggleModal()}
+          id={service.modalOptions.id}
           updateFromInnerDebtsList={service.updateFromInnerDebtsList}
-        />
-      </CustomModal>
-      <CustomModal
-        title={i18n.t("add-internal-debt")}
-        isVisible={service.modalVisible}
-        onClose={service.toggleModal}
-      >
-        <AddInternalDebt
           addToInnerDebtsList={service.addToInnerDebtsList}
-          toggleModal={service.toggleModal}
         />
       </CustomModal>
       <FAB
-        onPress={service.toggleModal}
+        onPress={() => service.toggleModal()}
         color={Constants.colors.lightGray}
         style={[pageStyle.fab, styles.fab]}
         icon="plus"

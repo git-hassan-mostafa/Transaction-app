@@ -1,7 +1,8 @@
 import ICustomer from "./ICustomer";
 
-export default interface IEditCustomerProps {
-  id: number;
+export default interface ICustomerFormProps {
+  id: number | undefined;
+  addToCustomersList: (value: ICustomer) => void;
   updateFromCustomersList: (customer: ICustomer) => void;
   toggleModal: () => void;
 }
