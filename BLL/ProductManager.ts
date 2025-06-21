@@ -1,37 +1,37 @@
-import ItemsDataAccess from "@/DAL/ItemsDataAccess";
+import ProductsDataAccess from "@/DAL/ProductsDataAccess";
 import ProviderDataAccess from "@/DAL/ProviderDataAccess";
 import Mapper from "@/Global/Helpers/MapService";
 import i18n from "@/Global/I18n/I18n";
 import IDropDownItem from "@/Global/Types/IDropDownItem";
 import { IResultType } from "@/Global/Types/IResultType";
-import Item from "@/Models/Item";
+import Product from "@/Models/Product";
 import IProduct from "@/ViewModels/Products/IProduct";
 import IProvider from "@/ViewModels/Providers/IProvider";
 
 export default class ProductManager {
   constructor(
-    private productDataAccess: ItemsDataAccess,
+    private productDataAccess: ProductsDataAccess,
     private providerDataAccess: ProviderDataAccess,
     private mapper: Mapper
   ) {}
 
   async getAllProducts(): Promise<IProduct[]> {
-    const productsDB = await this.productDataAccess.getAllItems();
+    const productsDB = await this.productDataAccess.getAllProducts();
     if (!productsDB) return [];
     const products = this.mapper.mapToIProductAll(productsDB);
     return products;
   }
 
   async getProduct(id: number): Promise<IProduct | null> {
-    const itemDB = await this.productDataAccess.getItem(id);
-    if (!itemDB) return null;
-    const item = this.mapper.mapToIProduct(itemDB);
-    return item;
+    const productDB = await this.productDataAccess.getProduct(id);
+    if (!productDB) return null;
+    const product = this.mapper.mapToIProduct(productDB);
+    return product;
   }
 
   async addProduct(product: IProduct): Promise<IResultType<number>> {
-    const newProduct: Item = this.mapper.mapToProduct(product);
-    const result = await this.productDataAccess.addItem(newProduct);
+    const newProduct: Product = this.mapper.mapToProduct(product);
+    const result = await this.productDataAccess.addProduct(newProduct);
     if (!result || !result.lastInsertRowId)
       return {
         success: false,
@@ -46,8 +46,8 @@ export default class ProductManager {
   }
 
   async updateProduct(product: IProduct): Promise<IResultType<number>> {
-    const updatedItem: Item = this.mapper.mapToProduct(product);
-    const result = await this.productDataAccess.updateItem(updatedItem);
+    const updatedProduct: Product = this.mapper.mapToProduct(product);
+    const result = await this.productDataAccess.updateProduct(updatedProduct);
     if (!result || !result?.changes)
       return {
         success: false,
@@ -62,7 +62,7 @@ export default class ProductManager {
   }
 
   async deleteProduct(id: number): Promise<IResultType<number>> {
-    const result = await this.productDataAccess.deleteItem(id);
+    const result = await this.productDataAccess.deleteProduct(id);
     if (!result || !result.changes)
       return {
         success: false,
@@ -76,7 +76,7 @@ export default class ProductManager {
     };
   }
 
-  getDropDownItems(products: IProduct[]): IDropDownItem[] {
+  getDropDownProducts(products: IProduct[]): IDropDownItem[] {
     return products.map((i) => ({ value: i.productId, label: i.productName }));
   }
 

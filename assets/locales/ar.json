@@ -90,7 +90,7 @@
   "internal-debt-deleted-successfully": "تم حذف الدين الداخلي بنجاح",
   "error-deleting-internal-debt": "حصل خطأ أثناء حذف الدين الداخلي",
   "failed-to-add-internal-debt": "فشل في إضافة الدين الداخلي",
-  "failed-to-add-inner-debt-products": "فشل في إضافة منتجات الدين الداخلي",
+  "failed-to-add-internal-debt-products": "فشل في إضافة منتجات الدين الداخلي",
   "internal-debt-added-successfully": "تم إضافة الدين الداخلي بنجاح",
   "customer-not-found": "الزبون غير موجود",
   "failed-updating-internal-debt": "فشل في تحديث الدين الداخلي",

@@ -1,10 +1,8 @@
-import { SQLiteRunResult } from "expo-sqlite";
 import CustomerDataAccess from "../DAL/CustomersDataAccess";
 import Mapper from "../Global/Helpers/MapService";
 import ICustomer from "../ViewModels/Customers/ICustomer";
-import { ICustomer_IInerDebt_IInnerDebtItem_IItem } from "../ViewModels/RelationModels/ICustomer_IInerDebt_IInnerDebtItem_IItem";
+import { ICustomer_IInternalDebt_IInternalDebtProduct_IProduct } from "../ViewModels/RelationModels/ICustomer_IInternalDebt_IInternalDebtProduct_IProduct";
 import Customer from "../Models/Customer";
-import { Alert } from "react-native";
 import i18n from "../Global/I18n/I18n";
 import { IResultType } from "@/Global/Types/IResultType";
 
@@ -48,41 +46,45 @@ export default class CustomerManager {
 
   async getCustomerBorrowList(
     id: number
-  ): Promise<ICustomer_IInerDebt_IInnerDebtItem_IItem[]> {
+  ): Promise<ICustomer_IInternalDebt_IInternalDebtProduct_IProduct[]> {
     const borrowListDB = await this.customerDataAccess.getCustomerBorrowList(
       id
     );
     const mappedBorrowList =
       borrowListDB?.map((b) => {
         const result =
-          this.mapper.mapTo_IICustomer_IInerDebt_IInnerDebtItem_IItem(b);
-        result.innerDebtItemTotalPrice =
-          Number(result.productPrice) * result.innerDebtItemQuantity;
+          this.mapper.mapTo_IICustomer_IInerDebt_IInternalDebtProduct_IProduct(
+            b
+          );
+        result.internalDebtProductTotalPrice =
+          Number(result.productPrice) * result.internalDebtProductQuantity;
         return result;
       }) || [];
     return mappedBorrowList;
   }
 
   async getCustomersBorrowedList(): Promise<
-    ICustomer_IInerDebt_IInnerDebtItem_IItem[]
+    ICustomer_IInternalDebt_IInternalDebtProduct_IProduct[]
   > {
     const borrowListDB = await this.customerDataAccess.getCustomersBorrowList();
     const mappedBorrowList =
       borrowListDB?.map((b) => {
         const result =
-          this.mapper.mapTo_IICustomer_IInerDebt_IInnerDebtItem_IItem(b);
-        result.innerDebtItemTotalPrice =
-          Number(result.productPrice) * result.innerDebtItemQuantity;
+          this.mapper.mapTo_IICustomer_IInerDebt_IInternalDebtProduct_IProduct(
+            b
+          );
+        result.internalDebtProductTotalPrice =
+          Number(result.productPrice) * result.internalDebtProductQuantity;
         return result;
       }) || [];
     return mappedBorrowList;
   }
 
   getCustomerBorrowedPrice(
-    borrowedList: ICustomer_IInerDebt_IInnerDebtItem_IItem[]
+    borrowedList: ICustomer_IInternalDebt_IInternalDebtProduct_IProduct[]
   ): number {
     const sum = borrowedList.reduce((sum, item) => {
-      return sum + item.innerDebtItemTotalPrice;
+      return sum + item.internalDebtProductTotalPrice;
     }, 0);
     return sum;
   }

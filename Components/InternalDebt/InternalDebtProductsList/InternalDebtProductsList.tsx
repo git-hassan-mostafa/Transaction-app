@@ -2,7 +2,7 @@ import { ScrollView } from "react-native";
 import { View, Text, TextInput, Button, TouchableOpacity } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import CustomDropDown from "@/Global/Reusable Components/CustomDropDownComponent/CustomDropDownComponent";
-import IInnerDebtsItemsListProps from "@/ViewModels/InnerDebts/IInnerDebtsItemsListProps";
+import IInternalDebtsProductsListProps from "@/ViewModels/InternalDebts/IInternalDebtsProductsListProps";
 import styles from "./InternalDebtProductsList.style";
 import { ThemedText } from "@/Global/Reusable Components/HelperComponents/ThemedText";
 import MaterialIcon from "react-native-vector-icons/MaterialCommunityIcons";
@@ -12,9 +12,9 @@ import React from "react";
 import useDataTable from "@/Global/Hooks/useDataTable";
 import i18n from "@/Global/I18n/I18n";
 export default function InternalDebtProductsList(
-  props: IInnerDebtsItemsListProps
+  props: IInternalDebtsProductsListProps
 ) {
-  const { from, to, Pagination } = useDataTable(props.innerDebtsItems);
+  const { from, to, Pagination } = useDataTable(props.internalDebtsProducts);
 
   return (
     <View style={styles.dataTableContainer}>
@@ -35,20 +35,22 @@ export default function InternalDebtProductsList(
             </DataTable.Title>
           </DataTable.Header>
 
-          {props.innerDebtsItems.slice(from, to).map((item) => (
-            <DataTable.Row key={item.innerDebtItemId}>
+          {props.internalDebtsProducts.slice(from, to).map((item) => (
+            <DataTable.Row key={item.internalDebtProductId}>
               <DataTable.Cell style={globalStyles.column}>
                 <ThemedText>{item.productName}</ThemedText>
               </DataTable.Cell>
               <DataTable.Cell style={globalStyles.column} numeric>
-                {item.innerDebtItemQuantity}
+                {item.internalDebtProductQuantity}
               </DataTable.Cell>
               <DataTable.Cell style={globalStyles.column} numeric>
-                {item.innerDebtItemTotalPrice}
+                {item.internalDebtProductTotalPrice}
               </DataTable.Cell>
               <DataTable.Cell style={globalStyles.iconColumn}>
                 <TouchableOpacity
-                  onPress={() => props.handleDeleteItem(item.innerDebtItemId)}
+                  onPress={() =>
+                    props.handleDeleteProduct(item.internalDebtProductId)
+                  }
                 >
                   <MaterialIcon
                     style={globalStyles.delete}
@@ -60,7 +62,7 @@ export default function InternalDebtProductsList(
           ))}
 
           <DataTable.Row>
-            {props.showAddItem ? (
+            {props.showAddProduct ? (
               <React.Fragment>
                 <DataTable.Cell style={globalStyles.column}>
                   <CustomDropDown
@@ -69,7 +71,7 @@ export default function InternalDebtProductsList(
                     placeholderStyle={styles.placeholderStyle}
                     value={-1}
                     setValue={(value) =>
-                      props.setInnerDebtsItem(value as number)
+                      props.setInternalDebtsProduct(value as number)
                     }
                     data={props.dropDownItems}
                     placeholder={i18n.t("select-product")}
@@ -80,13 +82,13 @@ export default function InternalDebtProductsList(
                     keyboardType="numeric"
                     style={styles.textInput}
                     placeholder={i18n.t("quantity")}
-                    value={props.newInnerDebtsItem?.innerDebtItemQuantity?.toString()}
-                    onChangeText={props.setNewItemQuantity}
-                    onSubmitEditing={props.handleAddItem}
+                    value={props.newInternalDebtsProduct?.internalDebtProductQuantity?.toString()}
+                    onChangeText={props.setNewProductQuantity}
+                    onSubmitEditing={props.handleAddProduct}
                   />
                 </DataTable.Cell>
                 <DataTable.Cell style={globalStyles.column} numeric>
-                  <TouchableOpacity onPress={props.handleAddItem}>
+                  <TouchableOpacity onPress={props.handleAddProduct}>
                     <Ionicons name="checkmark" size={24} color="green" />
                   </TouchableOpacity>
                 </DataTable.Cell>
@@ -95,7 +97,7 @@ export default function InternalDebtProductsList(
               <DataTable.Cell style={globalStyles.column}>
                 <Ionicons
                   style={styles.addIcon}
-                  onPress={() => props.toggleAddItem(true)}
+                  onPress={() => props.toggleAddProduct(true)}
                   name="add"
                   size={24}
                   color="green"
@@ -105,7 +107,7 @@ export default function InternalDebtProductsList(
           </DataTable.Row>
         </DataTable>
       </ScrollView>
-      {!props.showAddItem && <Pagination />}
+      {!props.showAddProduct && <Pagination />}
     </View>
   );
 }

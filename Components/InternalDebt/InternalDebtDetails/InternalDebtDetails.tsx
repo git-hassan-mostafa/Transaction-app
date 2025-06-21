@@ -9,21 +9,21 @@ import ValidationMessage from "@/Global/Reusable Components/HelperComponents/Val
 import Constants from "@/Global/Constants/Constants";
 import formStyle from "@/Global/Styles/form.style";
 import { fromatLocaleDateWithDay } from "@/Global/Helpers/Functions/FormatDate";
-import IInternalDebtDetailsService from "@/ViewModels/InnerDebts/IInternalDebtDetailsService";
+import IInternalDebtDetailsService from "@/ViewModels/InternalDebts/IInternalDebtDetailsService";
 
 export default function InternalDebtDetails(
   service: IInternalDebtDetailsService
 ) {
   return (
     <View style={styles.content}>
-      {service.internalDebt.innerDebtId && (
+      {service.internalDebt.internalDebtId && (
         <View style={styles.debtDate}>
           <ThemedText
             fontSize={12}
             weight={600}
             color={Constants.colors.darkGray}
           >
-            {fromatLocaleDateWithDay(service.internalDebt.innerDebtDate)}
+            {fromatLocaleDateWithDay(service.internalDebt.internalDebtDate)}
           </ThemedText>
         </View>
       )}
@@ -33,7 +33,7 @@ export default function InternalDebtDetails(
           {i18n.t("select-customer")}
         </ThemedText>
         <CustomDropDown
-          value={service.internalDebt.innerDebt_CustomerId as number}
+          value={service.internalDebt.internalDebt_CustomerId as number}
           setValue={(value) => {
             service.setCustomer(value as number);
           }}
@@ -47,7 +47,7 @@ export default function InternalDebtDetails(
           style={formStyle.input}
           placeholder={i18n.t("enter-total-price")}
           placeholderTextColor="#999"
-          value={service.internalDebt.innerDebtTotalPrice?.toString()}
+          value={service.internalDebt.internalDebtTotalPrice?.toString()}
           keyboardType="numeric"
           onChangeText={(text) => service.setTotalPrice(text)}
         />
@@ -59,7 +59,7 @@ export default function InternalDebtDetails(
           style={formStyle.input}
           placeholder={i18n.t("enter-paid-price")}
           placeholderTextColor="#999"
-          value={service.internalDebt.innerDebtPricePaid?.toString()}
+          value={service.internalDebt.internalDebtPricePaid?.toString()}
           keyboardType="numeric"
           onChangeText={(text) => service.setPricePaid(text)}
         />
@@ -71,7 +71,7 @@ export default function InternalDebtDetails(
           style={[formStyle.input, formStyle.textArea]}
           placeholder={i18n.t("enter-notes")}
           placeholderTextColor="#999"
-          value={service.internalDebt.innerDebtNotes}
+          value={service.internalDebt.internalDebtNotes}
           onChangeText={service.setNotes}
         />
       </View>

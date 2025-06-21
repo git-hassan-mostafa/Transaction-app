@@ -1,24 +1,24 @@
 import { useEffect, useState } from "react";
 import useGlobalContext from "@/Global/Context/ContextProvider";
-import { IInnerDebtsFormServiceProps } from "@/ViewModels/InnerDebts/IInerDebtsFormProps";
-import IInnerDebt from "@/ViewModels/InnerDebts/IInerDebts";
+import { IInternalDebtsFormServiceProps } from "@/ViewModels/InternalDebts/IInternalDebtsFormProps";
+import IInternalDebt from "@/ViewModels/InternalDebts/IInternalDebts";
 import IDropDownItem from "@/Global/Types/IDropDownItem";
 import i18n from "@/Global/I18n/I18n";
 import useService from "@/Global/Context/ServiceProvider";
 import { IValidationErrorType } from "@/Global/Types/IValidationErrorType";
-import IInternalDebtDetailsService from "@/ViewModels/InnerDebts/IInternalDebtDetailsService";
-import { ICustomer_IInnerDebt } from "@/ViewModels/RelationModels/ICustomer_IInnerDebt";
+import IInternalDebtDetailsService from "@/ViewModels/InternalDebts/IInternalDebtDetailsService";
+import { ICustomer_IInnternalDebt } from "@/ViewModels/RelationModels/ICustomer_IInnternalDebt";
 
 export default function useInternalDebtDetailsService(
-  props: IInnerDebtsFormServiceProps
+  props: IInternalDebtsFormServiceProps
 ): IInternalDebtDetailsService {
   //services
   const { internalDebtManager, customerManager } = useService();
 
   //states
-  const [internalDebt, setInnerDebt] = useState<IInnerDebt>({
-    innerDebtId: props.id,
-  } as IInnerDebt);
+  const [internalDebt, setInternalDebt] = useState<IInternalDebt>({
+    internalDebtId: props.id,
+  } as IInternalDebt);
   const [customersDropDown, setCustomersDropDown] = useState<IDropDownItem[]>(
     []
   );
@@ -36,10 +36,10 @@ export default function useInternalDebtDetailsService(
 
   useEffect(() => {
     setPricesSum();
-  }, [props.internalDebtsItemsListService.innerDebtsItems]);
+  }, [props.internalDebtsProductsListService.internalDebtsProducts]);
 
   async function fetchAllData() {
-    await Promise.all([getInnerDebt(), getAllCustomers()]);
+    await Promise.all([getInternalDebt(), getAllCustomers()]);
   }
 
   async function getAllCustomers() {
@@ -49,59 +49,59 @@ export default function useInternalDebtDetailsService(
     setCustomersDropDown(dropDownCustomers);
   }
 
-  async function getInnerDebt() {
+  async function getInternalDebt() {
     if (!props.id) return;
     const internalDebtDB = await internalDebtManager.getInternalDebt(props.id);
-    setInnerDebt(internalDebtDB);
+    setInternalDebt(internalDebtDB);
   }
 
   function setPricesSum() {
     const totalPrice = internalDebtManager.getTotalPricesSum(
-      props.internalDebtsItemsListService.innerDebtsItems
+      props.internalDebtsProductsListService.internalDebtsProducts
     );
     const pricePaid = internalDebtManager.getPricePaidSum();
 
-    setInnerDebt((prev) => ({
+    setInternalDebt((prev) => ({
       ...prev,
-      innerDebtTotalPrice: totalPrice,
-      innerDebtPricePaid: pricePaid,
+      internalDebtTotalPrice: totalPrice,
+      internalDebtPricePaid: pricePaid,
     }));
   }
 
   function setTotalPrice(value: string) {
-    setInnerDebt((prev) => {
-      return { ...prev, innerDebtTotalPrice: Number(value) };
+    setInternalDebt((prev) => {
+      return { ...prev, internalDebtTotalPrice: Number(value) };
     });
   }
 
   function setPricePaid(value: string) {
-    setInnerDebt((prev) => {
-      return { ...prev, innerDebtPricePaid: Number(value) };
+    setInternalDebt((prev) => {
+      return { ...prev, internalDebtPricePaid: Number(value) };
     });
   }
 
   function setCustomer(customerId: number) {
-    setInnerDebt((prev) => {
-      return { ...prev, innerDebt_CustomerId: customerId };
+    setInternalDebt((prev) => {
+      return { ...prev, internalDebt_CustomerId: customerId };
     });
   }
 
   function setNotes(value: string) {
-    setInnerDebt((prev) => {
-      return { ...prev, innerDebtNotes: value };
+    setInternalDebt((prev) => {
+      return { ...prev, internalDebtNotes: value };
     });
   }
 
   async function save() {
-    if (props.id) updateInnerDebt();
-    else addInnerDebt();
+    if (props.id) updateInternalDebt();
+    else addInternalDebt();
   }
 
-  async function addInnerDebt() {
-    if (!validateInnerDebtFields()) return;
+  async function addInternalDebt() {
+    if (!validateInternalDebtFields()) return;
     const result = await internalDebtManager.addInternalDebt(
       internalDebt,
-      props.internalDebtsItemsListService.innerDebtsItems
+      props.internalDebtsProductsListService.internalDebtsProducts
     );
 
     if (!result.success && result.message) {
@@ -112,10 +112,10 @@ export default function useInternalDebtDetailsService(
       });
     }
     if (result.success) {
-      // await props.innerDebtsItemsListService.refreshInnerDebtsItems?.(
+      // await props.internalDebtsProductsListService.refreshInternalDebtsProducts?.(
       //   result.data
       // );
-      props.addToInnerDebtsList(result.data);
+      props.addToInternalDebtsList(result.data);
       props.toggleModal();
       context.toggleSnackBar({
         text: result.message,
@@ -125,11 +125,11 @@ export default function useInternalDebtDetailsService(
     }
   }
 
-  async function updateInnerDebt() {
-    if (!validateInnerDebtFields()) return;
+  async function updateInternalDebt() {
+    if (!validateInternalDebtFields()) return;
     const result = await internalDebtManager.updateInternalDebt(
       internalDebt,
-      props.internalDebtsItemsListService.innerDebtsItems
+      props.internalDebtsProductsListService.internalDebtsProducts
     );
     if (!result.success && result.message) {
       return context.toggleSnackBar({
@@ -139,7 +139,7 @@ export default function useInternalDebtDetailsService(
       });
     }
     props.toggleModal();
-    props.updateFromInnerDebtsList(result.data);
+    props.updateFromInternalDebtsList(result.data);
     context.toggleSnackBar({
       text: result.message,
       visible: true,
@@ -147,22 +147,24 @@ export default function useInternalDebtDetailsService(
     });
   }
 
-  function validateInnerDebtFields() {
-    if (!internalDebt.innerDebt_CustomerId) {
+  function validateInternalDebtFields() {
+    if (!internalDebt.internalDebt_CustomerId) {
       setValidation({
         text: i18n.t("please-select-a-customer"),
         visible: true,
       });
       return false;
     }
-    if (!props.internalDebtsItemsListService.innerDebtsItems.length) {
+    if (!props.internalDebtsProductsListService.internalDebtsProducts.length) {
       setValidation({
         visible: true,
         text: i18n.t("please-add-at-least-one-product"),
       });
       return false;
     }
-    if (internalDebt.innerDebtPricePaid > internalDebt.innerDebtTotalPrice) {
+    if (
+      internalDebt.internalDebtPricePaid > internalDebt.internalDebtTotalPrice
+    ) {
       setValidation({
         visible: true,
         text: i18n.t("paid-price-cannot-be-greater-than-total-price"),

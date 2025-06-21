@@ -1,88 +1,89 @@
 import AbstractDataAccess from "./AbstractDataAccess";
 import SqlBuilder from "../Global/Helpers/SqlBuilder";
 import { SQLiteRunResult } from "expo-sqlite";
-import InnerDebt from "../Models/InnerDebt";
-import { Customer_InnerDebt } from "../Models/RelationModels/Customer_InnerDebt";
+import InternalDebt from "../Models/InternalDebt";
+import { Customer_InternalDebt } from "../Models/RelationModels/Customer_InternalDebt";
 
 export default class InternalDebtsDataAccess extends AbstractDataAccess {
-  table = "InnerDebts";
+  table = "InternalDebts";
   constructor() {
     super();
   }
 
-  async getAllInnerDebts() {
+  async getAllInternalDebts() {
     try {
-      const sqlBuilder = new SqlBuilder<Customer_InnerDebt>(
+      const sqlBuilder = new SqlBuilder<Customer_InternalDebt>(
         this.db,
         this.table
       );
-      const innerDebts = await sqlBuilder
+      const internalDebts = await sqlBuilder
         .select()
         .join("Customers")
         .executeAsync();
-      return innerDebts as Customer_InnerDebt[];
+      return internalDebts as Customer_InternalDebt[];
     } catch (error) {
-      console.log("error getAllInnerDebts", error);
+      console.log("error getAllInternalDebts", error);
       return null;
     }
   }
 
-  async getInnerDebt(id: number) {
+  async getInternalDebt(id: number) {
     try {
-      const sqlBuilder = new SqlBuilder<InnerDebt>(this.db, this.table);
-      const innerDebt = await sqlBuilder
+      const sqlBuilder = new SqlBuilder<InternalDebt>(this.db, this.table);
+      const internaldebt = await sqlBuilder
         .select()
-        .where({ InnerDebtId: id })
+        .where({ InternalDebtId: id })
         .firstAsync();
-      return innerDebt;
+      return internaldebt;
     } catch (error) {
-      console.log("error getInnerDebt", error);
+      console.log("error getInternalDebt", error);
     }
   }
 
-  async addInnerDebt(innerDebt: InnerDebt) {
+  async addInternalDebt(internalDebt: InternalDebt) {
     try {
-      const sqlBuilder = new SqlBuilder<InnerDebt>(this.db, this.table);
-      const result = await sqlBuilder.insert(innerDebt);
+      const sqlBuilder = new SqlBuilder<InternalDebt>(this.db, this.table);
+      const result = await sqlBuilder.insert(internalDebt);
       return result;
     } catch (error) {
-      console.log("error addInnerDebt", error);
+      console.log("error addInternalDebt", error);
     }
   }
 
-  async updateInnerDebt(innerDebt: InnerDebt) {
+  async updateInternalDebt(internalDebt: InternalDebt) {
     try {
-      const sqlBuilder = new SqlBuilder<InnerDebt>(this.db, this.table);
+      const sqlBuilder = new SqlBuilder<InternalDebt>(this.db, this.table);
       const result = await sqlBuilder
-        .update(innerDebt)
-        .where({ InnerDebtId: innerDebt.InnerDebtId })
+        .update(internalDebt)
+        .where({ InternalDebtId: internalDebt.InternalDebtId })
         .executeAsync();
       return result as SQLiteRunResult;
     } catch (error) {
-      console.log("error updateInnerDebt", error);
+      console.log("error updateInternalDebt", error);
     }
   }
 
-  async updateInnerDebtCustomer(id: number, customerId: number) {
+  // not used ( to remove )
+  async updateInternalDebtCustomer(id: number, customerId: number) {
     try {
-      const sqlBuilder = new SqlBuilder<InnerDebt>(this.db, this.table);
+      const sqlBuilder = new SqlBuilder<InternalDebt>(this.db, this.table);
       const result = await sqlBuilder
-        .updateField("InnerDebt_CustomerId", customerId)
-        .where({ InnerDebtId: id })
+        .updateField("InternalDebt_CustomerId", customerId)
+        .where({ InternalDebtId: id })
         .executeAsync();
       return result as SQLiteRunResult;
     } catch (error) {
-      console.log("error updateInnerDebtCustomer", error);
+      console.log("error updateInternalDebtCustomer", error);
     }
   }
 
-  async deleteInnerDebt(id: number) {
+  async deleteInternalDebt(id: number) {
     try {
-      const sqlBuilder = new SqlBuilder<InnerDebt>(this.db, this.table);
+      const sqlBuilder = new SqlBuilder<InternalDebt>(this.db, this.table);
       const result = await sqlBuilder.delete(id);
       return result;
     } catch (error) {
-      console.log("error deleteInnerDebt", error);
+      console.log("error deleteInternalDebt", error);
       return null;
     }
   }

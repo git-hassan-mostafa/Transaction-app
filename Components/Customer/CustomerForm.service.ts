@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import ICustomerFormProps from "@/ViewModels/Customers/ICustomerFormProps";
 import ICustomer from "@/ViewModels/Customers/ICustomer";
-import { ICustomer_IInerDebt_IInnerDebtItem_IItem } from "@/ViewModels/RelationModels/ICustomer_IInerDebt_IInnerDebtItem_IItem";
+import { ICustomer_IInternalDebt_IInternalDebtProduct_IProduct } from "@/ViewModels/RelationModels/ICustomer_IInternalDebt_IInternalDebtProduct_IProduct";
 import ICustomerDetailsProps from "@/ViewModels/Customers/ICustomerDetailsProps";
 import useService from "@/Global/Context/ServiceProvider";
 import useGlobalContext from "@/Global/Context/ContextProvider";
@@ -19,7 +19,7 @@ export default function useCustomerFormService(
     customerId: props.id,
   } as ICustomer);
   const [borrowList, setBorrowList] = useState<
-    ICustomer_IInerDebt_IInnerDebtItem_IItem[]
+    ICustomer_IInternalDebt_IInternalDebtProduct_IProduct[]
   >([]);
   const [validation, setValidation] = useState<IValidationErrorType>({
     visible: false,
@@ -51,7 +51,7 @@ export default function useCustomerFormService(
   }
 
   function setCustomerBorrowedPrice(
-    borrowedList: ICustomer_IInerDebt_IInnerDebtItem_IItem[]
+    borrowedList: ICustomer_IInternalDebt_IInternalDebtProduct_IProduct[]
   ) {
     const sum = customerManager.getCustomerBorrowedPrice(borrowedList);
     setCustomer((prev) => {

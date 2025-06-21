@@ -15,14 +15,14 @@ export default class CreateTablesManager {
       const start = new Date().getTime();
       await this.createPeopleTable(db);
       await this.createProvidersTable(db);
-      await this.createItemsTable(db);
+      await this.createProductsTable(db);
       await this.createCustomersTable(db);
-      await this.createInnerDebtsTable(db);
-      await this.createInnerDebtItemsTable(db);
-      await this.createInnerDebtPaymentsTable(db);
-      await this.createOuterDebtsTable(db);
-      await this.createOuterDebtItemsTable(db);
-      await this.createOuterDebtPaymentsTable(db);
+      await this.createInternalDebtsTable(db);
+      await this.createInternalDebtProductsTable(db);
+      await this.createInternalDebtPaymentsTable(db);
+      await this.createExternalDebtsTable(db);
+      await this.createExternalDebtProductsTable(db);
+      await this.createExternalDebtPaymentsTable(db);
       const end = new Date().getTime();
       console.log("Tables Created ", "Time taken: ", end - start, "ms");
     } catch (error) {
@@ -32,20 +32,20 @@ export default class CreateTablesManager {
 
   private async dropTables(db: SQLiteDatabase) {
     try {
-      //   console.log("Droping Tables...");
-      //   const start = new Date().getTime();
-      //   await SqlTableCreator.dropTable(db, "People");
-      //   await SqlTableCreator.dropTable(db, "Providers");
-      //   await SqlTableCreator.dropTable(db, "Items");
-      //   await SqlTableCreator.dropTable(db, "Customers");
-      //   await SqlTableCreator.dropTable(db, "InnerDebts");
-      //   await SqlTableCreator.dropTable(db, "InnerDebtItems");
-      //   await SqlTableCreator.dropTable(db, "InnerDebtPayments");
-      //   await SqlTableCreator.dropTable(db, "OuterDebts");
-      //   await SqlTableCreator.dropTable(db, "OuterDebtItems");
-      //   await SqlTableCreator.dropTable(db, "OuterDebtPayments");
-      //   const end = new Date().getTime();
-      //   console.log("Tables Droped ", "Time taken: ", end - start, "ms");
+      // console.log("Droping Tables...");
+      // const start = new Date().getTime();
+      // await SqlTableCreator.dropTable(db, "People");
+      // await SqlTableCreator.dropTable(db, "Providers");
+      // await SqlTableCreator.dropTable(db, "Products");
+      // await SqlTableCreator.dropTable(db, "Customers");
+      // await SqlTableCreator.dropTable(db, "InternalDebts");
+      // await SqlTableCreator.dropTable(db, "InternalDebtProducts");
+      // await SqlTableCreator.dropTable(db, "InternalDebtPayments");
+      // await SqlTableCreator.dropTable(db, "ExternalDebts");
+      // await SqlTableCreator.dropTable(db, "ExternalDebtProducts");
+      // await SqlTableCreator.dropTable(db, "ExternalDebtPayments");
+      // const end = new Date().getTime();
+      // console.log("Tables Droped ", "Time taken: ", end - start, "ms");
     } catch (error) {}
   }
 
@@ -102,11 +102,11 @@ export default class CreateTablesManager {
       .executeAsync();
   }
 
-  private async createItemsTable(db: SQLiteDatabase) {
+  private async createProductsTable(db: SQLiteDatabase) {
     new SqlTableCreator(db)
-      .createTable("Items")
+      .createTable("Products")
       .column({
-        name: "ItemId",
+        name: "ProductId",
         type: "INTEGER",
         isPrimaryKey: true,
         isAutoIncrement: true,
@@ -133,12 +133,12 @@ export default class CreateTablesManager {
         isNullable: true,
       })
       .column({
-        name: "Item_ProviderId",
+        name: "Product_ProviderId",
         type: "INTEGER",
         isNullable: true,
       })
       .foreignKey({
-        column: "Item_ProviderId",
+        column: "Product_ProviderId",
         referencesTable: "Providers",
         referencesColumn: "ProviderId",
         onDeleteCascade: true,
@@ -175,11 +175,11 @@ export default class CreateTablesManager {
       .executeAsync();
   }
 
-  private async createInnerDebtsTable(db: SQLiteDatabase) {
+  private async createInternalDebtsTable(db: SQLiteDatabase) {
     new SqlTableCreator(db)
-      .createTable("InnerDebts")
+      .createTable("InternalDebts")
       .column({
-        name: "InnerDebtId",
+        name: "InternalDebtId",
         type: "INTEGER",
         isPrimaryKey: true,
         isAutoIncrement: true,
@@ -196,23 +196,23 @@ export default class CreateTablesManager {
         isNullable: true,
       })
       .column({
-        name: "InnerDebt_CustomerId",
+        name: "InternalDebt_CustomerId",
         type: "INTEGER",
         isNullable: false,
       })
       .column({
-        name: "InnerDebt_PersonId",
+        name: "InternalDebt_PersonId",
         type: "INTEGER",
         isNullable: true,
       })
       .foreignKey({
-        column: "InnerDebt_CustomerId",
+        column: "InternalDebt_CustomerId",
         referencesTable: "Customers",
         referencesColumn: "CustomerId",
         onDeleteCascade: true,
       })
       .foreignKey({
-        column: "InnerDebt_PersonId",
+        column: "InternalDebt_PersonId",
         referencesTable: "People",
         referencesColumn: "PersonId",
         onDeleteCascade: true,
@@ -220,51 +220,51 @@ export default class CreateTablesManager {
       .executeAsync();
   }
 
-  private async createInnerDebtItemsTable(db: SQLiteDatabase) {
+  private async createInternalDebtProductsTable(db: SQLiteDatabase) {
     new SqlTableCreator(db)
-      .createTable("InnerDebtItems")
+      .createTable("InternalDebtProducts")
       .column({
-        name: "InnerDebtItemId",
+        name: "InternalDebtProductId",
         type: "INTEGER",
         isPrimaryKey: true,
         isAutoIncrement: true,
         isNullable: false,
       })
       .column({
-        name: "InnerDebtItemQuantity",
+        name: "InternalDebtProductQuantity",
         type: "INTEGER",
         isNullable: false,
       })
       .column({
-        name: "InnerDebtItem_InnerDebtId",
+        name: "InternalDebtProduct_InternalDebtId",
         type: "INTEGER",
         isNullable: false,
       })
       .column({
-        name: "InnerDebtItem_ItemId",
+        name: "InternalDebtProduct_ProductId",
         type: "INTEGER",
         isNullable: false,
       })
       .foreignKey({
-        column: "InnerDebtItem_InnerDebtId",
-        referencesTable: "InnerDebts",
-        referencesColumn: "InnerDebtId",
+        column: "InternalDebtProduct_InternalDebtId",
+        referencesTable: "InternalDebts",
+        referencesColumn: "InternalDebtId",
         onDeleteCascade: true,
       })
       .foreignKey({
-        column: "InnerDebtItem_ItemId",
-        referencesTable: "Items",
-        referencesColumn: "ItemId",
+        column: "InternalDebtProduct_ProductId",
+        referencesTable: "Products",
+        referencesColumn: "ProductId",
         onDeleteCascade: true,
       })
       .executeAsync();
   }
 
-  private async createInnerDebtPaymentsTable(db: SQLiteDatabase) {
+  private async createInternalDebtPaymentsTable(db: SQLiteDatabase) {
     new SqlTableCreator(db)
-      .createTable("InnerDebtPayments")
+      .createTable("InternalDebtPayments")
       .column({
-        name: "InnerDebtPaymentId",
+        name: "InternalDebtPaymentId",
         type: "INTEGER",
         isPrimaryKey: true,
         isAutoIncrement: true,
@@ -281,24 +281,24 @@ export default class CreateTablesManager {
         default: "CURRENT_TIMESTAMP",
       })
       .column({
-        name: "InnerDebtPayment_InnerDebtId",
+        name: "InternalDebtPayment_InternalDebtId",
         type: "INTEGER",
         isNullable: false,
       })
       .foreignKey({
-        column: "InnerDebtPayment_InnerDebtId",
-        referencesTable: "InnerDebts",
-        referencesColumn: "InnerDebtId",
+        column: "InternalDebtPayment_InternalDebtId",
+        referencesTable: "InternalDebts",
+        referencesColumn: "InternalDebtId",
         onDeleteCascade: true,
       })
       .executeAsync();
   }
 
-  private async createOuterDebtsTable(db: SQLiteDatabase) {
+  private async createExternalDebtsTable(db: SQLiteDatabase) {
     new SqlTableCreator(db)
-      .createTable("OuterDebts")
+      .createTable("ExternalDebts")
       .column({
-        name: "OuterDebtId",
+        name: "ExternalDebtId",
         type: "INTEGER",
         isPrimaryKey: true,
         isAutoIncrement: true,
@@ -315,23 +315,23 @@ export default class CreateTablesManager {
         isNullable: true,
       })
       .column({
-        name: "OuterDebt_ProviderId",
+        name: "ExternalDebt_ProviderId",
         type: "INTEGER",
         isNullable: false,
       })
       .column({
-        name: "OuterDebt_PersonId",
+        name: "ExternalDebt_PersonId",
         type: "INTEGER",
         isNullable: false,
       })
       .foreignKey({
-        column: "OuterDebt_ProviderId",
+        column: "ExternalDebt_ProviderId",
         referencesTable: "Providers",
         referencesColumn: "ProviderId",
         onDeleteCascade: true,
       })
       .foreignKey({
-        column: "OuterDebt_PersonId",
+        column: "ExternalDebt_PersonId",
         referencesTable: "People",
         referencesColumn: "PersonId",
         onDeleteCascade: true,
@@ -339,51 +339,51 @@ export default class CreateTablesManager {
       .executeAsync();
   }
 
-  private async createOuterDebtItemsTable(db: SQLiteDatabase) {
+  private async createExternalDebtProductsTable(db: SQLiteDatabase) {
     new SqlTableCreator(db)
-      .createTable("OuterDebtItems")
+      .createTable("ExternalDebtProducts")
       .column({
-        name: "OuterDebtItemId",
+        name: "ExternalDebtProductId",
         type: "INTEGER",
         isPrimaryKey: true,
         isAutoIncrement: true,
         isNullable: false,
       })
       .column({
-        name: "OuterDebtQuantity",
+        name: "ExternalDebtQuantity",
         type: "INTEGER",
         isNullable: false,
       })
       .column({
-        name: "OuterDebtItem_OuterDebtId",
+        name: "ExternalDebtProduct_ExternalDebtId",
         type: "INTEGER",
         isNullable: false,
       })
       .column({
-        name: "OuterDebtItem_ItemId",
+        name: "ExternalDebtProduct_ProductId",
         type: "INTEGER",
         isNullable: false,
       })
       .foreignKey({
-        column: "OuterDebtItem_OuterDebtId",
-        referencesTable: "OuterDebts",
-        referencesColumn: "OuterDebtId",
+        column: "ExternalDebtProduct_ExternalDebtId",
+        referencesTable: "ExternalDebts",
+        referencesColumn: "ExternalDebtId",
         onDeleteCascade: true,
       })
       .foreignKey({
-        column: "OuterDebtItem_ItemId",
-        referencesTable: "Items",
-        referencesColumn: "ItemId",
+        column: "ExternalDebtProduct_ProductId",
+        referencesTable: "Products",
+        referencesColumn: "ProductId",
         onDeleteCascade: true,
       })
       .executeAsync();
   }
 
-  private async createOuterDebtPaymentsTable(db: SQLiteDatabase) {
+  private async createExternalDebtPaymentsTable(db: SQLiteDatabase) {
     new SqlTableCreator(db)
-      .createTable("OuterDebtPayments")
+      .createTable("ExternalDebtPayments")
       .column({
-        name: "OuterDebtPaymentId",
+        name: "ExternalDebtPaymentId",
         type: "INTEGER",
         isPrimaryKey: true,
         isAutoIncrement: true,
@@ -400,14 +400,14 @@ export default class CreateTablesManager {
         default: "CURRENT_TIMESTAMP",
       })
       .column({
-        name: "OuterDebtPayment_OuterDebtId",
+        name: "ExternalDebtPayment_ExternalDebtId",
         type: "INTEGER",
         isNullable: false,
       })
       .foreignKey({
-        column: "OuterDebtPayment_OuterDebtId",
-        referencesTable: "OuterDebts",
-        referencesColumn: "OuterDebtId",
+        column: "ExternalDebtPayment_ExternalDebtId",
+        referencesTable: "ExternalDebts",
+        referencesColumn: "ExternalDebtId",
         onDeleteCascade: true,
       })
       .executeAsync();

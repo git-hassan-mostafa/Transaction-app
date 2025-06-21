@@ -1,4 +1,4 @@
-import IInnerDebtItem_IInnerDebt_IItem from "@/ViewModels/RelationModels/IInnerDebtItem_IInnerDebt_IItem";
+import IInternalDebtProduct_IInternalDebt_IProduct from "@/ViewModels/RelationModels/IInternalDebtProduct_IInternalDebt_IProduct";
 import ISnackBarOptions from "./ISnackBarOptions";
 
 export default interface IContextProps {

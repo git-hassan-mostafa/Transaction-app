@@ -1,76 +1,86 @@
-import InternalDebtsItemsDataAccess from "@/DAL/InternalDebtsItemsDataAccess";
+import InternalDebtsProductsDataAccess from "@/DAL/InternalDebtsProductsDataAccess";
 import InternalDebtsDataAccess from "@/DAL/InternalDebtsDataAccess";
 import Mapper from "@/Global/Helpers/MapService";
 import ICustomer from "@/ViewModels/Customers/ICustomer";
 import IDropDownItem from "@/Global/Types/IDropDownItem";
-import IInnerDebtItem_IInnerDebt_IItem from "@/ViewModels/RelationModels/IInnerDebtItem_IInnerDebt_IItem";
-import IInnerDebt from "@/ViewModels/InnerDebts/IInerDebts";
+import IInternalDebtProduct_IInternalDebt_IProduct from "@/ViewModels/RelationModels/IInternalDebtProduct_IInternalDebt_IProduct";
+import IInternalDebt from "@/ViewModels/InternalDebts/IInternalDebts";
 import { IResultType } from "@/Global/Types/IResultType";
 import i18n from "@/Global/I18n/I18n";
-import InnerDebtItem from "@/Models/InnerDebtItem";
-import InnerDebtItem_InnerDebt_Item from "@/Models/RelationModels/InnerDebtItem_InnerDebt_Item";
-import { ICustomer_IInnerDebt } from "@/ViewModels/RelationModels/ICustomer_IInnerDebt";
+import InternalDebtProduct from "@/Models/InternalDebtProduct";
+import InternalDebtProduct_InternalDebt_Product from "@/Models/RelationModels/InternalDebtProduct_InternalDebt_Product";
+import { ICustomer_IInnternalDebt } from "@/ViewModels/RelationModels/ICustomer_IInnternalDebt";
 import CustomerDataAccess from "@/DAL/CustomersDataAccess";
-import InnerDebt from "@/Models/InnerDebt";
+import InternalDebt from "@/Models/InternalDebt";
 
 export default class InternalDebtManager {
   constructor(
     private internalDebtsDataAccess: InternalDebtsDataAccess,
-    private internalDebtsItemsDataAccess: InternalDebtsItemsDataAccess,
+    private internalDebtsProductsDataAccess: InternalDebtsProductsDataAccess,
     private customerDataAccess: CustomerDataAccess,
     private mapper: Mapper
-  ) {
-    console.log("internal debt manager created");
+  ) {}
+
+  async getAllInternalDebts(): Promise<ICustomer_IInnternalDebt[]> {
+    const internalDebtsDB =
+      await this.internalDebtsDataAccess.getAllInternalDebts();
+    if (!internalDebtsDB) return [];
+    const internalDebts =
+      this.mapper.mapToICustomer_IInternalDebtAll(internalDebtsDB);
+    return internalDebts || [];
   }
 
-  async getAllInternalDebts(): Promise<ICustomer_IInnerDebt[]> {
-    const innerDebtsDB = await this.internalDebtsDataAccess.getAllInnerDebts();
-    if (!innerDebtsDB) return [];
-    const innerDebts = this.mapper.mapToICustomer_IInnerDebtAll(innerDebtsDB);
-    return innerDebts || [];
-  }
-
-  async getInternalDebt(id: number): Promise<IInnerDebt> {
-    const innerDebtDB = await this.internalDebtsDataAccess.getInnerDebt(id);
-    if (!innerDebtDB) return {} as IInnerDebt;
-    const internalDebt = this.mapper.mapToIInnerDebt(innerDebtDB);
+  async getInternalDebt(id: number): Promise<IInternalDebt> {
+    const internalDebtDB = await this.internalDebtsDataAccess.getInternalDebt(
+      id
+    );
+    if (!internalDebtDB) return {} as IInternalDebt;
+    const internalDebt = this.mapper.mapToIInternalDebt(internalDebtDB);
     return internalDebt;
   }
 
-  async getAllInternalDebtsItems(): Promise<IInnerDebtItem_IInnerDebt_IItem[]> {
-    const innerDebtsItemsDB =
-      await this.internalDebtsItemsDataAccess.getAllInnerDebtItems();
-    if (!innerDebtsItemsDB) return [];
-    const items = (innerDebtsItemsDB as InnerDebtItem_InnerDebt_Item[]).map(
-      (item) => {
-        var i = this.mapper.mapTo_IInnerDebtItem_IInnerDebt_IItem(item);
-        i.innerDebtItemTotalPrice =
-          i.innerDebtItemQuantity * (Number(i?.productPrice) || 0);
-        return i;
-      }
-    );
-    return items;
+  async getAllInternalDebtsProducts(): Promise<
+    IInternalDebtProduct_IInternalDebt_IProduct[]
+  > {
+    const internalDebtsProductsDB =
+      await this.internalDebtsProductsDataAccess.getAllInternalDebtProducts();
+    if (!internalDebtsProductsDB) return [];
+    const products = (
+      internalDebtsProductsDB as InternalDebtProduct_InternalDebt_Product[]
+    ).map((item) => {
+      var i =
+        this.mapper.mapTo_IInternalDebtProduct_IInternalDebt_IProduct(item);
+      i.internalDebtProductTotalPrice =
+        i.internalDebtProductQuantity * (Number(i?.productPrice) || 0);
+      return i;
+    });
+    return products;
   }
 
-  async getInternalDebtsItems(
-    innerDebtId: number
-  ): Promise<IInnerDebtItem_IInnerDebt_IItem[]> {
-    const innerDebtsItemsDB =
-      await this.internalDebtsItemsDataAccess.getInnerDebtItems(innerDebtId);
-    const items = (innerDebtsItemsDB as InnerDebtItem_InnerDebt_Item[]).map(
-      (item) => {
-        var i = this.mapper.mapTo_IInnerDebtItem_IInnerDebt_IItem(item);
-        i.innerDebtItemTotalPrice =
-          i.innerDebtItemQuantity * (Number(i?.productPrice) || 0);
-        return i;
-      }
-    );
-    return items;
+  async getInternalDebtsProducts(
+    internalDebtId: number
+  ): Promise<IInternalDebtProduct_IInternalDebt_IProduct[]> {
+    const internalDebtsProductsDB =
+      await this.internalDebtsProductsDataAccess.getInternalDebtProducts(
+        internalDebtId
+      );
+    const products = (
+      internalDebtsProductsDB as InternalDebtProduct_InternalDebt_Product[]
+    ).map((item) => {
+      var i =
+        this.mapper.mapTo_IInternalDebtProduct_IInternalDebt_IProduct(item);
+      i.internalDebtProductTotalPrice =
+        i.internalDebtProductQuantity * (Number(i?.productPrice) || 0);
+      return i;
+    });
+    return products;
   }
 
-  getTotalPricesSum(innerDebtsItems: IInnerDebtItem_IInnerDebt_IItem[]) {
-    return innerDebtsItems.reduce((sum, item) => {
-      return sum + item.innerDebtItemTotalPrice;
+  getTotalPricesSum(
+    internalDebtsProducts: IInternalDebtProduct_IInternalDebt_IProduct[]
+  ) {
+    return internalDebtsProducts.reduce((sum, item) => {
+      return sum + item.internalDebtProductTotalPrice;
     }, 0);
   }
 
@@ -79,54 +89,53 @@ export default class InternalDebtManager {
   }
 
   async addInternalDebt(
-    innerDebt: IInnerDebt,
-    internalDebtsItems: IInnerDebtItem_IInnerDebt_IItem[]
-  ): Promise<IResultType<ICustomer_IInnerDebt>> {
-    const newInnerDebt = this.mapper.mapToInnerDebt(innerDebt);
+    InternalDebt: IInternalDebt,
+    internalDebtsProducts: IInternalDebtProduct_IInternalDebt_IProduct[]
+  ): Promise<IResultType<ICustomer_IInnternalDebt>> {
+    const newInternalDebt = this.mapper.mapToInternalDebt(InternalDebt);
 
     //check if inner debt already exists
-    if (!innerDebt.innerDebtId) {
-      const result = await this.internalDebtsDataAccess.addInnerDebt(
-        newInnerDebt
+    if (!InternalDebt.internalDebtId) {
+      const result = await this.internalDebtsDataAccess.addInternalDebt(
+        newInternalDebt
       );
       if (!result || !result.lastInsertRowId)
         return {
           success: false,
           message: i18n.t("failed-to-add-internal-debt"),
-          data: {} as ICustomer_IInnerDebt,
+          data: {} as ICustomer_IInnternalDebt,
         };
-      innerDebt.innerDebtId = result.lastInsertRowId;
-      innerDebt.innerDebtDate = new Date().toISOString();
-      const internalDebtsItemsDB: InnerDebtItem[] = internalDebtsItems.map(
-        (item): InnerDebtItem => {
+      InternalDebt.internalDebtId = result.lastInsertRowId;
+      InternalDebt.internalDebtDate = new Date().toISOString();
+      const internalDebtsProductsDB: InternalDebtProduct[] =
+        internalDebtsProducts.map((item): InternalDebtProduct => {
           return {
-            InnerDebtItemQuantity: item.innerDebtItemQuantity,
-            InnerDebtItem_ItemId: item.innerDebtItem_ItemId,
-            InnerDebtItem_InnerDebtId: innerDebt.innerDebtId,
+            InternalDebtProductQuantity: item.internalDebtProductQuantity,
+            InternalDebtProduct_ProductId: item.internalDebtProduct_ProductId,
+            InternalDebtProduct_InternalDebtId: InternalDebt.internalDebtId,
           };
-        }
-      );
-      const itemsResult =
-        await this.internalDebtsItemsDataAccess.addInnerDebtItems(
-          internalDebtsItemsDB
+        });
+      const productsResult =
+        await this.internalDebtsProductsDataAccess.addInternalDebtProducts(
+          internalDebtsProductsDB
         );
-      if (!itemsResult) {
-        await this.internalDebtsDataAccess.deleteInnerDebt(
-          innerDebt.innerDebtId
+      if (!productsResult) {
+        await this.internalDebtsDataAccess.deleteInternalDebt(
+          InternalDebt.internalDebtId
         );
         return {
           success: false,
-          message: i18n.t("failed-to-add-inner-debt-products"),
-          data: {} as ICustomer_IInnerDebt,
+          message: i18n.t("failed-to-add-internal-debt-products"),
+          data: {} as ICustomer_IInnternalDebt,
         };
       }
       const customerDB = await this.customerDataAccess.getCustomer(
-        innerDebt.innerDebt_CustomerId
+        InternalDebt.internalDebt_CustomerId
       );
       if (!customerDB)
         return {
           success: false,
-          data: {} as ICustomer_IInnerDebt,
+          data: {} as ICustomer_IInnternalDebt,
           message: i18n.t("customer-not-found"),
         };
       const customer = this.mapper.mapToICustomer(customerDB);
@@ -134,25 +143,33 @@ export default class InternalDebtManager {
         success: true,
         message: i18n.t("internal-debt-added-successfully"),
         data: {
-          ...innerDebt,
+          ...InternalDebt,
           ...customer,
         },
       };
     }
-    return { success: false, message: "", data: {} as ICustomer_IInnerDebt };
+    return {
+      success: false,
+      message: "",
+      data: {} as ICustomer_IInnternalDebt,
+    };
   }
 
-  async addInternalDebtItem(
-    newInnerDebtsItem: IInnerDebtItem_IInnerDebt_IItem
+  async addInternalDebtProduct(
+    newInternalDebtsProduct: IInternalDebtProduct_IInternalDebt_IProduct
   ): Promise<IResultType<number>> {
-    const innerDebtItemToAdd: Partial<InnerDebtItem> = {
-      InnerDebtItemQuantity: newInnerDebtsItem.innerDebtItemQuantity,
-      InnerDebtItem_InnerDebtId: newInnerDebtsItem.innerDebtItem_InnerDebtId,
-      InnerDebtItem_ItemId: newInnerDebtsItem.innerDebtItem_ItemId,
+    const internalDebtProductToAdd: Partial<InternalDebtProduct> = {
+      InternalDebtProductQuantity:
+        newInternalDebtsProduct.internalDebtProductQuantity,
+      InternalDebtProduct_InternalDebtId:
+        newInternalDebtsProduct.internalDebtProduct_InternalDebtId,
+      InternalDebtProduct_ProductId:
+        newInternalDebtsProduct.internalDebtProduct_ProductId,
     };
-    const result = await this.internalDebtsItemsDataAccess.addInnerDebtItem(
-      innerDebtItemToAdd
-    );
+    const result =
+      await this.internalDebtsProductsDataAccess.addInternalDebtProduct(
+        internalDebtProductToAdd
+      );
     if (result && result.lastInsertRowId) {
       return {
         success: true,
@@ -168,108 +185,120 @@ export default class InternalDebtManager {
   }
 
   async updateInternalDebt(
-    internalDebt: IInnerDebt,
-    internalDebtsItems: IInnerDebtItem_IInnerDebt_IItem[]
-  ): Promise<IResultType<ICustomer_IInnerDebt>> {
-    const internalDebtsItemsToAdd: InnerDebtItem[] = internalDebtsItems
-      .filter((item) => item.isNew)
-      .map((item): InnerDebtItem => {
-        return {
-          InnerDebtItemQuantity: item.innerDebtItemQuantity,
-          InnerDebtItem_ItemId: item.innerDebtItem_ItemId,
-          InnerDebtItem_InnerDebtId: internalDebt.innerDebtId,
-        };
-      });
-    const existingInternalDebtItems = await this.getInternalDebtsItems(
-      internalDebt.innerDebtId
+    internalDebt: IInternalDebt,
+    internalDebtsProducts: IInternalDebtProduct_IInternalDebt_IProduct[]
+  ): Promise<IResultType<ICustomer_IInnternalDebt>> {
+    const internalDebtsProductsToAdd: InternalDebtProduct[] =
+      internalDebtsProducts
+        .filter((item) => item.isNew)
+        .map((item): InternalDebtProduct => {
+          return {
+            InternalDebtProductQuantity: item.internalDebtProductQuantity,
+            InternalDebtProduct_ProductId: item.internalDebtProduct_ProductId,
+            InternalDebtProduct_InternalDebtId: internalDebt.internalDebtId,
+          };
+        });
+    const existingInternalDebtProducts = await this.getInternalDebtsProducts(
+      internalDebt.internalDebtId
     );
-    const internalDebtsItemsToDelete = existingInternalDebtItems.filter(
+    const internalDebtsProductsToDelete = existingInternalDebtProducts.filter(
       (item) =>
-        !internalDebtsItems.some(
-          (i) => i.innerDebtItemId === item.innerDebtItemId
+        !internalDebtsProducts.some(
+          (i) => i.internalDebtProductId === item.internalDebtProductId
         )
     );
-    const IdsToDelete = internalDebtsItemsToDelete.map(
-      (i) => i.innerDebtItemId
+    const IdsToDelete = internalDebtsProductsToDelete.map(
+      (i) => i.internalDebtProductId
     );
     if (IdsToDelete.length !== 0) {
-      const deleteResult = await this.deleteInternalDebtItems(IdsToDelete);
+      const deleteResult = await this.deleteInternalDebtProducts(IdsToDelete);
       if (!deleteResult.success) {
         return {
           success: false,
-          data: {} as ICustomer_IInnerDebt,
+          data: {} as ICustomer_IInnternalDebt,
           message: deleteResult.message,
         };
       }
     }
-    if (internalDebtsItemsToAdd.length !== 0) {
-      const itemsResult =
-        await this.internalDebtsItemsDataAccess.addInnerDebtItems(
-          internalDebtsItemsToAdd
+    if (internalDebtsProductsToAdd.length !== 0) {
+      const productsResult =
+        await this.internalDebtsProductsDataAccess.addInternalDebtProducts(
+          internalDebtsProductsToAdd
         );
-      if (!itemsResult || !itemsResult.lastInsertRowId) {
+      if (!productsResult || !productsResult.lastInsertRowId) {
         return {
           success: false,
-          data: {} as ICustomer_IInnerDebt,
+          data: {} as ICustomer_IInnternalDebt,
           message: i18n.t("failed-adding-products"),
         };
       }
     }
-    const internalDebtDB: InnerDebt = this.mapper.mapToInnerDebt(internalDebt);
-    const result = await this.internalDebtsDataAccess.updateInnerDebt(
+    const internalDebtDB: InternalDebt =
+      this.mapper.mapToInternalDebt(internalDebt);
+    const result = await this.internalDebtsDataAccess.updateInternalDebt(
       internalDebtDB
     );
     if (!result || !result.changes) {
       return {
         success: false,
-        data: {} as ICustomer_IInnerDebt,
+        data: {} as ICustomer_IInnternalDebt,
         message: i18n.t("failed-updating-internal-debt"),
       };
     }
     const customerDB = await this.customerDataAccess.getCustomer(
-      internalDebt.innerDebt_CustomerId
+      internalDebt.internalDebt_CustomerId
     );
     if (!customerDB)
       return {
         success: false,
-        data: {} as ICustomer_IInnerDebt,
+        data: {} as ICustomer_IInnternalDebt,
         message: i18n.t("customer-not-found"),
       };
     const customer = this.mapper.mapToICustomer(customerDB);
-    const customerInnerDebt: ICustomer_IInnerDebt = {
+    const customerInternalDebt: ICustomer_IInnternalDebt = {
       ...internalDebt,
       ...customer,
     };
     return {
       success: true,
-      data: customerInnerDebt,
+      data: customerInternalDebt,
       message: i18n.t("internal-debt-updated-successfully"),
     };
   }
 
-  async updateInnerDebtCustomer(
-    internalDebt: IInnerDebt,
+  // not used ( to remove )
+  async updateInternalDebtCustomer(
+    internalDebt: IInternalDebt,
     customerId: number
-  ): Promise<IResultType<ICustomer_IInnerDebt>> {
-    const result = await this.internalDebtsDataAccess.updateInnerDebtCustomer(
-      internalDebt.innerDebtId,
-      customerId
-    );
+  ): Promise<IResultType<ICustomer_IInnternalDebt>> {
+    const result =
+      await this.internalDebtsDataAccess.updateInternalDebtCustomer(
+        internalDebt.internalDebtId,
+        customerId
+      );
     if (!result || !result.changes)
-      return { success: false, data: {} as ICustomer_IInnerDebt, message: "" };
+      return {
+        success: false,
+        data: {} as ICustomer_IInnternalDebt,
+        message: "",
+      };
     const customerDB = await this.customerDataAccess.getCustomer(customerId);
     if (!customerDB)
-      return { success: false, data: {} as ICustomer_IInnerDebt, message: "" };
+      return {
+        success: false,
+        data: {} as ICustomer_IInnternalDebt,
+        message: "",
+      };
     const customer = this.mapper.mapToICustomer(customerDB);
-    const customerInnerDebt: ICustomer_IInnerDebt = {
+    const customerInternalDebt: ICustomer_IInnternalDebt = {
       ...internalDebt,
       ...customer,
     };
-    return { success: true, data: customerInnerDebt, message: "" };
+    return { success: true, data: customerInternalDebt, message: "" };
   }
 
   async deleteInternalDebt(id: number): Promise<IResultType<number>> {
-    const result = await this.internalDebtsDataAccess.deleteInnerDebt(id);
+    const result = await this.internalDebtsDataAccess.deleteInternalDebt(id);
     if (!result || !result?.changes)
       return {
         success: false,
@@ -283,10 +312,13 @@ export default class InternalDebtManager {
     };
   }
 
-  async deleteInternalDebtItems(ids: number[]): Promise<IResultType<number>> {
-    const result = await this.internalDebtsItemsDataAccess.deleteInnerDebtItems(
-      ids
-    );
+  async deleteInternalDebtProducts(
+    ids: number[]
+  ): Promise<IResultType<number>> {
+    const result =
+      await this.internalDebtsProductsDataAccess.deleteInternalDebtProducts(
+        ids
+      );
     if (!result?.changes) {
       return {
         success: false,
