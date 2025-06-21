@@ -17,19 +17,19 @@ const pages: IPageType[] = [
   },
   {
     title: i18n.t("products"),
-    route: "items",
+    route: "products",
     color: Constants.colors.products,
     icon: "basket-shopping",
   },
   {
     title: i18n.t("external-debts"),
-    route: "outerDebts",
+    route: "externalDebts",
     color: Constants.colors.externalDebts,
     icon: "money-bill-transfer",
   },
   {
     title: i18n.t("internal-debts"),
-    route: "innerDebts",
+    route: "internalDebts",
     color: Constants.colors.internalDebts,
     icon: "money-bill-wave",
   },

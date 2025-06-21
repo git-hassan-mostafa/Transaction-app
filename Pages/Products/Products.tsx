@@ -30,7 +30,7 @@ export default function Products() {
               text: "$" + item.productPrice?.toString(),
               color: Constants.colors.green,
             }}
-            onDelete={() => service.handleDeleteItem(item.productId)}
+            onDelete={() => service.handleDeleteProduct(item.productId)}
             onEdit={() => service.onEdit(item.productId)}
           />
         )}

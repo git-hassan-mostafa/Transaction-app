@@ -38,7 +38,7 @@ export default function CustomerDebtList(props: ICustomerFormProps) {
           </DataTable.Header>
 
           {borrowList.slice(from, to).map((item) => (
-            <DataTable.Row key={item.innerDebtItemId}>
+            <DataTable.Row key={item.internalDebtProductId}>
               <DataTable.Cell style={globalStyles.column}>
                 <ThemedText>{item.productName}</ThemedText>
               </DataTable.Cell>
@@ -47,16 +47,16 @@ export default function CustomerDebtList(props: ICustomerFormProps) {
               </DataTable.Cell>
 
               <DataTable.Cell style={globalStyles.column} numeric>
-                <ThemedText>{item.innerDebtItemQuantity}</ThemedText>
+                <ThemedText>{item.internalDebtProductQuantity}</ThemedText>
               </DataTable.Cell>
               <DataTable.Cell style={globalStyles.column} numeric>
                 <ThemedText>
-                  ${item.innerDebtItemTotalPrice.toFixed(2)}
+                  ${item.internalDebtProductTotalPrice.toFixed(2)}
                 </ThemedText>
               </DataTable.Cell>
               <DataTable.Cell style={globalStyles.dateColumn} numeric>
                 <ThemedText>
-                  {new Date(item.innerDebtDate ?? "")?.toLocaleDateString(
+                  {new Date(item.internalDebtDate ?? "")?.toLocaleDateString(
                     i18n.locale,
                     dateOptions
                   )}

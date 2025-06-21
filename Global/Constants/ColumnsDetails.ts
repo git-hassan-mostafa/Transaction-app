@@ -4,16 +4,16 @@ const tableDetails = [
     id: "CustomerId",
   },
   {
-    name: "InnerDebts",
-    id: "InnerDebtId",
+    name: "InternalDebts",
+    id: "InternalDebtId",
   },
   {
-    name: "Items",
-    id: "ItemId",
+    name: "Products",
+    id: "ProductId",
   },
   {
-    name: "OuterDebts",
-    id: "OuterDebtId",
+    name: "ExternalDebts",
+    id: "ExternalDebtId",
   },
   {
     name: "People",
@@ -24,8 +24,8 @@ const tableDetails = [
     id: "ProviderId",
   },
   {
-    name: "InnerDebtItems",
-    id: "InnerDebtItemId",
+    name: "InternalDebtProducts",
+    id: "InternalDebtProductId",
   },
 ];
 

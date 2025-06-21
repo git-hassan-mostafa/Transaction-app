@@ -41,8 +41,10 @@ export default function useProductsService() {
 
   function updateFromProductsList(value: IProduct) {
     setProducts((prev) =>
-      prev.map((item) =>
-        item.productId === value.productId ? { ...item, ...value } : item
+      prev.map((product) =>
+        product.productId === value.productId
+          ? { ...product, ...value }
+          : product
       )
     );
   }
@@ -52,7 +54,7 @@ export default function useProductsService() {
     setProducts(productsDB);
   }
 
-  async function handleDeleteItem(id: number) {
+  async function handleDeleteProduct(id: number) {
     Alert.alert(
       i18n.t("delete-product"),
       i18n.t("are-you-sure-you-want-to-delete-this-product"),
@@ -61,12 +63,12 @@ export default function useProductsService() {
           text: i18n.t("cancel"),
           style: "cancel",
         },
-        { text: i18n.t("confirm"), onPress: () => deleteItem(id) },
+        { text: i18n.t("confirm"), onPress: () => deleteProduct(id) },
       ]
     );
   }
 
-  async function deleteItem(id: number) {
+  async function deleteProduct(id: number) {
     const result = await productManager.deleteProduct(id);
     if (!result.success)
       return context.toggleSnackBar({
@@ -97,7 +99,7 @@ export default function useProductsService() {
     addToProductsList,
     deleteFromProductsList,
     updateFromProductsList,
-    handleDeleteItem,
+    handleDeleteProduct,
     onEdit,
   };
 }

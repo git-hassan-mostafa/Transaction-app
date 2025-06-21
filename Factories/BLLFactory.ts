@@ -16,7 +16,7 @@ export default class BLLFactory {
 
   static ProductManager() {
     return new ProductManager(
-      DALFactory.ItemsDataAccess(),
+      DALFactory.ProductsDataAccess(),
       DALFactory.ProviderDataAccess(),
       HelpersFactory.Mapper()
     );
@@ -24,7 +24,7 @@ export default class BLLFactory {
   static InternalDebtManager() {
     return new InternalDebtManager(
       DALFactory.InternalDebtsDataAccess(),
-      DALFactory.InternalDebtsItemsDataAccess(),
+      DALFactory.InternalDebtsProductsDataAccess(),
       DALFactory.CustomerDataAccess(),
       HelpersFactory.Mapper()
     );

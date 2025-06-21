@@ -9,7 +9,7 @@ import { useSQLiteContext } from "expo-sqlite";
 import CreateTablesManager from "../../DAL/CreateTablesManager";
 import ISnackBarOptions from "../Types/ISnackBarOptions";
 import IContextProps from "../Types/IContextProps";
-import IInnerDebtItem_IInnerDebt_IItem from "@/ViewModels/RelationModels/IInnerDebtItem_IInnerDebt_IItem";
+import IInternalDebtProduct_IInternalDebt_IProduct from "@/ViewModels/RelationModels/IInternalDebtProduct_IInternalDebt_IProduct";
 import useService from "./ServiceProvider";
 
 export function useContextService(): IContextProps {

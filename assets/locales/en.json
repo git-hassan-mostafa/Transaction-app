@@ -91,7 +91,7 @@
   "internal-debt-deleted-successfully": "Internal debt deleted successfully",
   "error-deleting-internal-debt": "Error deleting internal debt",
   "failed-to-add-internal-debt": "Failed to add internal debt",
-  "failed-to-add-inner-debt-products": "Failed to add inner debt products",
+  "failed-to-add-internal-debt-products": "Failed to add internal debt products",
   "internal-debt-added-successfully": "Internal debt added successfully",
   "customer-not-found": "Customer not found",
   "failed-updating-internal-debt": "Failed updating internal debt",

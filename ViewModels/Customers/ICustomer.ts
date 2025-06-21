@@ -1,5 +1,3 @@
-import InnerDebt from "@/Models/InnerDebt";
-
 export default interface ICustomer {
   customerId: number;
   customerName: string;

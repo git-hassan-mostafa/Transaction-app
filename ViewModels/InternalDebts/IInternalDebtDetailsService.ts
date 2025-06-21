@@ -1,9 +1,9 @@
 import IDropDownItem from "@/Global/Types/IDropDownItem";
-import IInnerDebt from "./IInerDebts";
+import IInternalDebt from "./IInternalDebts";
 import { IValidationErrorType } from "@/Global/Types/IValidationErrorType";
 
 export default interface IInternalDebtDetailsService {
-  internalDebt: IInnerDebt;
+  internalDebt: IInternalDebt;
   customersDropDown: IDropDownItem[];
   validation: IValidationErrorType;
   setTotalPrice: (value: string) => void;
