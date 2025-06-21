@@ -110,7 +110,6 @@ export default function useInternalDebtsService() {
           (product) => product.internalDebtId === debt.internalDebtId
         );
         const totalPrice = internalDebtManager.getTotalPricesSum(products);
-        console.log(totalPrice);
         return { ...debt, internalDebtTotalPrice: totalPrice };
       });
     });
