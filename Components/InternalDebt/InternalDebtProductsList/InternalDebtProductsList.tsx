@@ -91,6 +91,11 @@ export default function InternalDebtProductsList(
                   <TouchableOpacity onPress={props.handleAddProduct}>
                     <Ionicons name="checkmark" size={24} color="green" />
                   </TouchableOpacity>
+                  <TouchableOpacity
+                    onPress={() => props.toggleAddProduct(false)}
+                  >
+                    <Ionicons name="close-sharp" size={24} color="red" />
+                  </TouchableOpacity>
                 </DataTable.Cell>
               </React.Fragment>
             ) : (

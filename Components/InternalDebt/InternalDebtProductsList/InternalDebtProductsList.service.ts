@@ -58,6 +58,11 @@ export default function useInternalDebtProductsListService(
   }
 
   async function handleAddProduct() {
+    if (
+      !newInternalDebtsProduct.productName ||
+      !newInternalDebtsProduct.internalDebtProductQuantity
+    )
+      return;
     const currentProduct = products.find(
       (i) =>
         i.productId === newInternalDebtsProduct.internalDebtProduct_ProductId
@@ -140,15 +145,15 @@ export default function useInternalDebtProductsListService(
   }
 
   return {
-    products: products,
+    products,
     dropDownItems,
-    internalDebtsProducts: internalDebtsProducts,
-    newInternalDebtsProduct: newInternalDebtsProduct,
-    setInternalDebtsProduct: setInternalDebtsProduct,
-    setNewProductQuantity: setNewProductQuantity,
-    showAddProduct: showAddProduct,
-    handleAddProduct: handleAddProduct,
-    toggleAddProduct: toggleAddProduct,
-    handleDeleteProduct: handleDeleteProduct,
+    internalDebtsProducts,
+    newInternalDebtsProduct,
+    setInternalDebtsProduct,
+    setNewProductQuantity,
+    showAddProduct,
+    handleAddProduct,
+    toggleAddProduct,
+    handleDeleteProduct,
   };
 }
