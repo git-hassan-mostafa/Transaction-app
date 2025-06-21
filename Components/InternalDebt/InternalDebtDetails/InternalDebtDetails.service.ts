@@ -7,7 +7,6 @@ import i18n from "@/Global/I18n/I18n";
 import useService from "@/Global/Context/ServiceProvider";
 import { IValidationErrorType } from "@/Global/Types/IValidationErrorType";
 import IInternalDebtDetailsService from "@/ViewModels/InternalDebts/IInternalDebtDetailsService";
-import { ICustomer_IInnternalDebt } from "@/ViewModels/RelationModels/ICustomer_IInnternalDebt";
 
 export default function useInternalDebtDetailsService(
   props: IInternalDebtsFormServiceProps

@@ -1,11 +1,11 @@
-import { SQLiteDatabase, useSQLiteContext } from "expo-sqlite";
+import { SQLiteDatabase } from "expo-sqlite";
 import SqlTableCreator from "../Global/Helpers/SqlTableCreator";
 
 export default class CreateTablesManager {
   constructor() {}
 
   async init(db: SQLiteDatabase) {
-    await this.dropTables(db);
+    // await this.dropTables(db);
     await this.createTables(db);
   }
 
@@ -13,6 +13,7 @@ export default class CreateTablesManager {
     try {
       console.log("Creating Tables...");
       const start = new Date().getTime();
+      await this.setPragmaForeignKeysOn(db);
       await this.createPeopleTable(db);
       await this.createProvidersTable(db);
       await this.createProductsTable(db);
@@ -32,21 +33,25 @@ export default class CreateTablesManager {
 
   private async dropTables(db: SQLiteDatabase) {
     try {
-      // console.log("Droping Tables...");
-      // const start = new Date().getTime();
-      // await SqlTableCreator.dropTable(db, "People");
-      // await SqlTableCreator.dropTable(db, "Providers");
-      // await SqlTableCreator.dropTable(db, "Products");
-      // await SqlTableCreator.dropTable(db, "Customers");
-      // await SqlTableCreator.dropTable(db, "InternalDebts");
-      // await SqlTableCreator.dropTable(db, "InternalDebtProducts");
-      // await SqlTableCreator.dropTable(db, "InternalDebtPayments");
-      // await SqlTableCreator.dropTable(db, "ExternalDebts");
-      // await SqlTableCreator.dropTable(db, "ExternalDebtProducts");
-      // await SqlTableCreator.dropTable(db, "ExternalDebtPayments");
-      // const end = new Date().getTime();
-      // console.log("Tables Droped ", "Time taken: ", end - start, "ms");
+      console.log("Droping Tables...");
+      const start = new Date().getTime();
+      await SqlTableCreator.dropTable(db, "People");
+      await SqlTableCreator.dropTable(db, "Providers");
+      await SqlTableCreator.dropTable(db, "Products");
+      await SqlTableCreator.dropTable(db, "Customers");
+      await SqlTableCreator.dropTable(db, "InternalDebts");
+      await SqlTableCreator.dropTable(db, "InternalDebtProducts");
+      await SqlTableCreator.dropTable(db, "InternalDebtPayments");
+      await SqlTableCreator.dropTable(db, "ExternalDebts");
+      await SqlTableCreator.dropTable(db, "ExternalDebtProducts");
+      await SqlTableCreator.dropTable(db, "ExternalDebtPayments");
+      const end = new Date().getTime();
+      console.log("Tables Droped ", "Time taken: ", end - start, "ms");
     } catch (error) {}
+  }
+
+  private async setPragmaForeignKeysOn(db: SQLiteDatabase) {
+    await db.execAsync("PRAGMA foreign_keys = ON;");
   }
 
   private async createPeopleTable(db: SQLiteDatabase) {
@@ -255,7 +260,6 @@ export default class CreateTablesManager {
         column: "InternalDebtProduct_ProductId",
         referencesTable: "Products",
         referencesColumn: "ProductId",
-        onDeleteCascade: true,
       })
       .executeAsync();
   }

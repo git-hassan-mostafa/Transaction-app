@@ -73,6 +73,8 @@
   "delete-product":"Delete Product",
   "product-deleted-successfully":"Product-deleted-successfully",
   "error-deleting-product":"Error deleting product",
+  "product-is-in-used-it-cannot-be-deleted":"Product is in use, it cannot be deleted",
+
 
   "// Debts": "",
   "borrowed-list": "Borrowed List",
@@ -96,6 +98,7 @@
   "customer-not-found": "Customer not found",
   "failed-updating-internal-debt": "Failed updating internal debt",
   "internal-debt-updated-successfully": "Internal debt updated successfully",
+
 
   "// Providers": "",
   "edit-provider":"Edit provider",

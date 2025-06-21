@@ -227,7 +227,11 @@ export default class SqlBuilder<T extends Record<string, any>> {
     }
   }
 
-  joinQueryBuilder(table: string, table2: string | null = null, type = "") {
+  private joinQueryBuilder(
+    table: string,
+    table2: string | null = null,
+    type = ""
+  ) {
     var foreignTableKey = this.getTableId(table);
     var primaryTableKey = table2
       ? table2.slice(0, -1)
@@ -237,7 +241,7 @@ export default class SqlBuilder<T extends Record<string, any>> {
     this.joinQuery += ` ${type} join ${table} on ${usedTable}.${primaryTableForeignKey} = ${table}.${foreignTableKey} `;
   }
 
-  rightJoinQueryBuilder(table: string, table2: string | null = null) {
+  private rightJoinQueryBuilder(table: string, table2: string | null = null) {
     var foreignTableKey = this.getTableId(table2 || this.tableName);
     var primaryTableKey = table?.slice(0, -1) ?? "";
     var usedTable = table2 || this.tableName;

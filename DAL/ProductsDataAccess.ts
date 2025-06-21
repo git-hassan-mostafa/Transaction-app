@@ -2,6 +2,7 @@ import AbstractDataAccess from "./AbstractDataAccess";
 import SqlBuilder from "../Global/Helpers/SqlBuilder";
 import { SQLiteRunResult } from "expo-sqlite";
 import Product from "../Models/Product";
+import Product_InternalDebtProduct from "@/Models/RelationModels/Product_InternalDebtProduct";
 
 export default class ProductsDataAccess extends AbstractDataAccess {
   table = "Products";
@@ -78,6 +79,25 @@ export default class ProductsDataAccess extends AbstractDataAccess {
       return result;
     } catch (error) {
       console.log("error deleteProduct", error);
+      return null;
+    }
+  }
+
+  async isProductUsed(id: number): Promise<boolean> {
+    try {
+      const sqlBuilder = new SqlBuilder<Product_InternalDebtProduct>(
+        this.db,
+        this.table
+      );
+      const products = await sqlBuilder
+        .select(["ProductId, InternalDebtProductId"])
+        .rightJoin("InternalDebtProducts")
+        .where({ ProductId: id })
+        .firstAsync();
+      return (products as Product_InternalDebtProduct) !== null;
+    } catch (error) {
+      console.log("error isProductUsed", error);
+      return false;
     }
   }
 }

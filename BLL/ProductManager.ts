@@ -62,6 +62,14 @@ export default class ProductManager {
   }
 
   async deleteProduct(id: number): Promise<IResultType<number>> {
+    const isProductUsed = await this.isProductUsed(id);
+    if (isProductUsed) {
+      return {
+        success: false,
+        data: 0,
+        message: i18n.t("product-is-in-used-it-cannot-be-deleted"),
+      };
+    }
     const result = await this.productDataAccess.deleteProduct(id);
     if (!result || !result.changes)
       return {
@@ -72,8 +80,13 @@ export default class ProductManager {
     return {
       success: true,
       data: result.changes,
-      message: i18n.t("error-deleting-product"),
+      message: i18n.t("product-deleted-successfully"),
     };
+  }
+
+  async isProductUsed(id: number): Promise<boolean> {
+    const isUsed = await this.productDataAccess.isProductUsed(id);
+    return isUsed;
   }
 
   getDropDownProducts(products: IProduct[]): IDropDownItem[] {
