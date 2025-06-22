@@ -44,6 +44,8 @@
   "please-select-a-customer": "Please select a customer",
   "error-updating-customer":"Error updating customer",
   "customer-updated-successfully":"Customer updated successfully",
+  "customer-has-debts":"Customer has debts",
+  "this-customer-has-debts-all-his-debts-will-be-deleted-are-you-sure-you-want-to-delete":"This customer has debts. All his debts will be deleted. Are you sure you want to delete?",
 
 
   "// Products Page": "",

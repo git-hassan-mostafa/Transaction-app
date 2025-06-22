@@ -62,7 +62,10 @@ export default function useCustomersService() {
           text: i18n.t("cancel"),
           style: "cancel",
         },
-        { text: i18n.t("confirm"), onPress: () => deleteCustomer(id) },
+        {
+          text: i18n.t("confirm"),
+          onPress: () => promptIfCustomerHasDebts(id),
+        },
       ]
     );
   }
@@ -81,6 +84,27 @@ export default function useCustomersService() {
       type: "success",
       visible: true,
     });
+  }
+
+  async function promptIfCustomerHasDebts(id: number) {
+    const customer = customers.find((c) => c.customerId === id);
+    if ((customer?.customerBorrowedPrice || 0) > 0) {
+      Alert.alert(
+        i18n.t("customer-has-debts"),
+        i18n.t(
+          "this-customer-has-debts-all-his-debts-will-be-deleted-are-you-sure-you-want-to-delete"
+        ),
+        [
+          {
+            text: i18n.t("cancel"),
+            style: "cancel",
+          },
+          { text: i18n.t("confirm"), onPress: () => deleteCustomer(id) },
+        ]
+      );
+      return;
+    }
+    deleteCustomer(id);
   }
 
   function toggleModal(id: number | undefined = undefined) {
