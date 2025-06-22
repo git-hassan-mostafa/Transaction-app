@@ -69,11 +69,11 @@ const styles = StyleSheet.create({
     color: "white",
     opacity: 0.9,
   },
-  incomeStat: {
-    backgroundColor: "#00B894",
+  customersDebts: {
+    backgroundColor: Constants.colors.green,
   },
-  expenseStat: {
-    backgroundColor: "#E74C3C",
+  providersDebts: {
+    backgroundColor: Constants.colors.red,
   },
 });
 

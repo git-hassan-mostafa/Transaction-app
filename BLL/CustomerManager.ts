@@ -22,14 +22,14 @@ export default class CustomerManager {
   async getAllCustomersCalculated(): Promise<ICustomer[]> {
     const customersDB = await this.customerDataAccess.getAllCustomers();
     if (!customersDB) return [];
-    const borrowedList = await this.getCustomersBorrowedList();
+    const borrowedList = await this.getAllCustomersBorrowedList();
     const mappedCustomers = this.mapper.mapToICustomerAll(customersDB);
     mappedCustomers?.forEach((c) => {
       const borrowed = borrowedList.filter(
         (b) => b.customerId === c.customerId
       );
       if (borrowed) {
-        c.customerBorrowedPrice = this.getCustomerBorrowedPrice(borrowed);
+        c.customerBorrowedPrice = this.getBorrowedPrice(borrowed);
       } else {
         c.customerBorrowedPrice = 0;
       }
@@ -63,10 +63,11 @@ export default class CustomerManager {
     return mappedBorrowList;
   }
 
-  async getCustomersBorrowedList(): Promise<
+  async getAllCustomersBorrowedList(): Promise<
     ICustomer_IInternalDebt_IInternalDebtProduct_IProduct[]
   > {
-    const borrowListDB = await this.customerDataAccess.getCustomersBorrowList();
+    const borrowListDB =
+      await this.customerDataAccess.getAllCustomersBorrowList();
     const mappedBorrowList =
       borrowListDB?.map((b) => {
         const result =
@@ -80,7 +81,7 @@ export default class CustomerManager {
     return mappedBorrowList;
   }
 
-  getCustomerBorrowedPrice(
+  getBorrowedPrice(
     borrowedList: ICustomer_IInternalDebt_IInternalDebtProduct_IProduct[]
   ): number {
     const sum = borrowedList.reduce((sum, item) => {

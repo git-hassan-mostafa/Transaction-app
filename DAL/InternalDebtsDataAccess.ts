@@ -22,7 +22,7 @@ export default class InternalDebtsDataAccess extends AbstractDataAccess {
         .executeAsync();
       return internalDebts as Customer_InternalDebt[];
     } catch (error) {
-      console.log("error getAllInternalDebts", error);
+      console.error("error getAllInternalDebts", error);
       return null;
     }
   }
@@ -36,7 +36,7 @@ export default class InternalDebtsDataAccess extends AbstractDataAccess {
         .firstAsync();
       return internaldebt;
     } catch (error) {
-      console.log("error getInternalDebt", error);
+      console.error("error getInternalDebt", error);
     }
   }
 
@@ -46,7 +46,7 @@ export default class InternalDebtsDataAccess extends AbstractDataAccess {
       const result = await sqlBuilder.insert(internalDebt);
       return result;
     } catch (error) {
-      console.log("error addInternalDebt", error);
+      console.error("error addInternalDebt", error);
     }
   }
 
@@ -59,7 +59,7 @@ export default class InternalDebtsDataAccess extends AbstractDataAccess {
         .executeAsync();
       return result as SQLiteRunResult;
     } catch (error) {
-      console.log("error updateInternalDebt", error);
+      console.error("error updateInternalDebt", error);
     }
   }
 
@@ -73,7 +73,7 @@ export default class InternalDebtsDataAccess extends AbstractDataAccess {
         .executeAsync();
       return result as SQLiteRunResult;
     } catch (error) {
-      console.log("error updateInternalDebtCustomer", error);
+      console.error("error updateInternalDebtCustomer", error);
     }
   }
 
@@ -83,7 +83,7 @@ export default class InternalDebtsDataAccess extends AbstractDataAccess {
       const result = await sqlBuilder.delete(id);
       return result;
     } catch (error) {
-      console.log("error deleteInternalDebt", error);
+      console.error("error deleteInternalDebt", error);
       return null;
     }
   }

@@ -15,7 +15,7 @@ export default class ProviderDataAccess extends AbstractDataAccess {
       const providers = await sqlBuilder.select().executeAsync();
       return providers as Provider[];
     } catch (error) {
-      console.log("error getAllProviders ", error);
+      console.error("error getAllProviders ", error);
       return null;
     }
   }
@@ -29,7 +29,7 @@ export default class ProviderDataAccess extends AbstractDataAccess {
         .firstAsync();
       return provider;
     } catch (error) {
-      console.log("error getProvider ", error);
+      console.error("error getProvider ", error);
       return null;
     }
   }
@@ -40,7 +40,7 @@ export default class ProviderDataAccess extends AbstractDataAccess {
       const result = await sqlBuilder.insert(provider);
       return result;
     } catch (error) {
-      console.log("error addProvider ", error);
+      console.error("error addProvider ", error);
       return null;
     }
   }
@@ -54,7 +54,7 @@ export default class ProviderDataAccess extends AbstractDataAccess {
         .executeAsync();
       return result as SQLiteRunResult;
     } catch (error) {
-      console.log("error updateProvider ", error);
+      console.error("error updateProvider ", error);
       return null;
     }
   }
@@ -65,7 +65,7 @@ export default class ProviderDataAccess extends AbstractDataAccess {
       const result = await sqlBuilder.delete(id);
       return result;
     } catch (error) {
-      console.log("error deleteProvider ", error);
+      console.error("error deleteProvider ", error);
       return null;
     }
   }

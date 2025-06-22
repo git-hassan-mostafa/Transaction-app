@@ -72,7 +72,7 @@ export default function useEditProviderService(props: IProviderFormProps) {
         type: "success",
       });
     } catch (error) {
-      console.log(error);
+      console.error(error);
     } finally {
       props.toggleModal();
     }

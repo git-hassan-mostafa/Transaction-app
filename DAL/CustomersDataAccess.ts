@@ -17,7 +17,7 @@ export default class CustomerDataAccess extends AbstractDataAccess {
       const customers = await sqlBuilder.select().executeAsync();
       return customers as Customer[];
     } catch (error) {
-      console.log("error getAllCustomers", error);
+      console.error("error getAllCustomers", error);
       return null;
     }
   }
@@ -31,7 +31,7 @@ export default class CustomerDataAccess extends AbstractDataAccess {
         .firstAsync();
       return customer;
     } catch (error) {
-      console.log("error getCustomer", error);
+      console.error("error getCustomer", error);
       return null;
     }
   }
@@ -42,7 +42,7 @@ export default class CustomerDataAccess extends AbstractDataAccess {
       const result = await sqlBuilder.insert(customer);
       return result;
     } catch (error) {
-      console.log("error addCustomer", error);
+      console.error("error addCustomer", error);
       return null;
     }
   }
@@ -56,7 +56,7 @@ export default class CustomerDataAccess extends AbstractDataAccess {
         .executeAsync();
       return result as SQLiteRunResult;
     } catch (error) {
-      console.log("error updateCustomer", error);
+      console.error("error updateCustomer", error);
       return null;
     }
   }
@@ -67,12 +67,12 @@ export default class CustomerDataAccess extends AbstractDataAccess {
       const result = await sqlBuilder.delete(id);
       return result;
     } catch (error) {
-      console.log("error deleteCustomer", error);
+      console.error("error deleteCustomer", error);
       return null;
     }
   }
 
-  async getCustomersBorrowList() {
+  async getAllCustomersBorrowList() {
     try {
       const sqlBuilder =
         new SqlBuilder<Customer_InternalDebt_InternalDebtProduct_Product>(
@@ -87,7 +87,7 @@ export default class CustomerDataAccess extends AbstractDataAccess {
         .executeAsync();
       return result as Customer_InternalDebt_InternalDebtProduct_Product[];
     } catch (error) {
-      console.error("error ", error);
+      console.error("error getAllCustomersBorrowList", error);
     }
   }
 
@@ -107,7 +107,7 @@ export default class CustomerDataAccess extends AbstractDataAccess {
         .executeAsync();
       return result as Customer_InternalDebt_InternalDebtProduct_Product[];
     } catch (error) {
-      console.error("error ", error);
+      console.error("error getCustomerBorrowList", error);
     }
   }
 }

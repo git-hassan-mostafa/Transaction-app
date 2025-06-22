@@ -53,7 +53,7 @@ export default function useCustomerFormService(
   function setCustomerBorrowedPrice(
     borrowedList: ICustomer_IInternalDebt_IInternalDebtProduct_IProduct[]
   ) {
-    const sum = customerManager.getCustomerBorrowedPrice(borrowedList);
+    const sum = customerManager.getBorrowedPrice(borrowedList);
     setCustomer((prev) => {
       return { ...prev, customerBorrowedPrice: sum };
     });

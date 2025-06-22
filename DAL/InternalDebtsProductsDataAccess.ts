@@ -23,7 +23,7 @@ export default class InternalDebtsProductsDataAccess extends AbstractDataAccess 
         .executeAsync();
       return products;
     } catch (error) {
-      console.log("error getInternalDebtProducts", error);
+      console.error("error getInternalDebtProducts", error);
       return null;
     }
   }
@@ -45,7 +45,7 @@ export default class InternalDebtsProductsDataAccess extends AbstractDataAccess 
         .executeAsync();
       return products;
     } catch (error) {
-      console.log("error getInternalDebtProducts", error);
+      console.error("error getInternalDebtProducts", error);
       return null;
     }
   }
@@ -64,7 +64,7 @@ export default class InternalDebtsProductsDataAccess extends AbstractDataAccess 
         .executeAsync();
       return products;
     } catch (error) {
-      console.log("error getAllInternalDebtsProductsList", error);
+      console.error("error getAllInternalDebtsProductsList", error);
       return null;
     }
   }
@@ -80,7 +80,7 @@ export default class InternalDebtsProductsDataAccess extends AbstractDataAccess 
       const result = await sqlBuilder.insert(internalDebtProducts);
       return result;
     } catch (error) {
-      console.log("error addInternalDebtProducts", error);
+      console.error("error addInternalDebtProducts", error);
       return null;
     }
   }
@@ -94,7 +94,7 @@ export default class InternalDebtsProductsDataAccess extends AbstractDataAccess 
       const result = await sqlBuilder.insertAll(internalDebtProducts);
       return result;
     } catch (error) {
-      console.log("error addInternalDebtProducts", error);
+      console.error("error addInternalDebtProducts", error);
       return null;
     }
   }
@@ -108,7 +108,7 @@ export default class InternalDebtsProductsDataAccess extends AbstractDataAccess 
       const result = await sqlBuilder.deleteAll(internalDebtProductIds);
       return result;
     } catch (error) {
-      console.log("error deleteInternalDebtProduct", error);
+      console.error("error deleteInternalDebtProduct", error);
       return null;
     }
   }

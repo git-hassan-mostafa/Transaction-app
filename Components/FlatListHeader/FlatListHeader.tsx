@@ -1,12 +1,12 @@
 import { View } from "react-native";
-import useFlatListHeaderComponentService from "./FlatListHeader.service";
+import useFlatListHeaderService from "./FlatListHeader.service";
 import styles from "./FlatListHeader.style";
 import { ThemedText } from "@/Global/Reusable Components/HelperComponents/ThemedText";
 import { LinearGradient } from "expo-linear-gradient";
 import i18n from "@/Global/I18n/I18n";
-
+import Icon from "react-native-vector-icons/AntDesign";
 export default function FlatListHeader() {
-  const FlatListHeaderComponentService = useFlatListHeaderComponentService();
+  const serice = useFlatListHeaderService();
   return (
     <LinearGradient
       colors={["#FFFFFF", "#F8F9FA"]}
@@ -15,18 +15,24 @@ export default function FlatListHeader() {
       style={styles.container}
     >
       <View style={styles.statsContainer}>
-        <View style={[styles.statItem, styles.incomeStat]}>
+        <View style={[styles.statItem, styles.customersDebts]}>
           <View style={styles.statIconContainer}>
-            <ThemedText style={styles.statIcon}>↑</ThemedText>
+            <ThemedText style={styles.statIcon}>
+              <Icon size={14} name="arrowup" />
+            </ThemedText>
           </View>
-          <ThemedText style={styles.statValue}>$100.00</ThemedText>
+          <ThemedText style={styles.statValue}>
+            ${serice.borrowedPrice}
+          </ThemedText>
           <ThemedText style={styles.statLabel}>
             {i18n.t("customers-debts")}
           </ThemedText>
         </View>
-        <View style={[styles.statItem, styles.expenseStat]}>
+        <View style={[styles.statItem, styles.providersDebts]}>
           <View style={styles.statIconContainer}>
-            <ThemedText style={styles.statIcon}>↓</ThemedText>
+            <ThemedText style={styles.statIcon}>
+              <Icon size={14} name="arrowdown" />
+            </ThemedText>
           </View>
           <ThemedText style={styles.statValue}>$100.00</ThemedText>
           <ThemedText style={styles.statLabel}>

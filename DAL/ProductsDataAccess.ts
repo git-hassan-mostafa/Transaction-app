@@ -16,7 +16,7 @@ export default class ProductsDataAccess extends AbstractDataAccess {
       const products = await sqlBuilder.select().executeAsync();
       return products as Product[];
     } catch (error) {
-      console.log("error getAllProducts", error);
+      console.error("error getAllProducts", error);
       return null;
     }
   }
@@ -30,7 +30,7 @@ export default class ProductsDataAccess extends AbstractDataAccess {
         .firstAsync();
       return product;
     } catch (error) {
-      console.log("error getProduct", error);
+      console.error("error getProduct", error);
       return null;
     }
   }
@@ -41,7 +41,7 @@ export default class ProductsDataAccess extends AbstractDataAccess {
       const result = await sqlBuilder.insert(product);
       return result;
     } catch (error) {
-      console.log("error addProduct", error);
+      console.error("error addProduct", error);
       return null;
     }
   }
@@ -55,7 +55,7 @@ export default class ProductsDataAccess extends AbstractDataAccess {
         .executeAsync();
       return result as SQLiteRunResult;
     } catch (error) {
-      console.log("error updateProduct", error);
+      console.error("error updateProduct", error);
     }
   }
 
@@ -68,7 +68,7 @@ export default class ProductsDataAccess extends AbstractDataAccess {
         .executeAsync();
       return result as SQLiteRunResult;
     } catch (error) {
-      console.log("error updateProviderId", error);
+      console.error("error updateProviderId", error);
     }
   }
 
@@ -78,7 +78,7 @@ export default class ProductsDataAccess extends AbstractDataAccess {
       const result = await sqlBuilder.delete(id);
       return result;
     } catch (error) {
-      console.log("error deleteProduct", error);
+      console.error("error deleteProduct", error);
       return null;
     }
   }
@@ -96,7 +96,7 @@ export default class ProductsDataAccess extends AbstractDataAccess {
         .firstAsync();
       return (products as Product_InternalDebtProduct) !== null;
     } catch (error) {
-      console.log("error isProductUsed", error);
+      console.error("error isProductUsed", error);
       return false;
     }
   }

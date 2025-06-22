@@ -45,7 +45,7 @@ export default class SqlBuilder<T extends Record<string, any>> {
       const result = await this.db.runAsync(query);
       return result;
     } catch (error) {
-      console.log("an error occurred in insert", error);
+      console.error("an error occurred in insert", error);
       return null;
     }
   }
@@ -79,7 +79,7 @@ export default class SqlBuilder<T extends Record<string, any>> {
       const result = await this.db.runAsync(query);
       return result;
     } catch (error) {
-      console.log("an error occurred in insertAll", error);
+      console.error("an error occurred in insertAll", error);
       return null;
     }
   }
@@ -94,7 +94,7 @@ export default class SqlBuilder<T extends Record<string, any>> {
       const result = await this.db.runAsync(this.deleteQuery);
       return result;
     } catch (error) {
-      console.log("an error occurred in delete", error);
+      console.error("an error occurred in delete", error);
       return null;
     }
   }
@@ -111,7 +111,7 @@ export default class SqlBuilder<T extends Record<string, any>> {
       const result = await this.db.runAsync(this.deleteQuery);
       return result;
     } catch (error) {
-      console.log("an error occurred in deleteAll", error);
+      console.error("an error occurred in deleteAll", error);
       return null;
     }
   }
@@ -199,7 +199,7 @@ export default class SqlBuilder<T extends Record<string, any>> {
         return result;
       }
     } catch (error) {
-      console.log("an error occurred in firstAsync", error);
+      console.error("an error occurred in firstAsync", error);
       return null;
     }
   }
@@ -222,7 +222,7 @@ export default class SqlBuilder<T extends Record<string, any>> {
       }
       return null;
     } catch (error) {
-      console.log("an error occurred in executeAsync", error);
+      console.error("an error occurred in executeAsync", error);
       return null;
     }
   }

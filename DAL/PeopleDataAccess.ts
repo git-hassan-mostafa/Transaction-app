@@ -16,7 +16,7 @@ export class PeopleDataAccess extends AbstractDataAccess {
       if (!people) return null;
       return people as Person[];
     } catch (error) {
-      console.log("error getAllPeople ", error);
+      console.error("error getAllPeople ", error);
       return null;
     }
   }
@@ -30,7 +30,7 @@ export class PeopleDataAccess extends AbstractDataAccess {
         .firstAsync();
       return customer;
     } catch (error) {
-      console.log("error getPerson ", error);
+      console.error("error getPerson ", error);
     }
   }
 
@@ -40,7 +40,7 @@ export class PeopleDataAccess extends AbstractDataAccess {
       const result = await sqlBuilder.insert(person);
       return result;
     } catch (error) {
-      console.log("error addPerson ", error);
+      console.error("error addPerson ", error);
       return null;
     }
   }
@@ -54,7 +54,7 @@ export class PeopleDataAccess extends AbstractDataAccess {
         .executeAsync();
       return result as SQLiteRunResult;
     } catch (error) {
-      console.log("error updatePerson ", error);
+      console.error("error updatePerson ", error);
     }
   }
 
@@ -64,7 +64,7 @@ export class PeopleDataAccess extends AbstractDataAccess {
       const result = await sqlBuilder.delete(id);
       return result;
     } catch (error) {
-      console.log("error deletePerson ", error);
+      console.error("error deletePerson ", error);
       return null;
     }
   }
