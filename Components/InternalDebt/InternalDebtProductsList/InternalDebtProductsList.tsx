@@ -1,5 +1,5 @@
 import { ScrollView } from "react-native";
-import { View, Text, TextInput, Button, TouchableOpacity } from "react-native";
+import { View, TextInput, TouchableOpacity } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import CustomDropDown from "@/Global/Reusable Components/CustomDropDownComponent/CustomDropDownComponent";
 import IInternalDebtsProductsListProps from "@/ViewModels/InternalDebts/IInternalDebtsProductsListProps";
@@ -22,13 +22,13 @@ export default function InternalDebtProductsList(
         <DataTable>
           <DataTable.Header>
             <DataTable.Title style={globalStyles.column}>
-              <ThemedText>{i18n.t("product-name")}</ThemedText>
+              <ThemedText fontSize={12}>{i18n.t("product-name")}</ThemedText>
             </DataTable.Title>
             <DataTable.Title style={globalStyles.column} numeric>
-              <ThemedText>{i18n.t("quantity")}</ThemedText>
+              <ThemedText fontSize={12}>{i18n.t("quantity")}</ThemedText>
             </DataTable.Title>
             <DataTable.Title style={globalStyles.column} numeric>
-              <ThemedText>{i18n.t("total-price")}</ThemedText>
+              <ThemedText fontSize={12}>{i18n.t("total-price")}</ThemedText>
             </DataTable.Title>
             <DataTable.Title style={globalStyles.iconColumn}>
               <View />

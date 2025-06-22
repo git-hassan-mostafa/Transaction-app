@@ -20,20 +20,20 @@ export default function CustomerDebtList(props: ICustomerFormProps) {
         <DataTable>
           <DataTable.Header>
             <DataTable.Title style={globalStyles.column}>
-              <ThemedText>{i18n.t("product-name")}</ThemedText>
+              <ThemedText fontSize={12}>{i18n.t("product-name")}</ThemedText>
             </DataTable.Title>
             <DataTable.Title style={globalStyles.column}>
-              <ThemedText>{i18n.t("product-price")}</ThemedText>
+              <ThemedText fontSize={12}>{i18n.t("product-price")}</ThemedText>
             </DataTable.Title>
 
             <DataTable.Title style={globalStyles.column} numeric>
-              <ThemedText>{i18n.t("quantity")}</ThemedText>
+              <ThemedText fontSize={12}>{i18n.t("quantity")}</ThemedText>
             </DataTable.Title>
             <DataTable.Title style={globalStyles.column} numeric>
-              <ThemedText>{i18n.t("price")}</ThemedText>
+              <ThemedText fontSize={12}>{i18n.t("price")}</ThemedText>
             </DataTable.Title>
             <DataTable.Title style={globalStyles.dateColumn}>
-              <ThemedText>{i18n.t("date")}</ThemedText>
+              <ThemedText fontSize={12}>{i18n.t("date")}</ThemedText>
             </DataTable.Title>
           </DataTable.Header>
 
