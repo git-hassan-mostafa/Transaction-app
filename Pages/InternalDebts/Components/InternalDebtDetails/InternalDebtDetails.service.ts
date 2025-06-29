@@ -5,8 +5,8 @@ import i18n from "@/Shared/I18n/I18n";
 import useService from "@/Shared/Context/ServiceProvider";
 import { IValidationErrorType } from "@/Shared/Types/IValidationErrorType";
 import IInternalDebtDetailsService from "@/Models/InternalDebts/IInternalDebtDetailsService";
-import { IInternalDebtsFormServiceProps } from "@/Models/InternalDebts/IInternalDebtsFormProps";
 import IInternalDebt from "@/Models/InternalDebts/IInternalDebts";
+import { IInternalDebtsFormServiceProps } from "@/Models/InternalDebts/IInternalDebtsFormServiceProps";
 
 export default function useInternalDebtDetailsService(
   props: IInternalDebtsFormServiceProps
@@ -31,7 +31,15 @@ export default function useInternalDebtDetailsService(
 
   useEffect(() => {
     fetchAllData();
+
+    return () => {
+      props.dirtyChecker.dispose();
+    };
   }, []);
+
+  useEffect(() => {
+    props.dirtyChecker.setState(internalDebt);
+  }, [internalDebt]);
 
   useEffect(() => {
     setPricesSum();
@@ -39,6 +47,7 @@ export default function useInternalDebtDetailsService(
 
   async function fetchAllData() {
     await getAllCustomers();
+    props.dirtyChecker.setOriginalState(props.formData);
   }
 
   async function getAllCustomers() {
@@ -49,6 +58,11 @@ export default function useInternalDebtDetailsService(
   }
 
   function setPricesSum() {
+    if (
+      (props.internalDebtsProductsListService.internalDebtsProducts || [])
+        .length === 0
+    )
+      return;
     const totalPrice = internalDebtManager.getTotalPricesSum(
       props.internalDebtsProductsListService.internalDebtsProducts
     );

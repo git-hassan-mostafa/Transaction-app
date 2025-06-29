@@ -10,9 +10,11 @@ import pageStyle from "@/Shared/Styles/pages.global.style";
 import i18n from "@/Shared/I18n/I18n";
 import ListItem from "@/Shared/Reusable Components/ListItem/ListItem";
 import PeopleForm from "@/Pages/People/Components/PeopleForm";
+import { useDirtyChecker } from "@/Shared/Hooks/useDirtyState";
 
 export default function People() {
   const service = usePeopleService();
+  const dirtyChecker = useDirtyChecker();
 
   return (
     <React.Fragment>
@@ -43,11 +45,12 @@ export default function People() {
             : i18n.t("add-person")
         }
         isVisible={service.modalOptions.visible}
-        onClose={service.toggleModal}
+        onClose={() => dirtyChecker.showAlertIfDirty(service.toggleModal)}
       >
         <PeopleForm
           formData={service.modalOptions.formData}
           save={service.save}
+          dirtyChecker={dirtyChecker}
         />
       </CustomModal>
       <FAB

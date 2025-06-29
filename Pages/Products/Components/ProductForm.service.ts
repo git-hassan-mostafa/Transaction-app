@@ -23,8 +23,17 @@ export default function useProductFormService(props: IProductFormProps) {
   const context = useGlobalContext();
 
   useEffect(() => {
+    props.dirtyChecker.setOriginalState(props.formData);
     fetchData();
+
+    return () => {
+      props.dirtyChecker.dispose();
+    };
   }, []);
+
+  useEffect(() => {
+    props.dirtyChecker.setState(product);
+  }, [product]);
 
   async function fetchData() {
     await getAllProviders();

@@ -20,6 +20,18 @@ export default function useEditProviderService(props: IProviderFormProps) {
   //context
   const context = useGlobalContext();
 
+  useEffect(() => {
+    props.dirtyChecker.setOriginalState(props.formData);
+
+    return () => {
+      props.dirtyChecker.dispose();
+    };
+  }, []);
+
+  useEffect(() => {
+    props.dirtyChecker.setState(provider);
+  }, [provider]);
+
   function setProviderName(value: string) {
     setProvider((prev) => {
       return { ...prev, providerName: value };

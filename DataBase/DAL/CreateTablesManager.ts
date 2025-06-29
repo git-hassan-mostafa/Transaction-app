@@ -11,7 +11,7 @@ export default class CreateTablesManager {
 
   private async createTables(db: SQLiteDatabase) {
     try {
-      console.log("Creating Tables...");
+      console.info("Creating Tables...");
       const start = new Date().getTime();
       await this.setPragmaForeignKeysOn(db);
       await this.createPeopleTable(db);
@@ -25,7 +25,7 @@ export default class CreateTablesManager {
       await this.createExternalDebtProductsTable(db);
       await this.createExternalDebtPaymentsTable(db);
       const end = new Date().getTime();
-      console.log("Tables Created ", "Time taken: ", end - start, "ms");
+      console.info("Tables Created ", "Time taken: ", end - start, "ms");
     } catch (error) {
       console.error("Error creating tables: ", error);
     }
@@ -33,7 +33,7 @@ export default class CreateTablesManager {
 
   private async dropTables(db: SQLiteDatabase) {
     try {
-      console.log("Droping Tables...");
+      console.info("Droping Tables...");
       const start = new Date().getTime();
       await SqlTableCreator.dropTable(db, "People");
       await SqlTableCreator.dropTable(db, "Providers");
@@ -46,8 +46,10 @@ export default class CreateTablesManager {
       await SqlTableCreator.dropTable(db, "ExternalDebtProducts");
       await SqlTableCreator.dropTable(db, "ExternalDebtPayments");
       const end = new Date().getTime();
-      console.log("Tables Droped ", "Time taken: ", end - start, "ms");
-    } catch (error) {}
+      console.info("Tables Droped ", "Time taken: ", end - start, "ms");
+    } catch (error) {
+      console.error("Error Dropping Tables", error);
+    }
   }
 
   private async setPragmaForeignKeysOn(db: SQLiteDatabase) {

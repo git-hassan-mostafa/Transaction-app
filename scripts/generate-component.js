@@ -71,7 +71,7 @@ try {
     }
   });
 
-  console.log(`Component ${componentName} created at ${fullPath}`);
+  console.info(`Component ${componentName} created at ${fullPath}`);
 } catch (error) {
   console.error("Error creating component:", error.message);
 }

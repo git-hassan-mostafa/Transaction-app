@@ -24,6 +24,10 @@
   "price": "Price",
   "phone-number": "Phone Number",
   "enter-phone-number": "Enter Phone Number",
+  "stay":"Stay",
+  "discard":"Discard",
+  "unsaved-changes":"Unsaved changes",
+  "you-have-unsaved-changes-are-you-sure-you-want-to-discard":"You have unsaved changes. Are you sure you want to discard",
 
 
   "// Customers Page": "",

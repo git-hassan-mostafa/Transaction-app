@@ -28,8 +28,21 @@ export default function useCustomerFormService(
   const context = useGlobalContext();
 
   useEffect(() => {
-    if (props.formData.customerId) fetchBorrowList();
+    fetchAllData();
+
+    return () => {
+      props.dirtyChecker.dispose();
+    };
   }, []);
+
+  useEffect(() => {
+    props.dirtyChecker.setState(customer);
+  }, [customer]);
+
+  async function fetchAllData() {
+    if (props.formData.customerId) await fetchBorrowList();
+    props.dirtyChecker.setOriginalState(props.formData);
+  }
 
   async function fetchBorrowList() {
     if (!props.formData.customerId) return;

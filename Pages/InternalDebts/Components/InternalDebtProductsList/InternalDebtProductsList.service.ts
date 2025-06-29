@@ -6,9 +6,10 @@ import { useEffect, useState } from "react";
 import { Alert } from "react-native";
 import useService from "@/Shared/Context/ServiceProvider";
 import IInternalDebtsProductsListProps from "@/Models/InternalDebts/IInternalDebtsProductsListProps";
+import { IInternalDebtFormProps } from "@/Models/InternalDebts/IInternalDebtsFormProps";
 
 export default function useInternalDebtProductsListService(
-  internalDebtId: number | undefined
+  props: IInternalDebtFormProps
 ): IInternalDebtsProductsListProps {
   //managers
   const { internalDebtManager, productManager } = useService();
@@ -25,18 +26,32 @@ export default function useInternalDebtProductsListService(
     {} as IInternalDebtProduct_IInternalDebt_IProduct;
 
   useEffect(() => {
-    getAllProducts();
-    getAllInternalDebtsProducts();
+    fetchAllData();
+
+    return () => {
+      props.dirtyChecker.dispose();
+    };
   }, []);
 
-  async function getAllInternalDebtsProducts() {
-    if (!internalDebtId) return;
+  useEffect(() => {
+    props.dirtyChecker.pushToCurrentRelated(internalDebtsProducts);
+  }, [internalDebtsProducts]);
+
+  async function fetchAllData() {
+    await Promise.all([fetchAllProducts(), fetchAllInternalDebtsProducts()]);
+  }
+
+  async function fetchAllInternalDebtsProducts() {
+    if (!props.formData.internalDebtId) return;
     const internalDebtsProductsDB =
-      await internalDebtManager.getInternalDebtsProducts(internalDebtId);
+      await internalDebtManager.getInternalDebtsProducts(
+        props.formData.internalDebtId
+      );
+    props.dirtyChecker.pushToOriginalRelated(internalDebtsProductsDB);
     setInternalDebtsProducts(internalDebtsProductsDB);
   }
 
-  async function getAllProducts() {
+  async function fetchAllProducts() {
     const productsDB = await productManager.getAllProducts();
     const dropDownProducts = productManager.getDropDownProducts(productsDB);
     setProducts(productsDB);
@@ -69,9 +84,9 @@ export default function useInternalDebtProductsListService(
     );
     newInternalDebtsProduct.isNew = true;
     newInternalDebtsProduct.internalDebtProductId = Date.now();
-    if (internalDebtId) {
+    if (props.formData.internalDebtId) {
       newInternalDebtsProduct.internalDebtProduct_InternalDebtId =
-        internalDebtId;
+        props.formData.internalDebtId;
     }
     newInternalDebtsProduct.internalDebtProductTotalPrice =
       newInternalDebtsProduct.internalDebtProductQuantity *

@@ -10,10 +10,11 @@ import pageStyle from "@/Shared/Styles/pages.global.style";
 import i18n from "@/Shared/I18n/I18n";
 import ListItem from "@/Shared/Reusable Components/ListItem/ListItem";
 import ProductForm from "@/Pages/Products/Components/ProductForm";
+import { useDirtyChecker } from "@/Shared/Hooks/useDirtyState";
 
 export default function Products() {
   const service = useProductsService();
-
+  const dirtyChecker = useDirtyChecker();
   return (
     <React.Fragment>
       <FlatList
@@ -44,11 +45,12 @@ export default function Products() {
             : i18n.t("add-product")
         }
         isVisible={service.modalOptions.visible}
-        onClose={service.toggleModal}
+        onClose={() => dirtyChecker.showAlertIfDirty(service.toggleModal)}
       >
         <ProductForm
           formData={service.modalOptions.formData}
           save={service.save}
+          dirtyChecker={dirtyChecker}
         />
       </CustomModal>
       <FAB

@@ -47,7 +47,7 @@ export default function InternalDebtDetails(
           style={formStyle.input}
           placeholder={i18n.t("enter-total-price")}
           placeholderTextColor="#999"
-          value={service.internalDebt.internalDebtTotalPrice?.toString()}
+          value={(service.internalDebt.internalDebtTotalPrice ?? 0)?.toString()}
           keyboardType="numeric"
           onChangeText={(text) => service.setTotalPrice(text)}
         />
@@ -59,7 +59,7 @@ export default function InternalDebtDetails(
           style={formStyle.input}
           placeholder={i18n.t("enter-paid-price")}
           placeholderTextColor="#999"
-          value={service.internalDebt.internalDebtPricePaid?.toString()}
+          value={(service.internalDebt.internalDebtPricePaid ?? 0)?.toString()}
           keyboardType="numeric"
           onChangeText={(text) => service.setPricePaid(text)}
         />

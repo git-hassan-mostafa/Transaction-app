@@ -11,9 +11,11 @@ import IProvider from "@/Models/Providers/IProvider";
 import pageStyle from "@/Shared/Styles/pages.global.style";
 import i18n from "@/Shared/I18n/I18n";
 import ListItem from "@/Shared/Reusable Components/ListItem/ListItem";
+import { useDirtyChecker } from "@/Shared/Hooks/useDirtyState";
 
 export default function Providers() {
   const service = useProvidersService();
+  const dirtyChecker = useDirtyChecker();
 
   return (
     <React.Fragment>
@@ -45,11 +47,12 @@ export default function Providers() {
             : i18n.t("add-provider")
         }
         isVisible={service.modalOptions.visible}
-        onClose={service.toggleModal}
+        onClose={() => dirtyChecker.showAlertIfDirty(service.toggleModal)}
       >
         <EditProvider
           formData={service.modalOptions.formData}
           save={service.save}
+          dirtyChecker={dirtyChecker}
         />
       </CustomModal>
       <FAB

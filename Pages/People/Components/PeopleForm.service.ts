@@ -20,6 +20,18 @@ export default function usePeopleFormService(props: IEditPeopleProps) {
   //context
   const context = useGlobalContext();
 
+  useEffect(() => {
+    props.dirtyChecker.setOriginalState(props.formData);
+
+    return () => {
+      props.dirtyChecker.dispose();
+    };
+  }, []);
+
+  useEffect(() => {
+    props.dirtyChecker.setState(person);
+  }, [person]);
+
   function setPersonName(value: string) {
     setPerson((prev) => {
       return { ...prev, personName: value };

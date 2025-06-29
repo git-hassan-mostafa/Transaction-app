@@ -24,7 +24,10 @@
   "price": "السعر",
   "phone-number": "رقم الهاتف",
   "enter-phone-number": "أدخل رقم الهاتف",
-
+  "stay":"البقاء",
+  "discard":"تجاهل",
+  "unsaved-changes":"تغييرات غير محفوظة",
+  "you-have-unsaved-changes-are-you-sure-you-want-to-discard":"لديك تغييرات غير محفوظة. هل أنت متأكد أنك تريد تجاهلها؟",
 
   "// Customers Page": "",
   "add-customer": "إضافة زبون",
