@@ -4,9 +4,9 @@ import IInternalDebt from "./IInternalDebts";
 import IInternalDebtsProductsListProps from "./IInternalDebtsProductsListProps";
 
 export interface IInternalDebtFormProps {
-  id: number | undefined;
+  formData: IInternalDebt;
   save: (
-    internalDebt: IInternalDebt,
+    formData: IInternalDebt,
     internalDebtsProducts: IInternalDebtProduct_IInternalDebt_IProduct[],
     validationCallback: (internalDebt: IInternalDebt) => boolean
   ) => Promise<void>;

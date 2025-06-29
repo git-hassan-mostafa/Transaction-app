@@ -13,9 +13,9 @@ export default function useProvidersService() {
 
   //states
   const [providers, setProviders] = useState<IProvider[]>([]);
-  const [modalOptions, setModalOptions] = useState<IFormModalType>({
+  const [modalOptions, setModalOptions] = useState<IFormModalType<IProvider>>({
     visible: false,
-    id: -1,
+    formData: {} as IProvider,
   });
 
   // context
@@ -128,12 +128,12 @@ export default function useProvidersService() {
     });
   }
 
-  async function onEdit(id: number) {
-    toggleModal(id);
+  async function onEdit(formData: IProvider) {
+    toggleModal(formData);
   }
 
-  function toggleModal(id: number | undefined = undefined) {
-    setModalOptions((prev) => ({ visible: !prev.visible, id }));
+  function toggleModal(formData: IProvider = {} as IProvider) {
+    setModalOptions((prev) => ({ visible: !prev.visible, formData }));
   }
 
   function sortProviders() {

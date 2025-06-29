@@ -35,7 +35,7 @@ export default function InternalDebts() {
             }}
             sign={{ color: Constants.colors.green, visible: true }}
             color={Constants.colors.internalDebts}
-            onEdit={() => service.onEdit(item.internalDebtId)}
+            onEdit={() => service.onEdit(item)}
             onDelete={() =>
               service.handleDeleteInternalDebt(item.internalDebtId)
             }
@@ -46,14 +46,17 @@ export default function InternalDebts() {
       />
       <CustomModal
         title={
-          service.modalOptions.id
+          service.modalOptions.formData.internalDebtId
             ? i18n.t("edit-internal-debt")
             : i18n.t("add-internal-debt")
         }
         isVisible={service.modalOptions.visible}
         onClose={() => service.toggleModal()}
       >
-        <InternalDebtForm id={service.modalOptions.id} save={service.save} />
+        <InternalDebtForm
+          formData={service.modalOptions.formData}
+          save={service.save}
+        />
       </CustomModal>
       <FAB
         onPress={() => service.toggleModal()}

@@ -31,7 +31,7 @@ export default function Products() {
               color: Constants.colors.green,
             }}
             onDelete={() => service.handleDeleteProduct(item.productId)}
-            onEdit={() => service.onEdit(item.productId)}
+            onEdit={() => service.onEdit(item)}
           />
         )}
         ItemSeparatorComponent={() => <View style={{ height: 5 }} />}
@@ -39,14 +39,17 @@ export default function Products() {
       />
       <CustomModal
         title={
-          service.modalOptions.id
+          service.modalOptions.formData.productId
             ? i18n.t("edit-product")
             : i18n.t("add-product")
         }
         isVisible={service.modalOptions.visible}
-        onClose={() => service.toggleModal(-1)}
+        onClose={service.toggleModal}
       >
-        <ProductForm id={service.modalOptions.id} save={service.save} />
+        <ProductForm
+          formData={service.modalOptions.formData}
+          save={service.save}
+        />
       </CustomModal>
       <FAB
         onPress={() => service.toggleModal()}

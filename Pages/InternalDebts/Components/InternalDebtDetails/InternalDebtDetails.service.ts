@@ -15,9 +15,9 @@ export default function useInternalDebtDetailsService(
   const { internalDebtManager, customerManager } = useService();
 
   //states
-  const [internalDebt, setInternalDebt] = useState<IInternalDebt>({
-    internalDebtId: props.id,
-  } as IInternalDebt);
+  const [internalDebt, setInternalDebt] = useState<IInternalDebt>(
+    props.formData
+  );
   const [customersDropDown, setCustomersDropDown] = useState<IDropDownItem[]>(
     []
   );
@@ -38,7 +38,7 @@ export default function useInternalDebtDetailsService(
   }, [props.internalDebtsProductsListService.internalDebtsProducts]);
 
   async function fetchAllData() {
-    await Promise.all([getInternalDebt(), getAllCustomers()]);
+    await getAllCustomers();
   }
 
   async function getAllCustomers() {
@@ -46,12 +46,6 @@ export default function useInternalDebtDetailsService(
     const dropDownCustomers =
       internalDebtManager.dropDownCutomers(mappedCustomers);
     setCustomersDropDown(dropDownCustomers);
-  }
-
-  async function getInternalDebt() {
-    if (!props.id) return;
-    const internalDebtDB = await internalDebtManager.getInternalDebt(props.id);
-    setInternalDebt(internalDebtDB);
   }
 
   function setPricesSum() {

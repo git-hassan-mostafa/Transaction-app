@@ -1,4 +1,4 @@
-export default interface IFormModalType {
-  id: number | undefined;
+export default interface IFormModalType<T> {
+  formData: T;
   visible: boolean;
 }

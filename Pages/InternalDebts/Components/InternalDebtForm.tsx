@@ -10,7 +10,7 @@ import { IInternalDebtFormProps } from "@/Models/InternalDebts/IInternalDebtsFor
 
 export default function InternalDebtForm(props: IInternalDebtFormProps) {
   const internalDebtsProductsListService = useInternalDebtProductsListService(
-    props.id
+    props.formData.internalDebtId
   );
 
   const internalDebtDetailsService = useInternalDebtDetailsService({

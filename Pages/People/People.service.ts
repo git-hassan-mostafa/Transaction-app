@@ -15,9 +15,9 @@ export default function usePeopleService() {
 
   //states
   const [people, setPeople] = useState<IPerson[]>([]);
-  const [modalOptions, setModalOptions] = useState<IFormModalType>({
+  const [modalOptions, setModalOptions] = useState<IFormModalType<IPerson>>({
     visible: false,
-    id: -1,
+    formData: {} as IPerson,
   });
   // context
   const context = useGlobalContext();
@@ -128,12 +128,12 @@ export default function usePeopleService() {
     });
   }
 
-  async function onEdit(id: number) {
-    toggleModal(id);
+  async function onEdit(formData: IPerson) {
+    toggleModal(formData);
   }
 
-  function toggleModal(id: number | undefined = undefined) {
-    setModalOptions((prev) => ({ visible: !prev.visible, id }));
+  function toggleModal(formData: IPerson = {} as IPerson) {
+    setModalOptions((prev) => ({ visible: !prev.visible, formData }));
   }
 
   return {

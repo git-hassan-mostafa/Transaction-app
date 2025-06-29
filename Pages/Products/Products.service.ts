@@ -13,9 +13,9 @@ export default function useProductsService() {
 
   //states
   const [products, setProducts] = useState<IProduct[]>([]);
-  const [modalOptions, setModalOptions] = useState<IFormModalType>({
+  const [modalOptions, setModalOptions] = useState<IFormModalType<IProduct>>({
     visible: false,
-    id: -1,
+    formData: {} as IProduct,
   });
 
   // context
@@ -128,12 +128,12 @@ export default function useProductsService() {
     });
   }
 
-  async function onEdit(id: number) {
-    toggleModal(id);
+  async function onEdit(formData: IProduct) {
+    toggleModal(formData);
   }
 
-  function toggleModal(id: number | undefined = undefined) {
-    setModalOptions((prev) => ({ visible: !prev.visible, id }));
+  function toggleModal(formData: IProduct = {} as IProduct) {
+    setModalOptions((prev) => ({ visible: !prev.visible, formData }));
   }
 
   return {

@@ -21,9 +21,11 @@ export default function useInternalDebtsService() {
     IInternalDebtProduct_IInternalDebt_IProduct[]
   >([]);
 
-  const [modalOptions, setModalOptions] = useState<IFormModalType>({
+  const [modalOptions, setModalOptions] = useState<
+    IFormModalType<IInternalDebt>
+  >({
     visible: false,
-    id: -1,
+    formData: {} as IInternalDebt,
   });
   // context
   const context = useGlobalContext();
@@ -182,12 +184,12 @@ export default function useInternalDebtsService() {
     });
   }
 
-  async function onEdit(id: number) {
-    toggleModal(id);
+  async function onEdit(formData: IInternalDebt) {
+    toggleModal(formData);
   }
 
-  function toggleModal(id: number | undefined = undefined) {
-    setModalOptions((prev) => ({ visible: !prev.visible, id }));
+  function toggleModal(formData: IInternalDebt = {} as IInternalDebt) {
+    setModalOptions((prev) => ({ visible: !prev.visible, formData }));
   }
 
   return {

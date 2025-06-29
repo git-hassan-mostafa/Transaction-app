@@ -6,7 +6,7 @@ import AccordionComponent from "@/Shared/Reusable Components/AccordionComponent/
 import Constants from "@/Shared/Constants/Constants";
 import CustomModal from "@/Shared/Reusable Components/CustomModalComponent/CustomModalComponent";
 import { FAB } from "react-native-paper";
-import { EditProvider } from "@/Pages/Providers/Component/EditProvider";
+import { EditProvider } from "@/Pages/Providers/Component/ProviderForm";
 import IProvider from "@/Models/Providers/IProvider";
 import pageStyle from "@/Shared/Styles/pages.global.style";
 import i18n from "@/Shared/I18n/I18n";
@@ -32,7 +32,7 @@ export default function Providers() {
               color: Constants.colors.green,
             }}
             onDelete={() => service.handleDeleteProvider(item.providerId)}
-            onEdit={() => service.onEdit(item.providerId)}
+            onEdit={() => service.onEdit(item)}
           />
         )}
         ItemSeparatorComponent={() => <View style={{ height: 5 }} />}
@@ -40,14 +40,17 @@ export default function Providers() {
       />
       <CustomModal
         title={
-          service.modalOptions.id
+          service.modalOptions.formData.providerId
             ? i18n.t("edit-provider")
             : i18n.t("add-provider")
         }
         isVisible={service.modalOptions.visible}
         onClose={service.toggleModal}
       >
-        <EditProvider id={service.modalOptions.id} save={service.save} />
+        <EditProvider
+          formData={service.modalOptions.formData}
+          save={service.save}
+        />
       </CustomModal>
       <FAB
         onPress={() => service.toggleModal()}

@@ -11,7 +11,7 @@ export default function usePeopleFormService(props: IEditPeopleProps) {
   const { peopleManager } = useService();
 
   //states
-  const [person, setPerson] = useState<IPerson>({} as IPerson);
+  const [person, setPerson] = useState<IPerson>(props.formData);
   const [validation, setValidation] = useState<IValidationErrorType>({
     visible: false,
     text: "",
@@ -19,17 +19,6 @@ export default function usePeopleFormService(props: IEditPeopleProps) {
 
   //context
   const context = useGlobalContext();
-
-  useEffect(() => {
-    fetchPerson();
-  }, []);
-
-  async function fetchPerson() {
-    if (!props.id) return;
-    const personDB = await peopleManager.getPerson(props.id);
-    if (!personDB) return;
-    setPerson(personDB);
-  }
 
   function setPersonName(value: string) {
     setPerson((prev) => {

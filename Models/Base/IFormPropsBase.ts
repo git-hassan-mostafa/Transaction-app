@@ -1,7 +1,7 @@
 export abstract class IFormPropsBase<T> {
-  id: number | undefined;
+  formData!: T;
   save!: (
-    customer: T,
+    formData: T,
     validationCallback: (customer: T) => boolean
   ) => Promise<void>;
 }

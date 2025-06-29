@@ -30,7 +30,7 @@ export default function People() {
               color: Constants.colors.darkGray,
             }}
             onDelete={() => service.handleDeletePerson(item.id)}
-            onEdit={() => service.onEdit(item.id)}
+            onEdit={() => service.onEdit(item)}
           />
         )}
         ItemSeparatorComponent={() => <View style={{ height: 5 }} />}
@@ -38,12 +38,17 @@ export default function People() {
       />
       <CustomModal
         title={
-          service.modalOptions.id ? i18n.t("edit-person") : i18n.t("add-person")
+          service.modalOptions.formData.id
+            ? i18n.t("edit-person")
+            : i18n.t("add-person")
         }
         isVisible={service.modalOptions.visible}
         onClose={service.toggleModal}
       >
-        <PeopleForm id={service.modalOptions.id} save={service.save} />
+        <PeopleForm
+          formData={service.modalOptions.formData}
+          save={service.save}
+        />
       </CustomModal>
       <FAB
         onPress={() => service.toggleModal()}

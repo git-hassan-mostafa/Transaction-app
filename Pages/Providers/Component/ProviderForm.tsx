@@ -6,7 +6,7 @@ import {
   TextStyle,
   TouchableOpacity,
 } from "react-native";
-import useEditProviderService from "./EditProvider.service";
+import useEditProviderService from "./ProviderForm.service";
 import { ThemedText } from "../../../Shared/Reusable Components/HelperComponents/ThemedText";
 import { IProviderFormProps } from "@/Models/Providers/IProviderFormProps";
 import i18n from "@/Shared/I18n/I18n";

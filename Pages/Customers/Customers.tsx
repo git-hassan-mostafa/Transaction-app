@@ -31,7 +31,7 @@ export default function Customers() {
               color: Constants.colors.red,
             }}
             onDelete={() => service.handleDeleteCustomer(item.customerId)}
-            onEdit={() => service.onEdit(item.customerId)}
+            onEdit={() => service.onEdit(item)}
           />
         )}
         ItemSeparatorComponent={() => <View style={{ height: 10 }} />}
@@ -39,14 +39,17 @@ export default function Customers() {
       />
       <CustomModal
         title={
-          service.modalOptions.id
+          service.modalOptions.formData.customerId
             ? i18n.t("edit-customer")
             : i18n.t("add-customer")
         }
         isVisible={service.modalOptions.visible}
         onClose={service.toggleModal}
       >
-        <CustomerForm id={service.modalOptions.id} save={service.save} />
+        <CustomerForm
+          formData={service.modalOptions.formData}
+          save={service.save}
+        />
       </CustomModal>
       <FAB
         onPress={() => service.toggleModal()}

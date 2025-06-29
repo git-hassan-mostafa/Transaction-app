@@ -11,7 +11,7 @@ export default function useEditProviderService(props: IProviderFormProps) {
   const { providerManager } = useService();
 
   //states
-  const [provider, setProvider] = useState<IProvider>({} as IProvider);
+  const [provider, setProvider] = useState<IProvider>(props.formData);
   const [validation, setValidation] = useState<IValidationErrorType>({
     visible: false,
     text: "",
@@ -19,17 +19,6 @@ export default function useEditProviderService(props: IProviderFormProps) {
 
   //context
   const context = useGlobalContext();
-
-  useEffect(() => {
-    getProvider();
-  }, []);
-
-  async function getProvider() {
-    if (!props.id) return;
-    const providersDB = await providerManager.getProvider(props.id);
-    if (!providersDB) return;
-    setProvider(providersDB);
-  }
 
   function setProviderName(value: string) {
     setProvider((prev) => {

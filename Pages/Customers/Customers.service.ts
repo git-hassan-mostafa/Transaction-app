@@ -13,9 +13,9 @@ export default function useCustomersService() {
 
   //states
   const [customers, setCustomers] = useState<ICustomer[]>([]);
-  const [modalOptions, setModalOptions] = useState<IFormModalType>({
+  const [modalOptions, setModalOptions] = useState<IFormModalType<ICustomer>>({
     visible: false,
-    id: -1,
+    formData: {} as ICustomer,
   });
   //context
   const context = useGlobalContext();
@@ -93,8 +93,8 @@ export default function useCustomersService() {
     setCustomers((prev) => prev.filter((c) => c.customerId !== id));
   }
 
-  async function onEdit(id: number) {
-    toggleModal(id);
+  async function onEdit(customer: ICustomer) {
+    toggleModal(customer);
   }
 
   async function handleDeleteCustomer(id: number) {
@@ -151,8 +151,8 @@ export default function useCustomersService() {
     deleteCustomer(id);
   }
 
-  function toggleModal(id: number | undefined = undefined) {
-    setModalOptions((prev) => ({ visible: !prev.visible, id }));
+  function toggleModal(formData: ICustomer = {} as ICustomer) {
+    setModalOptions((prev) => ({ visible: !prev.visible, formData }));
   }
 
   function sortCustomers() {

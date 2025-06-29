@@ -15,9 +15,7 @@ export default function useCustomerFormService(
   const { customerManager } = useService();
 
   // states
-  const [customer, setCustomer] = useState<ICustomer>({
-    customerId: props.id,
-  } as ICustomer);
+  const [customer, setCustomer] = useState<ICustomer>(props.formData);
   const [borrowList, setBorrowList] = useState<
     ICustomer_IInternalDebt_IInternalDebtProduct_IProduct[]
   >([]);
@@ -30,22 +28,14 @@ export default function useCustomerFormService(
   const context = useGlobalContext();
 
   useEffect(() => {
-    if (props.id) fetchAllData();
+    if (props.formData.customerId) fetchBorrowList();
   }, []);
 
-  async function fetchAllData() {
-    await Promise.all([fetchCustomer(), fetchBorrowList()]);
-  }
-
-  async function fetchCustomer() {
-    if (!props.id) return;
-    const customerDB = await customerManager.getCustomer(props.id);
-    setCustomer(customerDB);
-  }
-
   async function fetchBorrowList() {
-    if (!props.id) return;
-    const borrowedList = await customerManager.getCustomerBorrowList(props.id);
+    if (!props.formData.customerId) return;
+    const borrowedList = await customerManager.getCustomerBorrowList(
+      props.formData.customerId
+    );
     setBorrowList(borrowedList);
     setCustomerBorrowedPrice(borrowedList);
   }

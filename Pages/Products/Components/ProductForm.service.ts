@@ -12,7 +12,7 @@ export default function useProductFormService(props: IProductFormProps) {
   const { productManager } = useService();
 
   //states
-  const [product, setProduct] = useState<IProduct>({} as IProduct);
+  const [product, setProduct] = useState<IProduct>(props.formData);
   const [providers, setProviders] = useState<IDropDownItem[]>([]);
   const [validation, setValidation] = useState<IValidationErrorType>({
     visible: false,
@@ -27,14 +27,7 @@ export default function useProductFormService(props: IProductFormProps) {
   }, []);
 
   async function fetchData() {
-    await Promise.all([getProduct(), getAllProviders()]);
-  }
-
-  async function getProduct() {
-    if (!props.id) return;
-    const productDB = await productManager.getProduct(props.id);
-    if (!productDB) return;
-    setProduct(productDB);
+    await getAllProviders();
   }
 
   async function getAllProviders() {
