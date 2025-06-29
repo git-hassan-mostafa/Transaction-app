@@ -1,4 +1,4 @@
-import Constants from "@/Global/Constants/Constants";
+import Constants from "@/Shared/Constants/Constants";
 import { StyleSheet } from "react-native";
 
 const styles = StyleSheet.create({

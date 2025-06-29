@@ -1,13 +1,13 @@
-import useGlobalContext from "@/Global/Context/ContextProvider";
-import { PeopleDataAccess } from "@/DAL/PeopleDataAccess";
-import Mapper from "@/Global/Helpers/MapService";
-import SortList from "@/Global/Helpers/Functions/SortList";
-import i18n from "@/Global/I18n/I18n";
-import IPerson from "@/ViewModels/People/IPerson";
+import useGlobalContext from "@/Shared/Context/ContextProvider";
+import { PeopleDataAccess } from "@/DataBase/DAL/PeopleDataAccess";
+import Mapper from "@/Shared/Helpers/MapService";
+import SortList from "@/Shared/Helpers/Functions/SortList";
+import i18n from "@/Shared/I18n/I18n";
+import IPerson from "@/Models/People/IPerson";
 import { useEffect, useState } from "react";
 import { Alert } from "react-native";
-import useService from "@/Global/Context/ServiceProvider";
-import IFormModalType from "@/Global/Types/IEditModalType";
+import useService from "@/Shared/Context/ServiceProvider";
+import IFormModalType from "@/Shared/Types/IEditModalType";
 
 export default function usePeopleService() {
   //services
@@ -36,6 +36,50 @@ export default function usePeopleService() {
     const peopleDB = await peopleManager.getAllPeople();
     if (!peopleDB) return;
     setPeople(peopleDB);
+  }
+
+  async function save(
+    person: IPerson,
+    validationCallback: (person: IPerson) => boolean
+  ) {
+    if (!validationCallback(person)) return;
+    if (person.id) await updatePerson(person);
+    else await addPerson(person);
+  }
+
+  async function addPerson(person: IPerson) {
+    const result = await peopleManager.addPerson(person);
+    if (!result.success)
+      return context.toggleSnackBar({
+        visible: true,
+        text: result.message,
+        type: "error",
+      });
+    person.id = result.data;
+    addToPeopleList(person);
+    toggleModal();
+    context.toggleSnackBar({
+      visible: true,
+      text: result.message,
+      type: "success",
+    });
+  }
+
+  async function updatePerson(person: IPerson) {
+    const result = await peopleManager.updatePerson(person);
+    if (!result.success)
+      return context.toggleSnackBar({
+        visible: true,
+        text: result.message,
+        type: "error",
+      });
+    context.toggleSnackBar({
+      visible: true,
+      text: result.message,
+      type: "success",
+    });
+    toggleModal();
+    updateFromPeopleList(person);
   }
 
   function addToPeopleList(value: IPerson) {
@@ -101,5 +145,6 @@ export default function usePeopleService() {
     handleDeletePerson,
     onEdit,
     toggleModal,
+    save,
   };
 }

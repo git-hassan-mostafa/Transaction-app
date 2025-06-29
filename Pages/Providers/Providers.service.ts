@@ -1,11 +1,11 @@
-import useGlobalContext from "@/Global/Context/ContextProvider";
-import SortList from "@/Global/Helpers/Functions/SortList";
-import i18n from "@/Global/I18n/I18n";
-import IProvider from "@/ViewModels/Providers/IProvider";
+import useGlobalContext from "@/Shared/Context/ContextProvider";
+import SortList from "@/Shared/Helpers/Functions/SortList";
+import i18n from "@/Shared/I18n/I18n";
+import IProvider from "@/Models/Providers/IProvider";
 import { useEffect, useState } from "react";
 import { Alert } from "react-native";
-import useService from "@/Global/Context/ServiceProvider";
-import IFormModalType from "@/Global/Types/IEditModalType";
+import useService from "@/Shared/Context/ServiceProvider";
+import IFormModalType from "@/Shared/Types/IEditModalType";
 
 export default function useProvidersService() {
   //services
@@ -19,13 +19,61 @@ export default function useProvidersService() {
   });
 
   // context
-  const { toggleSnackBar } = useGlobalContext();
+  const context = useGlobalContext();
 
   //constructor
   sortProviders();
   useEffect(() => {
     getAllProviders();
   }, []);
+
+  async function save(
+    provider: IProvider,
+    validationCallback: (provider: IProvider) => boolean
+  ) {
+    if (!validationCallback(provider)) return;
+    if (provider.providerId) updateProvider(provider);
+    else addProvider(provider);
+  }
+
+  async function addProvider(provider: IProvider) {
+    try {
+      const result = await providerManager.addProvider(provider);
+      if (!result.success)
+        return context.toggleSnackBar({
+          visible: true,
+          text: result.message,
+          type: "error",
+        });
+      addToProvidersList(provider);
+      context.toggleSnackBar({
+        visible: true,
+        text: result.message,
+        type: "success",
+      });
+    } catch (error) {
+      console.error(error);
+    } finally {
+      toggleModal();
+    }
+  }
+
+  async function updateProvider(provider: IProvider) {
+    const result = await providerManager.updateProvider(provider);
+    if (!result.success)
+      return context.toggleSnackBar({
+        text: result.message,
+        visible: true,
+        type: "error",
+      });
+    toggleModal();
+    context.toggleSnackBar({
+      text: result.message,
+      visible: true,
+      type: "success",
+    });
+    updateFromProvidersList(provider);
+  }
 
   function addToProvidersList(value: IProvider) {
     setProviders((prev) => [...prev, value]);
@@ -66,14 +114,14 @@ export default function useProvidersService() {
   async function deleteProvider(id: number) {
     const result = await providerManager.deleteProvider(id);
     if (!result.success) {
-      return toggleSnackBar({
+      return context.toggleSnackBar({
         visible: true,
         text: result.message,
         type: "error",
       });
     }
     deleteFromProvidersList(id);
-    toggleSnackBar({
+    context.toggleSnackBar({
       visible: true,
       text: result.message,
       type: "success",
@@ -101,5 +149,6 @@ export default function useProvidersService() {
     handleDeleteProvider,
     onEdit,
     toggleModal,
+    save,
   };
 }

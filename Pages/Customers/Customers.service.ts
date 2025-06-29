@@ -1,11 +1,11 @@
-import useGlobalContext from "@/Global/Context/ContextProvider";
-import sortList from "@/Global/Helpers/Functions/SortList";
-import i18n from "@/Global/I18n/I18n";
-import IFormModalType from "@/Global/Types/IEditModalType";
-import ICustomer from "@/ViewModels/Customers/ICustomer";
+import useGlobalContext from "@/Shared/Context/ContextProvider";
+import sortList from "@/Shared/Helpers/Functions/SortList";
+import i18n from "@/Shared/I18n/I18n";
+import IFormModalType from "@/Shared/Types/IEditModalType";
 import { useEffect, useState } from "react";
 import { Alert } from "react-native";
-import useService from "@/Global/Context/ServiceProvider";
+import useService from "@/Shared/Context/ServiceProvider";
+import ICustomer from "@/Models/Customers/ICustomer";
 
 export default function useCustomersService() {
   //services
@@ -29,6 +29,50 @@ export default function useCustomersService() {
   async function getAllCustomers() {
     const mappedCustomers = await customerManager.getAllCustomersCalculated();
     setCustomers(mappedCustomers);
+  }
+
+  async function save(
+    customer: ICustomer,
+    validationCallback: (customer: ICustomer) => boolean
+  ) {
+    if (!validationCallback(customer)) return;
+
+    if (customer.customerId) updateCustomer(customer);
+    else addCustomer(customer);
+  }
+
+  async function addCustomer(customer: ICustomer) {
+    const result = await customerManager.addCustomer(customer);
+    if (!result.success)
+      return context.toggleSnackBar({
+        text: result.message,
+        type: "error",
+        visible: true,
+      });
+    addToCustomersList(customer);
+    toggleModal();
+    context.toggleSnackBar({
+      text: result.message,
+      type: "success",
+      visible: true,
+    });
+  }
+
+  async function updateCustomer(customer: ICustomer) {
+    const result = await customerManager.updateCustomer(customer);
+    if (!result.success)
+      return context.toggleSnackBar({
+        visible: true,
+        text: result.message,
+        type: "error",
+      });
+    toggleModal();
+    context.toggleSnackBar({
+      visible: true,
+      text: result.message,
+      type: "success",
+    });
+    updateFromCustomersList(customer);
   }
 
   function addToCustomersList(value: ICustomer) {
@@ -118,6 +162,7 @@ export default function useCustomersService() {
   return {
     customers,
     modalOptions,
+    save,
     toggleModal,
     addToCustomersList,
     deleteFromCustomerList,

@@ -1,10 +1,10 @@
-import CustomerManager from "../BLL/CustomerManager";
+import CustomerManager from "../Pages/Customers/Services/CustomerManager";
 import DALFactory from "@/Factories/DALFactory";
-import InternalDebtManager from "../BLL/InternalDebtManager";
-import ProductManager from "../BLL/ProductManager";
+import InternalDebtManager from "../Pages/InternalDebts/Services/InternalDebtManager";
+import ProductManager from "../Pages/Products/Services/ProductManager";
 import HelpersFactory from "./HelpersFactory";
-import { PeopleManager } from "@/BLL/PeopleManager";
-import ProviderManager from "@/BLL/ProviderManager";
+import { PeopleManager } from "@/Pages/People/Services/PeopleManager";
+import ProviderManager from "@/Pages/Providers/Services/ProviderManager";
 
 export default class BLLFactory {
   static CustomerManager() {

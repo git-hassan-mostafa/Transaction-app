@@ -2,14 +2,14 @@ import { FlatList, View } from "react-native";
 import useProductsService from "./Products.service";
 import styles from "./Products.style";
 import React from "react";
-import Constants from "@/Global/Constants/Constants";
-import CustomModal from "@/Global/Reusable Components/CustomModalComponent/CustomModalComponent";
+import Constants from "@/Shared/Constants/Constants";
+import CustomModal from "@/Shared/Reusable Components/CustomModalComponent/CustomModalComponent";
 import { FAB } from "react-native-paper";
-import IProduct from "@/ViewModels/Products/IProduct";
-import pageStyle from "@/Global/Styles/pages.global.style";
-import i18n from "@/Global/I18n/I18n";
-import ListItem from "@/Global/Reusable Components/ListItem/ListItem";
-import ProductForm from "@/Components/Products/ProductForm";
+import IProduct from "@/Models/Products/IProduct";
+import pageStyle from "@/Shared/Styles/pages.global.style";
+import i18n from "@/Shared/I18n/I18n";
+import ListItem from "@/Shared/Reusable Components/ListItem/ListItem";
+import ProductForm from "@/Pages/Products/Components/ProductForm";
 
 export default function Products() {
   const service = useProductsService();
@@ -46,12 +46,7 @@ export default function Products() {
         isVisible={service.modalOptions.visible}
         onClose={() => service.toggleModal(-1)}
       >
-        <ProductForm
-          id={service.modalOptions.id}
-          updateFromProductsList={service.updateFromProductsList}
-          toggleModal={service.toggleModal}
-          addToProductsList={service.addToProductsList}
-        />
+        <ProductForm id={service.modalOptions.id} save={service.save} />
       </CustomModal>
       <FAB
         onPress={() => service.toggleModal()}

@@ -1,10 +1,10 @@
-import useGlobalContext from "@/Global/Context/ContextProvider";
+import useGlobalContext from "@/Shared/Context/ContextProvider";
 import { Stack } from "expo-router";
 import useLayoutPageService from "./LayoutPage.service";
-import Constants from "@/Global/Constants/Constants";
+import Constants from "@/Shared/Constants/Constants";
 import React from "react";
-import CustomSnackBarComponent from "@/Global/Reusable Components/CustomSnackBarComponent/CustomSnackBarComponent";
-import pages from "@/Global/Constants/Pages";
+import CustomSnackBarComponent from "@/Shared/Reusable Components/CustomSnackBarComponent/CustomSnackBarComponent";
+import pages from "@/Shared/Constants/Pages";
 
 export default function LayoutPage() {
   const layoutService = useLayoutPageService();

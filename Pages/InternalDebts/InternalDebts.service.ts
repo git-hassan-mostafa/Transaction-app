@@ -1,12 +1,13 @@
-import useGlobalContext from "@/Global/Context/ContextProvider";
-import { ICustomer_IInnternalDebt } from "@/ViewModels/RelationModels/ICustomer_IInnternalDebt";
+import useGlobalContext from "@/Shared/Context/ContextProvider";
+import { ICustomer_IInnternalDebt } from "@/Models/RelationModels/ICustomer_IInnternalDebt";
 import { useEffect, useState } from "react";
 import { Alert } from "react-native";
-import i18n from "@/Global/I18n/I18n";
-import SortList from "@/Global/Helpers/Functions/SortList";
-import useService from "@/Global/Context/ServiceProvider";
-import IFormModalType from "@/Global/Types/IEditModalType";
-import IInternalDebtProduct_IInternalDebt_IProduct from "@/ViewModels/RelationModels/IInternalDebtProduct_IInternalDebt_IProduct";
+import i18n from "@/Shared/I18n/I18n";
+import SortList from "@/Shared/Helpers/Functions/SortList";
+import useService from "@/Shared/Context/ServiceProvider";
+import IFormModalType from "@/Shared/Types/IEditModalType";
+import IInternalDebtProduct_IInternalDebt_IProduct from "@/Models/RelationModels/IInternalDebtProduct_IInternalDebt_IProduct";
+import IInternalDebt from "@/Models/InternalDebts/IInternalDebts";
 
 export default function useInternalDebtsService() {
   //services
@@ -28,7 +29,6 @@ export default function useInternalDebtsService() {
   const context = useGlobalContext();
 
   //constructor
-  sortInternalDebts();
   useEffect(() => {
     constructor();
   }, []);
@@ -54,6 +54,73 @@ export default function useInternalDebtsService() {
       await internalDebtManager.getAllInternalDebtsProducts();
     setInternalDebtsProducts(internalDebtsProductsDB);
   }
+
+  async function save(
+    internalDebt: IInternalDebt,
+    internalDebtsProducts: IInternalDebtProduct_IInternalDebt_IProduct[],
+    validationCallback: (internalDebt: IInternalDebt) => boolean
+  ) {
+    if (!validationCallback(internalDebt)) return;
+
+    if (internalDebt.internalDebtId)
+      updateInternalDebt(internalDebt, internalDebtsProducts);
+    else addInternalDebt(internalDebt, internalDebtsProducts);
+  }
+
+  async function addInternalDebt(
+    internalDebt: IInternalDebt,
+    internalDebtsProducts: IInternalDebtProduct_IInternalDebt_IProduct[]
+  ) {
+    const result = await internalDebtManager.addInternalDebt(
+      internalDebt,
+      internalDebtsProducts
+    );
+
+    if (!result.success && result.message) {
+      return context.toggleSnackBar({
+        visible: true,
+        text: result.message,
+        type: "error",
+      });
+    }
+    if (result.success) {
+      // await props.internalDebtsProductsListService.refreshInternalDebtsProducts?.(
+      //   result.data
+      // );
+      addToInternalDebtsList(result.data);
+      toggleModal();
+      context.toggleSnackBar({
+        text: result.message,
+        visible: true,
+        type: "success",
+      });
+    }
+  }
+
+  async function updateInternalDebt(
+    internalDebt: IInternalDebt,
+    internalDebtsProducts: IInternalDebtProduct_IInternalDebt_IProduct[]
+  ) {
+    const result = await internalDebtManager.updateInternalDebt(
+      internalDebt,
+      internalDebtsProducts
+    );
+    if (!result.success && result.message) {
+      return context.toggleSnackBar({
+        visible: true,
+        text: result.message,
+        type: "error",
+      });
+    }
+    toggleModal();
+    updateFromInternalDebtsList(result.data);
+    context.toggleSnackBar({
+      text: result.message,
+      visible: true,
+      type: "success",
+    });
+  }
+
   async function addToInternalDebtsList(debt: ICustomer_IInnternalDebt) {
     setInternalDebts((prev) => [...prev, debt]);
   }
@@ -123,10 +190,6 @@ export default function useInternalDebtsService() {
     setModalOptions((prev) => ({ visible: !prev.visible, id }));
   }
 
-  function sortInternalDebts() {
-    SortList(internalDebts, (e) => e.internalDebtDate);
-  }
-
   return {
     internalDebts,
     modalOptions,
@@ -136,5 +199,6 @@ export default function useInternalDebtsService() {
     updateFromInternalDebtsList,
     handleDeleteInternalDebt,
     onEdit,
+    save,
   };
 }

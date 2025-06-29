@@ -1,9 +1,9 @@
-import CustomerDataAccess from "../DAL/CustomersDataAccess";
-import InternalDebtsProductsDataAccess from "../DAL/InternalDebtsProductsDataAccess";
-import InternalDebtsDataAccess from "../DAL/InternalDebtsDataAccess";
-import ProductsDataAccess from "../DAL/ProductsDataAccess";
-import { PeopleDataAccess } from "@/DAL/PeopleDataAccess";
-import ProviderDataAccess from "@/DAL/ProviderDataAccess";
+import CustomerDataAccess from "../DataBase/DAL/CustomersDataAccess";
+import InternalDebtsProductsDataAccess from "../DataBase/DAL/InternalDebtsProductsDataAccess";
+import InternalDebtsDataAccess from "../DataBase/DAL/InternalDebtsDataAccess";
+import ProductsDataAccess from "../DataBase/DAL/ProductsDataAccess";
+import { PeopleDataAccess } from "@/DataBase/DAL/PeopleDataAccess";
+import ProviderDataAccess from "@/DataBase/DAL/ProviderDataAccess";
 
 export default class DALFactory {
   static CustomerDataAccess() {

@@ -1,15 +1,15 @@
 import { View, FlatList } from "react-native";
 import useCustomersService from "./Customers.service";
 import styles from "./Customers.style";
-import { CustomerForm } from "@/Components/Customer/CustomerForm";
-import Constants from "@/Global/Constants/Constants";
+import { CustomerForm } from "@/Pages/Customers/Components/CustomerForm";
+import Constants from "@/Shared/Constants/Constants";
 import { FAB } from "react-native-paper";
 import React from "react";
-import CustomModal from "@/Global/Reusable Components/CustomModalComponent/CustomModalComponent";
-import ICustomer from "@/ViewModels/Customers/ICustomer";
-import pageStyle from "@/Global/Styles/pages.global.style";
-import i18n from "@/Global/I18n/I18n";
-import ListItem from "@/Global/Reusable Components/ListItem/ListItem";
+import CustomModal from "@/Shared/Reusable Components/CustomModalComponent/CustomModalComponent";
+import pageStyle from "@/Shared/Styles/pages.global.style";
+import i18n from "@/Shared/I18n/I18n";
+import ListItem from "@/Shared/Reusable Components/ListItem/ListItem";
+import ICustomer from "@/Models/Customers/ICustomer";
 
 export default function Customers() {
   const service = useCustomersService();
@@ -46,12 +46,7 @@ export default function Customers() {
         isVisible={service.modalOptions.visible}
         onClose={service.toggleModal}
       >
-        <CustomerForm
-          toggleModal={service.toggleModal}
-          id={service.modalOptions.id}
-          updateFromCustomersList={service.updateFromCustomersList}
-          addToCustomersList={service.addToCustomersList}
-        />
+        <CustomerForm id={service.modalOptions.id} save={service.save} />
       </CustomModal>
       <FAB
         onPress={() => service.toggleModal()}

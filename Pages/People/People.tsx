@@ -2,14 +2,14 @@ import { FlatList, View } from "react-native";
 import usePeopleService from "./People.service";
 import styles from "./People.style";
 import React from "react";
-import Constants from "@/Global/Constants/Constants";
+import Constants from "@/Shared/Constants/Constants";
 import { FAB } from "react-native-paper";
-import CustomModal from "@/Global/Reusable Components/CustomModalComponent/CustomModalComponent";
-import IPerson from "@/ViewModels/People/IPerson";
-import pageStyle from "@/Global/Styles/pages.global.style";
-import i18n from "@/Global/I18n/I18n";
-import ListItem from "@/Global/Reusable Components/ListItem/ListItem";
-import PeopleForm from "@/Components/People/PeopleForm";
+import CustomModal from "@/Shared/Reusable Components/CustomModalComponent/CustomModalComponent";
+import IPerson from "@/Models/People/IPerson";
+import pageStyle from "@/Shared/Styles/pages.global.style";
+import i18n from "@/Shared/I18n/I18n";
+import ListItem from "@/Shared/Reusable Components/ListItem/ListItem";
+import PeopleForm from "@/Pages/People/Components/PeopleForm";
 
 export default function People() {
   const service = usePeopleService();
@@ -43,12 +43,7 @@ export default function People() {
         isVisible={service.modalOptions.visible}
         onClose={service.toggleModal}
       >
-        <PeopleForm
-          toggleModal={service.toggleModal}
-          id={service.modalOptions.id}
-          updateFromPeopleList={service.updateFromPeopleList}
-          addToPeopleList={service.addToPeopleList}
-        />
+        <PeopleForm id={service.modalOptions.id} save={service.save} />
       </CustomModal>
       <FAB
         onPress={() => service.toggleModal()}

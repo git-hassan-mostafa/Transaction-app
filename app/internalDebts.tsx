@@ -1,5 +1,10 @@
 import InternalDebtsPage from "@/Pages/InternalDebts/InternalDebts";
+import { ServiceProvider } from "@/Shared/Context/ServiceProvider";
 
 export default function InternalDebts() {
-  return <InternalDebtsPage />;
+  return (
+    <ServiceProvider>
+      <InternalDebtsPage />
+    </ServiceProvider>
+  );
 }

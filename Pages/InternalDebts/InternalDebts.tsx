@@ -2,15 +2,15 @@ import { FlatList, View } from "react-native";
 import useInternalDebtsService from "./InternalDebts.service";
 import styles from "./InternalDebts.style";
 import React from "react";
-import Constants from "@/Global/Constants/Constants";
-import CustomModal from "@/Global/Reusable Components/CustomModalComponent/CustomModalComponent";
+import Constants from "@/Shared/Constants/Constants";
+import CustomModal from "@/Shared/Reusable Components/CustomModalComponent/CustomModalComponent";
 import { FAB } from "react-native-paper";
-import { ICustomer_IInnternalDebt } from "@/ViewModels/RelationModels/ICustomer_IInnternalDebt";
-import pageStyle from "@/Global/Styles/pages.global.style";
-import i18n from "@/Global/I18n/I18n";
-import ListItem from "@/Global/Reusable Components/ListItem/ListItem";
-import { fromatLocaleDate } from "@/Global/Helpers/Functions/FormatDate";
-import InternalDebtForm from "@/Components/InternalDebt/InternalDebtForm";
+import { ICustomer_IInnternalDebt } from "@/Models/RelationModels/ICustomer_IInnternalDebt";
+import pageStyle from "@/Shared/Styles/pages.global.style";
+import i18n from "@/Shared/I18n/I18n";
+import ListItem from "@/Shared/Reusable Components/ListItem/ListItem";
+import { fromatLocaleDate } from "@/Shared/Helpers/Functions/FormatDate";
+import InternalDebtForm from "./Components/InternalDebtForm";
 
 export default function InternalDebts() {
   const service = useInternalDebtsService();
@@ -53,12 +53,7 @@ export default function InternalDebts() {
         isVisible={service.modalOptions.visible}
         onClose={() => service.toggleModal()}
       >
-        <InternalDebtForm
-          toggleModal={() => service.toggleModal()}
-          id={service.modalOptions.id}
-          updateFromInternalDebtsList={service.updateFromInternalDebtsList}
-          addToInternalDebtsList={service.addToInternalDebtsList}
-        />
+        <InternalDebtForm id={service.modalOptions.id} save={service.save} />
       </CustomModal>
       <FAB
         onPress={() => service.toggleModal()}

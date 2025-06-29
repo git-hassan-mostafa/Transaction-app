@@ -1,5 +1,10 @@
 import ProviderPage from "@/Pages/Providers/Providers";
+import { ServiceProvider } from "@/Shared/Context/ServiceProvider";
 
 export default function Providers() {
-  return <ProviderPage />;
+  return (
+    <ServiceProvider>
+      <ProviderPage />
+    </ServiceProvider>
+  );
 }

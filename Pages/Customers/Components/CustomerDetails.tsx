@@ -1,0 +1,102 @@
+import {
+  StyleProp,
+  TextInput,
+  TextStyle,
+  TouchableOpacity,
+  View,
+} from "react-native";
+import styles from "./CustomerForm.style";
+import { ThemedText } from "@/Shared/Reusable Components/HelperComponents/ThemedText";
+import i18n from "@/Shared/I18n/I18n";
+import Constants from "@/Shared/Constants/Constants";
+import { Button } from "react-native-paper";
+import ValidationMessage from "@/Shared/Reusable Components/HelperComponents/ValidationMessage";
+import formStyle from "@/Shared/Styles/form.style";
+import ICustomerDetailsProps from "@/Models/Customers/ICustomerDetailsProps";
+
+export default function CustomerDetails(props: ICustomerDetailsProps) {
+  return (
+    <View>
+      {props.customer.customerId > 0 && (
+        <View style={styles.pricesRow}>
+          <ThemedText
+            weight={600}
+            fontSize={12}
+            style={[styles.price, styles.payedPrice]}
+          >
+            ${props.customer.customerPayedPrice}
+          </ThemedText>
+          <ThemedText
+            weight={600}
+            fontSize={12}
+            style={[styles.price, styles.totalDebtPrice]}
+          >
+            ${props.customer.customerBorrowedPrice}
+          </ThemedText>
+          <ThemedText
+            weight={600}
+            fontSize={12}
+            style={[styles.price, styles.remainingPrice]}
+          >
+            $
+            {props.customer.customerBorrowedPrice -
+              props.customer.customerPayedPrice}
+          </ThemedText>
+        </View>
+      )}
+      <View style={formStyle.row}>
+        <ThemedText style={formStyle.label}>
+          {i18n.t("customer-name")}
+        </ThemedText>
+        <TextInput
+          style={formStyle.input as StyleProp<TextStyle>}
+          placeholder={i18n.t("enter-customer-name") + "..."}
+          placeholderTextColor="#999"
+          value={props.customer.customerName}
+          onChangeText={props.setCustomerName}
+        />
+      </View>
+
+      <View style={formStyle.row}>
+        <ThemedText style={formStyle.label}>
+          {i18n.t("phone-number")}
+        </ThemedText>
+        <TextInput
+          style={formStyle.input as StyleProp<TextStyle>}
+          placeholder={i18n.t("enter-phone-number") + "..."}
+          placeholderTextColor="#999"
+          value={props.customer.customerPhoneNumber}
+          keyboardType="phone-pad"
+          textContentType="telephoneNumber"
+          onChangeText={props.setCustomerPhoneNumber}
+        />
+      </View>
+      <View style={formStyle.row}>
+        <ThemedText style={formStyle.label}>{i18n.t("notes")}</ThemedText>
+        <TextInput
+          style={[formStyle.input, formStyle.textArea] as StyleProp<TextStyle>}
+          placeholder={i18n.t("enter-notes") + "..."}
+          placeholderTextColor="#999"
+          value={props.customer.customerNotes}
+          onChangeText={props.setCustomerNotes}
+          multiline
+        />
+      </View>
+      <View style={formStyle.row}>
+        <ValidationMessage validation={props.validation} />
+      </View>
+      <TouchableOpacity>
+        <Button
+          buttonColor={Constants.colors.customers}
+          textColor={Constants.colors.lightGray}
+          labelStyle={formStyle.saveButton}
+          onPress={props.save}
+        >
+          <ThemedText weight={400} style={formStyle.saveText}>
+            {i18n.t("save")}
+          </ThemedText>
+        </Button>
+      </TouchableOpacity>
+    </View>
+  );
+}

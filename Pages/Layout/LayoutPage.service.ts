@@ -1,3 +1,3 @@
-import Constants from "@/Global/Constants/Constants";
+import Constants from "@/Shared/Constants/Constants";
 
 export default function useLayoutPageService() {}

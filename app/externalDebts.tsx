@@ -1,5 +1,10 @@
-import ExternalDebtsPage from "@/Pages/OuterDebts/ExternalDebts";
+import ExternalDebtsPage from "@/Pages/ExternalDebts/ExternalDebts";
+import { ServiceProvider } from "@/Shared/Context/ServiceProvider";
 
 export default function ExternalDebts() {
-  return <ExternalDebtsPage />;
+  return (
+    <ServiceProvider>
+      <ExternalDebtsPage />
+    </ServiceProvider>
+  );
 }

@@ -2,15 +2,15 @@ import { FlatList, View } from "react-native";
 import useProvidersService from "./Providers.service";
 import styles from "./Providers.style";
 import React from "react";
-import AccordionComponent from "@/Global/Reusable Components/AccordionComponent/AccordionComponent";
-import Constants from "@/Global/Constants/Constants";
-import CustomModal from "@/Global/Reusable Components/CustomModalComponent/CustomModalComponent";
+import AccordionComponent from "@/Shared/Reusable Components/AccordionComponent/AccordionComponent";
+import Constants from "@/Shared/Constants/Constants";
+import CustomModal from "@/Shared/Reusable Components/CustomModalComponent/CustomModalComponent";
 import { FAB } from "react-native-paper";
-import { EditProvider } from "@/Components/Provider/EditProvider";
-import IProvider from "@/ViewModels/Providers/IProvider";
-import pageStyle from "@/Global/Styles/pages.global.style";
-import i18n from "@/Global/I18n/I18n";
-import ListItem from "@/Global/Reusable Components/ListItem/ListItem";
+import { EditProvider } from "@/Pages/Providers/Component/EditProvider";
+import IProvider from "@/Models/Providers/IProvider";
+import pageStyle from "@/Shared/Styles/pages.global.style";
+import i18n from "@/Shared/I18n/I18n";
+import ListItem from "@/Shared/Reusable Components/ListItem/ListItem";
 
 export default function Providers() {
   const service = useProvidersService();
@@ -47,12 +47,7 @@ export default function Providers() {
         isVisible={service.modalOptions.visible}
         onClose={service.toggleModal}
       >
-        <EditProvider
-          toggleModal={service.toggleModal}
-          id={service.modalOptions.id}
-          updateFromProvidersList={service.updateFromProvidersList}
-          addToProvidersList={service.addToProvidersList}
-        />
+        <EditProvider id={service.modalOptions.id} save={service.save} />
       </CustomModal>
       <FAB
         onPress={() => service.toggleModal()}

@@ -1,11 +1,11 @@
-import useGlobalContext from "@/Global/Context/ContextProvider";
-import SortList from "@/Global/Helpers/Functions/SortList";
-import i18n from "@/Global/I18n/I18n";
-import IProduct from "@/ViewModels/Products/IProduct";
+import useGlobalContext from "@/Shared/Context/ContextProvider";
+import SortList from "@/Shared/Helpers/Functions/SortList";
+import i18n from "@/Shared/I18n/I18n";
+import IProduct from "@/Models/Products/IProduct";
 import { useEffect, useState } from "react";
 import { Alert } from "react-native";
-import useService from "@/Global/Context/ServiceProvider";
-import IFormModalType from "@/Global/Types/IEditModalType";
+import useService from "@/Shared/Context/ServiceProvider";
+import IFormModalType from "@/Shared/Types/IEditModalType";
 
 export default function useProductsService() {
   //services
@@ -29,6 +29,50 @@ export default function useProductsService() {
 
   function sortProducts() {
     SortList(products, (e) => e.productName);
+  }
+
+  async function save(
+    product: IProduct,
+    validationCallback: (product: IProduct) => boolean
+  ) {
+    if (!validationCallback(product)) return;
+    if (product.productId) await updateProduct(product);
+    else await addProduct(product);
+  }
+
+  async function addProduct(product: IProduct) {
+    const result = await productManager.addProduct(product);
+    if (!result.success)
+      return context.toggleSnackBar({
+        visible: true,
+        text: result.message,
+        type: "error",
+      });
+    product.productId = result?.data;
+    addToProductsList(product);
+    toggleModal();
+    context.toggleSnackBar({
+      visible: true,
+      text: result.message,
+      type: "success",
+    });
+  }
+
+  async function updateProduct(product: IProduct) {
+    const result = await productManager.updateProduct(product);
+    if (!result.success)
+      return context.toggleSnackBar({
+        visible: true,
+        text: result.message,
+        type: "error",
+      });
+    updateFromProductsList(product);
+    toggleModal();
+    context.toggleSnackBar({
+      visible: true,
+      text: result.message,
+      type: "success",
+    });
   }
 
   function addToProductsList(value: IProduct) {
@@ -101,5 +145,6 @@ export default function useProductsService() {
     updateFromProductsList,
     handleDeleteProduct,
     onEdit,
+    save,
   };
 }
