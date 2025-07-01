@@ -2,11 +2,29 @@ import { SQLiteDatabase } from "expo-sqlite";
 import SqlTableCreator from "../Helpers/SqlTableCreator";
 
 export default class CreateTablesManager {
-  constructor() {}
+  constructor() { }
 
   async init(db: SQLiteDatabase) {
-    // await this.dropTables(db);
-    await this.createTables(db);
+    // Check if tables already exist before creating them
+    const tablesExist = await this.checkTablesExist(db);
+    if (!tablesExist) {
+      await this.createTables(db);
+    } else {
+      console.info("Tables already exist, skipping creation");
+    }
+  }
+
+  private async checkTablesExist(db: SQLiteDatabase): Promise<boolean> {
+    try {
+      // Check if at least one of our tables exists
+      const result = await db.getFirstAsync<{ count: number }>(
+        "SELECT COUNT(*) as count FROM sqlite_master WHERE type='table' AND name='Customers'"
+      );
+      return result?.count > 0;
+    } catch (error) {
+      console.error("Error checking if tables exist:", error);
+      return false;
+    }
   }
 
   private async createTables(db: SQLiteDatabase) {

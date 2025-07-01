@@ -11,10 +11,56 @@ import i18n from "@/Shared/I18n/I18n";
 import ListItem from "@/Shared/Reusable Components/ListItem/ListItem";
 import ProductForm from "@/Pages/Products/Components/ProductForm";
 import { useDirtyChecker } from "@/Shared/Hooks/useDirtyState";
+import CustomActivityIndicatorComponent from "@/Shared/Reusable Components/CustomActivityIndicatorComponent/CustomActivityIndicatorComponent";
+import { ThemedText } from "@/Shared/Reusable Components/HelperComponents/ThemedText";
 
 export default function Products() {
   const service = useProductsService();
   const dirtyChecker = useDirtyChecker();
+
+  // Show loading indicator
+  if (service.isLoading) {
+    return (
+      <View
+        style={[
+          pageStyle.flatList,
+          { justifyContent: "center", alignItems: "center" },
+        ]}
+      >
+        <CustomActivityIndicatorComponent size="large" />
+        <ThemedText style={{ marginTop: 10 }}>Loading products...</ThemedText>
+      </View>
+    );
+  }
+
+  // Show error state
+  if (service.error) {
+    return (
+      <View
+        style={[
+          pageStyle.flatList,
+          { justifyContent: "center", alignItems: "center" },
+        ]}
+      >
+        <ThemedText
+          style={{
+            color: Constants.colors.red,
+            textAlign: "center",
+            marginBottom: 10,
+          }}
+        >
+          {service.error}
+        </ThemedText>
+        <FAB
+          onPress={() => service.getAllProducts()}
+          color={Constants.colors.lightGray}
+          style={[pageStyle.fab, styles.fab]}
+          icon="refresh"
+        />
+      </View>
+    );
+  }
+
   return (
     <React.Fragment>
       <FlatList
@@ -37,6 +83,20 @@ export default function Products() {
         )}
         ItemSeparatorComponent={() => <View style={{ height: 5 }} />}
         contentContainerStyle={{ paddingBottom: 120 }}
+        ListEmptyComponent={() => (
+          <View
+            style={{
+              flex: 1,
+              justifyContent: "center",
+              alignItems: "center",
+              paddingTop: 50,
+            }}
+          >
+            <ThemedText style={{ color: Constants.colors.darkGray }}>
+              No products found
+            </ThemedText>
+          </View>
+        )}
       />
       <CustomModal
         title={

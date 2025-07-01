@@ -2,7 +2,7 @@ import useGlobalContext from "@/Shared/Context/ContextProvider";
 import sortList from "@/Shared/Helpers/Functions/SortList";
 import i18n from "@/Shared/I18n/I18n";
 import IFormModalType from "@/Shared/Types/IEditModalType";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { Alert } from "react-native";
 import useService from "@/Shared/Context/ServiceProvider";
 import ICustomer from "@/Models/Customers/ICustomer";
@@ -13,6 +13,8 @@ export default function useCustomersService() {
 
   //states
   const [customers, setCustomers] = useState<ICustomer[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const [modalOptions, setModalOptions] = useState<IFormModalType<ICustomer>>({
     visible: false,
     formData: {} as ICustomer,
@@ -21,14 +23,31 @@ export default function useCustomersService() {
   const context = useGlobalContext();
 
   //constructor
-  sortCustomers();
   useEffect(() => {
     getAllCustomers();
   }, []);
 
+  // Memoized sorted customers to prevent unnecessary re-sorting
+  const sortedCustomers = useMemo(() => {
+    return sortList(customers, (e) => e.customerName);
+  }, [customers]);
+
   async function getAllCustomers() {
-    const mappedCustomers = await customerManager.getAllCustomersCalculated();
-    setCustomers(mappedCustomers);
+    setIsLoading(true);
+    setError(null);
+    try {
+      const mappedCustomers = await customerManager.getAllCustomersCalculated();
+      setCustomers(mappedCustomers);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to load customers');
+      context.toggleSnackBar({
+        text: 'Failed to load customers',
+        type: "error",
+        visible: true,
+      });
+    } finally {
+      setIsLoading(false);
+    }
   }
 
   async function save(
@@ -155,12 +174,10 @@ export default function useCustomersService() {
     setModalOptions((prev) => ({ visible: !prev.visible, formData }));
   }
 
-  function sortCustomers() {
-    sortList(customers, (e) => e.customerName);
-  }
-
   return {
-    customers,
+    customers: sortedCustomers, // Return sorted customers
+    isLoading,
+    error,
     modalOptions,
     save,
     toggleModal,

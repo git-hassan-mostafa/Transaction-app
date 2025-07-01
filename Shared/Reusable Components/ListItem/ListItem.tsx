@@ -5,8 +5,9 @@ import { ThemedText } from "../HelperComponents/ThemedText";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import IListItemProps from "@/Shared/Types/IListItemProps";
 import Constants from "@/Shared/Constants/Constants";
+import React from "react";
 
-export default function ListItem(props: IListItemProps) {
+const ListItem = React.memo(function ListItem(props: IListItemProps) {
   return (
     <View style={styles.shadowWrapper}>
       <View style={styles.cardWrapper}>
@@ -59,4 +60,6 @@ export default function ListItem(props: IListItemProps) {
       </View>
     </View>
   );
-}
+});
+
+export default ListItem;

@@ -2,7 +2,7 @@ import useGlobalContext from "@/Shared/Context/ContextProvider";
 import SortList from "@/Shared/Helpers/Functions/SortList";
 import i18n from "@/Shared/I18n/I18n";
 import IProduct from "@/Models/Products/IProduct";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { Alert } from "react-native";
 import useService from "@/Shared/Context/ServiceProvider";
 import IFormModalType from "@/Shared/Types/IEditModalType";
@@ -13,6 +13,8 @@ export default function useProductsService() {
 
   //states
   const [products, setProducts] = useState<IProduct[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const [modalOptions, setModalOptions] = useState<IFormModalType<IProduct>>({
     visible: false,
     formData: {} as IProduct,
@@ -22,14 +24,14 @@ export default function useProductsService() {
   const context = useGlobalContext();
 
   //constructor
-  sortProducts();
   useEffect(() => {
     getAllProducts();
   }, []);
 
-  function sortProducts() {
-    SortList(products, (e) => e.productName);
-  }
+  // Memoized sorted products to prevent unnecessary re-sorting
+  const sortedProducts = useMemo(() => {
+    return SortList(products, (e) => e.productName);
+  }, [products]);
 
   async function save(
     product: IProduct,
@@ -94,8 +96,21 @@ export default function useProductsService() {
   }
 
   async function getAllProducts() {
-    const productsDB = await productManager.getAllProducts();
-    setProducts(productsDB);
+    setIsLoading(true);
+    setError(null);
+    try {
+      const productsDB = await productManager.getAllProducts();
+      setProducts(productsDB);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to load products');
+      context.toggleSnackBar({
+        text: 'Failed to load products',
+        type: "error",
+        visible: true,
+      });
+    } finally {
+      setIsLoading(false);
+    }
   }
 
   async function handleDeleteProduct(id: number) {
@@ -137,7 +152,9 @@ export default function useProductsService() {
   }
 
   return {
-    products,
+    products: sortedProducts, // Return sorted products
+    isLoading,
+    error,
     modalOptions,
     toggleModal,
     addToProductsList,

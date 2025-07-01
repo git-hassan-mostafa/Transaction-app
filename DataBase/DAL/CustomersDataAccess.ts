@@ -76,6 +76,41 @@ export default class CustomerDataAccess extends AbstractDataAccess {
     }
   }
 
+  async getAllCustomersWithBorrowed() {
+    try {
+      const sqlBuilder =
+        new SqlBuilder<Customer_InternalDebt_InternalDebtProduct_Product>(
+          this.db,
+          this.table
+        );
+      const result = await sqlBuilder
+        .select()
+        .leftJoin(
+          [this.table, TableEnum.InternalDebts],
+          [PrimaryKeysEnum.CustomerId, ForeignKeysEnum.InternalDebt_CustomerId]
+        )
+        .leftJoin(
+          [TableEnum.InternalDebts, TableEnum.InternalDebtProducts],
+          [
+            PrimaryKeysEnum.InternalDebtId,
+            ForeignKeysEnum.InternalDebtProduct_InternalDebtId,
+          ]
+        )
+        .leftJoin(
+          [TableEnum.InternalDebtProducts, TableEnum.Products],
+          [
+            ForeignKeysEnum.InternalDebtProduct_ProductId,
+            PrimaryKeysEnum.ProductId,
+          ]
+        )
+        .executeAsync();
+      return result as Customer_InternalDebt_InternalDebtProduct_Product[];
+    } catch (error) {
+      console.error("error getAllCustomersWithBorrowed", error);
+      return null;
+    }
+  }
+
   async getAllCustomersBorrowList() {
     try {
       const sqlBuilder =

@@ -11,10 +11,56 @@ import i18n from "@/Shared/I18n/I18n";
 import ListItem from "@/Shared/Reusable Components/ListItem/ListItem";
 import ICustomer from "@/Models/Customers/ICustomer";
 import { useDirtyChecker } from "@/Shared/Hooks/useDirtyState";
+import CustomActivityIndicatorComponent from "@/Shared/Reusable Components/CustomActivityIndicatorComponent/CustomActivityIndicatorComponent";
+import { ThemedText } from "@/Shared/Reusable Components/HelperComponents/ThemedText";
 
 export default function Customers() {
   const service = useCustomersService();
   const dirtyChecker = useDirtyChecker<ICustomer>();
+
+  // Show loading indicator
+  if (service.isLoading) {
+    return (
+      <View
+        style={[
+          pageStyle.flatList,
+          { justifyContent: "center", alignItems: "center" },
+        ]}
+      >
+        <CustomActivityIndicatorComponent size="large" />
+        <ThemedText style={{ marginTop: 10 }}>Loading customers...</ThemedText>
+      </View>
+    );
+  }
+
+  // Show error state
+  if (service.error) {
+    return (
+      <View
+        style={[
+          pageStyle.flatList,
+          { justifyContent: "center", alignItems: "center" },
+        ]}
+      >
+        <ThemedText
+          style={{
+            color: Constants.colors.red,
+            textAlign: "center",
+            marginBottom: 10,
+          }}
+        >
+          {service.error}
+        </ThemedText>
+        <FAB
+          onPress={() => service.getAllCustomers()}
+          color={Constants.colors.lightGray}
+          style={[pageStyle.fab, styles.fab]}
+          icon="refresh"
+        />
+      </View>
+    );
+  }
+
   return (
     <React.Fragment>
       <FlatList
@@ -37,6 +83,20 @@ export default function Customers() {
         )}
         ItemSeparatorComponent={() => <View style={{ height: 10 }} />}
         contentContainerStyle={{ paddingBottom: 120 }}
+        ListEmptyComponent={() => (
+          <View
+            style={{
+              flex: 1,
+              justifyContent: "center",
+              alignItems: "center",
+              paddingTop: 50,
+            }}
+          >
+            <ThemedText style={{ color: Constants.colors.darkGray }}>
+              No customers found
+            </ThemedText>
+          </View>
+        )}
       />
       <CustomModal
         title={

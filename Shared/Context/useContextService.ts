@@ -4,7 +4,7 @@ import {
   NotoKufiArabic_800ExtraBold,
   useFonts,
 } from "@expo-google-fonts/noto-kufi-arabic";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback, useRef } from "react";
 import { useSQLiteContext } from "expo-sqlite";
 import CreateTablesManager from "../../DataBase/DAL/CreateTablesManager";
 import ISnackBarOptions from "../Types/ISnackBarOptions";
@@ -15,6 +15,7 @@ import useService from "./ServiceProvider";
 export function useContextService(): IContextProps {
   const db = useSQLiteContext();
   const { internalDebtManager } = useService();
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   //states
   const [fontsLoaded] = useFonts({
@@ -30,6 +31,13 @@ export function useContextService(): IContextProps {
 
   useEffect(() => {
     constructor();
+
+    // Cleanup function to clear any pending timeouts
+    return () => {
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+    };
   }, []);
 
   async function constructor() {
@@ -39,20 +47,31 @@ export function useContextService(): IContextProps {
       console.error("Error in useContextService constructor:", error);
     }
   }
-  function toggleSnackBar(value: ISnackBarOptions) {
-    setSnackBarOptions(value);
-    setTimeout(() => {
-      setSnackBarOptions({ visible: false, text: "", type: value.type });
-    }, 3000);
-  }
 
-  function onDismissSnackBar() {
+  const toggleSnackBar = useCallback((value: ISnackBarOptions) => {
+    // Clear any existing timeout
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
+    }
+
+    setSnackBarOptions(value);
+    timeoutRef.current = setTimeout(() => {
+      setSnackBarOptions({ visible: false, text: "", type: value.type });
+      timeoutRef.current = null;
+    }, 3000);
+  }, []);
+
+  const onDismissSnackBar = useCallback(() => {
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
+      timeoutRef.current = null;
+    }
     toggleSnackBar({
       visible: false,
       text: "",
       type: "error",
     });
-  }
+  }, [toggleSnackBar]);
 
   async function createSqlTables() {
     await new CreateTablesManager().init(db);

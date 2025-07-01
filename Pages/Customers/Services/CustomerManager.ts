@@ -10,7 +10,7 @@ export default class CustomerManager {
   constructor(
     private customerDataAccess: CustomerDataAccess,
     private mapper: Mapper
-  ) {}
+  ) { }
 
   async getAllCustomers(): Promise<ICustomer[]> {
     const customersDB = await this.customerDataAccess.getAllCustomers();
@@ -20,20 +20,64 @@ export default class CustomerManager {
   }
 
   async getAllCustomersCalculated(): Promise<ICustomer[]> {
+    try {
+      // Get all customers with their borrowed data in a single optimized query
+      const customersWithBorrowed = await this.customerDataAccess.getAllCustomersWithBorrowed();
+      if (!customersWithBorrowed) return [];
+
+      // Group borrowed data by customer ID for O(1) lookup
+      const borrowedByCustomerId = new Map<number, ICustomer_IInternalDebt_IInternalDebtProduct_IProduct[]>();
+
+      customersWithBorrowed.forEach((item) => {
+        const customerId = item.customerId;
+        if (!borrowedByCustomerId.has(customerId)) {
+          borrowedByCustomerId.set(customerId, []);
+        }
+        borrowedByCustomerId.get(customerId)!.push(item);
+      });
+
+      // Map customers with their borrowed prices
+      const mappedCustomers = this.mapper.mapToICustomerAll(
+        customersWithBorrowed.filter((item, index, self) =>
+          self.findIndex(c => c.customerId === item.customerId) === index
+        )
+      );
+
+      mappedCustomers.forEach((customer) => {
+        const borrowed = borrowedByCustomerId.get(customer.customerId) || [];
+        customer.customerBorrowedPrice = this.getBorrowedPrice(borrowed);
+      });
+
+      return mappedCustomers;
+    } catch (error) {
+      console.error("Error in getAllCustomersCalculated:", error);
+      // Fallback to original method if optimized query fails
+      return this.getAllCustomersCalculatedFallback();
+    }
+  }
+
+  // Fallback method using original approach
+  private async getAllCustomersCalculatedFallback(): Promise<ICustomer[]> {
     const customersDB = await this.customerDataAccess.getAllCustomers();
     if (!customersDB) return [];
     const borrowedList = await this.getAllCustomersBorrowedList();
     const mappedCustomers = this.mapper.mapToICustomerAll(customersDB);
-    mappedCustomers?.forEach((c) => {
-      const borrowed = borrowedList.filter(
-        (b) => b.customerId === c.customerId
-      );
-      if (borrowed) {
-        c.customerBorrowedPrice = this.getBorrowedPrice(borrowed);
-      } else {
-        c.customerBorrowedPrice = 0;
+
+    // Create a Map for O(1) lookup instead of O(n) filter
+    const borrowedMap = new Map<number, ICustomer_IInternalDebt_IInternalDebtProduct_IProduct[]>();
+    borrowedList.forEach((item) => {
+      const customerId = item.customerId;
+      if (!borrowedMap.has(customerId)) {
+        borrowedMap.set(customerId, []);
       }
+      borrowedMap.get(customerId)!.push(item);
     });
+
+    mappedCustomers.forEach((c) => {
+      const borrowed = borrowedMap.get(c.customerId) || [];
+      c.customerBorrowedPrice = this.getBorrowedPrice(borrowed);
+    });
+
     return mappedCustomers;
   }
 
