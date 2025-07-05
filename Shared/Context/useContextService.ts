@@ -14,7 +14,6 @@ import useService from "./ServiceProvider";
 
 export function useContextService(): IContextProps {
   const db = useSQLiteContext();
-  const { internalDebtManager } = useService();
 
   //states
   const [fontsLoaded] = useFonts({

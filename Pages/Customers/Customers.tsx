@@ -5,10 +5,10 @@ import { CustomerForm } from "@/Pages/Customers/Components/CustomerForm";
 import Constants from "@/Shared/Constants/Constants";
 import { FAB } from "react-native-paper";
 import React from "react";
-import CustomModal from "@/Shared/Reusable Components/CustomModalComponent/CustomModalComponent";
+import IModal from "@/Shared/Components/IModal";
 import pageStyle from "@/Shared/Styles/pages.global.style";
 import i18n from "@/Shared/I18n/I18n";
-import ListItem from "@/Shared/Reusable Components/ListItem/ListItem";
+import ListItem from "@/Shared/Components/ListItem";
 import ICustomer from "@/Models/Customers/ICustomer";
 import { useDirtyChecker } from "@/Shared/Hooks/useDirtyState";
 
@@ -38,7 +38,7 @@ export default function Customers() {
         ItemSeparatorComponent={() => <View style={{ height: 10 }} />}
         contentContainerStyle={{ paddingBottom: 120 }}
       />
-      <CustomModal
+      <IModal
         title={
           service.modalOptions.formData.customerId
             ? i18n.t("edit-customer")
@@ -52,7 +52,7 @@ export default function Customers() {
           dirtyChecker={dirtyChecker}
           save={service.save}
         />
-      </CustomModal>
+      </IModal>
       <FAB
         onPress={() => service.toggleModal()}
         color={Constants.colors.lightGray}

@@ -1,19 +1,21 @@
 import React from "react";
 import {
   View,
-  TextInput,
   StyleProp,
   TextStyle,
   TouchableOpacity,
+  TextInput,
 } from "react-native";
 import useEditProviderService from "./ProviderForm.service";
-import { ThemedText } from "../../../Shared/Reusable Components/HelperComponents/ThemedText";
+import { ThemedText } from "../../../Shared/Components/ThemedText";
 import { IProviderFormProps } from "@/Models/Providers/IProviderFormProps";
 import i18n from "@/Shared/I18n/I18n";
-import ValidationMessage from "@/Shared/Reusable Components/HelperComponents/ValidationMessage";
+import ValidationMessage from "@/Shared/Components/ValidationMessage";
 import { Button } from "react-native-paper";
 import Constants from "@/Shared/Constants/Constants";
 import formStyle from "@/Shared/Styles/form.style";
+import IInput from "@/Shared/Components/IInput";
+
 export function EditProvider(props: IProviderFormProps) {
   const service = useEditProviderService(props);
 
@@ -23,7 +25,7 @@ export function EditProvider(props: IProviderFormProps) {
         <ThemedText style={formStyle.label}>
           {i18n.t("provider-name")}
         </ThemedText>
-        <TextInput
+        <IInput
           style={formStyle.input}
           placeholder={i18n.t("please-enter-provider-name") + "..."}
           placeholderTextColor="#999"
@@ -36,7 +38,7 @@ export function EditProvider(props: IProviderFormProps) {
         <ThemedText style={formStyle.label}>
           {i18n.t("phone-number")}
         </ThemedText>
-        <TextInput
+        <IInput
           style={formStyle.input}
           placeholder={i18n.t("enter-phone-number")}
           placeholderTextColor="#999"

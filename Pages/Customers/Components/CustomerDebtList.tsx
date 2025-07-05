@@ -1,6 +1,6 @@
 import { ScrollView, View } from "react-native";
 import styles from "./CustomerForm.style";
-import { ThemedText } from "@/Shared/Reusable Components/HelperComponents/ThemedText";
+import { ThemedText } from "@/Shared/Components/ThemedText";
 import { DataTable } from "react-native-paper";
 import useDataTable from "@/Shared/Hooks/useDataTable";
 import globalStyles from "@/Shared/Styles/global.style";

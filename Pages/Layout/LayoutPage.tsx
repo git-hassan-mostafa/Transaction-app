@@ -3,8 +3,8 @@ import { Stack } from "expo-router";
 import useLayoutPageService from "./LayoutPage.service";
 import Constants from "@/Shared/Constants/Constants";
 import React from "react";
-import CustomSnackBarComponent from "@/Shared/Reusable Components/CustomSnackBarComponent/CustomSnackBarComponent";
 import pages from "@/Shared/Constants/Pages";
+import ISnackBar from "@/Shared/Components/ISnackBar";
 
 export default function LayoutPage() {
   const layoutService = useLayoutPageService();
@@ -38,7 +38,7 @@ export default function LayoutPage() {
             />
           ))}
         </Stack>
-        <CustomSnackBarComponent />
+        <ISnackBar />
       </React.Fragment>
     );
   }

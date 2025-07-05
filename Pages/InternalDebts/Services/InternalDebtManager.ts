@@ -335,7 +335,6 @@ export default class InternalDebtManager {
 
   dropDownCutomers(customers: ICustomer[]) {
     const dropDownCustomers = [
-      { label: "", value: undefined },
       ...(customers?.map((c) => {
         return { label: c.customerName, value: c.customerId };
       }) as IDropDownItem[]),

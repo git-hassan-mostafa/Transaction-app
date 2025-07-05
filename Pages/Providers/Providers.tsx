@@ -2,15 +2,14 @@ import { FlatList, View } from "react-native";
 import useProvidersService from "./Providers.service";
 import styles from "./Providers.style";
 import React from "react";
-import AccordionComponent from "@/Shared/Reusable Components/AccordionComponent/AccordionComponent";
 import Constants from "@/Shared/Constants/Constants";
-import CustomModal from "@/Shared/Reusable Components/CustomModalComponent/CustomModalComponent";
+import IModal from "@/Shared/Components/IModal";
 import { FAB } from "react-native-paper";
 import { EditProvider } from "@/Pages/Providers/Component/ProviderForm";
 import IProvider from "@/Models/Providers/IProvider";
 import pageStyle from "@/Shared/Styles/pages.global.style";
 import i18n from "@/Shared/I18n/I18n";
-import ListItem from "@/Shared/Reusable Components/ListItem/ListItem";
+import ListItem from "@/Shared/Components/ListItem";
 import { useDirtyChecker } from "@/Shared/Hooks/useDirtyState";
 
 export default function Providers() {
@@ -40,7 +39,7 @@ export default function Providers() {
         ItemSeparatorComponent={() => <View style={{ height: 5 }} />}
         contentContainerStyle={{ paddingBottom: 120 }}
       />
-      <CustomModal
+      <IModal
         title={
           service.modalOptions.formData.providerId
             ? i18n.t("edit-provider")
@@ -54,7 +53,7 @@ export default function Providers() {
           save={service.save}
           dirtyChecker={dirtyChecker}
         />
-      </CustomModal>
+      </IModal>
       <FAB
         onPress={() => service.toggleModal()}
         color={Constants.colors.lightGray}

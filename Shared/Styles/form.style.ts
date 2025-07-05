@@ -10,15 +10,16 @@ const formStyle = StyleSheet.create({
     paddingTop: 0,
   },
   row: {
-    marginBottom: 15,
+    marginBottom: 10,
   },
   label: {},
   input: {
     borderWidth: 1,
     borderColor: Constants.colors.gray,
     borderRadius: 5,
-    padding: 5,
     fontFamily: Constants.fontFamily.font400Regular,
+    backgroundColor: "transparent",
+    fontSize: 13,
   },
   textArea: {
     height: 100,

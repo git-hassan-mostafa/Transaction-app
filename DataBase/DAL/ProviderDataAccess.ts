@@ -13,7 +13,10 @@ export default class ProviderDataAccess extends AbstractDataAccess {
   async getAllProviders() {
     try {
       const sqlBuilder = new SqlBuilder<Provider>(this.db, this.table);
-      const providers = await sqlBuilder.select().executeAsync();
+      const providers = await sqlBuilder
+        .select()
+        .orderBy("Name", "desc")
+        .executeAsync();
       return providers as Provider[];
     } catch (error) {
       console.error("error getAllProviders ", error);

@@ -1,7 +1,7 @@
 import { FlatList, useWindowDimensions, View } from "react-native";
 import styles from "./Home.style";
 import useHomeService from "./Home.service";
-import CardComponent from "@/Shared/Reusable Components/CardComponent/CardComponent";
+import Card from "@/Shared/Components/Card";
 import FlatListHeader from "@/Pages/Home/FlatListHeader/FlatListHeader";
 import pages from "@/Shared/Constants/Pages";
 
@@ -25,7 +25,7 @@ export default function Home() {
         data={pages.filter((p) => p.route != "index")}
         keyExtractor={(item) => item.title}
         numColumns={numColumns}
-        renderItem={({ item }) => <CardComponent key={item.title} {...item} />}
+        renderItem={({ item }) => <Card key={item.title} {...item} />}
         showsVerticalScrollIndicator={false}
         ListHeaderComponentStyle={{ marginBottom: 24 }}
       />

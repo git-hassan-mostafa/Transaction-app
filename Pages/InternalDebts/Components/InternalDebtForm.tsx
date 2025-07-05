@@ -1,4 +1,4 @@
-import TabComponent from "@/Shared/Reusable Components/TabComponent/TabComponent";
+import Tabs from "@/Shared/Components/Tabs";
 import { View } from "react-native";
 import i18n from "@/Shared/I18n/I18n";
 import useInternalDebtProductsListService from "./InternalDebtProductsList/InternalDebtProductsList.service";
@@ -19,10 +19,10 @@ export default function InternalDebtForm(props: IInternalDebtFormProps) {
 
   return (
     <View style={[formStyle.container, formStyle.containerWithTab]}>
-      <TabComponent titles={[i18n.t("details"), i18n.t("products-list")]}>
+      <Tabs titles={[i18n.t("details"), i18n.t("products-list")]}>
         <InternalDebtDetails {...internalDebtDetailsService} />
         <InternalDebtProductsList {...internalDebtsProductsListService} />
-      </TabComponent>
+      </Tabs>
     </View>
   );
 }

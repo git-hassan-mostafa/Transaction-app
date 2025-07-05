@@ -18,7 +18,10 @@ export default class CustomerDataAccess extends AbstractDataAccess {
   async getAllCustomers() {
     try {
       const sqlBuilder = new SqlBuilder<Customer>(this.db, this.table);
-      const customers = await sqlBuilder.select().executeAsync();
+      const customers = await sqlBuilder
+        .select()
+        .orderBy("Name", "desc")
+        .executeAsync();
       return customers as Customer[];
     } catch (error) {
       console.error("error getAllCustomers", error);

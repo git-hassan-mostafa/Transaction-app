@@ -1,16 +1,11 @@
 import IDropDownItem from "@/Shared/Types/IDropDownItem";
-import { StyleProp, TextStyle, ViewStyle } from "react-native";
+import { StyleProp, ViewStyle } from "react-native";
 
 export default interface IDropDownType {
   value: string | number;
   setValue: (value: string | number) => void;
   data: IDropDownItem[];
-  dropDownContainerStyle?: StyleProp<ViewStyle>;
-  dropDownStyle?: StyleProp<ViewStyle>;
-  placeholderStyle?: StyleProp<TextStyle>;
-  selectedTextStyle?: StyleProp<TextStyle>;
-  inputSearchStyle?: StyleProp<TextStyle>;
-  itemTextStyle?: StyleProp<TextStyle>;
+  style?: StyleProp<ViewStyle>;
   placeholder?: string;
-  search?: boolean;
+  size?: "small" | "medium" | "large";
 }

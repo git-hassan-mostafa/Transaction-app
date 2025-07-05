@@ -6,13 +6,14 @@ import {
   View,
 } from "react-native";
 import styles from "./CustomerForm.style";
-import { ThemedText } from "@/Shared/Reusable Components/HelperComponents/ThemedText";
+import { ThemedText } from "@/Shared/Components/ThemedText";
 import i18n from "@/Shared/I18n/I18n";
 import Constants from "@/Shared/Constants/Constants";
 import { Button } from "react-native-paper";
-import ValidationMessage from "@/Shared/Reusable Components/HelperComponents/ValidationMessage";
+import ValidationMessage from "@/Shared/Components/ValidationMessage";
 import formStyle from "@/Shared/Styles/form.style";
 import ICustomerDetailsProps from "@/Models/Customers/ICustomerDetailsProps";
+import IInput from "@/Shared/Components/IInput";
 
 export default function CustomerDetails(props: ICustomerDetailsProps) {
   return (
@@ -48,7 +49,7 @@ export default function CustomerDetails(props: ICustomerDetailsProps) {
         <ThemedText style={formStyle.label}>
           {i18n.t("customer-name")}
         </ThemedText>
-        <TextInput
+        <IInput
           style={formStyle.input as StyleProp<TextStyle>}
           placeholder={i18n.t("enter-customer-name") + "..."}
           placeholderTextColor="#999"
@@ -61,7 +62,7 @@ export default function CustomerDetails(props: ICustomerDetailsProps) {
         <ThemedText style={formStyle.label}>
           {i18n.t("phone-number")}
         </ThemedText>
-        <TextInput
+        <IInput
           style={formStyle.input as StyleProp<TextStyle>}
           placeholder={i18n.t("enter-phone-number") + "..."}
           placeholderTextColor="#999"
@@ -74,7 +75,7 @@ export default function CustomerDetails(props: ICustomerDetailsProps) {
       <View style={formStyle.row}>
         <ThemedText style={formStyle.label}>{i18n.t("notes")}</ThemedText>
         <TextInput
-          style={[formStyle.input, formStyle.textArea] as StyleProp<TextStyle>}
+          style={[formStyle.input, formStyle.textArea]}
           placeholder={i18n.t("enter-notes") + "..."}
           placeholderTextColor="#999"
           value={props.customer.customerNotes}

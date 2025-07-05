@@ -22,13 +22,13 @@ export default function useProductsService() {
   const context = useGlobalContext();
 
   //constructor
-  sortProducts();
   useEffect(() => {
-    getAllProducts();
+    fetchAllProducts();
   }, []);
 
-  function sortProducts() {
-    SortList(products, (e) => e.productName);
+  async function fetchAllProducts() {
+    const productsDB = await productManager.getAllProducts();
+    setProducts(productsDB);
   }
 
   async function save(
@@ -91,11 +91,6 @@ export default function useProductsService() {
           : product
       )
     );
-  }
-
-  async function getAllProducts() {
-    const productsDB = await productManager.getAllProducts();
-    setProducts(productsDB);
   }
 
   async function handleDeleteProduct(id: number) {

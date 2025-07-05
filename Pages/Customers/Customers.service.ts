@@ -21,12 +21,11 @@ export default function useCustomersService() {
   const context = useGlobalContext();
 
   //constructor
-  sortCustomers();
   useEffect(() => {
-    getAllCustomers();
+    fetchAllCustomers();
   }, []);
 
-  async function getAllCustomers() {
+  async function fetchAllCustomers() {
     const mappedCustomers = await customerManager.getAllCustomersCalculated();
     setCustomers(mappedCustomers);
   }
@@ -153,10 +152,6 @@ export default function useCustomersService() {
 
   function toggleModal(formData: ICustomer = {} as ICustomer) {
     setModalOptions((prev) => ({ visible: !prev.visible, formData }));
-  }
-
-  function sortCustomers() {
-    sortList(customers, (e) => e.customerName);
   }
 
   return {

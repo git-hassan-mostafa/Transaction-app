@@ -1,12 +1,12 @@
 import { View, TouchableOpacity } from "react-native";
-import useListItemService from "./ListItem.service";
-import styles from "./ListItem.style";
-import { ThemedText } from "../HelperComponents/ThemedText";
+import { ThemedText } from "./ThemedText";
 import Icon from "react-native-vector-icons/MaterialIcons";
 import IListItemProps from "@/Shared/Types/IListItemProps";
 import Constants from "@/Shared/Constants/Constants";
+import { StyleSheet } from "react-native";
+import React from "react";
 
-export default function ListItem(props: IListItemProps) {
+const ListItem = (props: IListItemProps) => {
   return (
     <View style={styles.shadowWrapper}>
       <View style={styles.cardWrapper}>
@@ -59,4 +59,57 @@ export default function ListItem(props: IListItemProps) {
       </View>
     </View>
   );
-}
+};
+
+const styles = StyleSheet.create({
+  shadowWrapper: {
+    borderRadius: 7,
+    backgroundColor: Constants.colors.white,
+  },
+  cardWrapper: {
+    borderRadius: 5,
+    overflow: "hidden",
+    flexDirection: "row",
+    alignItems: "stretch",
+  },
+  cardContent: {
+    flex: 1,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    paddingVertical: 10,
+    paddingHorizontal: 16,
+  },
+  content: {
+    flexDirection: "row",
+    gap: 20,
+  },
+  sign: {
+    width: 15,
+    height: 15,
+    alignSelf: "center",
+    borderRadius: 15,
+  },
+  textBlock: {
+    justifyContent: "center",
+    gap: 5,
+  },
+  title: {
+    color: "#222",
+  },
+  subtitle: {
+    color: Constants.colors.red,
+    fontWeight: "600",
+  },
+  actions: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 12,
+  },
+  iconWrapper: {
+    padding: 8,
+    borderRadius: 100,
+    backgroundColor: Constants.colors.lightGray,
+  },
+});
+
+export default React.memo(ListItem);

@@ -1,6 +1,6 @@
 import React from "react";
 import { View } from "react-native";
-import TabComponent from "@/Shared/Reusable Components/TabComponent/TabComponent";
+import Tabs from "@/Shared/Components/Tabs";
 import CustomerDebtList from "./CustomerDebtList";
 import i18n from "@/Shared/I18n/I18n";
 import CustomerDetails from "./CustomerDetails";
@@ -17,10 +17,10 @@ export function CustomerForm(props: ICustomerFormProps) {
       ]}
     >
       {props.formData.customerId ? (
-        <TabComponent titles={[i18n.t("details"), i18n.t("borrowed-list")]}>
+        <Tabs titles={[i18n.t("details"), i18n.t("borrowed-list")]}>
           <CustomerDetails {...service} />
           <CustomerDebtList {...props} />
-        </TabComponent>
+        </Tabs>
       ) : (
         <CustomerDetails {...service} />
       )}

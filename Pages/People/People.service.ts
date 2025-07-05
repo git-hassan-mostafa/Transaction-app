@@ -19,20 +19,16 @@ export default function usePeopleService() {
     visible: false,
     formData: {} as IPerson,
   });
+
   // context
   const context = useGlobalContext();
 
   //constructor
-  sortPeople();
   useEffect(() => {
-    getAllPeople();
+    fetchAllPeople();
   }, []);
 
-  function sortPeople() {
-    SortList(people, (e) => e.personName);
-  }
-
-  async function getAllPeople() {
+  async function fetchAllPeople() {
     const peopleDB = await peopleManager.getAllPeople();
     if (!peopleDB) return;
     setPeople(peopleDB);

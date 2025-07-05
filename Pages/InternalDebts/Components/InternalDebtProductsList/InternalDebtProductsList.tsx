@@ -1,9 +1,9 @@
 import { ScrollView } from "react-native";
-import { View, TextInput, TouchableOpacity } from "react-native";
+import { View, TouchableOpacity } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-import CustomDropDown from "@/Shared/Reusable Components/CustomDropDownComponent/CustomDropDownComponent";
+import DropDown from "@/Shared/Components/DropDown";
 import styles from "./InternalDebtProductsList.style";
-import { ThemedText } from "@/Shared/Reusable Components/HelperComponents/ThemedText";
+import { ThemedText } from "@/Shared/Components/ThemedText";
 import MaterialIcon from "react-native-vector-icons/MaterialCommunityIcons";
 import { DataTable } from "react-native-paper";
 import globalStyles from "@/Shared/Styles/global.style";
@@ -11,6 +11,7 @@ import React from "react";
 import useDataTable from "@/Shared/Hooks/useDataTable";
 import i18n from "@/Shared/I18n/I18n";
 import IInternalDebtsProductsListProps from "@/Models/InternalDebts/IInternalDebtsProductsListProps";
+import IInput from "@/Shared/Components/IInput";
 export default function InternalDebtProductsList(
   props: IInternalDebtsProductsListProps
 ) {
@@ -63,31 +64,26 @@ export default function InternalDebtProductsList(
 
           <DataTable.Row>
             {props.showAddProduct ? (
-              <React.Fragment>
-                <DataTable.Cell style={globalStyles.column}>
-                  <CustomDropDown
-                    dropDownStyle={styles.dropDownStyle}
-                    dropDownContainerStyle={styles.dropDownContainerStyle}
-                    placeholderStyle={styles.placeholderStyle}
-                    value={-1}
-                    setValue={(value) =>
-                      props.setInternalDebtsProduct(value as number)
-                    }
-                    data={props.dropDownItems}
-                    placeholder={i18n.t("select-product")}
-                  />
-                </DataTable.Cell>
-                <DataTable.Cell style={globalStyles.column} numeric>
-                  <TextInput
-                    keyboardType="numeric"
-                    style={styles.textInput}
-                    placeholder={i18n.t("quantity")}
-                    value={props.newInternalDebtsProduct?.internalDebtProductQuantity?.toString()}
-                    onChangeText={props.setNewProductQuantity}
-                    onSubmitEditing={props.handleAddProduct}
-                  />
-                </DataTable.Cell>
-                <DataTable.Cell style={globalStyles.column} numeric>
+              <View style={styles.addProducts}>
+                <DropDown
+                  style={globalStyles.column}
+                  value={-1}
+                  setValue={(value) =>
+                    props.setInternalDebtsProduct(value as number)
+                  }
+                  data={props.dropDownItems}
+                  placeholder={i18n.t("select-product")}
+                />
+                <IInput
+                  style={[globalStyles.column, styles.textInput]}
+                  size="medium"
+                  keyboardType="numeric"
+                  placeholder={i18n.t("quantity")}
+                  value={props.newInternalDebtsProduct?.internalDebtProductQuantity?.toString()}
+                  onChangeText={props.setNewProductQuantity}
+                  onSubmitEditing={props.handleAddProduct}
+                />
+                <View style={{ gap: 10, flexDirection: "row" }}>
                   <TouchableOpacity onPress={props.handleAddProduct}>
                     <Ionicons name="checkmark" size={24} color="green" />
                   </TouchableOpacity>
@@ -96,8 +92,8 @@ export default function InternalDebtProductsList(
                   >
                     <Ionicons name="close-sharp" size={24} color="red" />
                   </TouchableOpacity>
-                </DataTable.Cell>
-              </React.Fragment>
+                </View>
+              </View>
             ) : (
               <DataTable.Cell style={globalStyles.column}>
                 <Ionicons

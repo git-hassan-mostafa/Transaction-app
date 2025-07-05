@@ -4,11 +4,11 @@ import styles from "./People.style";
 import React from "react";
 import Constants from "@/Shared/Constants/Constants";
 import { FAB } from "react-native-paper";
-import CustomModal from "@/Shared/Reusable Components/CustomModalComponent/CustomModalComponent";
+import IModal from "@/Shared/Components/IModal";
 import IPerson from "@/Models/People/IPerson";
 import pageStyle from "@/Shared/Styles/pages.global.style";
 import i18n from "@/Shared/I18n/I18n";
-import ListItem from "@/Shared/Reusable Components/ListItem/ListItem";
+import ListItem from "@/Shared/Components/ListItem";
 import PeopleForm from "@/Pages/People/Components/PeopleForm";
 import { useDirtyChecker } from "@/Shared/Hooks/useDirtyState";
 
@@ -38,7 +38,7 @@ export default function People() {
         ItemSeparatorComponent={() => <View style={{ height: 5 }} />}
         contentContainerStyle={{ paddingBottom: 120 }}
       />
-      <CustomModal
+      <IModal
         title={
           service.modalOptions.formData.id
             ? i18n.t("edit-person")
@@ -52,7 +52,7 @@ export default function People() {
           save={service.save}
           dirtyChecker={dirtyChecker}
         />
-      </CustomModal>
+      </IModal>
       <FAB
         onPress={() => service.toggleModal()}
         color={Constants.colors.lightGray}

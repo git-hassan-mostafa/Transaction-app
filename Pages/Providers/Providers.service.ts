@@ -22,10 +22,14 @@ export default function useProvidersService() {
   const context = useGlobalContext();
 
   //constructor
-  sortProviders();
   useEffect(() => {
-    getAllProviders();
+    fetchAllProviders();
   }, []);
+
+  async function fetchAllProviders() {
+    const providersDB = await providerManager.getAllProviders();
+    setProviders(providersDB as IProvider[]);
+  }
 
   async function save(
     provider: IProvider,
@@ -92,10 +96,6 @@ export default function useProvidersService() {
       )
     );
   }
-  async function getAllProviders() {
-    const providersDB = await providerManager.getAllProviders();
-    setProviders(providersDB as IProvider[]);
-  }
 
   async function handleDeleteProvider(id: number) {
     Alert.alert(
@@ -134,10 +134,6 @@ export default function useProvidersService() {
 
   function toggleModal(formData: IProvider = {} as IProvider) {
     setModalOptions((prev) => ({ visible: !prev.visible, formData }));
-  }
-
-  function sortProviders() {
-    SortList(providers, (e) => e.providerName);
   }
 
   return {

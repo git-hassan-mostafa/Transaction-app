@@ -1,15 +1,16 @@
 import React from "react";
-import { View, TextInput, TouchableOpacity } from "react-native";
+import { View, TouchableOpacity, TextInput } from "react-native";
 import styles from "./InternalDebtDetails.style";
-import CustomDropDown from "@/Shared/Reusable Components/CustomDropDownComponent/CustomDropDownComponent";
+import DropDown from "@/Shared/Components/DropDown";
 import i18n from "@/Shared/I18n/I18n";
 import { Button } from "react-native-paper";
-import ValidationMessage from "@/Shared/Reusable Components/HelperComponents/ValidationMessage";
+import ValidationMessage from "@/Shared/Components/ValidationMessage";
 import Constants from "@/Shared/Constants/Constants";
 import formStyle from "@/Shared/Styles/form.style";
 import { fromatLocaleDateWithDay } from "@/Shared/Helpers/Functions/FormatDate";
 import IInternalDebtDetailsService from "@/Models/InternalDebts/IInternalDebtDetailsService";
-import { ThemedText } from "@/Shared/Reusable Components/HelperComponents/ThemedText";
+import { ThemedText } from "@/Shared/Components/ThemedText";
+import IInput from "@/Shared/Components/IInput";
 
 export default function InternalDebtDetails(
   service: IInternalDebtDetailsService
@@ -32,7 +33,8 @@ export default function InternalDebtDetails(
         <ThemedText style={formStyle.label}>
           {i18n.t("select-customer")}
         </ThemedText>
-        <CustomDropDown
+        <DropDown
+          placeholder={i18n.t("select-customer")}
           value={service.internalDebt.internalDebt_CustomerId as number}
           setValue={(value) => {
             service.setCustomer(value as number);
@@ -42,7 +44,7 @@ export default function InternalDebtDetails(
       </View>
       <View style={formStyle.row}>
         <ThemedText style={formStyle.label}>{i18n.t("total-price")}</ThemedText>
-        <TextInput
+        <IInput
           readOnly
           style={formStyle.input}
           placeholder={i18n.t("enter-total-price")}
@@ -54,7 +56,7 @@ export default function InternalDebtDetails(
       </View>
       <View style={formStyle.row}>
         <ThemedText style={formStyle.label}>{i18n.t("payed-price")}</ThemedText>
-        <TextInput
+        <IInput
           readOnly
           style={formStyle.input}
           placeholder={i18n.t("enter-paid-price")}

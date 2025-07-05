@@ -1,18 +1,13 @@
-import {
-  StyleProp,
-  TextInput,
-  TextStyle,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { StyleProp, TextStyle, TouchableOpacity, View } from "react-native";
 import usePeopleFormService from "./PeopleForm.service";
-import { ThemedText } from "../../../Shared/Reusable Components/HelperComponents/ThemedText";
+import { ThemedText } from "../../../Shared/Components/ThemedText";
 import IPeopleFormProps from "@/Models/People/IPersonFormProps";
 import i18n from "@/Shared/I18n/I18n";
 import { Button } from "react-native-paper";
-import ValidationMessage from "@/Shared/Reusable Components/HelperComponents/ValidationMessage";
+import ValidationMessage from "@/Shared/Components/ValidationMessage";
 import Constants from "@/Shared/Constants/Constants";
 import formStyle from "@/Shared/Styles/form.style";
+import IInput from "@/Shared/Components/IInput";
 
 export default function PeopleForm(props: IPeopleFormProps) {
   const service = usePeopleFormService(props);
@@ -20,7 +15,7 @@ export default function PeopleForm(props: IPeopleFormProps) {
     <View style={formStyle.container}>
       <View style={formStyle.row}>
         <ThemedText style={formStyle.label}>{i18n.t("person-name")}</ThemedText>
-        <TextInput
+        <IInput
           style={formStyle.input}
           placeholder={i18n.t("please-enter-the-name")}
           placeholderTextColor="#999"
@@ -33,7 +28,7 @@ export default function PeopleForm(props: IPeopleFormProps) {
         <ThemedText style={formStyle.label}>
           {i18n.t("person-phone")}
         </ThemedText>
-        <TextInput
+        <IInput
           style={formStyle.input as StyleProp<TextStyle>}
           placeholder={i18n.t("please-enter-the-phone-number")}
           placeholderTextColor="#999"

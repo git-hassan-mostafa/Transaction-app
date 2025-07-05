@@ -13,7 +13,10 @@ export class PeopleDataAccess extends AbstractDataAccess {
   async getAllPeople() {
     try {
       const sqlBuilder = new SqlBuilder<Person>(this.db, this.table);
-      const people = await sqlBuilder.select().executeAsync();
+      const people = await sqlBuilder
+        .select()
+        .orderBy("Name", "desc")
+        .executeAsync();
       if (!people) return null;
       return people as Person[];
     } catch (error) {
