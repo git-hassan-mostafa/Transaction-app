@@ -10,7 +10,7 @@ import IProvider from "@/Models/Providers/IProvider";
 import pageStyle from "@/Shared/Styles/pages.global.style";
 import i18n from "@/Shared/I18n/I18n";
 import ListItem from "@/Shared/Components/ListItem";
-import { useDirtyChecker } from "@/Shared/Hooks/useDirtyState";
+import { useDirtyChecker } from "@/Shared/Hooks/useDirtyChecker";
 
 export default function Providers() {
   const service = useProvidersService();

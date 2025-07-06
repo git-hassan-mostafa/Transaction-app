@@ -10,7 +10,7 @@ import pageStyle from "@/Shared/Styles/pages.global.style";
 import i18n from "@/Shared/I18n/I18n";
 import ListItem from "@/Shared/Components/ListItem";
 import PeopleForm from "@/Pages/People/Components/PeopleForm";
-import { useDirtyChecker } from "@/Shared/Hooks/useDirtyState";
+import { useDirtyChecker } from "@/Shared/Hooks/useDirtyChecker";
 
 export default function People() {
   const service = usePeopleService();
