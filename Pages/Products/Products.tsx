@@ -11,27 +11,31 @@ import i18n from "@/Shared/I18n/I18n";
 import ListItem from "@/Shared/Components/ListItem";
 import ProductForm from "@/Pages/Products/Components/ProductForm";
 import { useDirtyChecker } from "@/Shared/Hooks/useDirtyChecker";
+import IActivityIndicator from "@/Shared/Components/IActivityIndicator";
 
 export default function Products() {
   const service = useProductsService();
   const dirtyChecker = useDirtyChecker();
+  if (service.isLoading) {
+    return <IActivityIndicator />;
+  }
   return (
     <React.Fragment>
       <FlatList
         style={pageStyle.flatList}
         data={service.products}
         numColumns={1}
-        keyExtractor={(item) => item.productId?.toString() as string}
+        keyExtractor={(item) => item.Id?.toString() as string}
         renderItem={({ item }: { item: IProduct }) => (
           <ListItem
             // sign={{ visible: true, color: Constants.colors.products }}
             color={Constants.colors.products}
-            title={item.productName}
+            title={item.Name}
             subTitle={{
-              text: "$" + item.productPrice?.toString(),
+              text: "$" + item.Price?.toString(),
               color: Constants.colors.green,
             }}
-            onDelete={() => service.handleDeleteProduct(item.productId)}
+            onDelete={() => service.handleDeleteProduct(item.Id)}
             onEdit={() => service.onEdit(item)}
           />
         )}
@@ -40,7 +44,7 @@ export default function Products() {
       />
       <IModal
         title={
-          service.modalOptions.formData.productId
+          service.modalOptions.formData.Id
             ? i18n.t("edit-product")
             : i18n.t("add-product")
         }

@@ -11,27 +11,30 @@ import i18n from "@/Shared/I18n/I18n";
 import ListItem from "@/Shared/Components/ListItem";
 import PeopleForm from "@/Pages/People/Components/PeopleForm";
 import { useDirtyChecker } from "@/Shared/Hooks/useDirtyChecker";
+import IActivityIndicator from "@/Shared/Components/IActivityIndicator";
 
 export default function People() {
   const service = usePeopleService();
   const dirtyChecker = useDirtyChecker();
-
+  if (service.isLoading) {
+    return <IActivityIndicator />;
+  }
   return (
     <React.Fragment>
       <FlatList
         style={pageStyle.flatList}
         data={service.people}
         numColumns={1}
-        keyExtractor={(item) => item.id?.toString() as string}
+        keyExtractor={(item) => item.Id?.toString() as string}
         renderItem={({ item }: { item: IPerson }) => (
           <ListItem
             color={Constants.colors.people}
-            title={item.personName}
+            title={item.Name}
             subTitle={{
-              text: item.personPhoneNumber?.toString(),
+              text: item.PhoneNumber?.toString(),
               color: Constants.colors.darkGray,
             }}
-            onDelete={() => service.handleDeletePerson(item.id)}
+            onDelete={() => service.handleDeletePerson(item.Id)}
             onEdit={() => service.onEdit(item)}
           />
         )}
@@ -40,7 +43,7 @@ export default function People() {
       />
       <IModal
         title={
-          service.modalOptions.formData.id
+          service.modalOptions.formData.Id
             ? i18n.t("edit-person")
             : i18n.t("add-person")
         }

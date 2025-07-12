@@ -1,8 +1,14 @@
+import IInternalDebtProduct from "../InternalDebts/IInternalDebtProduct";
+import IInternalDebt from "../InternalDebts/IInternalDebts";
+
 export default interface ICustomer {
-  customerId: number;
-  customerName: string;
-  customerBorrowedPrice: number;
-  customerPayedPrice: number;
-  customerPhoneNumber: string;
-  customerNotes: string;
+  Id: number;
+  Name: string;
+  PhoneNumber: string;
+  Notes?: string;
+  // Relations
+  InternalDebts?: IInternalDebt[];
+  BorrowedPrice: number;
+  PayedPrice: number;
+  Debts?: IInternalDebt[];
 }

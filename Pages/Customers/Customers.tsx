@@ -11,27 +11,32 @@ import i18n from "@/Shared/I18n/I18n";
 import ListItem from "@/Shared/Components/ListItem";
 import ICustomer from "@/Models/Customers/ICustomer";
 import { useDirtyChecker } from "@/Shared/Hooks/useDirtyChecker";
+import IActivityIndicator from "@/Shared/Components/IActivityIndicator";
 
 export default function Customers() {
   const service = useCustomersService();
   const dirtyChecker = useDirtyChecker<ICustomer>();
+  if (service.isLoading) {
+    return <IActivityIndicator />;
+  }
   return (
     <React.Fragment>
       <FlatList
         style={pageStyle.flatList}
         data={service.customers}
         numColumns={1}
-        keyExtractor={(item) => item.customerId?.toString() as string}
+        keyExtractor={(item) => item.Id?.toString() as string}
         renderItem={({ item }: { item: ICustomer }) => (
           <ListItem
+            key={item.Id}
             sign={{ visible: true, color: Constants.colors.customers }}
             color={Constants.colors.customers}
-            title={item.customerName}
+            title={item.Name}
             subTitle={{
-              text: "$" + item.customerBorrowedPrice?.toString(),
+              text: "$" + item.BorrowedPrice?.toString(),
               color: Constants.colors.red,
             }}
-            onDelete={() => service.handleDeleteCustomer(item.customerId)}
+            onDelete={() => service.handleDeleteCustomer(item.Id)}
             onEdit={() => service.onEdit(item)}
           />
         )}
@@ -40,7 +45,7 @@ export default function Customers() {
       />
       <IModal
         title={
-          service.modalOptions.formData.customerId
+          service.modalOptions.formData.Id
             ? i18n.t("edit-customer")
             : i18n.t("add-customer")
         }

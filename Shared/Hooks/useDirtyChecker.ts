@@ -45,28 +45,15 @@ export function useDirtyChecker<T>(): IDirtyChecker<T> {
   const [dirty, setDirty] = useState(false);
   const [originalState, setOriginalState] = useState<T>({} as T);
   const [state, setState] = useState<T>({} as T);
-  const [originalRelated, setOriginalRelated] = useState<any>(null);
-  const [currentRelated, setCurrentRelated] = useState<any>(null);
 
   // Memoized comparison to prevent unnecessary re-computations
   const isDirty = useMemo(() => {
-    return (
-      !shallowEqual(originalState, state) ||
-      !shallowEqual(originalRelated, currentRelated)
-    );
-  }, [originalState, state, originalRelated, currentRelated]);
+    return !shallowEqual(originalState, state);
+  }, [originalState, state]);
 
   useEffect(() => {
     setDirty(isDirty);
   }, [isDirty]);
-
-  const pushToOriginalRelated = useCallback((value: any) => {
-    setOriginalRelated(isNullOrEmpty(value) ? null : value);
-  }, []);
-
-  const pushToCurrentRelated = useCallback((value: any) => {
-    setCurrentRelated(isNullOrEmpty(value) ? null : value);
-  }, []);
 
   const showAlertIfDirty = useCallback(
     (callback: () => void) => {
@@ -91,15 +78,11 @@ export function useDirtyChecker<T>(): IDirtyChecker<T> {
     setDirty(false);
     setOriginalState({} as T);
     setState({} as T);
-    setOriginalRelated(null);
-    setCurrentRelated(null);
   }, []);
 
   return {
     setState,
     setOriginalState,
-    pushToOriginalRelated,
-    pushToCurrentRelated,
     showAlertIfDirty,
     dispose,
   };

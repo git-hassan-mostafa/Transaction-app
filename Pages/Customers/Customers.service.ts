@@ -17,6 +17,7 @@ export default function useCustomersService() {
     visible: false,
     formData: {} as ICustomer,
   });
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   //context
   const context = useGlobalContext();
 
@@ -26,8 +27,10 @@ export default function useCustomersService() {
   }, []);
 
   async function fetchAllCustomers() {
-    const mappedCustomers = await customerManager.getAllCustomersCalculated();
-    setCustomers(mappedCustomers);
+    setIsLoading(true);
+    const customersDB = await customerManager.getAllCustomers();
+    setCustomers(customersDB);
+    setIsLoading(false);
   }
 
   async function save(
@@ -36,7 +39,7 @@ export default function useCustomersService() {
   ) {
     if (!validationCallback(customer)) return;
 
-    if (customer.customerId) updateCustomer(customer);
+    if (customer.Id) updateCustomer(customer);
     else addCustomer(customer);
   }
 
@@ -48,7 +51,7 @@ export default function useCustomersService() {
         type: "error",
         visible: true,
       });
-    addToCustomersList(customer);
+    addToCustomersList(result.data);
     toggleModal();
     context.toggleSnackBar({
       text: result.message,
@@ -81,15 +84,13 @@ export default function useCustomersService() {
   function updateFromCustomersList(value: ICustomer) {
     setCustomers((prev) =>
       prev.map((customer) =>
-        customer.customerId === value.customerId
-          ? { ...customer, ...value }
-          : customer
+        customer.Id === value.Id ? { ...customer, ...value } : customer
       )
     );
   }
 
   function deleteFromCustomerList(id: number) {
-    setCustomers((prev) => prev.filter((c) => c.customerId !== id));
+    setCustomers((prev) => prev.filter((c) => c.Id !== id));
   }
 
   async function onEdit(customer: ICustomer) {
@@ -130,8 +131,8 @@ export default function useCustomersService() {
   }
 
   async function promptIfCustomerHasDebts(id: number) {
-    const customer = customers.find((c) => c.customerId === id);
-    if ((customer?.customerBorrowedPrice || 0) > 0) {
+    const customer = customers.find((c) => c.Id === id);
+    if ((customer?.BorrowedPrice || 0) > 0) {
       Alert.alert(
         i18n.t("customer-has-debts"),
         i18n.t(
@@ -157,6 +158,7 @@ export default function useCustomersService() {
   return {
     customers,
     modalOptions,
+    isLoading,
     save,
     toggleModal,
     addToCustomersList,

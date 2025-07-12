@@ -18,30 +18,28 @@ import IInput from "@/Shared/Components/IInput";
 export default function CustomerDetails(props: ICustomerDetailsProps) {
   return (
     <View>
-      {props.customer.customerId > 0 && (
+      {props.customer.Id > 0 && (
         <View style={styles.pricesRow}>
           <ThemedText
             weight={600}
             fontSize={12}
             style={[styles.price, styles.payedPrice]}
           >
-            ${props.customer.customerPayedPrice}
+            ${props.customer.PayedPrice}
           </ThemedText>
           <ThemedText
             weight={600}
             fontSize={12}
             style={[styles.price, styles.totalDebtPrice]}
           >
-            ${props.customer.customerBorrowedPrice}
+            ${props.customer.BorrowedPrice}
           </ThemedText>
           <ThemedText
             weight={600}
             fontSize={12}
             style={[styles.price, styles.remainingPrice]}
           >
-            $
-            {props.customer.customerBorrowedPrice -
-              props.customer.customerPayedPrice}
+            ${props.customer.BorrowedPrice - props.customer.PayedPrice}
           </ThemedText>
         </View>
       )}
@@ -53,7 +51,7 @@ export default function CustomerDetails(props: ICustomerDetailsProps) {
           style={formStyle.input as StyleProp<TextStyle>}
           placeholder={i18n.t("enter-customer-name") + "..."}
           placeholderTextColor="#999"
-          value={props.customer.customerName}
+          value={props.customer.Name}
           onChangeText={props.setCustomerName}
         />
       </View>
@@ -66,7 +64,7 @@ export default function CustomerDetails(props: ICustomerDetailsProps) {
           style={formStyle.input as StyleProp<TextStyle>}
           placeholder={i18n.t("enter-phone-number") + "..."}
           placeholderTextColor="#999"
-          value={props.customer.customerPhoneNumber}
+          value={props.customer.PhoneNumber}
           keyboardType="phone-pad"
           textContentType="telephoneNumber"
           onChangeText={props.setCustomerPhoneNumber}
@@ -78,7 +76,7 @@ export default function CustomerDetails(props: ICustomerDetailsProps) {
           style={[formStyle.input, formStyle.textArea]}
           placeholder={i18n.t("enter-notes") + "..."}
           placeholderTextColor="#999"
-          value={props.customer.customerNotes}
+          value={props.customer.Notes}
           onChangeText={props.setCustomerNotes}
           multiline
         />

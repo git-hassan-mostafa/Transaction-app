@@ -25,7 +25,7 @@ export default function ProductForm(props: IProductFormProps) {
           style={formStyle.input}
           placeholder={i18n.t("please-enter-product-name") + "..."}
           placeholderTextColor="#999"
-          value={service.product.productName}
+          value={service.product.Name}
           onChangeText={service.setProductName}
         />
       </View>
@@ -38,7 +38,7 @@ export default function ProductForm(props: IProductFormProps) {
           style={formStyle.input}
           placeholder={"00.00"}
           placeholderTextColor="#999"
-          value={service.product.productPrice?.toString()}
+          value={service.product.Price?.toString()}
           keyboardType="numeric"
           onChangeText={(text) => service.setProductPrice(text)}
         />
@@ -51,7 +51,7 @@ export default function ProductForm(props: IProductFormProps) {
           style={formStyle.input as StyleProp<TextStyle>}
           placeholder={"0"}
           placeholderTextColor="#999"
-          value={service.product.productQuantity?.toString()}
+          value={service.product.Quantity?.toString()}
           keyboardType="numeric"
           onChangeText={(text) => service.setProductQuantity(text)}
         />
@@ -59,7 +59,7 @@ export default function ProductForm(props: IProductFormProps) {
       <View style={formStyle.row}>
         <ThemedText style={formStyle.label}>{i18n.t("provider")}</ThemedText>
         <DropDown
-          value={service.product.product_ProviderId}
+          value={service.product.ProviderId ?? ""}
           setValue={(value) => service.setProvider(value as number)}
           data={service.providers}
         />
@@ -70,7 +70,7 @@ export default function ProductForm(props: IProductFormProps) {
           style={[formStyle.input, formStyle.textArea] as StyleProp<TextStyle>}
           placeholder={i18n.t("enter-notes") + "..."}
           placeholderTextColor="#999"
-          value={service.product.productNotes}
+          value={service.product.Notes}
           onChangeText={service.setProductNotes}
         />
       </View>

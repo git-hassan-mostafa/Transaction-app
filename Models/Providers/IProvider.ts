@@ -1,8 +1,15 @@
+import IProduct from "../Products/IProduct";
+import IExternalDebt from "../ExternalDebts/IExternalDebt";
+
 export default interface IProvider {
-  providerId: number;
-  providerName: string;
-  providerBorrowedPrice: number;
-  providerPayedPrice: number;
-  providerPhoneNumber: string;
-  providerNotes: string;
+  Id: number;
+  Name: string;
+  PhoneNumber: string;
+  BorrowedPrice: number;
+  PayedPrice: number;
+  Notes?: string;
+
+  // Relations
+  Products?: IProduct[];
+  ExternalDebts?: IExternalDebt[];
 }

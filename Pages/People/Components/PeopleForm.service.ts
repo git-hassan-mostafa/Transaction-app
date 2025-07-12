@@ -34,13 +34,13 @@ export default function usePeopleFormService(props: IEditPeopleProps) {
 
   function setPersonName(value: string) {
     setPerson((prev) => {
-      return { ...prev, personName: value };
+      return { ...prev, Name: value };
     });
   }
 
   function setPersonPhoneNumber(value: string) {
     setPerson((prev) => {
-      return { ...prev, personPhoneNumber: value };
+      return { ...prev, PhoneNumber: value };
     });
   }
 
@@ -50,14 +50,14 @@ export default function usePeopleFormService(props: IEditPeopleProps) {
   }
 
   function validatePerson(person: IPerson) {
-    if (!person.personName) {
+    if (!person.Name) {
       setValidation({
         visible: true,
         text: i18n.t("please-enter-the-name"),
       });
       return false;
     }
-    if (!person.personPhoneNumber) {
+    if (!person.PhoneNumber) {
       setValidation({
         visible: true,
         text: i18n.t("please-enter-the-phone-number"),

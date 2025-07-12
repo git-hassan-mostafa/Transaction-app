@@ -1,5 +1,4 @@
 import useGlobalContext from "@/Shared/Context/ContextProvider";
-import SortList from "@/Shared/Helpers/Functions/SortList";
 import i18n from "@/Shared/I18n/I18n";
 import IProduct from "@/Models/Products/IProduct";
 import { useEffect, useState } from "react";
@@ -17,6 +16,7 @@ export default function useProductsService() {
     visible: false,
     formData: {} as IProduct,
   });
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   // context
   const context = useGlobalContext();
@@ -27,8 +27,10 @@ export default function useProductsService() {
   }, []);
 
   async function fetchAllProducts() {
+    setIsLoading(true);
     const productsDB = await productManager.getAllProducts();
     setProducts(productsDB);
+    setIsLoading(false);
   }
 
   async function save(
@@ -36,7 +38,7 @@ export default function useProductsService() {
     validationCallback: (product: IProduct) => boolean
   ) {
     if (!validationCallback(product)) return;
-    if (product.productId) await updateProduct(product);
+    if (product.Id) await updateProduct(product);
     else await addProduct(product);
   }
 
@@ -48,8 +50,7 @@ export default function useProductsService() {
         text: result.message,
         type: "error",
       });
-    product.productId = result?.data;
-    addToProductsList(product);
+    addToProductsList(result.data);
     toggleModal();
     context.toggleSnackBar({
       visible: true,
@@ -80,15 +81,13 @@ export default function useProductsService() {
   }
 
   function deleteFromProductsList(id: number) {
-    setProducts((prev) => prev.filter((c) => c.productId !== id));
+    setProducts((prev) => prev.filter((c) => c.Id !== id));
   }
 
   function updateFromProductsList(value: IProduct) {
     setProducts((prev) =>
       prev.map((product) =>
-        product.productId === value.productId
-          ? { ...product, ...value }
-          : product
+        product.Id === value.Id ? { ...product, ...value } : product
       )
     );
   }
@@ -134,6 +133,7 @@ export default function useProductsService() {
   return {
     products,
     modalOptions,
+    isLoading,
     toggleModal,
     addToProductsList,
     deleteFromProductsList,

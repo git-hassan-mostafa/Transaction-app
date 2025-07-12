@@ -1,14 +1,15 @@
 import IDropDownItem from "@/Shared/Types/IDropDownItem";
 import IProduct from "../Products/IProduct";
-import IInternalDebtProduct_IInternalDebt_IProduct from "../RelationModels/IInternalDebtProduct_IInternalDebt_IProduct";
+import IInternalDebtProduct from "./IInternalDebtProduct";
+import IInternalDebt from "./IInternalDebts";
 
-export default interface IInternalDebtsProductsListProps {
+export default interface IInternalDebtsProductsListService {
+  internalDebt: IInternalDebt;
   products: IProduct[];
   dropDownItems: IDropDownItem[];
-  internalDebtsProducts: IInternalDebtProduct_IInternalDebt_IProduct[];
-  newInternalDebtsProduct: IInternalDebtProduct_IInternalDebt_IProduct;
+  newInternalDebtsProduct: IInternalDebtProduct;
   setInternalDebtsProduct: (id: number) => void;
-  setNewProductQuantity: (value: string) => void;
+  setInternalProductQuantity: (value: string) => void;
   showAddProduct: boolean;
   handleAddProduct: () => void;
   toggleAddProduct: (value: boolean) => void;

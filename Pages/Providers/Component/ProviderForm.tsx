@@ -29,7 +29,7 @@ export function EditProvider(props: IProviderFormProps) {
           style={formStyle.input}
           placeholder={i18n.t("please-enter-provider-name") + "..."}
           placeholderTextColor="#999"
-          value={service.provider.providerName}
+          value={service.provider.Name}
           onChangeText={service.setProviderName}
         />
       </View>
@@ -42,7 +42,7 @@ export function EditProvider(props: IProviderFormProps) {
           style={formStyle.input}
           placeholder={i18n.t("enter-phone-number")}
           placeholderTextColor="#999"
-          value={service.provider.providerPhoneNumber}
+          value={service.provider.PhoneNumber}
           keyboardType="phone-pad"
           textContentType="telephoneNumber"
           onChangeText={service.setProviderPhoneNumber}
@@ -54,7 +54,7 @@ export function EditProvider(props: IProviderFormProps) {
           style={[formStyle.input, formStyle.textArea] as StyleProp<TextStyle>}
           placeholder={i18n.t("enter-notes")}
           placeholderTextColor="#999"
-          value={service.provider.providerNotes}
+          value={service.provider.Notes}
           onChangeText={service.setProviderNotes}
         />
         <View style={formStyle.row}>

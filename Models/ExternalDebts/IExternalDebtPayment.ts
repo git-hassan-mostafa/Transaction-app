@@ -1,6 +1,10 @@
+import IExternalDebt from "./IExternalDebt";
+
 export default interface IExternalDebtPayment {
-  externalDebtPaymentId: number;
-  amount: number;
-  date: string;
-  externalDebtId: number;
+  Id: number;
+  Amount: number;
+  Date: string;
+  ExternalDebtId: number;
+  // Relations
+  ExternalDebt?: IExternalDebt;
 }

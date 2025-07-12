@@ -1,12 +1,10 @@
-import { useEffect, useState } from "react";
-import { ICustomer_IInternalDebt_IInternalDebtProduct_IProduct } from "@/Models/RelationModels/ICustomer_IInternalDebt_IInternalDebtProduct_IProduct";
-import useService from "@/Shared/Context/ServiceProvider";
-import useGlobalContext from "@/Shared/Context/ContextProvider";
+import { useEffect, useMemo, useState } from "react";
 import { IValidationErrorType } from "@/Shared/Types/IValidationErrorType";
 import i18n from "@/Shared/I18n/I18n";
 import ICustomerFormProps from "@/Models/Customers/ICustomerFormProps";
 import ICustomerDetailsProps from "@/Models/Customers/ICustomerDetailsProps";
 import ICustomer from "@/Models/Customers/ICustomer";
+import useService from "@/Shared/Context/ServiceProvider";
 
 export default function useCustomerFormService(
   props: ICustomerFormProps
@@ -16,19 +14,16 @@ export default function useCustomerFormService(
 
   // states
   const [customer, setCustomer] = useState<ICustomer>(props.formData);
-  const [borrowList, setBorrowList] = useState<
-    ICustomer_IInternalDebt_IInternalDebtProduct_IProduct[]
-  >([]);
   const [validation, setValidation] = useState<IValidationErrorType>({
     visible: false,
     text: "",
   });
 
   //context
-  const context = useGlobalContext();
+  // const context = useGlobalContext();
 
   useEffect(() => {
-    fetchAllData();
+    props.dirtyChecker.setOriginalState(props.formData);
 
     return () => {
       props.dirtyChecker.dispose();
@@ -39,44 +34,21 @@ export default function useCustomerFormService(
     props.dirtyChecker.setState(customer);
   }, [customer]);
 
-  async function fetchAllData() {
-    if (props.formData.customerId) await fetchBorrowList();
-    props.dirtyChecker.setOriginalState(props.formData);
-  }
-
-  async function fetchBorrowList() {
-    if (!props.formData.customerId) return;
-    const borrowedList = await customerManager.getCustomerBorrowList(
-      props.formData.customerId
-    );
-    setBorrowList(borrowedList);
-    setCustomerBorrowedPrice(borrowedList);
-  }
-
-  function setCustomerBorrowedPrice(
-    borrowedList: ICustomer_IInternalDebt_IInternalDebtProduct_IProduct[]
-  ) {
-    const sum = customerManager.getBorrowedPrice(borrowedList);
-    setCustomer((prev) => {
-      return { ...prev, customerBorrowedPrice: sum };
-    });
-  }
-
   function setCustomerName(value: string) {
-    setCustomer((prev) => {
-      return { ...prev, customerName: value };
+    setCustomer((prev): ICustomer => {
+      return { ...prev, Name: value };
     });
   }
 
   function setCustomerPhoneNumber(value: string) {
-    setCustomer((prev) => {
-      return { ...prev, customerPhoneNumber: value };
+    setCustomer((prev): ICustomer => {
+      return { ...prev, PhoneNumber: value };
     });
   }
 
   function setCustomerNotes(value: string) {
-    setCustomer((prev) => {
-      return { ...prev, customerNotes: value };
+    setCustomer((prev): ICustomer => {
+      return { ...prev, Notes: value };
     });
   }
 
@@ -85,14 +57,14 @@ export default function useCustomerFormService(
   }
 
   function validateCustomer(customer: ICustomer) {
-    if (!customer.customerName) {
+    if (!customer.Name) {
       setValidation({
         visible: true,
         text: i18n.t("please-enter-customer-name"),
       });
       return false;
     }
-    if (!customer.customerPhoneNumber) {
+    if (!customer.PhoneNumber) {
       setValidation({
         visible: true,
         text: i18n.t("please-enter-phone-number"),
@@ -104,7 +76,6 @@ export default function useCustomerFormService(
 
   return {
     customer,
-    borrowList,
     validation,
     setCustomerName,
     setCustomerPhoneNumber,

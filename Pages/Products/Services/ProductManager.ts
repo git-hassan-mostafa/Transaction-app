@@ -1,12 +1,12 @@
 import ProductsDataAccess from "@/DataBase/DAL/ProductsDataAccess";
 import ProviderDataAccess from "@/DataBase/DAL/ProviderDataAccess";
-import Mapper from "@/Shared/Helpers/MapService";
+import Mapper from "@/Shared/Helpers/Mapper";
 import i18n from "@/Shared/I18n/I18n";
 import IDropDownItem from "@/Shared/Types/IDropDownItem";
 import { IResultType } from "@/Shared/Types/IResultType";
-import Product from "@/DataBase/Models/Product";
-import IProduct from "@/Models/Products/IProduct";
 import IProvider from "@/Models/Providers/IProvider";
+import IProduct from "@/Models/Products/IProduct";
+import { Product } from "@/DataBase/Supabase/Models/Product";
 
 export default class ProductManager {
   constructor(
@@ -29,57 +29,57 @@ export default class ProductManager {
     return product;
   }
 
-  async addProduct(product: IProduct): Promise<IResultType<number>> {
+  async addProduct(product: IProduct): Promise<IResultType<IProduct>> {
     const newProduct: Product = this.mapper.mapToProduct(product);
     const result = await this.productDataAccess.addProduct(newProduct);
-    if (!result || !result.lastInsertRowId)
+    if (!result)
       return {
         success: false,
-        data: -1,
+        data: {} as IProduct,
         message: i18n.t("error-adding-product"),
       };
     return {
       success: true,
-      data: result.lastInsertRowId,
+      data: this.mapper.mapToIProduct(result),
       message: i18n.t("product-added-successfully"),
     };
   }
 
-  async updateProduct(product: IProduct): Promise<IResultType<number>> {
+  async updateProduct(product: IProduct): Promise<IResultType<IProduct>> {
     const updatedProduct: Product = this.mapper.mapToProduct(product);
     const result = await this.productDataAccess.updateProduct(updatedProduct);
-    if (!result || !result?.changes)
+    if (!result)
       return {
         success: false,
-        data: 0,
+        data: {} as IProduct,
         message: i18n.t("error-updating-product"),
       };
     return {
       success: true,
-      data: result.changes,
+      data: this.mapper.mapToIProduct(result),
       message: i18n.t("product-updated-successfully"),
     };
   }
 
-  async deleteProduct(id: number): Promise<IResultType<number>> {
+  async deleteProduct(id: number): Promise<IResultType<boolean>> {
     const isProductUsed = await this.isProductUsed(id);
     if (isProductUsed) {
       return {
         success: false,
-        data: 0,
+        data: false,
         message: i18n.t("product-is-in-used-it-cannot-be-deleted"),
       };
     }
     const result = await this.productDataAccess.deleteProduct(id);
-    if (!result || !result.changes)
+    if (!result)
       return {
         success: false,
-        data: 0,
+        data: result,
         message: i18n.t("error-deleting-product"),
       };
     return {
       success: true,
-      data: result.changes,
+      data: result,
       message: i18n.t("product-deleted-successfully"),
     };
   }
@@ -90,13 +90,12 @@ export default class ProductManager {
   }
 
   getDropDownProducts(products: IProduct[]): IDropDownItem[] {
-    return products.map((i) => ({ value: i.productId, label: i.productName }));
+    return products.map((i) => ({ value: i.Id, label: i.Name }));
   }
 
   async getAllProviders(): Promise<IProvider[]> {
     const providersDB = await this.providerDataAccess.getAllProviders();
     if (!providersDB) return [];
-    const mappedProviders = this.mapper.mapToIProviderAll(providersDB);
-    return mappedProviders;
+    return this.mapper.mapToIProviderAll(providersDB);
   }
 }

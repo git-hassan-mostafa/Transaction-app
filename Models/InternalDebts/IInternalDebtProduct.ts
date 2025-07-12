@@ -1,9 +1,15 @@
+import IInternalDebt from "./IInternalDebts";
+import IProduct from "../Products/IProduct";
+
 export default interface IInternalDebtProduct {
-  internalDebtProductId: number;
-  internalDebtProductQuantity: number;
-  internalDebtProductTotalPrice: number;
-  internalDebtProductPricePaid: number;
-  internalDebtProduct_InternalDebtId: number;
-  internalDebtProduct_ProductId: number;
-  isNew: boolean;
+  Id: number;
+  Quantity: number;
+  IsNew: boolean;
+  TotalPrice: number;
+  InternalDebtId: number;
+  ProductId: number;
+
+  // Relations
+  InternalDebt?: IInternalDebt;
+  Product?: IProduct;
 }

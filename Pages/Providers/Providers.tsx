@@ -11,28 +11,31 @@ import pageStyle from "@/Shared/Styles/pages.global.style";
 import i18n from "@/Shared/I18n/I18n";
 import ListItem from "@/Shared/Components/ListItem";
 import { useDirtyChecker } from "@/Shared/Hooks/useDirtyChecker";
+import IActivityIndicator from "@/Shared/Components/IActivityIndicator";
 
 export default function Providers() {
   const service = useProvidersService();
   const dirtyChecker = useDirtyChecker();
-
+  if (service.isLoading) {
+    return <IActivityIndicator />;
+  }
   return (
     <React.Fragment>
       <FlatList
         style={pageStyle.flatList}
         data={service.providers}
         numColumns={1}
-        keyExtractor={(item) => item.providerId?.toString() as string}
+        keyExtractor={(item) => item.Id?.toString() as string}
         renderItem={({ item }: { item: IProvider }) => (
           <ListItem
             // sign={{ visible: true, color: Constants.colors.products }}
             color={Constants.colors.providers}
-            title={item.providerName}
+            title={item.Name}
             subTitle={{
-              text: "$" + item.providerBorrowedPrice?.toString(),
+              text: "$" + item.BorrowedPrice?.toString(),
               color: Constants.colors.green,
             }}
-            onDelete={() => service.handleDeleteProvider(item.providerId)}
+            onDelete={() => service.handleDeleteProvider(item.Id)}
             onEdit={() => service.onEdit(item)}
           />
         )}
@@ -41,7 +44,7 @@ export default function Providers() {
       />
       <IModal
         title={
-          service.modalOptions.formData.providerId
+          service.modalOptions.formData.Id
             ? i18n.t("edit-provider")
             : i18n.t("add-provider")
         }

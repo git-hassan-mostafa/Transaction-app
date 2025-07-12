@@ -1,6 +1,9 @@
-import { IInternalDebtFormProps } from "./IInternalDebtsFormProps";
-import IInternalDebtsProductsListProps from "./IInternalDebtsProductsListProps";
+import IInternalDebtProduct from "./IInternalDebtProduct";
+import IInternalDebt from "./IInternalDebts";
 
-export interface IInternalDebtsFormServiceProps extends IInternalDebtFormProps {
-  internalDebtsProductsListService: IInternalDebtsProductsListProps;
+export interface IInternalDebtsProductsListServiceProps {
+  internalDebt: IInternalDebt;
+  addInternalDebtProduct: (internalDebt: IInternalDebtProduct) => void;
+  deleteInternalDebtProduct: (id: number) => void;
+  updateInternalDebtProduct: (internalDebt: IInternalDebtProduct) => void;
 }

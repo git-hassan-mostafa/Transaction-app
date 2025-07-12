@@ -17,14 +17,14 @@ export default function InternalDebtDetails(
 ) {
   return (
     <View style={styles.content}>
-      {service.internalDebt.internalDebtId && (
+      {service.internalDebt.Id && (
         <View style={styles.debtDate}>
           <ThemedText
             fontSize={12}
             weight={600}
             color={Constants.colors.darkGray}
           >
-            {fromatLocaleDateWithDay(service.internalDebt.internalDebtDate)}
+            {fromatLocaleDateWithDay(service.internalDebt.Date)}
           </ThemedText>
         </View>
       )}
@@ -35,7 +35,7 @@ export default function InternalDebtDetails(
         </ThemedText>
         <DropDown
           placeholder={i18n.t("select-customer")}
-          value={service.internalDebt.internalDebt_CustomerId as number}
+          value={service.internalDebt.CustomerId as number}
           setValue={(value) => {
             service.setCustomer(value as number);
           }}
@@ -49,7 +49,7 @@ export default function InternalDebtDetails(
           style={formStyle.input}
           placeholder={i18n.t("enter-total-price")}
           placeholderTextColor="#999"
-          value={(service.internalDebt.internalDebtTotalPrice ?? 0)?.toString()}
+          value={(service.internalDebt.TotalPrice ?? 0)?.toString()}
           keyboardType="numeric"
           onChangeText={(text) => service.setTotalPrice(text)}
         />
@@ -61,7 +61,7 @@ export default function InternalDebtDetails(
           style={formStyle.input}
           placeholder={i18n.t("enter-paid-price")}
           placeholderTextColor="#999"
-          value={(service.internalDebt.internalDebtPricePaid ?? 0)?.toString()}
+          value={(service.internalDebt.PaidPrice ?? 0)?.toString()}
           keyboardType="numeric"
           onChangeText={(text) => service.setPricePaid(text)}
         />
@@ -73,7 +73,7 @@ export default function InternalDebtDetails(
           style={[formStyle.input, formStyle.textArea]}
           placeholder={i18n.t("enter-notes")}
           placeholderTextColor="#999"
-          value={service.internalDebt.internalDebtNotes}
+          value={service.internalDebt.Notes}
           onChangeText={service.setNotes}
         />
       </View>

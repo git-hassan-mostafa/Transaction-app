@@ -1,6 +1,12 @@
+import { ExternalDebt } from "@/DataBase/Supabase/Models/ExternalDebt";
+import IProduct from "../Products/IProduct";
+
 export default interface IExternalDebtProduct {
-  externalDebtProductId: number;
-  externalDebtProductQuantity: number;
-  externalDebtProduct_OuterDebtId: number;
-  externalDebtProduct_ProductId: number;
+  Id: number;
+  Quantity: number;
+  ExternalDebtId: number;
+  ProductId: number;
+  // Relations
+  ExternalDebt?: ExternalDebt;
+  Product?: IProduct;
 }

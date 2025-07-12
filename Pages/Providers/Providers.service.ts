@@ -17,6 +17,7 @@ export default function useProvidersService() {
     visible: false,
     formData: {} as IProvider,
   });
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   // context
   const context = useGlobalContext();
@@ -27,8 +28,10 @@ export default function useProvidersService() {
   }, []);
 
   async function fetchAllProviders() {
+    setIsLoading(true);
     const providersDB = await providerManager.getAllProviders();
-    setProviders(providersDB as IProvider[]);
+    setProviders(providersDB);
+    setIsLoading(false);
   }
 
   async function save(
@@ -36,7 +39,7 @@ export default function useProvidersService() {
     validationCallback: (provider: IProvider) => boolean
   ) {
     if (!validationCallback(provider)) return;
-    if (provider.providerId) updateProvider(provider);
+    if (provider.Id) updateProvider(provider);
     else addProvider(provider);
   }
 
@@ -84,15 +87,13 @@ export default function useProvidersService() {
   }
 
   function deleteFromProvidersList(id: number) {
-    setProviders((prev) => prev.filter((c) => c.providerId !== id));
+    setProviders((prev) => prev.filter((c) => c.Id !== id));
   }
 
   function updateFromProvidersList(value: IProvider) {
     setProviders((prev) =>
       prev.map((provider) =>
-        provider.providerId === value.providerId
-          ? { ...provider, ...value }
-          : provider
+        provider.Id === value.Id ? { ...provider, ...value } : provider
       )
     );
   }
@@ -139,6 +140,7 @@ export default function useProvidersService() {
   return {
     providers,
     modalOptions,
+    isLoading,
     addToProvidersList,
     deleteFromProvidersList,
     updateFromProvidersList,

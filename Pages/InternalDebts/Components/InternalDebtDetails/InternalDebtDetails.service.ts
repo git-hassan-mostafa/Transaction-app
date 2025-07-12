@@ -6,10 +6,10 @@ import useService from "@/Shared/Context/ServiceProvider";
 import { IValidationErrorType } from "@/Shared/Types/IValidationErrorType";
 import IInternalDebtDetailsService from "@/Models/InternalDebts/IInternalDebtDetailsService";
 import IInternalDebt from "@/Models/InternalDebts/IInternalDebts";
-import { IInternalDebtsFormServiceProps } from "@/Models/InternalDebts/IInternalDebtsFormServiceProps";
-
+import { IInternalDebtFormProps } from "@/Models/InternalDebts/IInternalDebtsFormProps";
+import IInternalDebtProduct from "@/Models/InternalDebts/IInternalDebtProduct";
 export default function useInternalDebtDetailsService(
-  props: IInternalDebtsFormServiceProps
+  props: IInternalDebtFormProps
 ): IInternalDebtDetailsService {
   //services
   const { internalDebtManager, customerManager } = useService();
@@ -42,8 +42,17 @@ export default function useInternalDebtDetailsService(
   }, [internalDebt]);
 
   useEffect(() => {
-    setPricesSum();
-  }, [props.internalDebtsProductsListService.internalDebtsProducts]);
+    const newTotalPrice =
+      internalDebtManager.getInternalDebtTotalPrice(internalDebt);
+    if (internalDebt.TotalPrice !== newTotalPrice) {
+      setInternalDebt(
+        (prev): IInternalDebt => ({
+          ...prev,
+          TotalPrice: newTotalPrice,
+        })
+      );
+    }
+  }, [internalDebt.InternalDebtProducts]);
 
   async function fetchAllData() {
     await getAllCustomers();
@@ -51,45 +60,27 @@ export default function useInternalDebtDetailsService(
   }
 
   async function getAllCustomers() {
-    const mappedCustomers = await customerManager.getAllCustomers();
+    const mappedCustomers = await customerManager.getAllCustomers(false);
     const dropDownCustomers =
       internalDebtManager.dropDownCutomers(mappedCustomers);
     setCustomersDropDown(dropDownCustomers);
   }
 
-  function setPricesSum() {
-    if (
-      (props.internalDebtsProductsListService.internalDebtsProducts || [])
-        .length === 0
-    )
-      return;
-    const totalPrice = internalDebtManager.getTotalPricesSum(
-      props.internalDebtsProductsListService.internalDebtsProducts
-    );
-    const pricePaid = internalDebtManager.getPricePaidSum();
-
-    setInternalDebt((prev) => ({
-      ...prev,
-      internalDebtTotalPrice: totalPrice,
-      internalDebtPricePaid: pricePaid,
-    }));
-  }
-
   function setTotalPrice(value: string) {
-    setInternalDebt((prev) => {
-      return { ...prev, internalDebtTotalPrice: Number(value) };
+    setInternalDebt((prev): IInternalDebt => {
+      return { ...prev, TotalPrice: Number(value) };
     });
   }
 
   function setPricePaid(value: string) {
-    setInternalDebt((prev) => {
-      return { ...prev, internalDebtPricePaid: Number(value) };
+    setInternalDebt((prev): IInternalDebt => {
+      return { ...prev, PaidPrice: Number(value) };
     });
   }
 
   function setCustomer(customerId: number) {
-    setInternalDebt((prev) => {
-      return { ...prev, internalDebt_CustomerId: customerId };
+    setInternalDebt((prev): IInternalDebt => {
+      return { ...prev, CustomerId: customerId };
     });
   }
 
@@ -99,35 +90,49 @@ export default function useInternalDebtDetailsService(
     });
   }
 
+  function addInternalDebtProduct(product: IInternalDebtProduct) {
+    setInternalDebt((prev): IInternalDebt => {
+      return {
+        ...prev,
+        InternalDebtProducts: [...(prev.InternalDebtProducts || []), product],
+      };
+    });
+  }
+
+  function updateInternalDebtProduct(product: IInternalDebtProduct) {
+    setInternalDebt((prev): IInternalDebt => {
+      const updatedProducts = prev.InternalDebtProducts?.map((p) =>
+        p.Id === product.Id ? product : p
+      );
+      return { ...prev, InternalDebtProducts: updatedProducts };
+    });
+  }
+
+  function deleteInternalDebtProduct(id: number) {
+    setInternalDebt((prev): IInternalDebt => {
+      const updatedProducts = prev.InternalDebtProducts?.filter(
+        (p) => p.Id !== id
+      );
+      return { ...prev, InternalDebtProducts: updatedProducts };
+    });
+  }
+
   async function save() {
-    await props.save(
-      internalDebt,
-      props.internalDebtsProductsListService.internalDebtsProducts,
-      validateInternalDebtFields
-    );
+    await props.save(internalDebt, validateInternalDebtFields);
   }
 
   function validateInternalDebtFields(internalDebt: IInternalDebt) {
-    if (!internalDebt.internalDebt_CustomerId) {
+    if (!internalDebt.CustomerId) {
       setValidation({
         text: i18n.t("please-select-a-customer"),
         visible: true,
       });
       return false;
     }
-    if (!props.internalDebtsProductsListService.internalDebtsProducts.length) {
+    if (!internalDebt.InternalDebtProducts.length) {
       setValidation({
         visible: true,
         text: i18n.t("please-add-at-least-one-product"),
-      });
-      return false;
-    }
-    if (
-      internalDebt.internalDebtPricePaid > internalDebt.internalDebtTotalPrice
-    ) {
-      setValidation({
-        visible: true,
-        text: i18n.t("paid-price-cannot-be-greater-than-total-price"),
       });
       return false;
     }
@@ -142,6 +147,9 @@ export default function useInternalDebtDetailsService(
     setPricePaid,
     setCustomer,
     setNotes,
+    addInternalDebtProduct,
+    updateInternalDebtProduct,
+    deleteInternalDebtProduct,
     save,
   };
 }

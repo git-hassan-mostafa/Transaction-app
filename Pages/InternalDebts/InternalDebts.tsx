@@ -5,42 +5,43 @@ import React from "react";
 import Constants from "@/Shared/Constants/Constants";
 import IModal from "@/Shared/Components/IModal";
 import { FAB } from "react-native-paper";
-import { ICustomer_IInnternalDebt } from "@/Models/RelationModels/ICustomer_IInnternalDebt";
 import pageStyle from "@/Shared/Styles/pages.global.style";
 import i18n from "@/Shared/I18n/I18n";
 import ListItem from "@/Shared/Components/ListItem";
 import { fromatLocaleDate } from "@/Shared/Helpers/Functions/FormatDate";
 import InternalDebtForm from "./Components/InternalDebtForm";
 import { useDirtyChecker } from "@/Shared/Hooks/useDirtyChecker";
+import IInternalDebt from "@/Models/InternalDebts/IInternalDebts";
+import IActivityIndicator from "@/Shared/Components/IActivityIndicator";
 
 export default function InternalDebts() {
   const service = useInternalDebtsService();
   const dirtyChecker = useDirtyChecker();
-
+  if (service.isLoading) {
+    return <IActivityIndicator />;
+  }
   return (
     <React.Fragment>
       <FlatList
         style={pageStyle.flatList}
         data={service.internalDebts}
         numColumns={1}
-        keyExtractor={(item) => item.internalDebtId?.toString() as string}
-        renderItem={({ item }: { item: ICustomer_IInnternalDebt }) => (
+        keyExtractor={(item) => item.Id?.toString() as string}
+        renderItem={({ item }: { item: IInternalDebt }) => (
           <ListItem
-            title={"@" + item.customerName}
+            title={"@" + item.Customer?.Name}
             subTitle={{
-              text: "$" + item.internalDebtTotalPrice?.toString(),
+              text: "$" + item.TotalPrice?.toString(),
               color: Constants.colors.red,
             }}
             subTitle2={{
-              text: fromatLocaleDate(item.internalDebtDate),
+              text: fromatLocaleDate(item.Date),
               color: Constants.colors.darkGray,
             }}
             sign={{ color: Constants.colors.green, visible: true }}
             color={Constants.colors.internalDebts}
             onEdit={() => service.onEdit(item)}
-            onDelete={() =>
-              service.handleDeleteInternalDebt(item.internalDebtId)
-            }
+            onDelete={() => service.handleDeleteInternalDebt(item.Id)}
           />
         )}
         ItemSeparatorComponent={() => <View style={{ height: 5 }} />}
@@ -48,7 +49,7 @@ export default function InternalDebts() {
       />
       <IModal
         title={
-          service.modalOptions.formData.internalDebtId
+          service.modalOptions.formData.Id
             ? i18n.t("edit-internal-debt")
             : i18n.t("add-internal-debt")
         }

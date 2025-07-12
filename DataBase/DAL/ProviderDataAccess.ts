@@ -1,76 +1,75 @@
-import AbstractDataAccess from "./AbstractDataAccess";
-import SqlBuilder from "../Helpers/SqlBuilder";
-import { SQLiteRunResult } from "expo-sqlite";
-import Provider from "../Models/Provider";
 import { TableEnum } from "../Enums/TablesEnum";
+import { supabase } from "../Supabase/client";
+import { Provider } from "../Supabase/Models/Provider";
 
-export default class ProviderDataAccess extends AbstractDataAccess {
-  table = TableEnum.Providers;
-  constructor() {
-    super();
-  }
+export default class ProviderDataAccess {
+  table = TableEnum.Providers.toLowerCase();
 
-  async getAllProviders() {
+  async getAllProviders(): Promise<Provider[] | null> {
     try {
-      const sqlBuilder = new SqlBuilder<Provider>(this.db, this.table);
-      const providers = await sqlBuilder
-        .select()
-        .orderBy("Name", "desc")
-        .executeAsync();
-      return providers as Provider[];
+      const { data, error } = await supabase.from(this.table).select("*");
+      if (error) throw error;
+      return data as Provider[];
     } catch (error) {
       console.error("error getAllProviders ", error);
       return null;
     }
   }
 
-  async getProvider(id: number) {
+  async getProvider(id: number): Promise<Provider | null> {
     try {
-      const sqlBuilder = new SqlBuilder<Provider>(this.db, this.table);
-      const provider = await sqlBuilder
-        .select()
-        .where({ ProviderId: id })
-        .firstAsync();
-      return provider;
+      const { data, error } = await supabase
+        .from(this.table)
+        .select("*")
+        .eq("id", id)
+        .single();
+      if (error) throw error;
+      return data as Provider;
     } catch (error) {
       console.error("error getProvider ", error);
       return null;
     }
   }
 
-  async addProvider(provider: Provider) {
+  async addProvider(provider: Provider): Promise<Provider | null> {
     try {
-      const sqlBuilder = new SqlBuilder<Provider>(this.db, this.table);
-      const result = await sqlBuilder.insert(provider);
-      return result;
+      const { data, error } = await supabase
+        .from(this.table)
+        .insert(provider)
+        .select()
+        .single();
+      if (error) throw error;
+      return data as Provider;
     } catch (error) {
       console.error("error addProvider ", error);
       return null;
     }
   }
 
-  async updateProvider(provider: Provider) {
+  async updateProvider(provider: Provider): Promise<Provider | null> {
     try {
-      const sqlBuilder = new SqlBuilder<Provider>(this.db, this.table);
-      const result = await sqlBuilder
+      const { data, error } = await supabase
+        .from(this.table)
         .update(provider)
-        .where({ ProviderId: provider.ProviderId })
-        .executeAsync();
-      return result as SQLiteRunResult;
+        .eq("id", provider.id)
+        .select()
+        .single();
+      if (error) throw error;
+      return data as Provider;
     } catch (error) {
       console.error("error updateProvider ", error);
       return null;
     }
   }
 
-  async deleteProvider(id: number) {
+  async deleteProvider(id: number): Promise<boolean> {
     try {
-      const sqlBuilder = new SqlBuilder<Provider>(this.db, this.table);
-      const result = await sqlBuilder.delete(id);
-      return result;
+      const { error } = await supabase.from(this.table).delete().eq("id", id);
+      if (error) throw error;
+      return true;
     } catch (error) {
       console.error("error deleteProvider ", error);
-      return null;
+      return false;
     }
   }
 }

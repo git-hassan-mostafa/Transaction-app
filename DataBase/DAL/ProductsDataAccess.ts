@@ -1,111 +1,98 @@
-import AbstractDataAccess from "./AbstractDataAccess";
-import SqlBuilder from "../Helpers/SqlBuilder";
-import { SQLiteRunResult } from "expo-sqlite";
-import Product from "../Models/Product";
-import Product_InternalDebtProduct from "@/DataBase/Models/RelationModels/Product_InternalDebtProduct";
-import {
-  ForeignKeysEnum,
-  PrimaryKeysEnum,
-  TableEnum,
-} from "../Enums/TablesEnum";
+import { TableEnum } from "../Enums/TablesEnum";
+import { Product } from "../Supabase/Models/Product";
+import { supabase } from "../Supabase/client";
 
-export default class ProductsDataAccess extends AbstractDataAccess {
+export default class ProductsDataAccess {
   table = TableEnum.Products;
-  constructor() {
-    super();
-  }
 
-  async getAllProducts() {
+  async getAllProducts(): Promise<Product[] | null> {
     try {
-      const sqlBuilder = new SqlBuilder<Product>(this.db, this.table);
-      const products = await sqlBuilder.select().executeAsync();
-      return products as Product[];
+      const { data, error } = await supabase.from(this.table).select("*");
+      if (error) throw error;
+      return data as Product[];
     } catch (error) {
       console.error("error getAllProducts", error);
       return null;
     }
   }
 
-  async getProduct(id: number) {
+  async getProduct(id: number): Promise<Product | null> {
     try {
-      const sqlBuilder = new SqlBuilder<Product>(this.db, this.table);
-      const product = await sqlBuilder
-        .select()
-        .where({ ProductId: id })
-        .firstAsync();
-      return product;
+      const { data, error } = await supabase
+        .from(this.table)
+        .select("*")
+        .eq("id", id)
+        .single();
+      if (error) throw error;
+      return data as Product;
     } catch (error) {
       console.error("error getProduct", error);
       return null;
     }
   }
 
-  async addProduct(product: Product) {
+  async addProduct(product: Product): Promise<Product | null> {
     try {
-      const sqlBuilder = new SqlBuilder<Product>(this.db, this.table);
-      const result = await sqlBuilder.insert(product);
-      return result;
+      const { data, error } = await supabase
+        .from(this.table)
+        .insert(product)
+        .select()
+        .single();
+      if (error) throw error;
+      return data as Product;
     } catch (error) {
       console.error("error addProduct", error);
       return null;
     }
   }
 
-  async updateProduct(product: Product) {
+  async updateProduct(product: Product): Promise<Product | null> {
     try {
-      const sqlBuilder = new SqlBuilder<Product>(this.db, this.table);
-      const result = await sqlBuilder
+      const { data, error } = await supabase
+        .from(this.table)
         .update(product)
-        .where({ ProductId: product.ProductId })
-        .executeAsync();
-      return result as SQLiteRunResult;
+        .eq("id", product.id)
+        .select()
+        .single();
+      if (error) throw error;
+      return data;
     } catch (error) {
       console.error("error updateProduct", error);
+      return null;
     }
   }
 
-  async updateProviderId(id: number, providerId: number) {
+  async updateProviderId(id: number, providerId: number): Promise<void> {
     try {
-      const sqlBuilder = new SqlBuilder<Product>(this.db, this.table);
-      const result = await sqlBuilder
-        .updateField("Product_ProviderId", providerId)
-        .where({ ProductId: id })
-        .executeAsync();
-      return result as SQLiteRunResult;
+      const { error } = await supabase
+        .from(this.table)
+        .update({ ProviderId: providerId })
+        .eq("id", id);
+      if (error) throw error;
     } catch (error) {
       console.error("error updateProviderId", error);
     }
   }
 
-  async deleteProduct(id: number) {
+  async deleteProduct(id: number): Promise<boolean> {
     try {
-      const sqlBuilder = new SqlBuilder<Product>(this.db, this.table);
-      const result = await sqlBuilder.delete(id);
-      return result;
+      const { error } = await supabase.from(this.table).delete().eq("id", id);
+      if (error) throw error;
+      return true;
     } catch (error) {
       console.error("error deleteProduct", error);
-      return null;
+      return false;
     }
   }
 
   async isProductUsed(id: number): Promise<boolean> {
     try {
-      const sqlBuilder = new SqlBuilder<Product_InternalDebtProduct>(
-        this.db,
-        this.table
-      );
-      const products = await sqlBuilder
-        .select(["ProductId, InternalDebtProductId"])
-        .rightJoin(
-          [this.table, TableEnum.InternalDebtProducts],
-          [
-            PrimaryKeysEnum.ProductId,
-            ForeignKeysEnum.InternalDebtProduct_ProductId,
-          ]
-        )
-        .where({ ProductId: id })
-        .firstAsync();
-      return (products as Product_InternalDebtProduct) !== null;
+      const { count, error } = await supabase
+        .from(TableEnum.InternalDebtProducts)
+        .select("id", { count: "exact", head: true })
+        .eq("productid", id);
+      if (error) throw error;
+      return (count ?? 0) > 0;
     } catch (error) {
       console.error("error isProductUsed", error);
       return false;

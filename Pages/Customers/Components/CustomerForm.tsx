@@ -13,10 +13,10 @@ export function CustomerForm(props: ICustomerFormProps) {
     <View
       style={[
         formStyle.container,
-        props.formData.customerId ? formStyle.containerWithTab : {},
+        props.formData.Id ? formStyle.containerWithTab : {},
       ]}
     >
-      {props.formData.customerId ? (
+      {props.formData.Id ? (
         <Tabs titles={[i18n.t("details"), i18n.t("borrowed-list")]}>
           <CustomerDetails {...service} />
           <CustomerDebtList {...props} />

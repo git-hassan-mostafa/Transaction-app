@@ -25,7 +25,6 @@ export default class BLLFactory {
     return new InternalDebtManager(
       DALFactory.InternalDebtsDataAccess(),
       DALFactory.InternalDebtsProductsDataAccess(),
-      DALFactory.CustomerDataAccess(),
       HelpersFactory.Mapper()
     );
   }

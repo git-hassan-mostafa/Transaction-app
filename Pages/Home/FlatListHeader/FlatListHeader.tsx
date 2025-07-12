@@ -5,7 +5,8 @@ import { ThemedText } from "@/Shared/Components/ThemedText";
 import { LinearGradient } from "expo-linear-gradient";
 import i18n from "@/Shared/I18n/I18n";
 import Icon from "react-native-vector-icons/AntDesign";
-export default function FlatListHeader() {
+import React from "react";
+function FlatListHeader() {
   const serice = useFlatListHeaderService();
   return (
     <LinearGradient
@@ -43,3 +44,5 @@ export default function FlatListHeader() {
     </LinearGradient>
   );
 }
+
+export default React.memo(FlatListHeader);

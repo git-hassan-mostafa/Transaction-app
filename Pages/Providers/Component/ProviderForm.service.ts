@@ -34,19 +34,19 @@ export default function useEditProviderService(props: IProviderFormProps) {
 
   function setProviderName(value: string) {
     setProvider((prev) => {
-      return { ...prev, providerName: value };
+      return { ...prev, Name: value };
     });
   }
 
   function setProviderPhoneNumber(value: string) {
     setProvider((prev) => {
-      return { ...prev, providerPhoneNumber: value };
+      return { ...prev, PhoneNumber: value };
     });
   }
 
   function setProviderNotes(value: string) {
     setProvider((prev) => {
-      return { ...prev, providerNotes: value };
+      return { ...prev, Notes: value };
     });
   }
 
@@ -55,14 +55,14 @@ export default function useEditProviderService(props: IProviderFormProps) {
   }
 
   function validateProvider(provider: IProvider) {
-    if (!provider.providerName) {
+    if (!provider.Name) {
       setValidation({
         visible: true,
         text: i18n.t("please-enter-provider-name"),
       });
       return false;
     }
-    if (!provider.providerPhoneNumber) {
+    if (!provider.PhoneNumber) {
       setValidation({
         visible: true,
         text: i18n.t("enter-phone-number"),

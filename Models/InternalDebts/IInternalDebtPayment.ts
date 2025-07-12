@@ -1,6 +1,11 @@
+import IInternalDebt from "./IInternalDebts";
+
 export default interface IInternalDebtPayment {
-  internalDebtPaymentId: number;
-  internalDebtPaymentAmount: number;
-  internalDebtPaymentDate: string;
-  internalDebtPayment_InternalDebtId: number;
+  Id: number;
+  Amount: number;
+  Date: string;
+  InternalDebtId: number;
+
+  // Relations
+  InternalDebt?: IInternalDebt;
 }

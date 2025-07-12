@@ -1,12 +1,9 @@
 import useGlobalContext from "@/Shared/Context/ContextProvider";
-import { ICustomer_IInnternalDebt } from "@/Models/RelationModels/ICustomer_IInnternalDebt";
 import { useEffect, useState } from "react";
 import { Alert } from "react-native";
 import i18n from "@/Shared/I18n/I18n";
-import SortList from "@/Shared/Helpers/Functions/SortList";
 import useService from "@/Shared/Context/ServiceProvider";
 import IFormModalType from "@/Shared/Types/IEditModalType";
-import IInternalDebtProduct_IInternalDebt_IProduct from "@/Models/RelationModels/IInternalDebtProduct_IInternalDebt_IProduct";
 import IInternalDebt from "@/Models/InternalDebts/IInternalDebts";
 
 export default function useInternalDebtsService() {
@@ -14,69 +11,42 @@ export default function useInternalDebtsService() {
   const { internalDebtManager } = useService();
 
   //states
-  const [internalDebts, setInternalDebts] = useState<
-    ICustomer_IInnternalDebt[]
-  >([]);
-  const [internalDebtsProducts, setInternalDebtsProducts] = useState<
-    IInternalDebtProduct_IInternalDebt_IProduct[]
-  >([]);
-
+  const [internalDebts, setInternalDebts] = useState<IInternalDebt[]>([]);
   const [modalOptions, setModalOptions] = useState<
     IFormModalType<IInternalDebt>
   >({
     visible: false,
     formData: {} as IInternalDebt,
   });
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+
   // context
   const context = useGlobalContext();
 
   //constructor
   useEffect(() => {
-    constructor();
+    fetchAllInternalerDebts();
   }, []);
 
-  useEffect(() => {
-    setInternalDebtsTotoalPriceSum();
-  }, [internalDebtsProducts]);
-
-  async function constructor() {
-    await Promise.all([
-      fetchAllInternalerDebts(),
-      fetchAllInternalDebtsProducts(),
-    ]);
-  }
-
   async function fetchAllInternalerDebts() {
+    setIsLoading(true);
     const internalDebtsDB = await internalDebtManager.getAllInternalDebts();
     setInternalDebts(internalDebtsDB);
-  }
-
-  async function fetchAllInternalDebtsProducts() {
-    const internalDebtsProductsDB =
-      await internalDebtManager.getAllInternalDebtsProducts();
-    setInternalDebtsProducts(internalDebtsProductsDB);
+    setIsLoading(false);
   }
 
   async function save(
     internalDebt: IInternalDebt,
-    internalDebtsProducts: IInternalDebtProduct_IInternalDebt_IProduct[],
     validationCallback: (internalDebt: IInternalDebt) => boolean
   ) {
     if (!validationCallback(internalDebt)) return;
 
-    if (internalDebt.internalDebtId)
-      updateInternalDebt(internalDebt, internalDebtsProducts);
-    else addInternalDebt(internalDebt, internalDebtsProducts);
+    if (internalDebt.Id) updateInternalDebt(internalDebt);
+    else addInternalDebt(internalDebt);
   }
 
-  async function addInternalDebt(
-    internalDebt: IInternalDebt,
-    internalDebtsProducts: IInternalDebtProduct_IInternalDebt_IProduct[]
-  ) {
-    const result = await internalDebtManager.addInternalDebt(
-      internalDebt,
-      internalDebtsProducts
-    );
+  async function addInternalDebt(internalDebt: IInternalDebt) {
+    const result = await internalDebtManager.addInternalDebt(internalDebt);
 
     if (!result.success && result.message) {
       return context.toggleSnackBar({
@@ -99,14 +69,8 @@ export default function useInternalDebtsService() {
     }
   }
 
-  async function updateInternalDebt(
-    internalDebt: IInternalDebt,
-    internalDebtsProducts: IInternalDebtProduct_IInternalDebt_IProduct[]
-  ) {
-    const result = await internalDebtManager.updateInternalDebt(
-      internalDebt,
-      internalDebtsProducts
-    );
+  async function updateInternalDebt(internalDebt: IInternalDebt) {
+    const result = await internalDebtManager.updateInternalDebt(internalDebt);
     if (!result.success && result.message) {
       return context.toggleSnackBar({
         visible: true,
@@ -123,14 +87,14 @@ export default function useInternalDebtsService() {
     });
   }
 
-  async function addToInternalDebtsList(debt: ICustomer_IInnternalDebt) {
+  async function addToInternalDebtsList(debt: IInternalDebt) {
     setInternalDebts((prev) => [...prev, debt]);
   }
 
-  async function updateFromInternalDebtsList(value: ICustomer_IInnternalDebt) {
+  async function updateFromInternalDebtsList(value: IInternalDebt) {
     setInternalDebts((prev) =>
       prev.map((internalDebt) =>
-        internalDebt.internalDebtId === value.internalDebtId
+        internalDebt.Id === value.Id
           ? { ...internalDebt, ...value }
           : internalDebt
       )
@@ -169,19 +133,7 @@ export default function useInternalDebtsService() {
   }
 
   function deleteFromInternalDebtsList(id: number) {
-    setInternalDebts((prev) => prev.filter((c) => c.internalDebtId !== id));
-  }
-
-  function setInternalDebtsTotoalPriceSum() {
-    setInternalDebts((prev) => {
-      return prev.map((debt): ICustomer_IInnternalDebt => {
-        const products = internalDebtsProducts.filter(
-          (product) => product.internalDebtId === debt.internalDebtId
-        );
-        const totalPrice = internalDebtManager.getTotalPricesSum(products);
-        return { ...debt, internalDebtTotalPrice: totalPrice };
-      });
-    });
+    setInternalDebts((prev) => prev.filter((c) => c.Id !== id));
   }
 
   async function onEdit(formData: IInternalDebt) {
@@ -195,6 +147,7 @@ export default function useInternalDebtsService() {
   return {
     internalDebts,
     modalOptions,
+    isLoading,
     toggleModal,
     addToInternalDebtsList,
     deleteFromInternalDebtsList,

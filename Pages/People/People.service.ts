@@ -1,6 +1,6 @@
 import useGlobalContext from "@/Shared/Context/ContextProvider";
 import { PeopleDataAccess } from "@/DataBase/DAL/PeopleDataAccess";
-import Mapper from "@/Shared/Helpers/MapService";
+import Mapper from "@/Shared/Helpers/Mapper";
 import SortList from "@/Shared/Helpers/Functions/SortList";
 import i18n from "@/Shared/I18n/I18n";
 import IPerson from "@/Models/People/IPerson";
@@ -19,6 +19,7 @@ export default function usePeopleService() {
     visible: false,
     formData: {} as IPerson,
   });
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   // context
   const context = useGlobalContext();
@@ -29,9 +30,11 @@ export default function usePeopleService() {
   }, []);
 
   async function fetchAllPeople() {
+    setIsLoading(true);
     const peopleDB = await peopleManager.getAllPeople();
     if (!peopleDB) return;
     setPeople(peopleDB);
+    setIsLoading(false);
   }
 
   async function save(
@@ -39,7 +42,7 @@ export default function usePeopleService() {
     validationCallback: (person: IPerson) => boolean
   ) {
     if (!validationCallback(person)) return;
-    if (person.id) await updatePerson(person);
+    if (person.Id) await updatePerson(person);
     else await addPerson(person);
   }
 
@@ -51,8 +54,7 @@ export default function usePeopleService() {
         text: result.message,
         type: "error",
       });
-    person.id = result.data;
-    addToPeopleList(person);
+    addToPeopleList(result.data);
     toggleModal();
     context.toggleSnackBar({
       visible: true,
@@ -85,13 +87,13 @@ export default function usePeopleService() {
   function updateFromPeopleList(value: IPerson) {
     setPeople((prev) =>
       prev.map((person) =>
-        person.id === value.id ? { ...person, ...value } : person
+        person.Id === value.Id ? { ...person, ...value } : person
       )
     );
   }
 
   function deleteFromPeopleList(id: number) {
-    setPeople((prev) => prev.filter((c) => c.id !== id));
+    setPeople((prev) => prev.filter((c) => c.Id !== id));
   }
 
   function handleDeletePerson(id: number) {
@@ -135,6 +137,7 @@ export default function usePeopleService() {
   return {
     people,
     modalOptions,
+    isLoading,
     addToPeopleList,
     deleteFromPeopleList,
     updateFromPeopleList,

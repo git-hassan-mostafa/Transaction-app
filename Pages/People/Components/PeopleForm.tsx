@@ -19,7 +19,7 @@ export default function PeopleForm(props: IPeopleFormProps) {
           style={formStyle.input}
           placeholder={i18n.t("please-enter-the-name")}
           placeholderTextColor="#999"
-          value={service.person.personName}
+          value={service.person.Name}
           onChangeText={service.setPersonName}
         />
       </View>
@@ -32,7 +32,7 @@ export default function PeopleForm(props: IPeopleFormProps) {
           style={formStyle.input as StyleProp<TextStyle>}
           placeholder={i18n.t("please-enter-the-phone-number")}
           placeholderTextColor="#999"
-          value={service.person.personPhoneNumber}
+          value={service.person.PhoneNumber}
           keyboardType="phone-pad"
           textContentType="telephoneNumber"
           onChangeText={service.setPersonPhoneNumber}

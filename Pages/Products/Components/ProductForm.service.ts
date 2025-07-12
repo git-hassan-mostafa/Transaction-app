@@ -41,41 +41,40 @@ export default function useProductFormService(props: IProductFormProps) {
 
   async function getAllProviders() {
     const providers = await productManager.getAllProviders();
-    setProviders([
-      { label: "", value: undefined },
-      ...(providers?.map((p) => {
-        return { label: p.providerName, value: p.providerId };
-      }) as IDropDownItem[]),
-    ]);
+    setProviders(
+      providers?.map((p) => {
+        return { label: p.Name, value: p.Id };
+      }) as IDropDownItem[]
+    );
   }
 
   function setProductName(value: string) {
-    setProduct((prev) => {
-      return { ...prev, productName: value };
+    setProduct((prev): IProduct => {
+      return { ...prev, Name: value };
     });
   }
 
   function setProductQuantity(value: string) {
-    setProduct((prev) => {
-      return { ...prev, productQuantity: Number(value).toString() };
+    setProduct((prev): IProduct => {
+      return { ...prev, Quantity: Number(value).toString() };
     });
   }
 
   function setProductPrice(value: string) {
-    setProduct((prev) => {
-      return { ...prev, productPrice: value };
+    setProduct((prev): IProduct => {
+      return { ...prev, Price: value };
     });
   }
 
   function setProvider(providerId: number) {
-    setProduct((prev) => {
-      return { ...prev, product_ProviderId: providerId };
+    setProduct((prev): IProduct => {
+      return { ...prev, ProviderId: providerId };
     });
   }
 
   function setProductNotes(value: string) {
-    setProduct((prev) => {
-      return { ...prev, productNotes: value };
+    setProduct((prev): IProduct => {
+      return { ...prev, Notes: value };
     });
   }
 
@@ -84,21 +83,21 @@ export default function useProductFormService(props: IProductFormProps) {
   }
 
   function validateProduct(product: IProduct) {
-    if (!product.productName) {
+    if (!product.Name) {
       setValidation({
         visible: true,
         text: i18n.t("please-enter-product-name"),
       });
       return false;
     }
-    if (!product.productPrice) {
+    if (!product.Price) {
       setValidation({
         visible: true,
         text: i18n.t("please-enter-product-price"),
       });
       return false;
     }
-    if (!product.productQuantity) {
+    if (!product.Quantity) {
       setValidation({
         visible: true,
         text: i18n.t("please-enter-product-quantity"),

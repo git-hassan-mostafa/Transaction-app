@@ -9,19 +9,13 @@ import InternalDebtDetails from "./InternalDebtDetails/InternalDebtDetails";
 import { IInternalDebtFormProps } from "@/Models/InternalDebts/IInternalDebtsFormProps";
 
 export default function InternalDebtForm(props: IInternalDebtFormProps) {
-  const internalDebtsProductsListService =
-    useInternalDebtProductsListService(props);
-
-  const internalDebtDetailsService = useInternalDebtDetailsService({
-    ...props,
-    internalDebtsProductsListService,
-  });
-
+  const detailsService = useInternalDebtDetailsService(props);
+  const listService = useInternalDebtProductsListService(detailsService);
   return (
     <View style={[formStyle.container, formStyle.containerWithTab]}>
       <Tabs titles={[i18n.t("details"), i18n.t("products-list")]}>
-        <InternalDebtDetails {...internalDebtDetailsService} />
-        <InternalDebtProductsList {...internalDebtsProductsListService} />
+        <InternalDebtDetails {...detailsService} />
+        <InternalDebtProductsList {...listService} />
       </Tabs>
     </View>
   );

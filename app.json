@@ -31,7 +31,8 @@
       },
       "package": "com.transactionapp",
       "allowBackup": true,
-      "supportsRtl": true
+      "supportsRtl": true,
+      "usesCleartextTraffic": true
     },
     "web": {
       "bundler": "metro",
@@ -49,7 +50,6 @@
           "backgroundColor": "#ffffff"
         }
       ],
-      "expo-sqlite",
       "expo-localization"
     ],
     "extra": {

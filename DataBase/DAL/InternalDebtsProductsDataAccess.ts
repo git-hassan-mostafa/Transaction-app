@@ -1,156 +1,66 @@
-import AbstractDataAccess from "./AbstractDataAccess";
-import SqlBuilder from "../Helpers/SqlBuilder";
-import InternalDebtProduct from "../Models/InternalDebtProduct";
-import InternalDebtProduct_InternalDebt_Product from "../Models/RelationModels/InternalDebtProduct_InternalDebt_Product";
-import {
-  ForeignKeysEnum,
-  PrimaryKeysEnum,
-  TableEnum,
-} from "../Enums/TablesEnum";
+import { supabase } from "../Supabase/client";
+import { TableEnum } from "../Enums/TablesEnum";
+import { InternalDebtProduct } from "../Supabase/Models/InternalDebtProduct";
 
-export default class InternalDebtsProductsDataAccess extends AbstractDataAccess {
+export default class InternalDebtsProductsDataAccess {
   table = TableEnum.InternalDebtProducts;
-  constructor() {
-    super();
-  }
 
-  async getAllInternalDebtProducts() {
+  // async getAllInternalDebtProducts(): Promise<InternalDebtProduct[] | null> {
+  //   try {
+  //     const { data, error } = await supabase.from(this.table).select("*");
+  //     if (error) throw error;
+  //     return data as InternalDebtProduct[];
+  //   } catch (error) {
+  //     console.error("error getInternalDebtProducts", error);
+  //     return null;
+  //   }
+  // }
+
+  async getInternalDebtProducts(
+    internalDebtId: number
+  ): Promise<InternalDebtProduct[] | null> {
     try {
-      const sqlBuilder =
-        new SqlBuilder<InternalDebtProduct_InternalDebt_Product>(
-          this.db,
-          this.table
-        );
-      const products = await sqlBuilder
-        .select()
-        .leftJoin(
-          [this.table, TableEnum.InternalDebts],
-          [
-            ForeignKeysEnum.InternalDebtProduct_InternalDebtId,
-            PrimaryKeysEnum.InternalDebtId,
-          ]
-        )
-        .leftJoin(
-          [this.table, TableEnum.Products],
-          [
-            ForeignKeysEnum.InternalDebtProduct_ProductId,
-            PrimaryKeysEnum.ProductId,
-          ]
-        )
-        .executeAsync();
-      return products;
+      const { data, error } = await supabase
+        .from(this.table)
+        .select("*")
+        .eq("internaldebtid", internalDebtId);
+      if (error) throw error;
+      return data as InternalDebtProduct[];
     } catch (error) {
       console.error("error getInternalDebtProducts", error);
       return null;
     }
   }
 
-  async getInternalDebtProducts(internalDebtId: number) {
+  async addInternalDebtProducts(
+    internalDebtProducts: Partial<InternalDebtProduct>[]
+  ): Promise<InternalDebtProduct[] | null> {
     try {
-      const sqlBuilder =
-        new SqlBuilder<InternalDebtProduct_InternalDebt_Product>(
-          this.db,
-          this.table
-        );
-      const products = await sqlBuilder
-        .select()
-        .leftJoin(
-          [this.table, TableEnum.InternalDebts],
-          [
-            ForeignKeysEnum.InternalDebtProduct_InternalDebtId,
-            PrimaryKeysEnum.InternalDebtId,
-          ]
-        )
-        .leftJoin(
-          [this.table, TableEnum.Products],
-          [
-            ForeignKeysEnum.InternalDebtProduct_ProductId,
-            PrimaryKeysEnum.ProductId,
-          ]
-        )
-        .where({
-          [`${this.table}.InternalDebtProduct_InternalDebtId`]: internalDebtId,
-        })
-        .executeAsync();
-      return products;
-    } catch (error) {
-      console.error("error getInternalDebtProducts", error);
-      return null;
-    }
-  }
-
-  async getAllInternalDebtsProductsList() {
-    try {
-      const sqlBuilder =
-        new SqlBuilder<InternalDebtProduct_InternalDebt_Product>(
-          this.db,
-          this.table
-        );
-      const products = await sqlBuilder
-        .select()
-        .leftJoin(
-          [this.table, TableEnum.InternalDebts],
-          [
-            ForeignKeysEnum.InternalDebtProduct_InternalDebtId,
-            PrimaryKeysEnum.InternalDebtId,
-          ]
-        )
-        .leftJoin(
-          [this.table, TableEnum.Products],
-          [
-            ForeignKeysEnum.InternalDebtProduct_ProductId,
-            PrimaryKeysEnum.ProductId,
-          ]
-        )
-        .executeAsync();
-      return products;
-    } catch (error) {
-      console.error("error getAllInternalDebtsProductsList", error);
-      return null;
-    }
-  }
-
-  async addInternalDebtProduct(
-    internalDebtProducts: Partial<InternalDebtProduct>
-  ) {
-    try {
-      const sqlBuilder = new SqlBuilder<InternalDebtProduct>(
-        this.db,
-        this.table
-      );
-      const result = await sqlBuilder.insert(internalDebtProducts);
-      return result;
+      const { data, error } = await supabase
+        .from(this.table)
+        .insert(internalDebtProducts)
+        .select("*, products(*)");
+      if (error) throw error;
+      return data as InternalDebtProduct[];
     } catch (error) {
       console.error("error addInternalDebtProducts", error);
       return null;
     }
   }
 
-  async addInternalDebtProducts(internalDebtProducts: InternalDebtProduct[]) {
+  async deleteInternalDebtProducts(
+    internalDebtProductIds: number[]
+  ): Promise<boolean> {
     try {
-      const sqlBuilder = new SqlBuilder<InternalDebtProduct>(
-        this.db,
-        this.table
-      );
-      const result = await sqlBuilder.insertAll(internalDebtProducts);
-      return result;
-    } catch (error) {
-      console.error("error addInternalDebtProducts", error);
-      return null;
-    }
-  }
-
-  async deleteInternalDebtProducts(internalDebtProductIds: number[]) {
-    try {
-      const sqlBuilder = new SqlBuilder<InternalDebtProduct>(
-        this.db,
-        this.table
-      );
-      const result = await sqlBuilder.deleteAll(internalDebtProductIds);
-      return result;
+      const { error } = await supabase
+        .from(this.table)
+        .delete()
+        .in("id", internalDebtProductIds);
+      if (error) throw error;
+      return true;
     } catch (error) {
       console.error("error deleteInternalDebtProduct", error);
-      return null;
+      return false;
     }
   }
 }

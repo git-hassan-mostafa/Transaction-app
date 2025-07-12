@@ -1,10 +1,9 @@
 import CustomerDataAccess from "../../../DataBase/DAL/CustomersDataAccess";
-import Mapper from "../../../Shared/Helpers/MapService";
-import { ICustomer_IInternalDebt_IInternalDebtProduct_IProduct } from "../../../Models/RelationModels/ICustomer_IInternalDebt_IInternalDebtProduct_IProduct";
-import Customer from "../../../DataBase/Models/Customer";
+import Mapper from "../../../Shared/Helpers/Mapper";
 import i18n from "../../../Shared/I18n/I18n";
 import { IResultType } from "@/Shared/Types/IResultType";
 import ICustomer from "@/Models/Customers/ICustomer";
+import { Customer } from "@/DataBase/Supabase/Models/Customer";
 
 export default class CustomerManager {
   constructor(
@@ -12,29 +11,18 @@ export default class CustomerManager {
     private mapper: Mapper
   ) {}
 
-  async getAllCustomers(): Promise<ICustomer[]> {
-    const customersDB = await this.customerDataAccess.getAllCustomers();
-    if (!customersDB) return [];
-    const customers = this.mapper.mapToICustomerAll(customersDB);
-    return customers;
-  }
-
-  async getAllCustomersCalculated(): Promise<ICustomer[]> {
-    const customersDB = await this.customerDataAccess.getAllCustomers();
-    if (!customersDB) return [];
-    const borrowedList = await this.getAllCustomersBorrowedList();
-    const mappedCustomers = this.mapper.mapToICustomerAll(customersDB);
-    mappedCustomers?.forEach((c) => {
-      const borrowed = borrowedList.filter(
-        (b) => b.customerId === c.customerId
+  async getAllCustomers(withDebts: boolean = true): Promise<ICustomer[]> {
+    try {
+      const customersDB = await this.customerDataAccess.getAllCustomers(
+        withDebts
       );
-      if (borrowed) {
-        c.customerBorrowedPrice = this.getBorrowedPrice(borrowed);
-      } else {
-        c.customerBorrowedPrice = 0;
-      }
-    });
-    return mappedCustomers;
+      if (!customersDB) return [];
+      const customers = this.mapper.mapToICustomerAll(customersDB);
+      return customers;
+    } catch (error) {
+      console.error("Error CustomerManager.getAllCustomers", error);
+      return [];
+    }
   }
 
   async getCustomer(id: number): Promise<ICustomer> {
@@ -44,101 +32,59 @@ export default class CustomerManager {
     return customer;
   }
 
-  async getCustomerBorrowList(
-    id: number
-  ): Promise<ICustomer_IInternalDebt_IInternalDebtProduct_IProduct[]> {
-    const borrowListDB = await this.customerDataAccess.getCustomerBorrowList(
-      id
-    );
-    const mappedBorrowList =
-      borrowListDB?.map((b) => {
-        const result =
-          this.mapper.mapTo_IICustomer_IInerDebt_IInternalDebtProduct_IProduct(
-            b
-          );
-        result.internalDebtProductTotalPrice =
-          Number(result.productPrice) * result.internalDebtProductQuantity;
-        return result;
-      }) || [];
-    return mappedBorrowList;
-  }
-
-  async getAllCustomersBorrowedList(): Promise<
-    ICustomer_IInternalDebt_IInternalDebtProduct_IProduct[]
-  > {
-    const borrowListDB =
-      await this.customerDataAccess.getAllCustomersBorrowList();
-    const mappedBorrowList =
-      borrowListDB?.map((b) => {
-        const result =
-          this.mapper.mapTo_IICustomer_IInerDebt_IInternalDebtProduct_IProduct(
-            b
-          );
-        result.internalDebtProductTotalPrice =
-          Number(result.productPrice) * result.internalDebtProductQuantity;
-        return result;
-      }) || [];
-    return mappedBorrowList;
-  }
-
-  getBorrowedPrice(
-    borrowedList: ICustomer_IInternalDebt_IInternalDebtProduct_IProduct[]
-  ): number {
-    const sum = borrowedList.reduce((sum, item) => {
-      return sum + item.internalDebtProductTotalPrice;
+  async getTotalCustomersBorrowedPriceAsync(): Promise<number> {
+    const allCustomers = await this.getAllCustomers();
+    return allCustomers.reduce((sum, customer) => {
+      return sum + customer.BorrowedPrice;
     }, 0);
-    return sum;
   }
 
-  async addCustomer(customer: ICustomer): Promise<IResultType<number>> {
+  async addCustomer(customer: ICustomer): Promise<IResultType<ICustomer>> {
     const newCustomer: Customer = this.mapper.mapToCustomer(customer);
     const result = await this.customerDataAccess.addCustomer(newCustomer);
-    if (!result || !result.lastInsertRowId) {
+    if (!result) {
       return {
         success: false,
-        data: -1,
+        data: {} as ICustomer,
         message: i18n.t("failed-to-add-customer"),
       };
     }
-    customer.customerId = result?.lastInsertRowId || -1;
-    customer.customerBorrowedPrice = 0;
-    customer.customerPayedPrice = 0;
     return {
       success: true,
-      data: result.lastInsertRowId,
+      data: this.mapper.mapToICustomer(result),
       message: i18n.t("customer-added-successfully"),
     };
   }
 
-  async updateCustomer(customer: ICustomer): Promise<IResultType<number>> {
+  async updateCustomer(customer: ICustomer): Promise<IResultType<ICustomer>> {
     const updatedCustomer: Customer = this.mapper.mapToCustomer(customer);
     const result = await this.customerDataAccess.updateCustomer(
       updatedCustomer
     );
-    if (!result || !result.changes)
+    if (!result)
       return {
         success: false,
-        data: 0,
+        data: {} as ICustomer,
         message: i18n.t("error-updating-customer"),
       };
     return {
       success: true,
-      data: result.changes,
+      data: this.mapper.mapToICustomer(result),
       message: i18n.t("customer-updated-successfully"),
     };
   }
 
-  async deleteCustomer(id: number): Promise<IResultType<number>> {
+  async deleteCustomer(id: number): Promise<IResultType<boolean>> {
     const result = await this.customerDataAccess.deleteCustomer(id);
-    if (!result || !result.changes)
+    if (!result)
       return {
         success: false,
-        data: 0,
+        data: result,
         message: i18n.t("error-deleting-customer"),
       };
     return {
       success: true,
-      data: result.changes,
+      data: result,
       message: i18n.t("customer-deleted-successfully"),
     };
   }

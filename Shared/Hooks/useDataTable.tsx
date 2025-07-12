@@ -9,7 +9,7 @@ export default function useDataTable<T>(data: T[]) {
   );
 
   const from = page * itemsPerPage;
-  const to = Math.min((page + 1) * itemsPerPage, data.length);
+  const to = Math.min((page + 1) * itemsPerPage, data?.length);
 
   useEffect(() => {
     setPage(0);
@@ -19,9 +19,9 @@ export default function useDataTable<T>(data: T[]) {
     return (
       <DataTable.Pagination
         page={page}
-        numberOfPages={Math.ceil(data.length / itemsPerPage)}
+        numberOfPages={Math.ceil(data?.length / itemsPerPage)}
         onPageChange={(page) => setPage(page)}
-        label={`${from + 1} - ${to} of ${data.length}`}
+        label={`${from + 1} - ${to} of ${data?.length}`}
         numberOfItemsPerPageList={numberOfItemsPerPageList}
         numberOfItemsPerPage={itemsPerPage}
         onItemsPerPageChange={onItemsPerPageChange}

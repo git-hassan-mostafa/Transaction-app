@@ -1,54 +1,33 @@
 import IDropDownItem from "@/Shared/Types/IDropDownItem";
 import IProduct from "@/Models/Products/IProduct";
-import IInternalDebtProduct_IInternalDebt_IProduct from "@/Models/RelationModels/IInternalDebtProduct_IInternalDebt_IProduct";
 import i18n from "@/Shared/I18n/I18n";
 import { useEffect, useState } from "react";
 import { Alert } from "react-native";
 import useService from "@/Shared/Context/ServiceProvider";
-import IInternalDebtsProductsListProps from "@/Models/InternalDebts/IInternalDebtsProductsListProps";
-import { IInternalDebtFormProps } from "@/Models/InternalDebts/IInternalDebtsFormProps";
+import IInternalDebtsProductsListService from "@/Models/InternalDebts/IInternalDebtsProductsListService";
+import IInternalDebtProduct from "@/Models/InternalDebts/IInternalDebtProduct";
+import { IInternalDebtsProductsListServiceProps } from "@/Models/InternalDebts/IInternalDebtsFormServiceProps";
 
 export default function useInternalDebtProductsListService(
-  props: IInternalDebtFormProps
-): IInternalDebtsProductsListProps {
+  props: IInternalDebtsProductsListServiceProps
+): IInternalDebtsProductsListService {
   //managers
-  const { internalDebtManager, productManager } = useService();
+  const { productManager } = useService();
 
   //states
   const [products, setProducts] = useState<IProduct[]>([]);
   const [dropDownItems, setDropDownProducts] = useState<IDropDownItem[]>([]);
-  const [internalDebtsProducts, setInternalDebtsProducts] = useState<
-    IInternalDebtProduct_IInternalDebt_IProduct[]
-  >([]);
 
   const [showAddProduct, setShowAddProduct] = useState(false);
-  var newInternalDebtsProduct: IInternalDebtProduct_IInternalDebt_IProduct =
-    {} as IInternalDebtProduct_IInternalDebt_IProduct;
+  var newInternalDebtsProduct: IInternalDebtProduct =
+    {} as IInternalDebtProduct;
 
   useEffect(() => {
     fetchAllData();
-
-    return () => {
-      props.dirtyChecker.dispose();
-    };
   }, []);
 
-  useEffect(() => {
-    props.dirtyChecker.pushToCurrentRelated(internalDebtsProducts);
-  }, [internalDebtsProducts]);
-
   async function fetchAllData() {
-    await Promise.all([fetchAllProducts(), fetchAllInternalDebtsProducts()]);
-  }
-
-  async function fetchAllInternalDebtsProducts() {
-    if (!props.formData.internalDebtId) return;
-    const internalDebtsProductsDB =
-      await internalDebtManager.getInternalDebtsProducts(
-        props.formData.internalDebtId
-      );
-    props.dirtyChecker.pushToOriginalRelated(internalDebtsProductsDB);
-    setInternalDebtsProducts(internalDebtsProductsDB);
+    await fetchAllProducts();
   }
 
   async function fetchAllProducts() {
@@ -58,14 +37,14 @@ export default function useInternalDebtProductsListService(
     setDropDownProducts(dropDownProducts);
   }
 
-  function setNewProductQuantity(value: string) {
-    newInternalDebtsProduct.internalDebtProductQuantity = Number(value);
+  function setInternalProductQuantity(value: string) {
+    newInternalDebtsProduct.Quantity = Number(value);
   }
 
   function setInternalDebtsProduct(id: number) {
-    const Product = products.find((i) => i.productId === id);
-    newInternalDebtsProduct.internalDebtProduct_ProductId = id;
-    newInternalDebtsProduct.productName = Product?.productName || "";
+    const product = products.find((i) => i.Id === id);
+    newInternalDebtsProduct.ProductId = id;
+    newInternalDebtsProduct.Product = product;
   }
 
   function toggleAddProduct(value: boolean) {
@@ -73,29 +52,24 @@ export default function useInternalDebtProductsListService(
   }
 
   async function handleAddProduct() {
-    if (
-      !newInternalDebtsProduct.productName ||
-      !newInternalDebtsProduct.internalDebtProductQuantity
-    )
+    if (!newInternalDebtsProduct.Product || !newInternalDebtsProduct.Quantity)
       return;
     const currentProduct = products.find(
-      (i) =>
-        i.productId === newInternalDebtsProduct.internalDebtProduct_ProductId
+      (i) => i.Id === newInternalDebtsProduct.ProductId
     );
-    newInternalDebtsProduct.isNew = true;
-    newInternalDebtsProduct.internalDebtProductId = Date.now();
-    if (props.formData.internalDebtId) {
-      newInternalDebtsProduct.internalDebtProduct_InternalDebtId =
-        props.formData.internalDebtId;
+    newInternalDebtsProduct.IsNew = true;
+    newInternalDebtsProduct.Id = Date.now();
+    if (props.internalDebt.Id) {
+      newInternalDebtsProduct.InternalDebtId = props.internalDebt.Id;
     }
-    newInternalDebtsProduct.internalDebtProductTotalPrice =
-      newInternalDebtsProduct.internalDebtProductQuantity *
-      (Number(currentProduct?.productPrice) || 0);
+    newInternalDebtsProduct.TotalPrice =
+      newInternalDebtsProduct.Quantity * (Number(currentProduct?.Price) || 0);
 
     if (!handleExistingProduct()) {
-      setInternalDebtsProducts((prev) => [...prev, newInternalDebtsProduct]);
+      props.addInternalDebtProduct(newInternalDebtsProduct);
     }
 
+    newInternalDebtsProduct = {} as IInternalDebtProduct;
     setShowAddProduct(false);
   }
 
@@ -116,56 +90,38 @@ export default function useInternalDebtProductsListService(
     );
   }
 
-  async function deleteInternalDebtProduct(id: number) {
-    return setInternalDebtsProducts((prev) =>
-      prev.filter((i) => i.internalDebtProductId !== id)
-    );
+  function deleteInternalDebtProduct(id: number) {
+    props.deleteInternalDebtProduct(id);
   }
 
   function handleExistingProduct() {
     const currentProduct = products.find(
-      (i) =>
-        i.productId === newInternalDebtsProduct.internalDebtProduct_ProductId
+      (i) => i.Id === newInternalDebtsProduct.ProductId
     );
-    const productAlreadyExists = internalDebtsProducts.some(
-      (i) => i.internalDebtProduct_ProductId === currentProduct?.productId
-    );
-    if (productAlreadyExists) {
-      setInternalDebtsProducts((prev) => {
-        const existingProduct = prev.find(
-          (i) => i.internalDebtProduct_ProductId === currentProduct?.productId
-        );
-        const newProduct = existingProduct;
-        if (!newProduct) return prev;
-        newProduct.internalDebtProductQuantity +=
-          newInternalDebtsProduct.internalDebtProductQuantity;
-        newProduct.internalDebtProductTotalPrice =
-          newProduct.internalDebtProductTotalPrice +
-          newInternalDebtsProduct.internalDebtProductQuantity *
-            (Number(currentProduct?.productPrice) || 0);
-        const result = [
-          ...prev.filter(
-            (i) => i.internalDebtProduct_ProductId !== currentProduct?.productId
-          ),
-          newProduct,
-        ];
-        return result;
-      });
+    const existingProduct = (
+      props.internalDebt.InternalDebtProducts || []
+    ).find((i) => i.ProductId === currentProduct?.Id);
+    if (existingProduct) {
+      existingProduct.Quantity += newInternalDebtsProduct.Quantity;
+      existingProduct.TotalPrice =
+        existingProduct.TotalPrice +
+        newInternalDebtsProduct.Quantity * (Number(currentProduct?.Price) || 0);
+      props.updateInternalDebtProduct(existingProduct);
       Alert.alert(
         i18n.t("warning"),
         i18n.t("product-alreadyexists-quantity-updated")
       );
     }
-    return productAlreadyExists;
+    return !!existingProduct;
   }
 
   return {
+    internalDebt: props.internalDebt,
     products,
     dropDownItems,
-    internalDebtsProducts,
     newInternalDebtsProduct,
     setInternalDebtsProduct,
-    setNewProductQuantity,
+    setInternalProductQuantity,
     showAddProduct,
     handleAddProduct,
     toggleAddProduct,

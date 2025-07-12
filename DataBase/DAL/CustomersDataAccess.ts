@@ -1,28 +1,31 @@
-import AbstractDataAccess from "./AbstractDataAccess";
-import Customer from "../Models/Customer";
-import SqlBuilder from "../Helpers/SqlBuilder";
-import { SQLiteRunResult } from "expo-sqlite";
-import Customer_InternalDebt_InternalDebtProduct_Product from "../Models/RelationModels/Customer_InternalDebt_InternalDebtProduct_Product";
-import {
-  ForeignKeysEnum,
-  PrimaryKeysEnum,
-  TableEnum,
-} from "../Enums/TablesEnum";
+import { TableEnum } from "../Enums/TablesEnum";
+import { supabase } from "../Supabase/client";
+import { Customer } from "../Supabase/Models/Customer";
 
-export default class CustomerDataAccess extends AbstractDataAccess {
+export default class CustomerDataAccess {
   table = TableEnum.Customers;
-  constructor() {
-    super();
-  }
 
-  async getAllCustomers() {
+  async getAllCustomers(withDebts: boolean = true) {
     try {
-      const sqlBuilder = new SqlBuilder<Customer>(this.db, this.table);
-      const customers = await sqlBuilder
-        .select()
-        .orderBy("Name", "desc")
-        .executeAsync();
-      return customers as Customer[];
+      const { data, error } = withDebts
+        ? await supabase
+            .from(this.table)
+            .select(
+              `
+          *,
+          internaldebts (
+            *,
+            internaldebtproducts (
+              *,
+              products (*)
+            ),
+            internaldebtpayments (*)
+    )`
+            )
+            .order("name", { ascending: true })
+        : await supabase.from(this.table).select("*");
+      if (error) throw error;
+      return data as Customer[];
     } catch (error) {
       console.error("error getAllCustomers", error);
       return null;
@@ -31,12 +34,24 @@ export default class CustomerDataAccess extends AbstractDataAccess {
 
   async getCustomer(id: number) {
     try {
-      const sqlBuilder = new SqlBuilder<Customer>(this.db, this.table);
-      const customer = await sqlBuilder
-        .select()
-        .where({ CustomerId: id })
-        .firstAsync();
-      return customer;
+      const { data, error } = await supabase
+        .from(this.table)
+        .select(
+          `
+          *,
+          internaldebts (
+            *,
+            internaldebtproducts (
+              *,
+              products (*)
+            ),
+            internaldebtpayments (*)
+        )`
+        )
+        .eq("id", id)
+        .single();
+      if (error) throw error;
+      return data as Customer;
     } catch (error) {
       console.error("error getCustomer", error);
       return null;
@@ -45,9 +60,13 @@ export default class CustomerDataAccess extends AbstractDataAccess {
 
   async addCustomer(customer: Customer) {
     try {
-      const sqlBuilder = new SqlBuilder<Customer>(this.db, this.table);
-      const result = await sqlBuilder.insert(customer);
-      return result;
+      const { data, error } = await supabase
+        .from(this.table)
+        .insert(customer)
+        .select()
+        .single();
+      if (error) throw error;
+      return data as Customer;
     } catch (error) {
       console.error("error addCustomer", error);
       return null;
@@ -56,12 +75,14 @@ export default class CustomerDataAccess extends AbstractDataAccess {
 
   async updateCustomer(customer: Customer) {
     try {
-      const sqlBuilder = new SqlBuilder<Customer>(this.db, this.table);
-      const result = await sqlBuilder
+      const { data, error } = await supabase
+        .from(this.table)
         .update(customer)
-        .where({ CustomerId: customer.CustomerId })
-        .executeAsync();
-      return result as SQLiteRunResult;
+        .eq("id", customer.id)
+        .select("*")
+        .single();
+      if (error) throw error;
+      return data as Customer;
     } catch (error) {
       console.error("error updateCustomer", error);
       return null;
@@ -70,81 +91,15 @@ export default class CustomerDataAccess extends AbstractDataAccess {
 
   async deleteCustomer(id: number) {
     try {
-      const sqlBuilder = new SqlBuilder<Customer>(this.db, this.table);
-      const result = await sqlBuilder.delete(id);
-      return result;
+      const { data, error } = await supabase
+        .from(this.table)
+        .delete()
+        .eq("id", id);
+      if (error) throw error;
+      return true;
     } catch (error) {
       console.error("error deleteCustomer", error);
-      return null;
-    }
-  }
-
-  async getAllCustomersBorrowList() {
-    try {
-      const sqlBuilder =
-        new SqlBuilder<Customer_InternalDebt_InternalDebtProduct_Product>(
-          this.db,
-          this.table
-        );
-      const result = await sqlBuilder
-        .select()
-        .rightJoin(
-          [this.table, TableEnum.InternalDebts],
-          [PrimaryKeysEnum.CustomerId, ForeignKeysEnum.InternalDebt_CustomerId]
-        )
-        .rightJoin(
-          [TableEnum.InternalDebts, TableEnum.InternalDebtProducts],
-          [
-            PrimaryKeysEnum.InternalDebtId,
-            ForeignKeysEnum.InternalDebtProduct_InternalDebtId,
-          ]
-        )
-        .leftJoin(
-          [TableEnum.InternalDebtProducts, TableEnum.Products],
-          [
-            ForeignKeysEnum.InternalDebtProduct_ProductId,
-            PrimaryKeysEnum.ProductId,
-          ]
-        )
-        .executeAsync();
-      return result as Customer_InternalDebt_InternalDebtProduct_Product[];
-    } catch (error) {
-      console.error("error getAllCustomersBorrowList", error);
-    }
-  }
-
-  async getCustomerBorrowList(id: number) {
-    try {
-      const sqlBuilder =
-        new SqlBuilder<Customer_InternalDebt_InternalDebtProduct_Product>(
-          this.db,
-          this.table
-        );
-      const result = await sqlBuilder
-        .select()
-        .rightJoin(
-          [this.table, TableEnum.InternalDebts],
-          [PrimaryKeysEnum.CustomerId, ForeignKeysEnum.InternalDebt_CustomerId]
-        )
-        .rightJoin(
-          [TableEnum.InternalDebts, TableEnum.InternalDebtProducts],
-          [
-            PrimaryKeysEnum.InternalDebtId,
-            ForeignKeysEnum.InternalDebtProduct_InternalDebtId,
-          ]
-        )
-        .leftJoin(
-          [TableEnum.InternalDebtProducts, TableEnum.Products],
-          [
-            ForeignKeysEnum.InternalDebtProduct_ProductId,
-            PrimaryKeysEnum.ProductId,
-          ]
-        )
-        .where({ CustomerId: id })
-        .executeAsync();
-      return result as Customer_InternalDebt_InternalDebtProduct_Product[];
-    } catch (error) {
-      console.error("error getCustomerBorrowList", error);
+      return false;
     }
   }
 }
