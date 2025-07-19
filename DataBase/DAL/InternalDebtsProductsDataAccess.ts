@@ -5,17 +5,6 @@ import { InternalDebtProduct } from "../Supabase/Models/InternalDebtProduct";
 export default class InternalDebtsProductsDataAccess {
   table = TableEnum.InternalDebtProducts;
 
-  // async getAllInternalDebtProducts(): Promise<InternalDebtProduct[] | null> {
-  //   try {
-  //     const { data, error } = await supabase.from(this.table).select("*");
-  //     if (error) throw error;
-  //     return data as InternalDebtProduct[];
-  //   } catch (error) {
-  //     console.error("error getInternalDebtProducts", error);
-  //     return null;
-  //   }
-  // }
-
   async getInternalDebtProducts(
     internalDebtId: number
   ): Promise<InternalDebtProduct[] | null> {

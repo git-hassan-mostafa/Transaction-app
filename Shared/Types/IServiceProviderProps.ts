@@ -1,8 +1,8 @@
-import CustomerManager from "@/Pages/Customers/Services/CustomerManager";
-import InternalDebtManager from "@/Pages/InternalDebts/Services/InternalDebtManager";
-import ProductManager from "@/Pages/Products/Services/ProductManager";
-import { PeopleManager } from "@/Pages/People/Services/PeopleManager";
-import ProviderManager from "@/Pages/Providers/Services/ProviderManager";
+import CustomerManager from "@/Services/CustomerManager";
+import InternalDebtManager from "@/Services/InternalDebtManager";
+import PeopleManager from "@/Services/PeopleManager";
+import ProductManager from "@/Services/ProductManager";
+import ProviderManager from "@/Services/ProviderManager";
 
 export default interface IServiceProviderProps {
   customerManager: CustomerManager;

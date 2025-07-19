@@ -84,7 +84,6 @@ export default function InternalDebtProductsList(
                 />
                 <IInput
                   style={[globalStyles.column, styles.textInput]}
-                  size="medium"
                   keyboardType="numeric"
                   placeholder={i18n.t("quantity")}
                   value={props.newInternalDebtsProduct?.Quantity?.toString()}

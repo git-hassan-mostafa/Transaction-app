@@ -76,7 +76,7 @@ export default function useInternalDebtProductsListService(
   function handleDeleteProduct(id: number) {
     Alert.alert(
       i18n.t("remove-product"),
-      i18n.t("are-you-sureyou-want-to-remove-this-product"),
+      i18n.t("are-you-sure-you-want-to-remove-this-product"),
       [
         {
           text: i18n.t("cancel"),

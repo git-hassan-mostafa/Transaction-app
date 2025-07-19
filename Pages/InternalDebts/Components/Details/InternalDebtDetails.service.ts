@@ -8,6 +8,7 @@ import IInternalDebtDetailsService from "@/Models/InternalDebts/IInternalDebtDet
 import IInternalDebt from "@/Models/InternalDebts/IInternalDebts";
 import { IInternalDebtFormProps } from "@/Models/InternalDebts/IInternalDebtsFormProps";
 import IInternalDebtProduct from "@/Models/InternalDebts/IInternalDebtProduct";
+import IInternalDebtPayment from "@/Models/InternalDebts/IInternalDebtPayment";
 export default function useInternalDebtDetailsService(
   props: IInternalDebtFormProps
 ): IInternalDebtDetailsService {
@@ -53,6 +54,19 @@ export default function useInternalDebtDetailsService(
       );
     }
   }, [internalDebt.InternalDebtProducts]);
+
+  useEffect(() => {
+    const newPaidPrice =
+      internalDebtManager.getInternalDebtPaidPrice(internalDebt);
+    if (internalDebt.PaidPrice !== newPaidPrice) {
+      setInternalDebt(
+        (prev): IInternalDebt => ({
+          ...prev,
+          PaidPrice: newPaidPrice,
+        })
+      );
+    }
+  }, [internalDebt.InternalDebtPayments]);
 
   async function fetchAllData() {
     await getAllCustomers();
@@ -117,6 +131,24 @@ export default function useInternalDebtDetailsService(
     });
   }
 
+  function addPayment(payment: IInternalDebtPayment) {
+    setInternalDebt((prev): IInternalDebt => {
+      return {
+        ...prev,
+        InternalDebtPayments: [...(prev.InternalDebtPayments || []), payment],
+      };
+    });
+  }
+
+  function deletePayment(id: number) {
+    setInternalDebt((prev): IInternalDebt => {
+      const updatedPayments = prev.InternalDebtPayments?.filter(
+        (p) => p.Id !== id
+      );
+      return { ...prev, InternalDebtPayments: updatedPayments };
+    });
+  }
+
   async function save() {
     await props.save(internalDebt, validateInternalDebtFields);
   }
@@ -129,10 +161,17 @@ export default function useInternalDebtDetailsService(
       });
       return false;
     }
-    if (!internalDebt.InternalDebtProducts.length) {
+    if (!internalDebt.InternalDebtProducts?.length) {
       setValidation({
         visible: true,
         text: i18n.t("please-add-at-least-one-product"),
+      });
+      return false;
+    }
+    if (internalDebt.PaidPrice > internalDebt.TotalPrice) {
+      setValidation({
+        visible: true,
+        text: i18n.t("paid-price-cannot-be-greater-than-total-price"),
       });
       return false;
     }
@@ -150,6 +189,8 @@ export default function useInternalDebtDetailsService(
     addInternalDebtProduct,
     updateInternalDebtProduct,
     deleteInternalDebtProduct,
+    addPayment,
+    deletePayment,
     save,
   };
 }

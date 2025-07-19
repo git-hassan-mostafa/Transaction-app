@@ -10,6 +10,8 @@ import { Product } from "@/DataBase/Supabase/Models/Product";
 import { InternalDebtProduct } from "@/DataBase/Supabase/Models/InternalDebtProduct";
 import { Customer } from "@/DataBase/Supabase/Models/Customer";
 import { InternalDebt } from "@/DataBase/Supabase/Models/InternalDebt";
+import IInternalDebtPayment from "@/Models/InternalDebts/IInternalDebtPayment";
+import { InternalDebtPayment } from "@/DataBase/Supabase/Models/InternalDebtPayemnt";
 
 export default class Mapper {
   mapToCustomer(customer: ICustomer): Customer {
@@ -35,26 +37,23 @@ export default class Mapper {
       if (Object.keys(customer).length === 0) {
         return {} as ICustomer;
       }
-      const borrowedPrice = customer.internaldebts
-        ? this.mapToIInternalDebtAll(customer.internaldebts || []).reduce(
-            (sum, debt) => {
-              return sum + debt.TotalPrice;
-            },
-            0
-          )
-        : 0;
-      const InternalDebts = this.mapToIInternalDebtAll(
-        customer.internaldebts || []
-      );
+      const Debts = this.mapToIInternalDebtAll(customer.internaldebts || []);
+      const BorrowedPrice = Debts.reduce((sum, debt) => {
+        return sum + debt.TotalPrice;
+      }, 0);
+
+      const PaidPrice = Debts.reduce((sum, debt) => {
+        return sum + debt.PaidPrice;
+      }, 0);
       return {
         Id: customer.id,
         Name: customer.name,
         PhoneNumber: customer.phonenumber,
         Notes: customer.notes,
-        BorrowedPrice: borrowedPrice,
-        PayedPrice: 0,
-        InternalDebts,
-        Debts: InternalDebts,
+        BorrowedPrice,
+        PaidPrice,
+        RemainingPrice: BorrowedPrice - PaidPrice,
+        Debts,
       };
     } catch (error) {
       console.trace("Error in mapToICustomer:", error);
@@ -284,6 +283,12 @@ export default class Mapper {
             prodSum + this.mapToIInternalDebtProduct(prod).TotalPrice,
           0
         ) || 0;
+
+      const PaidPrice =
+        internalDebt.internaldebtpayments?.reduce(
+          (paySum, pay) => paySum + this.mapToIInternalDebtPayment(pay).Amount,
+          0
+        ) || 0;
       return {
         Id: internalDebt.id,
         Date: internalDebt.date,
@@ -295,11 +300,13 @@ export default class Mapper {
         ),
         Person: this.mapToIPerson(internalDebt.people || ({} as Person)),
         TotalPrice,
-        PaidPrice: 0, // to be calculated later
+        PaidPrice,
         InternalDebtProducts: this.mapToIInternalDebtProductAll(
           internalDebt.internaldebtproducts || []
         ),
-        InternalDebtPayments: [], // to be implemented later
+        InternalDebtPayments: this.mapToIInternalDebtPaymentAll(
+          internalDebt.internaldebtpayments || []
+        ),
       };
     } catch (error) {
       console.trace("Error in mapToIInternalDebt:", error);
@@ -402,6 +409,72 @@ export default class Mapper {
       return internalDebtsProducts.map((i) => this.mapToInternalDebtProduct(i));
     } catch (error) {
       console.trace("Error in mapToInternalDebtProductAll:", error);
+      throw error;
+    }
+  }
+
+  mapToInternalDebtPayment(
+    internalDebtPayment: IInternalDebtPayment
+  ): InternalDebtPayment {
+    try {
+      if (Object.keys(internalDebtPayment).length === 0) {
+        return {} as InternalDebtPayment;
+      }
+      return {
+        id: internalDebtPayment.Id,
+        amount: internalDebtPayment.Amount,
+        date: internalDebtPayment.Date,
+        internaldebtid: internalDebtPayment.InternalDebtId,
+        // internalDebt: this.mapToInternalDebt(
+        //   internalDebtPayment.InternalDebt || ({} as IInternalDebt)
+        // ),
+      };
+    } catch (error) {
+      console.trace("Error in mapToInternalDebtPayment:", error);
+      throw error;
+    }
+  }
+
+  mapToIInternalDebtPayment(
+    internalDebtPayment: InternalDebtPayment
+  ): IInternalDebtPayment {
+    try {
+      if (Object.keys(internalDebtPayment).length === 0) {
+        return {} as IInternalDebtPayment;
+      }
+      return {
+        Id: internalDebtPayment.id,
+        Amount: internalDebtPayment.amount,
+        Date: internalDebtPayment.date,
+        InternalDebtId: internalDebtPayment.internaldebtid,
+        InternalDebt: this.mapToIInternalDebt(
+          internalDebtPayment.internaldebt || ({} as InternalDebt)
+        ),
+      };
+    } catch (error) {
+      console.trace("Error in mapToIInternalDebtPayment:", error);
+      throw error;
+    }
+  }
+
+  mapToIInternalDebtPaymentAll(
+    internalDebtPayments: InternalDebtPayment[]
+  ): IInternalDebtPayment[] {
+    try {
+      return internalDebtPayments.map((i) => this.mapToIInternalDebtPayment(i));
+    } catch (error) {
+      console.trace("Error in mapToIInternalDebtPaymentAll:", error);
+      throw error;
+    }
+  }
+
+  mapToInternalDebtPaymentAll(
+    internalDebtPayments: IInternalDebtPayment[]
+  ): InternalDebtPayment[] {
+    try {
+      return internalDebtPayments.map((i) => this.mapToInternalDebtPayment(i));
+    } catch (error) {
+      console.trace("Error in mapToInternalDebtPaymentAll:", error);
       throw error;
     }
   }

@@ -1,4 +1,10 @@
-import { Pressable, ScrollView, TouchableHighlight, View } from "react-native";
+import {
+  I18nManager,
+  Pressable,
+  ScrollView,
+  TouchableHighlight,
+  View,
+} from "react-native";
 import styles from "./CustomerForm.style";
 import { ThemedText } from "@/Shared/Components/ThemedText";
 import { DataTable } from "react-native-paper";
@@ -22,6 +28,8 @@ export default function CustomerDebtList(props: ICustomerFormProps) {
   const handleRowPress = (id: string) => {
     setExpandedRows((prev) => ({ ...prev, [id]: !prev[id] }));
   };
+
+  const isRTL = I18nManager.isRTL; // Check if the current language is Arabic
 
   return (
     <View style={styles.dataTableContainer}>
@@ -58,12 +66,6 @@ export default function CustomerDebtList(props: ICustomerFormProps) {
                 <DataTable.Title style={globalStyles.column} numeric>
                   <ThemedText fontSize={12}>{i18n.t("price")}</ThemedText>
                 </DataTable.Title>
-                <DataTable.Title style={globalStyles.column} numeric>
-                  <View />
-                </DataTable.Title>
-                <DataTable.Title style={globalStyles.column} numeric>
-                  <View />
-                </DataTable.Title>
               </React.Fragment>
             )}
           </DataTable.Header>
@@ -78,29 +80,27 @@ export default function CustomerDebtList(props: ICustomerFormProps) {
                     onPress={() => handleRowPress(String(item.Id))}
                   >
                     <DataTable.Cell style={globalStyles.dateColumn} numeric>
-                      <ThemedText
-                        color={Constants.colors.darkGray}
-                        fontSize={12}
-                        style={{
-                          textAlign: "center",
-                          flexDirection: "row",
-                          alignItems: "center",
-                        }}
+                      <View
+                        style={{ flexDirection: "row", alignItems: "center" }}
                       >
-                        <Icon name="caret-forward" />{" "}
-                        <>{fromatLocaleDate(item.Date)}</>
-                      </ThemedText>
+                        <Icon name={isRTL ? "caret-back" : "caret-forward"} />
+                        <ThemedText
+                          color={Constants.colors.darkGray}
+                          fontSize={12}
+                          style={{
+                            textAlign: "center",
+                            flexDirection: "row",
+                            alignItems: "center",
+                          }}
+                        >
+                          {fromatLocaleDate(item.Date)}
+                        </ThemedText>
+                      </View>
                     </DataTable.Cell>
                     <DataTable.Cell style={globalStyles.column}>
                       <ThemedText color={Constants.colors.darkGreen}>
                         ${item.TotalPrice}
                       </ThemedText>
-                    </DataTable.Cell>
-                    <DataTable.Cell style={globalStyles.column}>
-                      <View />
-                    </DataTable.Cell>
-                    <DataTable.Cell style={globalStyles.column}>
-                      <View />
                     </DataTable.Cell>
                   </DataTable.Row>
                 );

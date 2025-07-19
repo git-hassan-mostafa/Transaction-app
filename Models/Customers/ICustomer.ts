@@ -7,8 +7,8 @@ export default interface ICustomer {
   PhoneNumber: string;
   Notes?: string;
   // Relations
-  InternalDebts?: IInternalDebt[];
   BorrowedPrice: number;
-  PayedPrice: number;
+  PaidPrice: number;
+  RemainingPrice: number;
   Debts?: IInternalDebt[];
 }

@@ -1,44 +1,45 @@
-import CustomerManager from "../Pages/Customers/Services/CustomerManager";
+import CustomerManager from "../Services/CustomerManager";
 import DALFactory from "@/Factories/DALFactory";
-import InternalDebtManager from "../Pages/InternalDebts/Services/InternalDebtManager";
-import ProductManager from "../Pages/Products/Services/ProductManager";
+import InternalDebtManager from "../Services/InternalDebtManager";
+import ProductManager from "../Services/ProductManager";
 import HelpersFactory from "./HelpersFactory";
-import { PeopleManager } from "@/Pages/People/Services/PeopleManager";
-import ProviderManager from "@/Pages/Providers/Services/ProviderManager";
+import ProviderManager from "@/Services/ProviderManager";
+import PeopleManager from "../Services/PeopleManager";
 
 export default class BLLFactory {
   static CustomerManager() {
     return new CustomerManager(
-      DALFactory.CustomerDataAccess(),
+      DALFactory.CreateCustomerDataAccess(),
       HelpersFactory.Mapper()
     );
   }
 
   static ProductManager() {
     return new ProductManager(
-      DALFactory.ProductsDataAccess(),
-      DALFactory.ProviderDataAccess(),
+      DALFactory.CreateProductsDataAccess(),
+      DALFactory.CreateProviderDataAccess(),
       HelpersFactory.Mapper()
     );
   }
   static InternalDebtManager() {
     return new InternalDebtManager(
-      DALFactory.InternalDebtsDataAccess(),
-      DALFactory.InternalDebtsProductsDataAccess(),
+      DALFactory.CreateInternalDebtsDataAccess(),
+      DALFactory.CreateInternalDebtsProductsDataAccess(),
+      DALFactory.CreateInternalDebtsPaymentsDataAccess(),
       HelpersFactory.Mapper()
     );
   }
 
   static PeopleManager() {
     return new PeopleManager(
-      DALFactory.PeopleDataAccess(),
+      DALFactory.CreatePeopleDataAccess(),
       HelpersFactory.Mapper()
     );
   }
 
   static ProviderManager() {
     return new ProviderManager(
-      DALFactory.ProviderDataAccess(),
+      DALFactory.CreateProviderDataAccess(),
       HelpersFactory.Mapper()
     );
   }

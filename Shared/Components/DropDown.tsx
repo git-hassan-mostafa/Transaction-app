@@ -1,9 +1,12 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useMemo } from "react";
 import IDropDownType from "@/Shared/Types/IDropDownType";
-import { IndexPath, Select, SelectItem } from "@ui-kitten/components";
 import IDropDownItem from "../Types/IDropDownItem";
+import { Dropdown } from "react-native-element-dropdown";
 import { ThemedText } from "./ThemedText";
 import Constants from "../Constants/Constants";
+import { AntDesign } from "@expo/vector-icons";
+import { StyleSheet, View } from "react-native";
+import i18n from "../I18n/I18n";
 
 const DropDown = (props: IDropDownType) => {
   const data = useMemo<IDropDownItem[]>(() => {
@@ -16,48 +19,83 @@ const DropDown = (props: IDropDownType) => {
     );
   }, [props.data]);
 
-  const [selectedIndex, setSelectedIndex] = useState<IndexPath | null>(null);
-
-  useEffect(() => {
-    const index = data.findIndex((item) => item.value === props.value);
-    if (index !== -1) {
-      setSelectedIndex(new IndexPath(index));
-    }
-  }, [props.value, data]);
-
-  const handleSelect = (index: IndexPath | IndexPath[]) => {
-    setSelectedIndex(index as IndexPath);
-    const selectedItem = data[(index as IndexPath).row];
-    props.setValue(selectedItem?.value || "");
+  const renderItem = (item: any) => {
+    return (
+      <View style={styles.item}>
+        <ThemedText style={styles.textItem}>{item.label}</ThemedText>
+        {item.value === props.value && (
+          <AntDesign
+            style={styles.icon}
+            color="black"
+            name="Safety"
+            size={20}
+          />
+        )}
+      </View>
+    );
   };
 
   return (
-    <Select
-      style={props.style}
-      placeholder={() => (
-        <ThemedText fontSize={10} color={Constants.colors.darkGray}>
-          {props.placeholder}
-        </ThemedText>
-      )}
-      value={() => (
-        <ThemedText>
-          {selectedIndex !== null && data[selectedIndex.row]
-            ? data[selectedIndex.row].label
-            : ""}
-        </ThemedText>
-      )}
-      selectedIndex={selectedIndex as IndexPath}
-      onSelect={handleSelect}
-      size={props.size || "medium"}
-    >
-      {data.map((item) => (
-        <SelectItem
-          key={item.value}
-          title={() => <ThemedText>{item.label}</ThemedText>}
-        />
-      ))}
-    </Select>
+    <Dropdown
+      style={styles.dropdown}
+      placeholderStyle={styles.placeholderStyle}
+      selectedTextStyle={styles.selectedTextStyle}
+      inputSearchStyle={styles.inputSearchStyle}
+      iconStyle={styles.iconStyle}
+      data={data}
+      search={props.search || true}
+      maxHeight={300}
+      labelField="label"
+      valueField="value"
+      placeholder={i18n.t("select-from-list") + "..."}
+      searchPlaceholder={i18n.t("search") + "..."}
+      value={props.value}
+      onChange={(item: IDropDownItem) => props.setValue(item.value || -1)}
+      renderItem={renderItem}
+    />
   );
 };
 
 export default React.memo(DropDown);
+
+const styles = StyleSheet.create({
+  dropdown: {
+    // height: 50,
+    borderColor: Constants.colors.gray,
+    borderWidth: 1,
+    borderRadius: 5,
+    paddingLeft: 12,
+  },
+  icon: {
+    marginRight: 5,
+  },
+  item: {
+    padding: 17,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
+  textItem: {
+    flex: 1,
+    fontSize: 14,
+    fontFamily: Constants.fontFamily.font400Regular,
+  },
+  placeholderStyle: {
+    fontSize: 12,
+    fontFamily: Constants.fontFamily.font400Regular,
+
+    color: Constants.colors.darkGray,
+  },
+  selectedTextStyle: {
+    fontSize: 12,
+    fontFamily: Constants.fontFamily.font400Regular,
+  },
+  iconStyle: {
+    width: 20,
+    height: 20,
+  },
+  inputSearchStyle: {
+    fontSize: 12,
+    fontFamily: Constants.fontFamily.font400Regular,
+  },
+});

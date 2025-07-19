@@ -7,5 +7,5 @@ export interface InternalDebtPayment {
   internaldebtid: number;
 
   // Relations
-  internaldebts?: InternalDebt;
+  internaldebt?: InternalDebt;
 }

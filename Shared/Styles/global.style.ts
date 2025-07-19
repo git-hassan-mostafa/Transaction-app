@@ -8,6 +8,7 @@ const globalStyles = StyleSheet.create({
     fontFamily: Constants.fontFamily.font400Regular,
   },
   column: { width: 120, flex: 1, justifyContent: "flex-start" },
+  numberColumn: { width: 80, flex: 1, justifyContent: "flex-start" },
   iconColumn: { width: 30 },
   dateColumn: { width: 150, flex: 1, justifyContent: "flex-start" },
   delete: { fontSize: 20, color: Constants.colors.red },

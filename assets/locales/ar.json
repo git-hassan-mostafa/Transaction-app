@@ -61,7 +61,7 @@
   "product-alreadyexists-quantity-updated": "المنتج موجود بالفعل، تم تحديث الكمية",
   "products-list": "قائمة المنتجات",
   "remove-product": "إزالة المنتج",
-  "are-you-sureyou-want-to-remove-this-product": "هل أنت متأكد أنك تريد إزالة هذا المنتج",
+  "are-you-sure-you-want-to-remove-this-product": "هل أنت متأكد أنك تريد إزالة هذا المنتج",
   "failed-deleting-products": "فشل في حذف المنتجات",
   "failed-adding-products": "فشل في إضافة المنتجات",
   "please-add-at-least-one-product": "يرجى إضافة منتج واحد على الأقل",  

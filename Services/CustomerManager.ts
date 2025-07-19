@@ -1,6 +1,6 @@
-import CustomerDataAccess from "../../../DataBase/DAL/CustomersDataAccess";
-import Mapper from "../../../Shared/Helpers/Mapper";
-import i18n from "../../../Shared/I18n/I18n";
+import CustomerDataAccess from "../DataBase/DAL/CustomersDataAccess";
+import Mapper from "../Shared/Helpers/Mapper";
+import i18n from "../Shared/I18n/I18n";
 import { IResultType } from "@/Shared/Types/IResultType";
 import ICustomer from "@/Models/Customers/ICustomer";
 import { Customer } from "@/DataBase/Supabase/Models/Customer";

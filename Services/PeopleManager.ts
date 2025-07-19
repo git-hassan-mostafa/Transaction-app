@@ -5,7 +5,7 @@ import { IResultType } from "@/Shared/Types/IResultType";
 import IPerson from "@/Models/People/IPerson";
 import { Person } from "@/DataBase/Supabase/Models/Person";
 
-export class PeopleManager {
+export default class PeopleManager {
   constructor(
     private peopleDataAccess: PeopleDataAccess,
     private mapper: Mapper

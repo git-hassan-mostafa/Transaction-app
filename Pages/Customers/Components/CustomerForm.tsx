@@ -7,6 +7,7 @@ import CustomerDetails from "./CustomerDetails";
 import formStyle from "@/Shared/Styles/form.style";
 import useCustomerFormService from "./CustomerForm.service";
 import ICustomerFormProps from "@/Models/Customers/ICustomerFormProps";
+import CustomerPayments from "./CustomerPayments";
 export function CustomerForm(props: ICustomerFormProps) {
   const service = useCustomerFormService(props);
   return (
@@ -17,9 +18,16 @@ export function CustomerForm(props: ICustomerFormProps) {
       ]}
     >
       {props.formData.Id ? (
-        <Tabs titles={[i18n.t("details"), i18n.t("borrowed-list")]}>
+        <Tabs
+          titles={[
+            i18n.t("details"),
+            i18n.t("borrowed-list"),
+            i18n.t("payments"),
+          ]}
+        >
           <CustomerDetails {...service} />
           <CustomerDebtList {...props} />
+          <CustomerPayments {...props} />
         </Tabs>
       ) : (
         <CustomerDetails {...service} />

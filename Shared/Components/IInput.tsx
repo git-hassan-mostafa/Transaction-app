@@ -1,10 +1,10 @@
-import { Input, InputProps } from "@ui-kitten/components";
+import { TextInput, TextInputProps } from "react-native";
 import Constants from "../Constants/Constants";
 
-export default function IInput(props: InputProps) {
+export default function IInput(props: TextInputProps) {
   return (
-    <Input
-      textStyle={{
+    <TextInput
+      style={{
         fontSize: 13,
         fontFamily: Constants.fontFamily.font400Regular,
       }}

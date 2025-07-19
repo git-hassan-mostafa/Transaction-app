@@ -2,9 +2,11 @@ import IDropDownItem from "@/Shared/Types/IDropDownItem";
 import IInternalDebt from "./IInternalDebts";
 import { IValidationErrorType } from "@/Shared/Types/IValidationErrorType";
 import { IInternalDebtsProductsListServiceProps } from "./IInternalDebtsFormServiceProps";
+import { IInternalDebtsPaymentsServiceProps } from "./IInternalDebtsPaymentsServiceProps";
 
 export default interface IInternalDebtDetailsService
-  extends IInternalDebtsProductsListServiceProps {
+  extends IInternalDebtsProductsListServiceProps,
+    IInternalDebtsPaymentsServiceProps {
   internalDebt: IInternalDebt;
   customersDropDown: IDropDownItem[];
   validation: IValidationErrorType;

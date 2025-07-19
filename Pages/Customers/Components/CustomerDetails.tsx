@@ -25,7 +25,7 @@ export default function CustomerDetails(props: ICustomerDetailsProps) {
             fontSize={12}
             style={[styles.price, styles.payedPrice]}
           >
-            ${props.customer.PayedPrice}
+            ${props.customer.PaidPrice}
           </ThemedText>
           <ThemedText
             weight={600}
@@ -39,7 +39,7 @@ export default function CustomerDetails(props: ICustomerDetailsProps) {
             fontSize={12}
             style={[styles.price, styles.remainingPrice]}
           >
-            ${props.customer.BorrowedPrice - props.customer.PayedPrice}
+            ${props.customer.RemainingPrice}
           </ThemedText>
         </View>
       )}
